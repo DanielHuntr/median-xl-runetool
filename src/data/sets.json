@@ -1,0 +1,1350 @@
+[
+  [
+    "Pantheon",
+    "Amazon Bow Set",
+    "Amazon",
+    "Set Bonus with 2 or more set items:|50% Attack Speed|Elemental Resists +50%|Set Bonus with 3 or more set items:|Weapon Physical Damage +60%|+150 to Life|Set Bonus with complete set:|3% Chance to cast level 40 Trinity Nova on Kill|Adds 85-100 Damage|-45% to Enemy Elemental Resistances|Weapon Physical Damage +100%|+200 to Dexterity",
+    [
+      [
+        "Earth",
+        "Chain Mail",
+        "Defense: (5050 - 6312) to (5712 - 7140)|Required Level: 80|Required Strength: 402|Item Level: 1|15% Hit Recovery|Adds 18-20 Damage|(3 to 6)% Life stolen per Hit|+(100 to 150)% Enhanced Defense|(16 to 20)% to Dexterity|Lightning Resist +(31 to 50)%|Requirements -33%|Socketed (6)"
+      ],
+      [
+        "Fire",
+        "Reflex Bow",
+        "Two-Hand Damage: (169 - 202) to (190 - 227)|(Amazon Only)|Required Level: 80|Required Dexterity: 680|Item Level: 1|Dexterity Damage Bonus: (0.17 per Dexterity)%|5% Chance to cast level 1 Arrow on Striking|Adds 35-40 Damage|+150 to Maximum Fire Damage|+150 to Maximum Lightning Damage|+150 to Maximum Cold Damage|+(100 to 150)% Enhanced Damage|Socketed (6)"
+      ],
+      [
+        "Frost",
+        "Boots",
+        "Defense: (1302 - 1627) to (1342 - 1677)|Required Level: 80|Required Strength: 335|Item Level: 1|(10 to 40)% Movement Speed|30% Hit Recovery|+(100 to 150)% Enhanced Defense|(11 to 15)% to Strength|(11 to 15)% to Dexterity|Cold Resist +(31 to 50)%|(11 to 13)% Magic Find|Requirements -33%|Socketed (4)"
+      ],
+      [
+        "Water",
+        "Leather Gloves",
+        "Defense: (940 - 1175) to (954 - 1192)|Required Level: 80|Required Strength: 335|Item Level: 1|+(100 to 150)% Enhanced Defense|(11 to 15)% to Strength|(11 to 15)% to Dexterity|Fire Resist +(31 to 50)%|(13 to 19)% Gold Find|Requirements -33%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Celestia's Myth",
+    "Amazon Spear Set",
+    "Amazon",
+    "Set Bonus with 2 or more set items:|-30% to Enemy Poison Resistance|10% Chance of Crushing Blow|Set Bonus with 3 or more set items:|17% Chance to cast level 18 Stormblast on Melee Attack|20% to Dexterity|Set Bonus with complete set:|5% Chance to cast level 5 Javelin on Striking|+36% Bonus Damage to Mark of the Wild|Adds 85-100 Damage|+2500 Defense|Maximum Elemental Resists +1%|Elemental Resists +75%|Physical Resist 10%",
+    [
+      [
+        "Celestia's Charge",
+        "Light Plated Boots",
+        "Defense: (1881 - 2116) to (2083 - 2343)|Required Level: 90|Required Strength: 468|Item Level: 1|(20 to 50)% Movement Speed|2% Chance to cast level 6 Celerity on Kill|20% Hit Recovery|+(140 to 170)% Enhanced Defense|+(31 to 50) to Strength|(11 to 15)% to Dexterity|(11 to 15)% Bonus to Defense|Requirements -25%|Socketed (4)"
+      ],
+      [
+        "Celestia's Passion",
+        "Maiden Spear",
+        "Two-Hand Damage: 306 to 362|(Amazon Only)|Required Level: 90|Required Strength: 259|Required Dexterity: 375|Item Level: 1|Dexterity Damage Bonus: (0.15 per Dexterity)%|Mega Impact|Amazing Grace|+(4 to 5) to Amazon Skill Levels|1% Chance to cast level 4 Ward of Fate on Melee Attack|1% Chance to cast level 13 Gift of the Wild on Melee Attack|Adds 90-110 Damage|+200% Enhanced Damage|50% Bonus to Defense|Requirements -25%|Socketed (6)"
+      ],
+      [
+        "Celestia's Ribbon",
+        "Plated Belt",
+        "Defense: (3271 - 3680) to (3583 - 4031)|Required Level: 90|Required Strength: 675|Item Level: 1|+1 to Amazon Skill Levels|15% Attack Speed|+425 Poison Damage over 2 seconds|+(140 to 170)% Enhanced Defense|(11 to 15)% to Strength|+(31 to 50) to Dexterity|Physical Resist 5%|Socketed (2)"
+      ],
+      [
+        "Celestia's Wings",
+        "Gothic Plate",
+        "Defense: (7708 - 8628) to (9275 - 10391)|Required Level: 90|Required Strength: 506|Item Level: 1|+1 to Amazon Skill Levels|Adds 30-33 Damage|-(25 to 30)% to Enemy Poison Resistance|+(140 to 170)% Enhanced Defense|+350 Defense|+(31 to 50) to Dexterity|(21 to 25)% to Vitality|Elemental Resists +(21 to 25)%|Requirements -25%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Vasily's Following",
+    "Amazon Javelin Set",
+    "Amazon",
+    "Set Bonus with 2 or more set items:|4% Chance to cast level 18 Shower of Rocks on Kill|+20 to Maximum Damage|Set Bonus with 3 or more set items:|+20% Total Damage to Curare|Set Bonus with 4 or more set items:|Set Bonus with complete set:|15% Movement Speed|8% Chance to cast level 13 Javelin Nova on Kill|-30% to Enemy Poison Resistance|+6 to Stormlord|Weapon Physical Damage +150%|40% to All Attributes|Elemental Resists +50%",
+    [
+      [
+        "Vasily's Crescent",
+        "Spangenhelm",
+        "Defense: (2128 - 2660) to (2358 - 2947)|(Amazon Only)|Required Level: 80|Required Strength: 675|Item Level: 1|+1 to Amazon Skill Levels|15% Hit Recovery|+(13 to 25) to Maximum Damage|-(10 to 15)% to Enemy Poison Resistance|+(100 to 150)% Enhanced Defense|(10 to 15)% to Dexterity|Cold Resist +(41 to 50)%|Socketed (4)"
+      ],
+      [
+        "Vasily's Eclipse",
+        "Athulua's Hand",
+        "Defense: (2472 - 3090) to (2662 - 3327)|Chance to Block: 4%|(Amazon Only)|Required Level: 80|Required Dexterity: 174|Item Level: 1|+1 to Amazon Skill Levels|40% Block Speed|(16 to 20)% Life stolen per Hit|5% Chance of Crushing Blow|+(100 to 150)% Enhanced Defense|(20 to 25)% to Dexterity|-15% Mana Cost of Skills|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Vasily's Falling Star",
+        "Maiden Javelin",
+        "Throw Damage: (222 - 258) to (275 - 319)|One-Hand Damage: (160 - 183) to (190 - 217)|(Amazon Only)|Required Level: 80|Required Strength: 155|Required Dexterity: 300|Item Level: 1|Dexterity Damage Bonus: (0.13 per Dexterity)%|+1 to Amazon Skill Levels|(40 to 80)% Attack Speed|Adds 45-55 Damage|+(150 to 200)% Enhanced Damage|(21 to 25)% to Strength|(21 to 25)% to Dexterity|Requirements -50%|Socketed (3)"
+      ],
+      [
+        "Vasily's Shepherd Moon",
+        "Splint Mail",
+        "Defense: (5226 - 6532) to (6062 - 7577)|Required Level: 80|Required Strength: 600|Item Level: 1|+1 to Amazon Skill Levels|25% Block Speed|(5 to 10)% Chance of Crushing Blow|+(100 to 150)% Enhanced Defense|(10 to 15)% to Strength|(10 to 15)% to Dexterity|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Red Vex' Embrace",
+    "Amazon Blood Set",
+    "Amazon",
+    "Set Bonus with 2 or more set items:|+15% to Physical/Magic Spell Damage|+15% to Fire Spell Damage|+175 to Energy|Set Bonus with 3 or more set items:|Regenerate Mana +30%|50% Bonus to Defense|Set Bonus with complete set:|+150 Spell Focus|+75% to Physical/Magic Spell Damage|-20% to Enemy Fire Resistance|+400 to Energy|Elemental Resists +75%|Physical Resist 10%|+300 Life after each Kill",
+    [
+      [
+        "Red Vex' Curse",
+        "Morion",
+        "Defense: (1708 - 2135) to (1728 - 2160)|(Amazon Only)|Required Level: 90|Required Strength: 250|Item Level: 1|20% Block Speed|25% Hit Recovery|+15% to Physical/Magic Spell Damage|+15% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|Regenerate Mana +10%|20% Bonus to Defense|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Red Vex' Flayer",
+        "Club",
+        "One-Hand Damage: 41 to 42|Required Level: 90|Required Strength: 376|Item Level: 1|Strength Damage Bonus: (0.11 per Strength)%|+(2 to 3) to Amazon Skill Levels|+(81 to 100) Spell Focus|+(16 to 30)% to Physical/Magic Spell Damage|+(16 to 30)% to Fire Spell Damage|+(31 to 40)% to Summon Life|Regenerate Mana +10%|+(40 to 50) Life after each Kill|Socketed (3)"
+      ],
+      [
+        "Red Vex' Idol",
+        "Phoenix Shield",
+        "Defense: (2604 - 3255) to (2926 - 3657)|Chance to Block: 4%|(Amazon Only)|Required Level: 90|Required Strength: 350|Item Level: 1|+(1 to 2) to Amazon Skill Levels|+20% to Physical/Magic Spell Damage|-(26 to 30)% to Enemy Fire Resistance|+(41 to 50)% to Summon Life|+(100 to 150)% Enhanced Defense|+(300 to 500) to Mana|Regenerate Mana +10%|Requirements -50%|Socketed (6)"
+      ],
+      [
+        "Red Vex' Sin",
+        "Light Belt",
+        "Defense: (2202 - 2752) to (2286 - 2857)|Required Level: 90|Required Strength: 275|Item Level: 1|-(14 to 20)% to Enemy Fire Resistance|+(11 to 15)% to Summon Life|+(11 to 20)% to Summon Elemental Resistances|+(100 to 150)% Enhanced Defense|+(21 to 40) Life after each Kill|(40 to 50)% Bonus to Defense|Requirements -50%|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "Zerae's Divinity",
+    "Amazon Storm Set",
+    "Amazon",
+    "Set Bonus with 2 or more set items:|+100 Spell Focus|-25% to Enemy Lightning Resistance|Set Bonus with 3 or more set items:|Physical Resist 10%|50% Bonus to Defense|Set Bonus with complete set:|+200 Spell Focus|Adds 55-70 Damage|+50% to Lightning Spell Damage|-50% to Enemy Lightning Resistance|+18 to Divine Judgement|+400 to Life|+2 Life on Striking",
+    [
+      [
+        "Zerae's Holy Wrath",
+        "War Scepter",
+        "One-Hand Damage: (176 - 187) to (224 - 240)|Required Level: 90|Required Dexterity: 494|Item Level: 1|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(1 to 3) to Amazon Skill Levels|1% Chance to cast level 50 Supernova on Kill|Adds 85-100 Damage|+(140 to 170)% Enhanced Damage|(10 to 15)% Chance of Crushing Blow|+(75 to 100) to Energy|+(51 to 100) Life after each Kill|Socketed (6)"
+      ],
+      [
+        "Zerae's Redemption",
+        "Plate Mail",
+        "Defense: (7374 - 8171) to (8485 - 9421)|Required Level: 90|Required Strength: 468|Item Level: 1|30% Combat Speeds|(11 to 15)% Life stolen per Hit|+(140 to 170)% Enhanced Defense|+1000 Defense|(26 to 30)% to Dexterity|(26 to 30)% to Energy|+(101 to 200) to Life|Requirements -25%|Socketed (6)"
+      ],
+      [
+        "Zerae's Refinement",
+        "Einherjar Helm",
+        "Defense: (2349 - 2643) to (2527 - 2843)|(Amazon Only)|Required Level: 90|Required Dexterity: 534|Item Level: 1|+(1 to 2) to Amazon Skill Levels|+(51 to 75) Spell Focus|(21 to 25)% Attack Speed|(21 to 25)% Cast Speed|Weapon Physical Damage +(31 to 36)%|+(140 to 170)% Enhanced Defense|+100 to Dexterity|Socketed (4)"
+      ],
+      [
+        "Zerae's Vindication",
+        "Setzschild",
+        "Defense: (12985 - 14322) to (15525 - 17124)|Chance to Block: 4 to 5%|(Amazon Only)|Required Level: 90|Required Strength: 462|Item Level: 1|+(1 to 2) to Amazon Skill Levels|(0 to 1)% Base Block Chance|25% Block Speed|+(21 to 25)% to Lightning Spell Damage|+(172 to 200)% Enhanced Defense|Physical Resist 10%|Requirements -40%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Thunderstorm",
+    "Amazon Oskill Set",
+    "Amazon",
+    "Set Bonus with complete set:|Scorpion Sting: +1% Pierce Chance to Lightning Fury per Base Level|-33% to Enemy Lightning Resistance|+1 to Lightning Fury",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Amazon Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Amazon Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Charged Cloud",
+        "Maiden Javelin",
+        "Throw Damage: 71 to 88|One-Hand Damage: 46 to 54|(Amazon Only)|Required Level: 100|Required Strength: 310|Required Dexterity: 600|Item Level: 118|Dexterity Damage Bonus: (0.13 per Dexterity)%|+(1 to 3) to All Skills|(1 to 2)% Base Block Chance|50% Block Speed|+(11 to 25)% to Lightning Spell Damage|-(11 to 20)% to Enemy Lightning Resistance|(21 to 25)% to Dexterity|Socketed (3)"
+      ]
+    ]
+  ],
+  [
+    "The Snake Pit",
+    "Assassin Naginata Set",
+    "Assassin",
+    "Set Bonus with 2 or more set items:|+1 to Assassin Skill Levels|Weapon Physical Damage +30%|Set Bonus with 3 or more set items:|+2 to Assassin Skill Levels|Elemental Resists +50%|Set Bonus with complete set:|20% Chance to cast level 36 Deathstrike on Melee Attack|Adds 145-165 Damage|-30% to Enemy Poison Resistance|+18 to Hyena Strike|10% Deadly Strike|Weapon Physical Damage +210%|+150 Life after each Kill",
+    [
+      [
+        "Serpent's Coil",
+        "Belt",
+        "Defense: (2374 - 2967) to (2520 - 3150)|Required Level: 100|Required Strength: 345|Item Level: 1|+1 to Assassin Skill Levels|15% Attack Speed|30% Hit Recovery|+(100 to 150)% Enhanced Defense|(11 to 15)% to Dexterity|Requirements -40%|Socketed (2)"
+      ],
+      [
+        "Serpent's Fangs",
+        "Halberd",
+        "Two-Hand Damage: (258 - 277) to (344 - 371)|(Assassin Only)|Required Level: 100|Required Dexterity: 558|Item Level: 1|Dexterity Damage Bonus: (0.15 per Dexterity)%|Area Effect Attack|+(3 to 5) to Assassin Skill Levels|40% Attack Speed|Adds 85-100 Damage|Stun Attack|+(144 to 171)% Enhanced Damage|5% Deadly Strike|Socketed (6)"
+      ],
+      [
+        "Serpent's Tail",
+        "Chain Boots",
+        "Defense: (1928 - 2297) to (2052 - 2452)|Required Level: 100|Required Strength: 345|Item Level: 1|+1 to Assassin Skill Levels|(10 to 40)% Movement Speed|+(100 to 150)% Enhanced Defense|+450 Defense|(11 to 15)% to Dexterity|(11 to 15)% to Vitality|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Serpent's Tongue",
+        "Diadem",
+        "Defense: 870 to 983|Required Level: 100|Required Dexterity: 524|Item Level: 1|5% Chance to cast level 46 Lorenado on Melee Attack|(7 to 9)% Life stolen per Hit|3% Chance of Crushing Blow|+(31 to 40) to Strength|+(31 to 40) to Dexterity|+(31 to 40) to Vitality|-20% Mana Cost of Skills|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Creed",
+    "Assassin Throwing Set",
+    "Assassin",
+    "Set Bonus with 2 or more set items:|+2 to Assassin Skill Levels|15% to Dexterity|Set Bonus with 3 or more set items:|Maximum Elemental Resists +2%|Cannot Be Frozen|Set Bonus with complete set:|+1 Extra Target to Storm Crows|+5 to Assassin Skill Levels|100% Chance to cast level 13 Knife Throw on Kill|+333 Magic Damage|+200 to Dexterity|+2 Life on Striking",
+    [
+      [
+        "Tracker's Effigy",
+        "Aspis",
+        "Defense: (2622 - 3277) to (3060 - 3825)|Chance to Block: 4%|(Assassin Only)|Required Level: 90|Required Strength: 368|Required Dexterity: 374|Item Level: 1|+(1 to 2) to Assassin Skill Levels|25% Block Speed|+111 Magic Damage|+(100 to 150)% Enhanced Defense|Elemental Resists +(21 to 25)%|Requirements -33%|Socketed (4)"
+      ],
+      [
+        "Tracker's Runeward",
+        "Belt",
+        "Defense: (2374 - 2967) to (2520 - 3150)|Required Level: 90|Required Strength: 385|Item Level: 1|+2 to Assassin Skill Levels|+(100 to 150)% Enhanced Defense|+(41 to 50) to Dexterity|Elemental Resists +(11 to 15)%|Requirements -33%|Socketed (2)"
+      ],
+      [
+        "Tracker's Stealth",
+        "Chain Mail",
+        "Defense: (5050 - 6312) to (5712 - 7140)|Required Level: 90|Required Strength: 402|Item Level: 1|Adds 15-20 Damage|+(100 to 150)% Enhanced Defense|(16 to 20)% to Dexterity|+(31 to 50) Life after each Kill|Requirements -33%|Socketed (6)"
+      ],
+      [
+        "Tracker's Strike",
+        "Flying Knife",
+        "Throw Damage: (206 - 224) to (221 - 239)|One-Hand Damage: (156 - 167) to (168 - 180)|Required Level: 90|Required Dexterity: 473|Item Level: 1|Dexterity Damage Bonus: (0.11 per Dexterity)%|15% Chance to cast level 6 Knife Throw on Striking|50% Attack Speed|Adds 65-75 Damage|+(140 to 170)% Enhanced Damage|+(41 to 50) to Dexterity|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "Vizjun's Devices",
+    "Assassin Trap Set",
+    "Assassin",
+    "Set Bonus with 2 or more set items:|Regenerate Mana +50%|Elemental Resists +40%|Set Bonus with 3 or more set items:|+3 to Assassin Skill Levels|50% Cast Speed|Set Bonus with complete set:|+5 to Assassin Skill Levels|+150 to Vitality|+250 to Energy|+200 Life Regenerated per Second|Maximum Elemental Resists +1%|4% Reanimate as: Undead Scout",
+    [
+      [
+        "Vizjun's Engine",
+        "Hard Leather Armor",
+        "Defense: (4702 - 5877) to (5014 - 6267)|Required Level: 80|Required Strength: 330|Item Level: 1|+(1 to 2) to Assassin Skill Levels|30% Cast Speed|+(16 to 20)% to Fire Spell Damage|+(16 to 20)% to Lightning Spell Damage|+(100 to 150)% Enhanced Defense|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Vizjun's Foresight",
+        "Great Helm",
+        "Defense: (2840 - 3550) to (3102 - 3877)|Required Level: 80|Required Strength: 375|Item Level: 1|20% Cast Speed|25% Hit Recovery|+(11 to 15)% to Fire Spell Damage|+(11 to 15)% to Lightning Spell Damage|+(100 to 150)% Enhanced Defense|(11 to 15)% to Energy|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Vizjun's Monitor",
+        "Katar",
+        "One-Hand Damage: 36 to 37|(Assassin Only)|Required Level: 80|Required Dexterity: 333|Item Level: 1|Dexterity Damage Bonus: (0.13 per Dexterity)%|+4 to Assassin Skill Levels|25% Hit Recovery|+(21 to 25)% to Lightning Spell Damage|+50 to Strength|(20 to 25)% to Vitality|(20 to 25)% to Energy|Socketed (3)"
+      ],
+      [
+        "Vizjun's Science",
+        "Wrist Blade",
+        "(Assassin Only)|Required Level: 80|Required Dexterity: 341|Item Level: 1|Innate Lightning Damage: (62.0% of Dexterity)|+4 to Assassin Skill Levels|40% Cast Speed|20% Block Speed|Adds 160-250 Lightning Damage|+(16 to 20)% to Fire Spell Damage|+(16 to 20)% to Lightning Spell Damage|+(31 to 50) to Vitality|+(31 to 50) to Energy|Socketed (3)"
+      ]
+    ]
+  ],
+  [
+    "Witchhunter's Attire",
+    "Assassin Claw Set",
+    "Assassin",
+    "Set Bonus with 2 or more set items:|15% Chance to cast level 24 Crucify on Melee Attack|Maximum Block Chance +10%|Set Bonus with 3 or more set items:|-15% to Enemy Lightning Resistance|+150 Life on Melee Attack|Set Bonus with complete set:|+5 to Assassin Skill Levels|-20% to Enemy Elemental Resistances|+15 to Way of the Gryphon (Assassin Only)|25% to Dexterity|Fire Absorb 3%|Lightning Absorb 3%|Cold Absorb 3%|+150 Life on Melee Attack|2% Reanimate as: Returned Archer",
+    [
+      [
+        "Witchhunter's Crucifix",
+        "Hatchet Hands",
+        "One-Hand Damage: 39 to 41|(Assassin Only)|Required Level: 90|Required Dexterity: 345|Item Level: 1|Dexterity Damage Bonus: (0.13 per Dexterity)%|Innate Lightning Damage: (50.0% of Dexterity)|15% Chance to cast level 24 Crucify on Melee Attack|Adds 63-250 Lightning Damage|-20% to Enemy Lightning Resistance|(15 to 25)% to Dexterity|+25 Mana on Melee Attack|+100 Life after each Kill|Socketed (3)"
+      ],
+      [
+        "Witchhunter's Faith",
+        "Quilted Armor",
+        "Defense: 6789 to 6993|Required Level: 90|Required Strength: 250|Item Level: 1|+2 to Assassin Skill Levels|+200% Enhanced Defense|+(41 to 50) to Dexterity|10% to Dexterity|+200 Life Regenerated per Second|Maximum Mana +10%|Requirements -50%|Socketed (6)"
+      ],
+      [
+        "Witchhunter's Hood",
+        "Cap",
+        "Defense: (2136 - 2611) to (2161 - 2642)|Required Level: 90|Required Strength: 250|Item Level: 1|+(80 to 120)% Enhanced Defense|10% to Dexterity|Maximum Elemental Resists +1%|Elemental Resists +(31 to 40)%|Physical Resist 5%|(16 to 20)% Bonus to Defense|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Witchhunter's Ire",
+        "Parma",
+        "Defense: (3000 - 3375) to (3372 - 3793)|Chance to Block: 5%|(Assassin Only)|Required Level: 90|Required Strength: 315|Required Dexterity: 317|Item Level: 1|1% Base Block Chance|Adds 125-250 Fire Damage|Adds 125-250 Lightning Damage|Adds 125-250 Cold Damage|+250 Poison Damage over 2 seconds|+(140 to 170)% Enhanced Defense|(15 to 25)% to Dexterity|Requirements -40%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Universal Law",
+    "Assassin Psionic Set",
+    "Assassin",
+    "Set Bonus with 2 or more set items:|+2 to Assassin Skill Levels|Regenerate Mana +25%|Set Bonus with 3 or more set items:|+125 to Energy|+500 to Life|Set Bonus with complete set:|+4 to Assassin Skill Levels|+35% to Physical/Magic Spell Damage|+60 to Orb of Annihilation|+2000 to Mana|Elemental Resists +25%|Physical Resist 5%|+100 Life after each Kill",
+    [
+      [
+        "Dead Lens",
+        "Totem Shield",
+        "Defense: (1390 - 1737) to (1610 - 2012)|Chance to Block: 4%|(Assassin Only)|Required Level: 80|Required Dexterity: 316|Item Level: 1|+(0 to 1) to Assassin Skill Levels|(31 to 40)% Block Speed|+(10 to 20)% to Physical/Magic Spell Damage|+(100 to 150)% Enhanced Defense|+125 to Energy|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Hypersurface",
+        "Leather Armor",
+        "Defense: (8272 - 8918) to (8579 - 9257)|Required Level: 80|Required Strength: 315|Item Level: 1|+(172 to 200)% Enhanced Defense|+2000 Defense|+125 to Energy|+(401 to 500) to Life|+(101 to 150) Life after each Kill|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Killing Vector",
+        "Cestus",
+        "One-Hand Damage: 41 to 43|(Assassin Only)|Required Level: 90|Required Dexterity: 349|Item Level: 1|Dexterity Damage Bonus: (0.13 per Dexterity)%|+(1 to 3) to Assassin Skill Levels|2% Chance to cast level 28 Rising Dawn on Striking|+(33 to 55) Spell Focus|(21 to 30)% Cast Speed|+(16 to 20)% to Physical/Magic Spell Damage|+(9 to 16) to Doom (Assassin Only)|+125 to Energy|Socketed (3)"
+      ],
+      [
+        "Quantum Bevel",
+        "Gauntlets",
+        "Defense: (1339 - 1506) to (1567 - 1763)|Required Level: 80|Required Strength: 375|Item Level: 1|+(16 to 20)% to Physical/Magic Spell Damage|+(140 to 170)% Enhanced Defense|+125 to Energy|Maximum Mana +(11 to 15)%|(16 to 20)% Magic Find|Requirements -40%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Battle Devices",
+    "Assassin Oskill Set",
+    "Assassin",
+    "Set Bonus with complete set:|ATMG Sentry: +10 Lightning Damage per Level|Patriot Sentry: +20 Fire Damage per Level|15% Innate Elemental Damage|+10 to Patriot Sentry|+10 to ATMG Sentry",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Assassin Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Assassin Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Death Magnet",
+        "Quilted Armor",
+        "Defense: 2263 to 2331|Required Level: 100|Required Strength: 500|Item Level: 118|+(1 to 2) to Assassin Skill Levels|(15 to 30)% Cast Speed|-(10 to 20)% to Enemy Elemental Resistances|+(21 to 50) to all Attributes|Curse Length Reduction -25%|Physical Resist -5%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Gathering of the Tribes",
+    "Barbarian Elementalist Set",
+    "Barbarian",
+    "Set Bonus with 2 or more set items:|-20% to Enemy Lightning Resistance|+100 to Vitality|Set Bonus with 3 or more set items:|250% Bonus to Attack Rating|10% Innate Elemental Damage|Set Bonus with complete set:|15% Chance to cast level 20 Shockwave on Melee Attack|+4000 Defense|+300 to Strength|Elemental Resists +75%|Physical Resist 10%|15% Chance to Avoid Damage",
+    [
+      [
+        "Bear's Warding",
+        "Full Plate Mail",
+        "Defense: (6226 - 7782) to (7630 - 9537)|Required Level: 80|Required Strength: 700|Item Level: 1|+(1 to 3) to Barbarian Skill Levels|Slows Attacker by (11 to 15)%|+(100 to 150)% Enhanced Defense|20% to Strength|+(31 to 50) to Energy|(11 to 15)% Bonus to Defense|Socketed (6)"
+      ],
+      [
+        "Snake's Battle Chant",
+        "Sash",
+        "Defense: (2728 - 3539) to (3259 - 4081)|Required Level: 80|Required Strength: 500|Item Level: 1|Slows Attacker by 5%|+(120 to 200)% Enhanced Defense|+(500 to 1000) Defense|+(31 to 50) to Strength|(11 to 15)% to Energy|+200 to Mana|+(31 to 40) Life on Melee Attack|+(16 to 20) Mana on Melee Attack|Socketed (2)"
+      ],
+      [
+        "The Coming Storm",
+        "Chain Gloves",
+        "Defense: 515 to 565|(Barbarian Only)|Required Level: 80|Required Strength: 575|Item Level: 1|10% Movement Speed|35% Attack Speed|Adds 100-400 Lightning Damage|-(15 to 25)% to Enemy Lightning Resistance|Socketed (4)"
+      ],
+      [
+        "Wolf's Fang",
+        "Horned Helm",
+        "Defense: (2862 - 3435) to (3087 - 3705)|(Barbarian Only)|Required Level: 80|Required Strength: 500|Item Level: 1|(5 to 10)% Innate Elemental Damage|+(150 to 200)% Enhanced Defense|20% to Dexterity|+(31 to 50) to Vitality|+333 to Life|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Mount Arreat",
+    "Barbarian Earthshaker Set",
+    "Barbarian",
+    "Set Bonus with 2 or more set items:|+1 to Barbarian Skill Levels|Weapon Physical Damage +50%|Set Bonus with 3 or more set items:|10% Chance to cast level 1 Guard Tower on Kill|Weapon Physical Damage +50%|Set Bonus with complete set:|Area Effect Attack|+4 to Barbarian Skill Levels|2% Chance to cast level 20 Thunder Slam on Kill|20% Life stolen per Hit|+100 to all Attributes|250% Bonus to Defense",
+    [
+      [
+        "Avalanche",
+        "Ancient Armor",
+        "Defense: 9489 to 11748|Required Level: 90|Required Strength: 770|Item Level: 1|+(1 to 2) to Barbarian Skill Levels|20% Movement Speed|Stun Attack|+200% Enhanced Defense|+(41 to 50) to Vitality|(11 to 15)% Bonus to Defense|Socketed (6)"
+      ],
+      [
+        "Eruption",
+        "Kriegsmesser",
+        "One-Hand Damage: (209 - 239) to (234 - 266)|(Barbarian Only)|Required Level: 90|Required Strength: 642|Item Level: 1|Strength Damage Bonus: (0.14 per Strength)%|+2 to Barbarian Skill Levels|Adds 80-95 Damage|+(144 to 200)% Enhanced Damage|Weapon Physical Damage +100%|Maximum Fire Resist +1%|Fire Resist +(31 to 50)%|Socketed (6)"
+      ],
+      [
+        "Ravine",
+        "Horned Helm",
+        "Defense: (2748 - 3091) to (2964 - 3334)|(Barbarian Only)|Required Level: 90|Required Strength: 500|Item Level: 1|+(2 to 3) to Barbarian Skill Levels|Weapon Physical Damage +(19 to 30)%|+(140 to 170)% Enhanced Defense|+(81 to 100) to Strength|Maximum Lightning Resist +1%|Lightning Resist +(31 to 50)%|Physical Resist 5%|Socketed (4)"
+      ],
+      [
+        "Snowstorm",
+        "Bull Shield",
+        "Defense: (3466 - 3837) to (4194 - 4593)|Chance to Block: 1%|(Barbarian Only)|Required Level: 90|Required Strength: 500|Required Dexterity: 374|Item Level: 1|+2 to Barbarian Skill Levels|Adds 70-80 Damage|+(140 to 170)% Enhanced Defense|+(500 to 1000) Defense|Maximum Cold Resist +1%|Cold Resist +(31 to 50)%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Big Game Hunter",
+    "Barbarian Warmonger Set",
+    "Barbarian",
+    "Set Bonus with 2 or more set items:|6% Life stolen per Hit|50% Bonus to Defense|Set Bonus with 3 or more set items:|Adds 25-50 Damage|6% Life stolen per Hit|Set Bonus with complete set:|+4 to Barbarian Skill Levels|4% Chance to cast level 13 Blast Wave on Kill|8% Life stolen per Hit|Maximum Life +10%|Maximum Poison Resist +5%|Poison Length Reduction 75%|Physical Resist 10%",
+    [
+      [
+        "Hunter's Camouflage",
+        "Bronze Shield",
+        "Defense: 7013 to 7814|Chance to Block: 1%|(Barbarian Only)|Required Level: 90|Required Strength: 600|Item Level: 1|+(1 to 2) to Barbarian Skill Levels|(8 to 15)% Life stolen per Hit|+200% Enhanced Defense|+500 Defense|+(31 to 50) to Strength|+(31 to 150) to Vitality|5% Chance to Avoid Damage|Socketed (4)"
+      ],
+      [
+        "Hunter's Claw Fist",
+        "Balanced Axe",
+        "Throw Damage: (227 - 250) to (256 - 282)|One-Hand Damage: (128 - 139) to (162 - 176)|Required Level: 90|Required Strength: 600|Item Level: 1|Strength Damage Bonus: (0.14 per Strength)%|Innate Lightning Damage: (33.0% of Strength)|1% Chance to cast level 25 Screaming Eagle on Striking|Adds 40-50 Damage|+(140 to 170)% Enhanced Damage|-30% to Enemy Poison Resistance|+(51 to 75) to Strength|Socketed (6)"
+      ],
+      [
+        "Hunter's Skin",
+        "Leather Armor",
+        "Defense: (4612 - 5765) to (4838 - 6047)|Required Level: 90|Required Strength: 525|Item Level: 1|+2 to Barbarian Skill Levels|10% Movement Speed|5% Life stolen per Hit|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|+(31 to 150) to Vitality|Elemental/Magic Damage Taken Reduced by (31 to 50)|Socketed (6)"
+      ],
+      [
+        "Hunter's Trackless Step",
+        "Heavy Boots",
+        "Defense: (1392 - 1740) to (1474 - 1842)|Required Level: 90|Required Strength: 550|Item Level: 1|+(0 to 1) to Barbarian Skill Levels|(10 to 40)% Movement Speed|10% Chance of Crushing Blow|+(100 to 150)% Enhanced Defense|+(31 to 50) to Vitality|+15 Maximum Stamina|Physical Resist 5%|50% Bonus to Defense|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Spirits of the Nephalem",
+    "Barbarian Shaman Set",
+    "Barbarian",
+    "Set Bonus with 2 or more set items:|+38% Damage to Protector Spirit Bloodlust|+50% to Summon Attack Rating|Set Bonus with 3 or more set items:|+1 to Maximum Barbarian Minions|+15% to Summon Elemental Resistances|Set Bonus with complete set:|+1 to Maximum Barbarian Minions|+150% to Summon Life|+300 to Vitality|+300 to Energy|+200 Life Regenerated per Second|Regenerate Mana +100%",
+    [
+      [
+        "Destiny",
+        "Gilded Shield",
+        "Defense: (8868 - 9976) to (10992 - 12366)|Chance to Block: 1%|(Barbarian Only)|Required Level: 100|Required Strength: 700|Item Level: 1|+3 to Barbarian Skill Levels|60% Hit Recovery|+(41 to 50)% to Summon Life|+(11 to 15)% to Summon Elemental Resistances|+(140 to 170)% Enhanced Defense|+100 Life Regenerated per Second|Maximum Mana +15%|Regenerate Mana +(31 to 50)%|Socketed (4)"
+      ],
+      [
+        "Sacred Charge",
+        "Hammerhead Axe",
+        "One-Hand Damage: 51 to 55|(Barbarian Only)|Required Level: 100|Required Strength: 630|Item Level: 1|Strength Damage Bonus: (0.14 per Strength)%|+2 to Barbarian Skill Levels|60% Cast Speed|+(50 to 100)% to Summon Damage|+(100 to 150)% to Summon Attack Rating|(11 to 15)% to Strength|(11 to 15)% to Vitality|Lightning Resist +(41 to 50)%|Socketed (6)"
+      ],
+      [
+        "The Guardian",
+        "Ring Mail",
+        "Defense: (5848 - 6579) to (6434 - 7238)|Required Level: 100|Required Strength: 550|Item Level: 1|+2 to Barbarian Skill Levels|+(16 to 20)% to Summon Damage|+(140 to 170)% Enhanced Defense|(21 to 25)% to Strength|Fire Resist +(41 to 50)%|Poison Resist +(41 to 50)%|Socketed (6)"
+      ],
+      [
+        "The Protector",
+        "Fanged Helm",
+        "Defense: (2628 - 2956) to (2779 - 3126)|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 1|+(3 to 4) to Barbarian Skill Levels|+(21 to 25)% to Summon Damage|+(31 to 50)% to Summon Attack Rating|+(140 to 170)% Enhanced Defense|(21 to 25)% to Vitality|Cold Resist +(41 to 50)%|(21 to 25)% Bonus to Defense|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Tundra Walker",
+    "Barbarian Windcarver Set",
+    "Barbarian",
+    "Set Bonus with 2 or more set items:|+2 to Barbarian Skill Levels|Physical Resist 5%|Set Bonus with 3 or more set items:|Adds 55-70 Damage|+50 to all Attributes|Set Bonus with complete set:|+5 to Barbarian Skill Levels|4% Chance to cast level 15 Stormblast on Melee Attack|4% Chance to cast level 15 Ancients' Hand on Melee Attack|4% Chance to cast level 15 Iceburst on Melee Attack|Adds 25-50 Damage|+200 to all Attributes",
+    [
+      [
+        "Ancient Bronze",
+        "Mask",
+        "Defense: (2256 - 2726) to (2409 - 2911)|Required Level: 80|Required Strength: 600|Item Level: 1|+(0 to 1) to Barbarian Skill Levels|+25 to Maximum Damage|(51 to 75)% Bonus to Attack Rating|+(140 to 190)% Enhanced Defense|(11 to 15)% Magic Find|Socketed (4)"
+      ],
+      [
+        "Grey Ranger",
+        "Two-Handed Sword",
+        "One-Hand Damage: (170 - 181) to (186 - 197)|Two-Hand Damage: (219 - 235) to (232 - 248)|Required Level: 80|Required Strength: 421|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|50% Attack Speed|Adds 70-80 Damage|+(172 to 200)% Enhanced Damage|+(101 to 150) to Strength|+100 to Life|25% Magic Find|Socketed (4)"
+      ],
+      [
+        "Steppe Sleeper",
+        "Boots",
+        "Defense: (1302 - 1627) to (1342 - 1677)|Required Level: 80|Item Level: 1|+1 to Barbarian Skill Levels|(10 to 40)% Movement Speed|+(100 to 150)% Enhanced Defense|30% to Strength|Requirements -100%|Socketed (4)"
+      ],
+      [
+        "Vale Hunter",
+        "Hammerhead Axe",
+        "One-Hand Damage: (252 - 278) to (262 - 290)|(Barbarian Only)|Required Level: 80|Required Strength: 630|Item Level: 1|Strength Damage Bonus: (0.14 per Strength)%|+(2 to 3) to Barbarian Skill Levels|25% Attack Speed|+125 Damage|+(150 to 200)% Enhanced Damage|5% Chance of Crushing Blow|+100 to Life|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Guardian of the Sightless Eye",
+    "Barbarian Oskill Set",
+    "Barbarian",
+    "Set Bonus with complete set:|Ice Lance fires one additional projectile|-15% to Enemy Cold Resistance|+10 to Ice Lance|+24 to Tantrum",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Barbarian Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Barbarian Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Imperial Guard",
+        "Greaves",
+        "Defense: (1744 - 1984) to (1968 - 2239)|Required Level: 100|Required Strength: 650|Item Level: 118|+(1 to 2) to All Skills|(10 to 40)% Movement Speed|(51 to 100)% Bonus to Attack Rating|(6 to 15)% Life stolen per Hit|-10% to Enemy Cold Resistance|+(111 to 140)% Enhanced Defense|(6 to 10)% to Dexterity|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Kale Monath",
+    "Druid Nature Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|+3 to Druid Skill Levels|30% Magic Find|Set Bonus with 3 or more set items:|30% Hit Recovery|+5000 Defense|Set Bonus with complete set:|+10% Bonus to Spell Focus|+30% to Summon Elemental Resistances|Maximum Life +10%|Physical Resist 10%|5% Chance to Avoid Damage",
+    [
+      [
+        "Thorn",
+        "Flamen Staff",
+        "Two-Hand Damage: 48 to 51|(Druid Only)|Required Level: 90|Required Strength: 240|Item Level: 1|Strength Damage Bonus: (0.06 per Strength)%|+8 to Druid Skill Levels|30% Cast Speed|-(20 to 25)% to Enemy Poison Resistance|+(50 to 100) to Strength|+(100 to 150) to Vitality|Physical Resist 5%|+(50 to 75) Life after each Kill|Socketed (4)"
+      ],
+      [
+        "Shell",
+        "Splint Mail",
+        "Defense: (6536 - 7555) to (8001 - 9183)|Required Level: 90|Required Strength: 600|Item Level: 1|+(1 to 2) to Druid Skill Levels|20% Hit Recovery|+(15 to 20)% to Poison Spell Damage|+(15 to 20)% to Summon Elemental Resistances|+(131 to 170)% Enhanced Defense|+(500 to 1000) Defense|Socketed (6)"
+      ],
+      [
+        "Breath",
+        "Antlers",
+        "Defense: (2192 - 2562) to (2381 - 2783)|(Druid Only)|Required Level: 90|Required Strength: 500|Item Level: 1|+(1 to 2) to Druid Skill Levels|-(5 to 10)% to Enemy Poison Resistance|+(131 to 170)% Enhanced Defense|Cold Resist +(20 to 30)%|Poison Resist +(20 to 30)%|Physical Damage Taken Reduced by (21 to 30)|Socketed (4)"
+      ],
+      [
+        "Branches",
+        "Heavy Gloves",
+        "Defense: (1136 - 1328) to (1205 - 1409)|Required Level: 90|Required Strength: 525|Item Level: 1|+(40 to 50) Spell Focus|10% Cast Speed|+(5 to 10)% to Poison Spell Damage|-(5 to 10)% to Enemy Poison Resistance|+(30 to 50)% to Summon Life|+(131 to 170)% Enhanced Defense|Fire Resist +(21 to 25)%|Lightning Resist +(21 to 25)%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Marchosias' Essence",
+    "Druid Werewolf Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|+1 to Druid Skill Levels|Maximum Life +6%|Set Bonus with 3 or more set items:|30% to Strength|Physical Resist 10%|Set Bonus with complete set:|50% Attack Speed|Adds 55-70 Damage|20% Life stolen per Hit|+8 to Bladestorm|+300 to Strength|Maximum Elemental Resists +2%",
+    [
+      [
+        "Marchosias' Anger",
+        "Long Sword",
+        "One-Hand Damage: (188 - 201) to (195 - 209)|Required Level: 90|Required Strength: 540|Item Level: 1|Strength Damage Bonus: (0.11 per Strength)%|+(4 to 6) to Druid Skill Levels|10% Chance to cast level 3 Bladestorm on Melee Attack|+80 Damage|(151 to 200)% Bonus to Attack Rating|+(140 to 170)% Enhanced Damage|(11 to 20)% to Strength|+1 Life on Striking|Socketed (6)"
+      ],
+      [
+        "Marchosias' Evil Grin",
+        "Spirit Mask",
+        "Defense: (2836 - 3129) to (3182 - 3510)|(Druid Only)|Required Level: 90|Required Strength: 650|Item Level: 1|+(0 to 1) to Druid Skill Levels|5% Chance to cast level 3 Bladestorm on Melee Attack|5% Chance to cast level 5 Time Strike on Striking|+(172 to 200)% Enhanced Defense|(6 to 10)% to Strength|Maximum Mana +10%|(51 to 60)% Bonus to Defense|Socketed (4)"
+      ],
+      [
+        "Marchosias' Hatred",
+        "Heavy Belt",
+        "Defense: (3111 - 3455) to (3359 - 3731)|Required Level: 90|Required Strength: 625|Item Level: 1|5% Chance to cast level 3 Bladestorm on Melee Attack|3% Chance of Crushing Blow|Weapon Physical Damage +(55 to 60)%|+(144 to 171)% Enhanced Defense|(6 to 10)% to Strength|Socketed (2)"
+      ],
+      [
+        "Marchosias' Might",
+        "Full Plate Mail",
+        "Defense: (8595 - 9436) to (10308 - 11338)|Required Level: 90|Required Strength: 1400|Item Level: 1|5% Chance to cast level 3 Bladestorm on Melee Attack|Adds 20-30 Damage|+(144 to 171)% Enhanced Defense|+1000 Defense|+(151 to 200) to Strength|(6 to 10)% to Strength|Requirements +100%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Caoi Dulra",
+    "Druid Hunter Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|-20% to Enemy Fire Resistance|+50 to all Attributes|Set Bonus with 3 or more set items:|+2 to Druid Skill Levels|Physical Resist 10%|Set Bonus with complete set:|17% Chance to cast level 6 Arrow on Striking|Adds 50-75 Damage|Weapon Physical Damage +100%|Slow Target 30%|+150 to all Attributes|Elemental Resists +40%|5% Reanimate as: Undead Marksman",
+    [
+      [
+        "Nature's Embrace",
+        "Light Belt",
+        "Defense: (2202 - 2752) to (2286 - 2857)|Required Level: 90|Required Strength: 550|Item Level: 1|+1 to Druid Skill Levels|25% Attack Speed|(50 to 100)% Bonus to Attack Rating|-(10 to 15)% to Enemy Fire Resistance|+(100 to 150)% Enhanced Defense|Maximum Life +3%|Socketed (2)"
+      ],
+      [
+        "Nature's Vigil",
+        "Antlers",
+        "Defense: (2898 - 3847) to (3062 - 4093)|(Druid Only)|Required Level: 90|Required Strength: 500|Item Level: 1|+(2 to 3) to Druid Skill Levels|25% Attack Speed|+(100 to 200)% Enhanced Defense|+1000 Defense|(21 to 25)% to Strength|+100 Life after each Kill|Socketed (4)"
+      ],
+      [
+        "Nature's Will",
+        "Light Plate",
+        "Defense: 8229 to 9882|Required Level: 90|Required Strength: 650|Item Level: 1|+(2 to 3) to Druid Skill Levels|25% Attack Speed|25% Hit Recovery|Adds 150-300 Fire Damage|10% Chance of Crushing Blow|+50% to Summon Life|+200% Enhanced Defense|Socketed (6)"
+      ],
+      [
+        "Nature's Wrath",
+        "Compound Bow",
+        "Two-Hand Damage: (235 - 256) to (250 - 271)|(Druid Only)|Required Level: 90|Required Strength: 530|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|Additional Strength Damage Bonus: 0.0390625%|50% Attack Speed|Adds 70-80 Damage|(75 to 125)% Bonus to Attack Rating|10% Life stolen per Hit|+(140 to 170)% Enhanced Damage|+(31 to 50) to Strength|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Lone Wolf's Path",
+    "Druid Seer Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|+125 Spell Focus|+14 to Firedance|Set Bonus with 3 or more set items:|+2 to Druid Skill Levels|+125 Life Regenerated per Second|Set Bonus with complete set:|+1 Hunting Banshee/Ember Spirit Projectile|+4 to Druid Skill Levels|-30% to Enemy Fire Resistance|-30% to Enemy Cold Resistance|+400 to Life|Physical Resist 5%",
+    [
+      [
+        "Lone Wolf's Claws",
+        "Heavy Gloves",
+        "Defense: (984 - 1230) to (1044 - 1305)|Required Level: 100|Required Strength: 393|Item Level: 1|20% Hit Recovery|+(6 to 10)% to Fire Spell Damage|+(6 to 10)% to Cold Spell Damage|+(100 to 150)% Enhanced Defense|(11 to 15)% to Energy|Maximum Fire Resist +1%|Maximum Cold Resist +1%|Requirements -25%|Socketed (4)"
+      ],
+      [
+        "Lone Wolf's Fur",
+        "Studded Leather",
+        "Defense: (4784 - 5980) to (5186 - 6482)|Required Level: 100|Required Strength: 330|Item Level: 1|20% Hit Recovery|+(11 to 18)% to Fire Spell Damage|+(11 to 18)% to Cold Spell Damage|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|+100 Life Regenerated per Second|Physical Resist 5%|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Lone Wolf's Maul",
+        "Flamen Staff",
+        "Two-Hand Damage: 48 to 51|(Druid Only)|Required Level: 100|Required Strength: 240|Item Level: 1|Strength Damage Bonus: (0.06 per Strength)%|+(8 to 10) to Druid Skill Levels|+(101 to 150) Spell Focus|50% Cast Speed|+(16 to 25)% to Fire Spell Damage|+(16 to 25)% to Cold Spell Damage|+66 to Energy|Physical Damage Taken Reduced by (51 to 60)|Socketed (4)"
+      ],
+      [
+        "Lone Wolf's Track",
+        "Chain Boots",
+        "Defense: (1478 - 1847) to (1602 - 2002)|Required Level: 100|Required Strength: 402|Item Level: 1|(10 to 40)% Movement Speed|20% Cast Speed|-(7 to 11)% to Enemy Fire Resistance|-(7 to 11)% to Enemy Cold Resistance|+(100 to 150)% Enhanced Defense|+(21 to 40) to Vitality|Fire Resist +(31 to 50)%|Cold Resist +(31 to 50)%|Requirements -30%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Rainbow Warrior",
+    "Druid Wereowl Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|+2 to Druid Skill Levels|10% Chance of Crushing Blow|Set Bonus with 3 or more set items:|+50 to all Attributes|+2 Life on Striking|Set Bonus with complete set:|+1 Target to Raid|-40% to Enemy Elemental Resistances|10% Chance of Crushing Blow|+100 to all Attributes|Elemental Resists +30%|30% Reanimate as: Night Hawk",
+    [
+      [
+        "Emerald Cloud",
+        "Scale Mail",
+        "Defense: (4960 - 6200) to (5538 - 6922)|Required Level: 100|Required Strength: 575|Item Level: 1|40% Hit Recovery|-(11 to 25)% to Enemy Lightning Resistance|(5 to 10)% Chance of Crushing Blow|+(100 to 150)% Enhanced Defense|+(41 to 50) to Strength|Maximum Elemental Resists +(0 to 1)%|5% Reanimate as: Night Hawk|Socketed (6)"
+      ],
+      [
+        "Emerald Earth",
+        "Bone Shield",
+        "Defense: (1930 - 2412) to (2238 - 2797)|Chance to Block: 1 to 2% + Class %|Required Level: 100|Required Dexterity: 527|Item Level: 1|(1 to 2)% Base Block Chance|40% Block Speed|Adds 100-200 Lightning Damage|-(11 to 15)% to Enemy Lightning Resistance|+(100 to 150)% Enhanced Defense|+(51 to 75) to Dexterity|5% Reanimate as: Night Hawk|Socketed (6)"
+      ],
+      [
+        "Emerald Flower",
+        "Dirk",
+        "One-Hand Damage: (166 - 177) to (168 - 180)|Required Level: 100|Required Dexterity: 421|Item Level: 1|Dexterity Damage Bonus: (0.11 per Dexterity)%|+2 to Druid Skill Levels|40% Attack Speed|+75 Damage|Adds 200-300 Lightning Damage|Adds 200-300 Cold Damage|+(140 to 170)% Enhanced Damage|5% Reanimate as: Night Hawk|Socketed (2)"
+      ],
+      [
+        "Emerald Sky",
+        "Hawk Helm",
+        "Defense: (1808 - 2260) to (1920 - 2400)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 1|+2 to Druid Skill Levels|25% Hit Recovery|Adds 100-200 Cold Damage|+(100 to 150)% Enhanced Defense|+(41 to 50) to Strength|Maximum Life +5%|5% Reanimate as: Night Hawk|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Last King of Scosglen",
+    "Druid Werebear Set",
+    "Druid",
+    "Set Bonus with 2 or more set items:|Weapon Physical Damage +45%|+75 to Strength|Set Bonus with 3 or more set items:|50% Attack Speed|Weapon Physical Damage +90%|Set Bonus with complete set:|10% Chance to cast level 12 Fortress on Melee Attack|Adds 120-130 Damage|+40% to Fire Spell Damage|-20% to Enemy Fire Resistance|30% Chance of Crushing Blow|+5000 Defense|Elemental Resists +50%",
+    [
+      [
+        "Scosglen's History",
+        "Heavy Belt",
+        "Defense: (2550 - 3187) to (2754 - 3442)|Required Level: 80|Required Strength: 625|Item Level: 1|+1 to Druid Skill Levels|(5 to 10)% Movement Speed|Adds 7-13 Damage|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|+75 Life Regenerated per Second|Socketed (2)"
+      ],
+      [
+        "Scosglen's Legends",
+        "Light Gauntlets",
+        "Defense: (1072 - 1340) to (1220 - 1525)|Required Level: 80|Required Strength: 600|Item Level: 1|+(11 to 13)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|+(31 to 50) to Energy|Elemental Resists +(11 to 15)%|Poison Length Reduction 50%|Socketed (4)"
+      ],
+      [
+        "Scosglen's Myths",
+        "Large Axe",
+        "Two-Hand Damage: (258 - 295) to (263 - 301)|Required Level: 80|Required Strength: 408|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|2% Chance to cast level 20 Bolt on Striking|50% Attack Speed|+100 Damage|(201 to 250)% Bonus to Attack Rating|+(144 to 200)% Enhanced Damage|(6 to 10)% Chance of Crushing Blow|+1000 Defense|50% Bonus to Defense|Socketed (6)"
+      ],
+      [
+        "Scosglen's Tales",
+        "Falcon Mask",
+        "Defense: (1992 - 2490) to (2202 - 2752)|(Druid Only)|Required Level: 80|Required Strength: 500|Item Level: 1|+8% Bonus Elemental Damage to Mark of the Wild|Adds 18-20 Damage|+(11 to 13)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|(21 to 25)% to Strength|Poison Resist +(21 to 25)%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Oak's Teaching",
+    "Druid Oskill Set",
+    "Druid",
+    "Set Bonus with complete set:|Gamma Field: Increased Damage and Lowered Duration|+20% to Poison Spell Damage|+25 to Gamma Field|+75 Life after each Kill",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Druid Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Druid Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Apprentice",
+        "Wolf Head",
+        "Defense: (2065 - 2313) to (2147 - 2405)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 118|+(21 to 25)% to Poison Spell Damage|-10% to Enemy Poison Resistance|+(141 to 170)% Enhanced Defense|(11 to 15)% to Strength|Maximum Life +(2 to 3)%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Rathma's Empire",
+    "Necromancer Melee Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|20% Life stolen per Hit|10% Chance of Crushing Blow|Set Bonus with 3 or more set items:|Adds 20-30 Damage|+800 to Life|Set Bonus with complete set:|10% Movement Speed|40% Chance to cast level 19 Crucify on Melee Attack|10% Chance of Crushing Blow|+150 to all Attributes|Maximum Elemental Resists +2%|Elemental Resists +35%|150% Bonus to Defense",
+    [
+      [
+        "Rathma's Chase",
+        "Chain Boots",
+        "Defense: (1478 - 1847) to (1602 - 2002)|Required Level: 90|Required Strength: 575|Item Level: 1|(10 to 40)% Movement Speed|+1 to Colosseum|3% Chance of Crushing Blow|+(100 to 150)% Enhanced Defense|Cold Resist +(31 to 50)%|(11 to 15)% Bonus to Defense|Socketed (4)"
+      ],
+      [
+        "Rathma's Death Gaze",
+        "Crown",
+        "Defense: 1979 to 2138|Required Level: 90|Required Strength: 675|Item Level: 1|+(1 to 2) to Necromancer Skill Levels|20% Hit Recovery|+(8 to 13) to Maximum Damage|+500 Defense|+(31 to 50) to Strength|Fire Resist +(31 to 50)%|Socketed (4)"
+      ],
+      [
+        "Rathma's Skeleton",
+        "Ancient Armor",
+        "Defense: (6326 - 7907) to (7832 - 9790)|Required Level: 90|Required Strength: 616|Item Level: 1|+(1 to 2) to Necromancer Skill Levels|40% Hit Recovery|+(100 to 150)% Enhanced Defense|Lightning Resist +(31 to 50)%|Physical Resist 5%|Requirements -20%|Socketed (6)"
+      ],
+      [
+        "Rathma's Tyranny",
+        "Raptor Scythe",
+        "Two-Hand Damage: (254 - 277) to (272 - 296)|(Necromancer Only)|Required Level: 90|Required Strength: 414|Item Level: 1|Dexterity Damage Bonus: (0.14 per Dexterity)%|Strength Damage Bonus: (0.14 per Strength)%|Mega Impact|15% Chance to cast level 1 Guard Tower on Kill|40% Attack Speed|Adds 70-80 Damage|+(140 to 170)% Enhanced Damage|Slow Target (21 to 25)%|+(51 to 70) to Strength|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Celestial Orchard",
+    "Necromancer Malice Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|+2 to Necromancer Skill Levels|+25% to Physical/Magic Spell Damage|Set Bonus with 3 or more set items:|+2 to Necromancer Skill Levels|-40% to Enemy Poison Resistance|Set Bonus with complete set:|3% Chance to cast level 40 Doom on Death Blow|+150 Spell Focus|+40% to Spell Damage|+1500 Defense|+400 to Life|Maximum Elemental Resists +2%",
+    [
+      [
+        "The Dragon Grave",
+        "Gothic Plate",
+        "Defense: (7858 - 8778) to (9425 - 10541)|Required Level: 90|Required Strength: 675|Item Level: 1|+2 to Necromancer Skill Levels|+(140 to 170)% Enhanced Defense|+500 Defense|+100 to Strength|+100 to Dexterity|+(121 to 150) to Energy|Socketed (6)"
+      ],
+      [
+        "Giyua's Sacrum",
+        "Bone Helm",
+        "Defense: (1742 - 2129) to (1888 - 2307)|Required Level: 90|Required Strength: 312 to 375|Item Level: 1|+(0 to 3) to Necromancer Skill Levels|+(16 to 20)% to Physical/Magic Spell Damage|+(80 to 120)% Enhanced Defense|+(151 to 200) to Life|+(21 to 25) Life after each Kill|(101 to 150)% Bonus to Defense|Requirements -(40 to 50)%|Socketed (4)"
+      ],
+      [
+        "Femur of the Prophet",
+        "Wand",
+        "One-Hand Damage: 35 to 36|(Necromancer Only)|Required Level: 90|Required Dexterity: 166|Item Level: 1|Dexterity Damage Bonus: (0.06 per Dexterity)%|+(3 to 5) to Necromancer Skill Levels|1% Base Block Chance|+75 Spell Focus|+(31 to 50)% to Physical/Magic Spell Damage|+(31 to 50)% to Poison Spell Damage|+(101 to 105) Life after each Kill|(51 to 63)% Gold Find|Socketed (2)"
+      ],
+      [
+        "The Trickster",
+        "Unraveller Head",
+        "Defense: (2662 - 3327) to (3066 - 3832)|Chance to Block: 3%|(Necromancer Only)|Required Level: 90|Required Dexterity: 295|Item Level: 1|1% Base Block Chance|20% Cast Speed|+(16 to 30)% to Poison Spell Damage|-(16 to 20)% to Enemy Poison Resistance|+(9 to 16) to Pestilence (Necromancer Only)|+(100 to 150)% Enhanced Defense|Physical Resist 10%|Requirements -33%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Achilios' Wake",
+    "Necromancer Crossbow Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|+20 to Maximum Damage|+50 to Strength|Set Bonus with 3 or more set items:|+2 to Necromancer Skill Levels|Elemental Resists +50%|Set Bonus with complete set:|50% Attack Speed|Adds 55-70 Damage|10% Chance of Crushing Blow|50% to Strength|Elemental Resists +45%|Physical Resist 15%|2% Reanimate as: Returned Archer",
+    [
+      [
+        "Achilios' Eagle Eye",
+        "Helm",
+        "Defense: (2608 - 3260) to (2750 - 3437)|Required Level: 90|Required Strength: 460|Item Level: 1|20% Attack Speed|10% Hit Recovery|+(100 to 150)% Enhanced Defense|(21 to 30)% to Strength|(21 to 30)% to Dexterity|Physical Damage Taken Reduced by (11 to 20)|3% Reanimate as: Random Monster|Requirements -20%|Socketed (4)"
+      ],
+      [
+        "Achilios' Refuge",
+        "Studded Leather",
+        "Defense: (4784 - 5980) to (5186 - 6482)|Required Level: 90|Required Strength: 550|Item Level: 1|+(1 to 2) to Necromancer Skill Levels|(51 to 100)% Bonus to Attack Rating|Weapon Physical Damage +(13 to 18)%|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|+(31 to 50) to Dexterity|Socketed (6)"
+      ],
+      [
+        "Achilios' Sledgehammer",
+        "Stinger Crossbow",
+        "Two-Hand Damage: (291 - 318) to (339 - 372)|(Necromancer Only)|Required Level: 90|Required Strength: 460|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|+75 Damage|+(140 to 170)% Enhanced Damage|+12 to Nova Shot|5% Chance of Crushing Blow|Slow Target (21 to 25)%|(21 to 25)% to Strength|+10 Life on Striking|Socketed (6)"
+      ],
+      [
+        "Achilios' Stealth",
+        "Heavy Boots",
+        "Defense: (1392 - 1740) to (1474 - 1842)|Required Level: 90|Required Strength: 440|Item Level: 1|(20 to 50)% Movement Speed|+(11 to 13) to Maximum Damage|Weapon Physical Damage +(15 to 20)%|Attacker Flees after Striking 5%|+(100 to 150)% Enhanced Defense|+(31 to 40) to Strength|Requirements -20%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Satanic Mantra",
+    "Necromancer Summoner Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|+75% to Summon Life|+200% to Summon Attack Rating|Set Bonus with 3 or more set items:|+2 to Necromancer Skill Levels|+50% to Summon Damage|Set Bonus with complete set:|Night Hawks: +6% Total Damage, Die After Being Summoned|+3 to Necromancer Skill Levels|+1 to Maximum Necromancer Minions|+17 to Dark Power|+25 to Void Archon|+100% to Summon Life",
+    [
+      [
+        "Till We Have Heaven In Sight",
+        "Light Plated Boots",
+        "Defense: (1568 - 1960) to (1736 - 2170)|Required Level: 80|Required Strength: 375|Item Level: 1|(10 to 40)% Movement Speed|25% Cast Speed|+(21 to 40)% to Summon Damage|+(100 to 150)% Enhanced Defense|+40 to Strength|10% to All Attributes|+40 to Energy|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Through Death's Veil",
+        "Mask",
+        "Defense: (1880 - 2350) to (2008 - 2510)|Required Level: 80|Required Strength: 330|Item Level: 1|+(1 to 2) to Necromancer Skill Levels|+(21 to 40)% to Summon Damage|+(100 to 150)% Enhanced Defense|Maximum Mana +20%|Requirements -45%|Socketed (4)"
+      ],
+      [
+        "Lend Me Thy Light",
+        "Scale Mail",
+        "Defense: (4960 - 6200) to (5538 - 6922)|Required Level: 80|Required Strength: 575|Item Level: 1|+(1 to 3) to Necromancer Skill Levels|+(0 to 1) to Maximum Necromancer Minions|+(100 to 150)% Enhanced Defense|+250 to Mana|Physical Resist 10%|+2 to Light Radius|Socketed (6)"
+      ],
+      [
+        "Archangel Dark Angel",
+        "Yew Wand",
+        "One-Hand Damage: 36 to 38|(Necromancer Only)|Required Level: 80|Required Dexterity: 168|Item Level: 1|Dexterity Damage Bonus: (0.06 per Dexterity)%|+(3 to 5) to Necromancer Skill Levels|50% Cast Speed|+(11 to 25)% to Summon Damage|+(11 to 25)% to Summon Elemental Resistances|+10 Defense (Based on Character Level)|Elemental Resists +(31 to 40)%|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "The Towerlord",
+    "Necromancer Totem Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|+100 Spell Focus|Physical Resist 8%|Set Bonus with 3 or more set items:|+3 to Necromancer Skill Levels|+30% to Spell Damage|Set Bonus with complete set:|+8 to Necromancer Skill Levels|+200% to Summon Life|+1000 to Life|Maximum Elemental Resists +3%",
+    [
+      [
+        "Tower Defense",
+        "Unraveller Head",
+        "Defense: (2662 - 3327) to (3066 - 3832)|Chance to Block: 2%|(Necromancer Only)|Required Level: 80|Required Dexterity: 220|Item Level: 1|-(14 to 20)% to Enemy Fire Resistance|-(14 to 20)% to Enemy Lightning Resistance|-(14 to 20)% to Enemy Cold Resistance|+(100 to 150)% Enhanced Defense|+100 Life Regenerated per Second|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Tower Denial",
+        "Helm",
+        "Defense: (2608 - 3260) to (2750 - 3437)|Required Level: 80|Required Strength: 460 to 690|Item Level: 1|+2 to Necromancer Skill Levels|20% Cast Speed|+(11 to 13)% to Lightning Spell Damage|+(100 to 150)% Enhanced Defense|+(31 to 50) to Vitality|Requirements (-20 to 20)%|Socketed (4)"
+      ],
+      [
+        "Tower Rush",
+        "Dirk",
+        "One-Hand Damage: 38 to 39|(Necromancer Only)|Required Level: 80|Required Dexterity: 421|Item Level: 1|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(2 to 4) to Necromancer Skill Levels|+(16 to 30)% to Fire Spell Damage|+(16 to 30)% to Lightning Spell Damage|+(16 to 30)% to Cold Spell Damage|Socketed (2)"
+      ],
+      [
+        "Tower Wall",
+        "Splint Mail",
+        "Defense: (5226 - 6532) to (6062 - 7577)|Required Level: 80|Required Strength: 450|Item Level: 1|+(2 to 3) to Necromancer Skill Levels|+(11 to 13)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|(11 to 15)% to Energy|Elemental Resists +(11 to 20)%|Requirements -25%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Archbishop Lazarus",
+    "Tribute Set",
+    "Necromancer",
+    "Set Bonus with 2 or more set items:|+25% to Summon Damage|+25% to Summon Elemental Resistances|Set Bonus with 3 or more set items:|+100% to Summon Life|+50% to Summon Attack Rating|Set Bonus with complete set:|+1 Extra Veil King|+2 to Necromancer Skill Levels|+100% to Summon Life|+50% to Summon Damage|+50% to Summon Attack Rating",
+    [
+      [
+        "Lazarus' Chasuble",
+        "Light Plate",
+        "Defense: 8895 to 10548|Required Level: 100|Required Strength: 650|Item Level: 120|+(1 to 2) to Necromancer Skill Levels|+(101 to 150)% to Summon Life|+(16 to 40)% to Summon Damage|+25% to Summon Elemental Resistances|+200% Enhanced Defense|+666 Defense|Maximum Elemental Resists +2%|Physical Resist 5%|Socketed (6)"
+      ],
+      [
+        "Lazarus' Surplice Cap",
+        "Cap",
+        "Defense: 3561 to 3603|Required Level: 100|Required Strength: 500|Item Level: 120|+(1 to 3) to Necromancer Skill Levels|+(51 to 75)% to Summon Life|+(26 to 38)% to Summon Damage|+200% Enhanced Defense|Elemental Resists +35%|Socketed (4)"
+      ],
+      [
+        "Lazarus' Votive Lamp",
+        "Grim Wand",
+        "One-Hand Damage: 39 to 44|(Necromancer Only)|Required Level: 100|Required Dexterity: 172|Item Level: 120|Dexterity Damage Bonus: (0.06 per Dexterity)%|+(2 to 4) to Necromancer Skill Levels|1% Base Block Chance|50% Hit Recovery|-20% to Enemy Fire Resistance|-20% to Enemy Lightning Resistance|-20% to Enemy Cold Resistance|(16 to 20)% to Energy|(50 to 60)% Bonus to Defense|Socketed (2)"
+      ],
+      [
+        "Lazarus' Lamen",
+        "Plated Belt",
+        "Defense: 1363 to 1493|Required Level: 100|Required Strength: 675|Item Level: 120|+(2 to 3) to Necromancer Skill Levels|(15 to 20)% Life stolen per Hit|+(10 to 15)% to Spell Damage|+(51 to 75)% to Summon Life|50% Bonus to Defense|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "The Offering",
+    "Necromancer Oskill Set",
+    "Necromancer",
+    "Set Bonus with complete set:|Soulshatter: +200 Fire damage per Level|+2 to All Skills|Adds 10-20 Damage|+10 to Soulshatter",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Necromancer Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Necromancer Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Sacrificial Mind",
+        "Great Helm",
+        "Defense: (3422 - 3834) to (3737 - 4187)|Required Level: 100|Required Strength: 625|Item Level: 118|15% Life stolen per Hit|(6 to 15)% Chance of Crushing Blow|Weapon Physical Damage +(19 to 30)%|+(141 to 170)% Enhanced Defense|+(31 to 50) to Strength|+(31 to 50) to Dexterity|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Hadriel's Lore",
+    "Paladin Dragon Set",
+    "Paladin",
+    "Set Bonus with 2 or more set items:|+2 to Paladin Skill Levels|20% Gold Find|Set Bonus with 3 or more set items:|Maximum Mana +20%|50% Bonus to Defense|Set Bonus with complete set:|+4 to Paladin Skill Levels|+60% to Physical/Magic Spell Damage|+60% to Fire Spell Damage|+200 to Vitality|+200 to Energy|+75 Life after each Kill|200% Bonus to Defense",
+    [
+      [
+        "Hadriel's Avenger",
+        "Spiked Club",
+        "One-Hand Damage: 42 to 46|Required Level: 90|Required Strength: 209|Item Level: 1|Strength Damage Bonus: (0.11 per Strength)%|+(3 to 4) to Paladin Skill Levels|20% Cast Speed|+(25 to 35)% to Physical/Magic Spell Damage|+(25 to 35)% to Fire Spell Damage|+50 to Energy|+(31 to 50) Life after each Kill|+(16 to 25) Mana after each Kill|Requirements -50%|Socketed (3)"
+      ],
+      [
+        "Hadriel's Presence",
+        "Greaves",
+        "Defense: (1654 - 2067) to (1866 - 2332)|Required Level: 90|Required Strength: 357|Item Level: 1|(10 to 40)% Movement Speed|+(8 to 10)% to Physical/Magic Spell Damage|+(8 to 10)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|+200 to Mana|Elemental Resists +(21 to 25)%|Requirements -45%|Socketed (4)"
+      ],
+      [
+        "Hadriel's Pure Heart",
+        "Crown Shield",
+        "Defense: (3756 - 4695) to (4520 - 5650)|Chance to Block: 2 to 3%|(Paladin Only)|Required Level: 90|Required Dexterity: 357|Item Level: 1|+(2 to 3) to Paladin Skill Levels|(0 to 1)% Base Block Chance|20% Cast Speed|+(21 to 30)% to Physical/Magic Spell Damage|+(100 to 150)% Enhanced Defense|+(31 to 50) to Strength|Requirements -20%|Socketed (4)"
+      ],
+      [
+        "Hadriel's Wings",
+        "Ring Mail",
+        "Defense: (4874 - 6092) to (5362 - 6702)|Required Level: 90|Required Strength: 440|Item Level: 1|+(1 to 2) to Paladin Skill Levels|30% Cast Speed|+(21 to 30)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|Maximum Mana +(5 to 10)%|Requirements -20%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Malthael's Sanctuary",
+    "Paladin Ritualist Set",
+    "Paladin",
+    "Set Bonus with 2 or more set items:|10% Chance to cast level 34 Flamestrike on Melee Attack|+150 Life on Melee Attack|Set Bonus with 3 or more set items:|10% Chance to cast level 34 Hailstorm on Melee Attack|20% to Vitality|Set Bonus with complete set:|+3 to Paladin Skill Levels|+12 to Warp Armor|20% to Vitality|Maximum Life +5%|Maximum Mana +15%|Elemental Resists +50%",
+    [
+      [
+        "Malthael's Crown",
+        "Blackguard Helm",
+        "Defense: (2347 - 2640) to (2474 - 2783)|(Paladin Only)|Required Level: 80|Required Dexterity: 387|Item Level: 1|+(1 to 3) to Paladin Skill Levels|(201 to 250)% Bonus to Attack Rating|+(8 to 9)% to Fire Spell Damage|+(8 to 9)% to Cold Spell Damage|+(140 to 170)% Enhanced Defense|(16 to 20)% to Strength|10% to Vitality|+(21 to 40) Life on Melee Attack|Socketed (4)"
+      ],
+      [
+        "Malthael's Halo",
+        "Field Plate",
+        "Defense: (6477 - 7287) to (7694 - 8656)|Required Level: 80|Required Strength: 375|Item Level: 1|+(2 to 3) to Paladin Skill Levels|+(11 to 20)% to Fire Spell Damage|+(11 to 20)% to Cold Spell Damage|+(140 to 170)% Enhanced Defense|Fire Resist +(31 to 50)%|Cold Resist +(31 to 50)%|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Malthael's Ward",
+        "Sash",
+        "Defense: 1013 to 1027|Required Level: 80|Required Strength: 400|Item Level: 1|+1 to Paladin Skill Levels|+(11 to 15)% to Fire Spell Damage|+(11 to 15)% to Cold Spell Damage|+(26 to 38)% to Summon Damage|+(21 to 40) to Vitality|(11 to 20)% Bonus to Defense|Requirements -20%|Socketed (2)"
+      ],
+      [
+        "Malthael's Wrath",
+        "Holy Lance",
+        "Two-Hand Damage: 49 to 85|(Paladin Only)|Required Level: 80|Required Strength: 514|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|Amazing Grace|+(3 to 6) to Paladin Skill Levels|10% Movement Speed|75% Attack Speed|+(21 to 40)% to Fire Spell Damage|+(21 to 40)% to Cold Spell Damage|+(76 to 125) to Vitality|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Imperius' Edict",
+    "Paladin Warlock Set",
+    "Paladin",
+    "Set Bonus with 2 or more set items:|20% to Strength|20% to Energy|Set Bonus with 3 or more set items:|20% to Dexterity|20% to Energy|Set Bonus with complete set:|30% Movement Speed|+100 Spell Focus|+30% to Physical/Magic Spell Damage|-20% to Enemy Lightning Resistance|Attacker Flees after Striking 33%|+150 to all Attributes|20% Chance to Avoid Damage",
+    [
+      [
+        "Imperius' Aura",
+        "Breast Plate",
+        "Defense: 7704 to 8829|Required Level: 90|Required Strength: 360|Item Level: 1|+(1 to 2) to Paladin Skill Levels|25% Cast Speed|+(10 to 15)% to Physical/Magic Spell Damage|+(10 to 15)% to Lightning Spell Damage|+200% Enhanced Defense|Fire Resist +(30 to 50)%|Lightning Resist +(50 to 80)%|Cold Resist +(30 to 50)%|Poison Resist +(30 to 50)%|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Imperius' Radiance",
+        "Targe",
+        "Defense: 4791 to 5097|Chance to Block: 3%|(Paladin Only)|Required Level: 90|Required Dexterity: 262|Item Level: 1|1% Base Block Chance|30% Cast Speed|15% Block Speed|+(10 to 15)% to Physical/Magic Spell Damage|+(10 to 15)% to Lightning Spell Damage|+200% Enhanced Defense|(15 to 20)% to All Attributes|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Imperius' Sky Hammer",
+        "War Hammer",
+        "One-Hand Damage: 42 to 47|Required Level: 90|Required Strength: 225|Item Level: 1|Strength Damage Bonus: (0.14 per Strength)%|+(3 to 5) to Paladin Skill Levels|+(40 to 50) Spell Focus|+(15 to 20)% to Physical/Magic Spell Damage|+(15 to 20)% to Lightning Spell Damage|2% Reanimate as: Random Monster|Requirements -50%|Socketed (6)"
+      ],
+      [
+        "Imperius' Winged Feet",
+        "Boots",
+        "Defense: 651 to 671|Required Level: 90|Required Strength: 300|Item Level: 1|+1 to Paladin Skill Levels|(20 to 50)% Movement Speed|+(21 to 25) Spell Focus|20% Cast Speed|Requirements -40%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Yaerius' Grey Omen",
+    "Paladin Neutral Set",
+    "Paladin",
+    "Set Bonus with 2 or more set items:|+2 to Paladin Skill Levels|+20% to Spell Damage|Set Bonus with 3 or more set items:|+30% Damage to Vessel of Justice|+30% Damage to Vessel of Retribution|50% Bonus to Defense|Set Bonus with complete set:|+5000 Defense|+250 to all Attributes|+1000 to Life|Poison Length Reduction 50%",
+    [
+      [
+        "Yaerius' Simulacrum",
+        "Breast Plate",
+        "Defense: (7484 - 8204) to (8504 - 9329)|Required Level: 100|Required Strength: 600|Item Level: 1|20% Cast Speed|+30% Damage to Vessel of Justice|+30% Damage to Vessel of Retribution|+(172 to 200)% Enhanced Defense|+500 Defense|Physical Resist (5 to 10)%|+(50 to 100) Life after each Kill|(51 to 75)% Bonus to Defense|Socketed (6)"
+      ],
+      [
+        "Yaerius' Mediation",
+        "Light Gauntlets",
+        "Defense: 336 to 410|Required Level: 100|Required Strength: 600|Item Level: 1|+(0 to 1) to Paladin Skill Levels|+(16 to 20)% to Spell Damage|-200 Defense|(16 to 20)% to Strength|Elemental Resists +20%|Socketed (4)"
+      ],
+      [
+        "Yaerius' Untruth",
+        "Great Helm",
+        "Defense: (3408 - 3834) to (3722 - 4187)|Required Level: 100|Required Strength: 781|Item Level: 1|+(1 to 3) to Paladin Skill Levels|10% Movement Speed|+15% Damage to Vessel of Justice|+15% Damage to Vessel of Retribution|+(140 to 170)% Enhanced Defense|+50 Life Regenerated per Second|Maximum Mana +10%|Requirements +25%|Socketed (4)"
+      ],
+      [
+        "Yaerius' Alembic",
+        "Light Belt",
+        "Defense: (2202 - 2752) to (2286 - 2857)|(Paladin Only)|Required Level: 100|Required Strength: 825|Item Level: 1|+(41 to 50) Spell Focus|+(21 to 25)% to Physical/Magic Spell Damage|+(1 to 3) to Veneration of Justice (Paladin Only)|+(1 to 3) to Ward of Fate (Paladin Only)|+(100 to 150)% Enhanced Defense|(31 to 40)% to Energy|Requirements +50%|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "Cinadide's Craft",
+    "Paladin Honor Set",
+    "Paladin",
+    "Set Bonus with 2 or more set items:|+80 to Strength|Cannot Be Frozen|Set Bonus with 3 or more set items:|Adds 20-30 Damage|Adds 100-200 Fire Damage|Set Bonus with complete set:|Adds 400-800 Fire Damage|-25% to Enemy Fire Resistance|Weapon Physical Damage +240%|Slow Target 25%|+200 to all Attributes|Elemental Resists +100%",
+    [
+      [
+        "Cinadide's Anvil",
+        "Plated Belt",
+        "Defense: (3271 - 3680) to (3583 - 4031)|Required Level: 100|Required Strength: 337|Item Level: 1|+1 to Paladin Skill Levels|Adds 18-20 Damage|Adds 50-100 Fire Damage|+(140 to 170)% Enhanced Defense|(21 to 25)% to Strength|Requirements -50%|Socketed (2)"
+      ],
+      [
+        "Cinadide's Bellows",
+        "Hundsgugel",
+        "Defense: (2661 - 2994) to (2947 - 3315)|(Paladin Only)|Required Level: 100|Required Strength: 500|Item Level: 1|40% Attack Speed|20% Hit Recovery|Adds 35-40 Damage|Adds 50-100 Fire Damage|Weapon Physical Damage +(19 to 30)%|+(140 to 170)% Enhanced Defense|+(41 to 60) to Strength|Socketed (4)"
+      ],
+      [
+        "Cinadide's Bender",
+        "Gauntlets",
+        "Defense: (1339 - 1506) to (1567 - 1763)|Required Level: 100|Required Strength: 625|Item Level: 1|20% Attack Speed|40% Hit Recovery|Adds 35-70 Magic Damage|Adds 50-100 Fire Damage|+(140 to 170)% Enhanced Defense|+(31 to 50) to Strength|(16 to 25)% Magic Find|Socketed (4)"
+      ],
+      [
+        "Cinadide's Malus",
+        "Hand of God",
+        "Two-Hand Damage: (349 - 380) to (352 - 383)|(Paladin Only)|Required Level: 100|Required Strength: 832|Item Level: 1|Strength Damage Bonus: (0.18 per Strength)%|Amazing Grace|+100 Damage|Adds 200-300 Fire Damage|-10% to Enemy Fire Resistance|+(140 to 170)% Enhanced Damage|(6 to 10)% Chance of Crushing Blow|Elemental Resists +(31 to 40)%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Armageddon",
+    "Paladin Oskill Set",
+    "Paladin",
+    "Set Bonus with complete set:|Apocalypse: +100% to cap on damage scaling from Maximum Mana vs Life|Ignis Fatuus: Effects increased by 100%|-15% to Enemy Fire Resistance|+33 to Apocalypse|+17 to Ignis Fatuus",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Paladin Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Paladin Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "The Witness",
+        "Full Plate Mail",
+        "Defense: (8436 - 9339) to (10338 - 11445)|Required Level: 100|Required Strength: 700|Item Level: 118|(31 to 45)% Cast Speed|+(16 to 25)% to Fire Spell Damage|-(11 to 20)% to Enemy Fire Resistance|+(171 to 200)% Enhanced Defense|+(251 to 500) to Mana|Fire Absorb 5%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "The Mysteries",
+    "Sorceress Melee Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|+2 to Sorceress Skill Levels|+50 to Dexterity|Set Bonus with 3 or more set items:|+21 to Spiral Dance|Physical Resist 10%|Set Bonus with complete set:|+100 Damage|+4 to Ward of Fate|10% Chance of Crushing Blow|Weapon Physical Damage +100%|+4000 Defense|5% Chance to Avoid Damage",
+    [
+      [
+        "Cauldron",
+        "Large Shield",
+        "Defense: (3474 - 4342) to (3904 - 4880)|Chance to Block: 1% + Class %|Required Level: 100|Required Strength: 420|Required Dexterity: 423|Item Level: 1|+150% Bonus to Miasma Haunt Duration|+1 to Sorceress Skill Levels|10% Chance to cast level 25 Spike Nova when Attacked|1% Base Block Chance|35% Block Speed|+(100 to 150)% Enhanced Defense|Requirements -20%|Socketed (4)"
+      ],
+      [
+        "Pentacle",
+        "Gambeson",
+        "Defense: (6091 - 6852) to (6492 - 7303)|(Sorceress Only)|Required Level: 100|Required Dexterity: 486|Item Level: 1|+3 to Sorceress Skill Levels|Adds 35-40 Damage|5% Chance of Crushing Blow|+(140 to 170)% Enhanced Defense|+(31 to 50) to all Attributes|Physical Resist 10%|(21 to 25)% Bonus to Defense|Socketed (6)"
+      ],
+      [
+        "Sacred Circle",
+        "Coronet",
+        "Defense: (1452 - 1633) to (1641 - 1846)|Required Level: 100|Required Dexterity: 327|Item Level: 1|+2 to Sorceress Skill Levels|25% Block Speed|25% Hit Recovery|+(140 to 170)% Enhanced Defense|+(31 to 50) to all Attributes|Maximum Life +2%|Maximum Mana +(11 to 15)%|Elemental Resists +(31 to 40)%|Socketed (4)"
+      ],
+      [
+        "Witchblade",
+        "Warp Blade",
+        "One-Hand Damage: (208 - 222) to (308 - 333)|(Sorceress Only)|Required Level: 100|Required Dexterity: 400|Item Level: 1|Dexterity Damage Bonus: (0.13 per Dexterity)%|Area Effect Attack|1% Chance to cast level 25 Sanguine Covenant on Melee Attack|+75 Damage|Stun Attack|+(172 to 200)% Enhanced Damage|+100 Life Regenerated per Second|+(51 to 100) Life on Melee Attack|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "The Warmage",
+    "Sorceress Fire Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|+50 to Strength|Elemental Resists +75%|Set Bonus with 3 or more set items:|Overheat: 33% Less Heat Lost When Activating|Set Bonus with complete set:|+5 to Sorceress Skill Levels|10% Movement Speed|2% Chance to cast level 40 Lifeblood when Struck|+35% to Fire Spell Damage|-35% to Enemy Fire Resistance|5% Chance to Avoid Damage|Activation Frequency 20%",
+    [
+      [
+        "Warmage's Breath",
+        "Full Helm",
+        "Defense: (2724 - 3405) to (2926 - 3657)|Required Level: 90|Required Strength: 360|Item Level: 1|+2 to Sorceress Skill Levels|40% Cast Speed|-(14 to 15)% to Enemy Fire Resistance|+(100 to 150)% Enhanced Defense|+100 to Energy|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Warmage's Fireblade",
+        "Large Axe",
+        "Two-Hand Damage: 65 to 67|Required Level: 90|Required Strength: 204|Item Level: 1|Strength Damage Bonus: (0.16 per Strength)%|+(8 to 10) to Sorceress Skill Levels|+(26 to 30)% to Fire Spell Damage|-(20 to 24)% to Enemy Fire Resistance|+150 to Energy|5% Chance to Avoid Damage|3% Reanimate as: Random Monster|Requirements -50%|Socketed (6)"
+      ],
+      [
+        "Warmage's Flameshroud",
+        "Banded Plate",
+        "Defense: (6110 - 7637) to (7486 - 9357)|(Sorceress Only)|Required Level: 90|Required Dexterity: 501|Item Level: 1|+2 to Pagan Rites|+(100 to 150)% Enhanced Defense|+100 to Strength|+500 to Life|Fire Absorb 5%|Physical Resist 10%|Requirements -20%|Socketed (6)"
+      ],
+      [
+        "Warmage's Wake",
+        "Greaves",
+        "Defense: (1654 - 2067) to (1866 - 2332)|Required Level: 90|Required Strength: 390|Item Level: 1|+1 to Sorceress Skill Levels|(10 to 40)% Movement Speed|+(16 to 20)% to Fire Spell Damage|+(100 to 150)% Enhanced Defense|+50 to Dexterity|+50 to Energy|Requirements -40%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Adria's Circle",
+    "Sorceress Poison Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|+2 to Sorceress Skill Levels|Poison Resist +50%|Set Bonus with 3 or more set items:|+2 to Sorceress Skill Levels|Physical Resist 10%|Set Bonus with complete set:|+5 to Sorceress Skill Levels|+25% Bonus to Poison Skill Duration|+50% to Poison Spell Damage|+50 to all Attributes|Elemental Resists +30%|20% Chance to Avoid Damage",
+    [
+      [
+        "Dyad",
+        "Ceremonial Armor",
+        "Defense: (6204 - 7755) to (7686 - 9607)|(Sorceress Only)|Required Level: 90|Required Dexterity: 433|Item Level: 1|+(4 to 5) to Sorceress Skill Levels|+(101 to 150) Spell Focus|+(41 to 50)% to Poison Spell Damage|+(100 to 150)% Enhanced Defense|+200 to Energy|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Monad",
+        "War Staff",
+        "Two-Hand Damage: 63 to 69|Required Level: 90|Required Dexterity: 199|Item Level: 1|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(8 to 10) to Sorceress Skill Levels|+(101 to 150) Spell Focus|+(26 to 30)% to Poison Spell Damage|-(20 to 24)% to Enemy Poison Resistance|Physical Resist (11 to 15)%|Requirements -40%|Socketed (6)"
+      ],
+      [
+        "Tetrad",
+        "Chain Gloves",
+        "Defense: (1030 - 1287) to (1130 - 1412)|Required Level: 90|Required Strength: 345|Item Level: 1|+(21 to 25) Spell Focus|30% Hit Recovery|+(100 to 150)% Enhanced Defense|+(31 to 40) to Strength|+(31 to 40) to Energy|(31 to 40)% Bonus to Defense|Requirements -40%|Socketed (4)"
+      ],
+      [
+        "Triad",
+        "Tiara",
+        "Defense: (1450 - 1812) to (1640 - 2050)|Required Level: 90|Required Dexterity: 392|Item Level: 1|+(31 to 40)% Bonus to Poison Skill Duration|25% Hit Recovery|+(100 to 150)% Enhanced Defense|(11 to 15)% to Strength|(11 to 15)% to Energy|+(41 to 50) Life when Struck by an Enemy|-5% to All Vendor Prices|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Elemental Children",
+    "Sorceress Lightning Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|-15% to Enemy Lightning Resistance|+50 to all Attributes|Set Bonus with 3 or more set items:|+50% to Lightning Spell Damage|-15% to Enemy Lightning Resistance|Set Bonus with complete set:|+4 to Sorceress Skill Levels|+150 Spell Focus|75% Cast Speed|+100 to all Attributes|Physical Resist 15%|Attacker Takes Lightning Damage of 750",
+    [
+      [
+        "Elemental Clash",
+        "Circlet",
+        "Defense: 1515 to 1713|Required Level: 90|Required Dexterity: 262|Item Level: 1|+(1 to 2) to Sorceress Skill Levels|+20 Spell Focus|20% Cast Speed|+20% to Lightning Spell Damage|-10% to Enemy Lightning Resistance|+200% Enhanced Defense|+(51 to 75) to Energy|Lightning Resist +(31 to 50)%|Socketed (4)"
+      ],
+      [
+        "Elemental Fury",
+        "Kazarghand",
+        "Defense: 8316 to 9534|(Sorceress Only)|Required Level: 90|Required Dexterity: 412|Item Level: 1|+(3 to 4) to Sorceress Skill Levels|+(16 to 25)% to Lightning Spell Damage|-(11 to 20)% to Enemy Lightning Resistance|+200% Enhanced Defense|(11 to 15)% to Energy|Elemental Resists +(21 to 30)%|5% Chance to Avoid Damage|Requirements -25%|Socketed (6)"
+      ],
+      [
+        "Elemental Spirit",
+        "Leather Gloves",
+        "Defense: 1410 to 1431|Required Level: 90|Required Strength: 250|Item Level: 1|+(31 to 40) Spell Focus|+(10 to 20)% to Lightning Spell Damage|+200% Enhanced Defense|+(31 to 40) to Strength|+(31 to 40) to Vitality|Maximum Mana +(15 to 25)%|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Elemental Storm",
+        "Gnarled Staff",
+        "Two-Hand Damage: 59 to 62|(Sorceress Only)|Required Level: 90|Required Dexterity: 109|Item Level: 1|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(8 to 10) to All Skills|+(101 to 150) Spell Focus|40% Cast Speed|40% Hit Recovery|+(41 to 50) to all Attributes|Maximum Mana +(15 to 20)%|Requirements -50%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Zann Esu's Secrets",
+    "Sorceress Cold Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|1% Base Block Chance|40% Bonus to Defense|Set Bonus with 3 or more set items:|+1 to Raven Heart|+100% to Summon Life|Set Bonus with complete set:|-30% to Enemy Cold Resistance|+100% to Summon Life|Elemental Resists +75%|Physical Resist 35%|+100 Life after each Kill",
+    [
+      [
+        "Zann Esu's Binding Circle",
+        "Buckler",
+        "Defense: (3122 - 3902) to (3202 - 4002)|Chance to Block: Class %|Required Level: 80|Required Strength: 250|Required Dexterity: 234|Item Level: 1|+(1 to 2) to Sorceress Skill Levels|1% Chance to cast level 12 Rune of Ice when Struck|15% Cast Speed|+(6 to 10)% to Summon Damage|+(100 to 150)% Enhanced Defense|(21 to 30)% to Dexterity|Requirements -50%|Socketed (4)"
+      ],
+      [
+        "Zann Esu's Charm",
+        "Jared's Stone",
+        "One-Hand Damage: 40 to 43|(Sorceress Only)|Required Level: 80|Required Dexterity: 242|Item Level: 1|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(3 to 4) to Sorceress Skill Levels|30% Cast Speed|-(20 to 24)% to Enemy Cold Resistance|+(41 to 60)% to Summon Life|+(31 to 40) to Strength|+158 to Mana|Maximum Cold Resist +2%|Socketed (3)"
+      ],
+      [
+        "Zann Esu's Robes",
+        "Lamellar Armor",
+        "Defense: (5164 - 6455) to (5600 - 7000)|(Sorceress Only)|Required Level: 80|Required Dexterity: 499|Item Level: 1|+2 to Sorceress Skill Levels|50% Cast Speed|0.375% to Cold Spell Damage (Based on Character Level)|Freezes attacker +2|+(100 to 150)% Enhanced Defense|Cold Absorb 5%|Physical Damage Taken Reduced by (41 to 50)|Socketed (6)"
+      ],
+      [
+        "Zann Esu's Rune Loop",
+        "Belt",
+        "Defense: (2674 - 3267) to (2820 - 3450)|Required Level: 80|Required Strength: 287|Item Level: 1|+(1 to 2) to Sorceress Skill Levels|-10% to Enemy Cold Resistance|+(30 to 40)% to Summon Life|+(10 to 15)% to Summon Elemental Resistances|+(100 to 150)% Enhanced Defense|+300 Defense|(11 to 15)% to Dexterity|Requirements -50%|Socketed (2)"
+      ]
+    ]
+  ],
+  [
+    "Vizjerei Dominion",
+    "Sorceress Arcane Set",
+    "Sorceress",
+    "Set Bonus with 2 or more set items:|15% to Energy|Maximum Mana +15%|Set Bonus with 3 or more set items:|+4 to Sorceress Skill Levels|Set Bonus with complete set:|Arcane Fury: 5% Additional Mana and Energy During Buff Effect|25% Movement Speed|+100 Life Regenerated per Second|Physical Resist 10%|10% Chance to Avoid Damage|100% Bonus to Defense",
+    [
+      [
+        "Vizjerei Judgment",
+        "Amulet",
+        "(Sorceress Only)|Required Level: 90|Item Level: 100|+1 to Sorceress Skill Levels|(20 to 30)% Cast Speed|+(800 to 1200) to Mana|Elemental Resists +(20 to 30)%"
+      ],
+      [
+        "Vizjerei Brilliance",
+        "Circlet",
+        "Defense: (1111 - 1313) to (1256 - 1484)|Required Level: 90|Required Dexterity: 175|Item Level: 1|+(1 to 2) to Sorceress Skill Levels|+(120 to 160)% Enhanced Defense|Maximum Mana +(20 to 25)%|+50 Mana after each Kill|Requirements -33%|Socketed (4)"
+      ],
+      [
+        "Vizjerei Grip",
+        "Heavy Gloves",
+        "Defense: (1082 - 1279) to (1148 - 1357)|Required Level: 90|Required Strength: 351|Item Level: 1|+1 to Sorceress Skill Levels|+(120 to 160)% Enhanced Defense|Maximum Mana +20%|+50 Life after each Kill|Requirements -33%|Socketed (4)"
+      ],
+      [
+        "Vizjerei Cloak",
+        "Gambeson",
+        "Defense: (5583 - 6598) to (5951 - 7033)|(Sorceress Only)|Required Level: 90|Required Dexterity: 325|Item Level: 1|+4 to Sorceress Skill Levels|+(120 to 160)% Enhanced Defense|+(800 to 1200) to Mana|Regenerate Mana +(20 to 25)%|Maximum Fire Resist +2%|Maximum Lightning Resist +2%|Maximum Cold Resist +2%|Requirements -33%|Socketed (6)"
+      ]
+    ]
+  ],
+  [
+    "Wintertide",
+    "Sorceress Oskill Set",
+    "Sorceress",
+    "Set Bonus with complete set:|Blizzard and Frozen Orb: +1% Total Damage per 5% Magic Find|4% Chance to cast level 50 Blizzard on Death Blow|-20% to Enemy Cold Resistance|+25 to Frozen Orb|Freezes attacker +20",
+    [
+      [
+        "Eye of Wisdom",
+        "Amulet",
+        "(Sorceress Only)|Required Level: 100|Item Level: 100|+(1 to 2) to Sorceress Skill Levels|+(101 to 500) to Life|+50 Life after each Kill"
+      ],
+      [
+        "Arctic Shard",
+        "Jared's Stone",
+        "One-Hand Damage: 40 to 43|(Sorceress Only)|Required Level: 100|Required Dexterity: 242|Item Level: 118|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(4 to 5) to All Skills|(31 to 50)% Cast Speed|(31 to 50)% Hit Recovery|+(31 to 40)% to Cold Spell Damage|-(11 to 20)% to Enemy Cold Resistance|(11 to 20)% to Strength|+(51 to 100) Life after each Kill|Socketed (3)"
+      ]
+    ]
+  ],
+  [
+    "Testament of the Apes",
+    "Ape Set",
+    null,
+    "Set Bonus with 2 or more set items:|250% Bonus to Attack Rating|+50 to Strength|Set Bonus with 3 or more set items:|Weapon Physical Damage +120%|+75 to Strength|Set Bonus with complete set:|5% Chance to cast level 3 Thunder Slam on Kill|10% Chance to cast level 18 Tainted Blood when Struck by a Missile|+18 to Deathstrike|+10 to Silver Dart|25% Chance of Crushing Blow|50% to All Attributes|Physical Resist 20%",
+    [
+      [
+        "Apefoot",
+        "Boots",
+        "Defense: (1302 - 1627) to (1342 - 1677)|Required Level: 100|Required Strength: 375|Item Level: 120|(10 to 40)% Movement Speed|2% Chance to cast level 37 Lightning Wall on Kill|30% Hit Recovery|+(100 to 150)% Enhanced Defense|Lightning Resist +(41 to 50)%|Cold Resist +(41 to 50)%|Physical Resist 5%|Requirements -25%|Socketed (4)"
+      ],
+      [
+        "Apehand",
+        "Leather Gloves",
+        "Defense: (940 - 1175) to (954 - 1192)|Required Level: 100|Required Strength: 375|Item Level: 120|2% Chance to cast level 37 Powder Keg on Kill|+(100 to 150)% Enhanced Defense|+(101 to 150) to Life|+(50 to 75) to Mana|Fire Resist +(41 to 50)%|Poison Resist +(41 to 50)%|Physical Damage Taken Reduced by (41 to 50)|Requirements -25%|Socketed (4)"
+      ],
+      [
+        "Apeshoot",
+        "Repeating Crossbow",
+        "Two-Hand Damage: (306 - 330) to (374 - 405)|Required Level: 100|Required Strength: 502|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|20% Chance to cast level 9 Arrow on Striking|75% Attack Speed|+75 Damage|+(172 to 200)% Enhanced Damage|+(151 to 200) Life after each Kill|2% Reanimate as: Random Monster|Requirements -25%|Socketed (6)"
+      ],
+      [
+        "Apeskin",
+        "Leather Armor",
+        "Defense: (5626 - 6249) to (5902 - 6555)|Required Level: 100|Required Strength: 393|Item Level: 120|40% Attack Speed|+(144 to 171)% Enhanced Defense|Elemental Resists +(21 to 25)%|Physical Resist 5%|Target Takes Additional Damage of (201 to 250)|Requirements -25%|Socketed (6)"
+      ],
+      [
+        "Apeskull",
+        "Bone Helm",
+        "Defense: (2323 - 2613) to (2517 - 2832)|Required Level: 100|Required Strength: 468|Item Level: 120|+2 to All Skills|Adds 75-100 Fire Damage|Adds 75-100 Lightning Damage|Adds 75-100 Cold Damage|-(14 to 15)% to Enemy Elemental Resistances|+(140 to 170)% Enhanced Defense|Requirements -25%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Curse of the Zakarum",
+    "Zakarum Set",
+    null,
+    "Set Bonus with 2 or more set items:|Maximum Life +3%|Maximum Fire Resist +4%|Set Bonus with 3 or more set items:|40% Movement Speed|70% Attack Speed|70% Hit Recovery|(40 to 70)% Chance of Crushing Blow|Weapon Physical Damage +20%|Set Bonus with complete set:|+2 to All Skills|+84 Fire Damage|+50% to Fire Spell Damage|-60% to Enemy Fire Resistance|+3 to Path of Flames|+75 to all Attributes",
+    [
+      [
+        "Bremm's Retribution",
+        "Helm",
+        "Defense: 3912 to 4125|Required Level: 100|Required Strength: 1150|Item Level: 115|+(0 to 2) to All Skills|+200% Enhanced Defense|Maximum Life +3%|Fire Resist +50%|+(25 to 100) Life after each Kill|Requirements +100%|Socketed (4)"
+      ],
+      [
+        "Wyand's Perfidy",
+        "Heavy Belt",
+        "Defense: 3825 to 4131|Required Level: 110|Required Strength: 625|Item Level: 115|2% Chance to cast level 12 Nightmare when Struck|10% Attack Speed|+25% to Fire Spell Damage|+(10 to 16) to Ring of Light|+200% Enhanced Defense|10% to Energy|Maximum Fire Resist +2%|Socketed (2)"
+      ],
+      [
+        "Geleb's Greed",
+        "Light Gauntlets",
+        "Defense: 1608 to 1830|Required Level: 100|Required Strength: 600|Item Level: 115|+1 to All Skills|1% Chance to cast level 37 Fire Fountain on Death Blow|-15% to Enemy Fire Resistance|+(23 to 31) to Pyroblast|+200% Enhanced Defense|+5 Fire Absorb|Physical Resist 5%|Socketed (4)"
+      ],
+      [
+        "Maffer's Frenzy",
+        "Light Plated Boots",
+        "Defense: 784 to 868|Required Level: 100|Required Strength: 625|Item Level: 115|+1 to All Skills|(10 to 40)% Movement Speed|2% Chance to cast level 13 Psionic Scream on Kill|25% Attack Speed|Adds 3-5 Damage|50% Bonus to Attack Rating|+18 to Wolf Companion|Elemental Resists +(20 to 30)%|+20 Life after each Kill|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Sanctuary",
+    "Edyrem Set",
+    null,
+    "Set Bonus with 2 or more set items:|+2 to All Skills|Elemental Resists +25%|Set Bonus with complete set:|Summon Edyrem:|20% Reanimate as:|Edyrem|+20% of Life Added as Damage|+50% Chance of Crushing Blow|Can Summon Edyrems Anywhere|Summon Two Edyrem Minions per Cast|5% Chance to cast level 40 Ward of Fate on Melee Attack|+500% Bonus to Summoned Edyrem Life|+15 to Divine Apparition",
+    [
+      [
+        "Hand of Inarius",
+        "Long Sword",
+        "One-Hand Damage: (208 - 221) to (215 - 229)|Required Level: 100|Required Strength: 540|Item Level: 115|Strength Damage Bonus: (0.11 per Strength)%|25% Movement Speed|-2% Base Block Chance|75% Attack Speed|+100 Damage|(11 to 15)% Life stolen per Hit|+(141 to 170)% Enhanced Damage|(11 to 15)% Chance of Crushing Blow|(21 to 30)% to Strength|Socketed (6)"
+      ],
+      [
+        "Worldstone",
+        "Plate Mail",
+        "Defense: (6400 - 7171) to (7516 - 8421)|Required Level: 100|Required Strength: 937|Item Level: 115|+(1 to 3) to All Skills|25% Combat Speeds|+(51 to 100)% Bonus to Summoned Edyrem Life|+(141 to 170)% Enhanced Defense|Maximum Life +(3 to 5)%|3% Reanimate as: Random Monster|Requirements +50%|Socketed (6)"
+      ],
+      [
+        "Lilith's Disguise",
+        "Kite Shield",
+        "Defense: (4391 - 4919) to (5123 - 5740)|Chance to Block: Class %|Required Level: 100|Required Strength: 550|Required Dexterity: 559|Item Level: 120|Summon Edyrem: +5000 Defense|+(51 to 100)% Bonus to Summoned Edyrem Life|Adds 30-50 Damage|+(141 to 170)% Enhanced Defense|+(26 to 50) to Strength|+(21 to 50) to Vitality|Physical Resist 5%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Henchmen Trophies",
+    "Legendary Set",
+    null,
+    "Set Bonus with 2 or more set items:|+2 to All Skills|15% to All Attributes|Set Bonus with 3 or more set items:|-25% to Enemy Elemental Resistances|Elemental Resists +25%|Set Bonus with 4 or more set items:|20% Innate Elemental Damage|Physical Resist 10%|Set Bonus with complete set:|+6 to All Skills|50% Movement Speed|+35% to Spell Damage|+65 to all Attributes|Elemental Resists +30%|+150 Life after each Kill",
+    [
+      [
+        "Bilefroth Skin",
+        "Gothic Plate",
+        "Defense: 9198 to 11157|Required Level: 100|Required Strength: 675|Item Level: 120|50% Combat Speeds|15% Innate Elemental Damage|-10% to Enemy Elemental Resistances|+200% Enhanced Defense|+35 to all Attributes|10% to All Attributes|Physical Resist 5%|Socketed (6)"
+      ],
+      [
+        "Blackskull's Horns",
+        "Crown",
+        "Defense: 4437 to 4914|Required Level: 100|Required Strength: 675|Item Level: 120|Adds 100-150 Fire Damage|+25% to Fire Spell Damage|-15% to Enemy Fire Resistance|+200% Enhanced Defense|+50 to Strength|15% to Strength|Maximum Fire Resist +2%|+5 Fire Absorb|Socketed (4)"
+      ],
+      [
+        "Doomcloud Spine",
+        "Plated Belt",
+        "Defense: 4089 to 4479|Required Level: 100|Required Strength: 675|Item Level: 120|Adds 100-150 Lightning Damage|+25% to Lightning Spell Damage|-15% to Enemy Lightning Resistance|+200% Enhanced Defense|+50 to Vitality|15% to Vitality|Maximum Lightning Resist +2%|+5 Lightning Absorb|Socketed (2)"
+      ],
+      [
+        "Stareye's Claws",
+        "Gauntlets",
+        "Defense: 1674 to 1959|Required Level: 100|Required Strength: 625|Item Level: 120|Adds 100-150 Cold Damage|+25% to Cold Spell Damage|-15% to Enemy Cold Resistance|+200% Enhanced Defense|+50 to Dexterity|15% to Dexterity|Maximum Cold Resist +2%|+5 Cold Absorb|Socketed (4)"
+      ],
+      [
+        "Fangskin Scales",
+        "Greaves",
+        "Defense: 2481 to 2799|Required Level: 100|Required Strength: 650|Item Level: 120|(10 to 40)% Movement Speed|Adds 6-8 Poison Damage over 1 seconds|+25% to Poison Spell Damage|-15% to Enemy Poison Resistance|+200% Enhanced Defense|+50 to Energy|15% to Energy|Maximum Poison Resist +2%|Socketed (4)"
+      ]
+    ]
+  ],
+  [
+    "Astrogha's Moon",
+    "Wyrd Set",
+    null,
+    "Set Bonus with 2 or more set items:|Maximum Poison Resist +2%|Poison Resist +75%|Set Bonus with complete set:|-25% to Enemy Poison Resistance|+23 to Amatoxin|Slow Target 5%",
+    [
+      [
+        "Darkling",
+        "Heavy Boots",
+        "Defense: (1677 - 1879) to (1776 - 1989)|Required Level: 100|Required Strength: 550|Item Level: 115|+(0 to 1) to All Skills|(15 to 45)% Movement Speed|(7 to 12)% Life stolen per Hit|+(6 to 15)% to Poison Spell Damage|-(6 to 15)% to Enemy Poison Resistance|+(141 to 170)% Enhanced Defense|-100 to Life|Socketed (4)"
+      ],
+      [
+        "Viper Skin",
+        "Belt",
+        "Defense: (2860 - 3204) to (3036 - 3402)|Required Level: 100|Required Strength: 385|Item Level: 115|30% Attack Speed|(51 to 75)% Bonus to Attack Rating|-(11 to 20)% to Enemy Poison Resistance|Slow Target (3 to 8)%|+(141 to 170)% Enhanced Defense|Requirements -33%|Socketed (2)"
+      ],
+      [
+        "Angel of Death",
+        "Amulet",
+        "Required Level: 90|Item Level: 123|+(0 to 2) to All Skills|2% Chance to cast level 33 Punisher Bolt on Striking|+(11 to 30)% to Poison Spell Damage|-(6 to 15)% to Enemy Poison Resistance"
+      ]
+    ]
+  ],
+  [
+    "Trophy Hunter",
+    "Trophy Set",
+    null,
+    "Set Bonus with complete set:|Medals of Honor|(Based on Trophies)|+10 Life after each Kill|+1% Physical Resist|+5% Magic Find|+25 to Mana|+50 to Life",
+    [
+      [
+        "The Conqueror",
+        "Crown",
+        "Defense: (7341 - 7770) to (7771 - 8247)|Required Level: 120|Required Strength: 675|Item Level: 130|+1 to All Skills|Adds 35-40 Damage|-(11 to 15)% to Enemy Elemental Resistances|+(171 to 200)% Enhanced Defense|+3333 Defense|Magic Resist +(2 to 5)%|(21 to 25)% Gold Find|Socketed (4)"
+      ],
+      [
+        "Idol of Fortune",
+        "Amulet",
+        "Required Level: 120|Item Level: 130|+(1 to 2) to All Skills|-1% Base Block Chance|25% Combat Speeds|+(11 to 30)% to Spell Damage|Weapon Physical Damage +(25 to 48)%|Maximum Life +3%|Maximum Mana +10%"
+      ]
+    ]
+  ]
+]

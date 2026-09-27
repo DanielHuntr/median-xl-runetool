@@ -1,0 +1,33 @@
+{
+  "cls": "Assassin",
+  "level": 150,
+  "points": {
+    "crucify": 1,
+    "barrier_strike": 1,
+    "laserblade": 25,
+    "backstab": 20,
+    "way_of_the_spider": 25,
+    "shuriken_flurry": 1,
+    "psionic_scream": 1,
+    "psionic_storm": 1,
+    "energize": 1,
+    "mind_ripple": 1,
+    "pinnacle": 25
+  },
+  "quests": {},
+  "attrs": {
+    "strength": 0,
+    "dexterity": 0,
+    "vitality": 0,
+    "energy": 0
+  },
+  "signets": 0,
+  "difficulty": "Hell",
+  "gear": {},
+  "swap": false,
+  "inventory": [],
+  "buffs": [],
+  "leftSkill": "backstab",
+  "rightSkill": null,
+  "skillBar": []
+}

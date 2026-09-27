@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in the runetool or planner is wrong or broken.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: A screenshot of the in-game value next to the planner's helps a lot for wrong numbers.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Character Planner as a Necromancer
+        2. Put 20 points in Blood Skeleton
+        3. ...
+  - type: input
+    id: build
+    attributes:
+      label: Build link
+      description: In the planner, use Share and paste the link here so the exact build can be loaded.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+  - type: input
+    id: version
+    attributes:
+      label: App version
+  - type: input
+    id: browser
+    attributes:
+      label: Browser

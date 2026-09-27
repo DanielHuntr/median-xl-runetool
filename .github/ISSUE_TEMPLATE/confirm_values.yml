@@ -1,0 +1,54 @@
+name: Confirm a skill's values
+description: Send an in-game skill tooltip screenshot so the planner's numbers can be checked against the game.
+labels: [confirmation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping! Hover the skill in the in-game skill tree and take a screenshot that shows the whole tooltip, including the **Next Level** section.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+    validations:
+      required: true
+  - type: input
+    id: class
+    attributes:
+      label: Class
+    validations:
+      required: true
+  - type: input
+    id: level
+    attributes:
+      label: Character level
+    validations:
+      required: true
+  - type: input
+    id: points
+    attributes:
+      label: Hard points in this skill
+      description: Points you put in yourself, not counting + skills from gear.
+    validations:
+      required: true
+  - type: input
+    id: bonus
+    attributes:
+      label: + skill levels from gear, charms or other skills
+      description: Leave 0 if none. 1 hard point and no bonus is the easiest to check, but anything works.
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Drag the image in here, or paste it.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Other points in skills that synergise with it, auras or buffs active, patch version if not the latest.
+  - type: input
+    id: version
+    attributes:
+      label: App version

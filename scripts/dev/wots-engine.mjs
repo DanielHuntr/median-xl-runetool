@@ -1,0 +1,10 @@
+import { readFileSync } from "node:fs";
+import { createEngine } from "../../src/planner/engine.js";
+const data = JSON.parse(readFileSync(new URL("../../public/planner/data.json", import.meta.url), "utf8"));
+const e = createEngine(data);
+const b = { cls: "Assassin", level: 93, points: { way_of_the_spider: 25 }, soft: { way_of_the_spider: 16 }, quests: {} };
+for (const bl of [25, 26]) for (const l of e.describe(b, "way_of_the_spider", bl).effect) console.log(bl, l.text, l.trust);
+console.log(JSON.stringify(e.fixtureCheck("way_of_the_spider").poison_dot.checks));
+console.log(e.levels(b, "way_of_the_spider"), e.weaponPoison(b, "way_of_the_spider"), e.skillStatEffects(b, "way_of_the_spider"));
+console.log(e.describe(b, "eldritch_storm", 10).effect.map(l=>[l.text,l.trust, l.parts[0]?.source.notes]));
+console.log(e.maxLevel(b,"war_spirit"), e.capSource("war_spirit"), e.requiredLevelSource("beacon", {cls:"Paladin",level:1,points:{}}));

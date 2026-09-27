@@ -1,0 +1,2540 @@
+[
+  [
+    "The Xiphos",
+    "Short Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: (60 - 114) to (102 - 136)|Required Level: 60|Required Strength: 376|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Orb Effects Applied to this Item are Doubled|2% Chance to cast level 5 Shatterblade on Striking|(5 to 50)% Attack Speed|Adds (5 to 40)-(45 to 60) Damage|+(50 to 100)% Enhanced Damage|0.125% Chance of Crushing Blow (Based on Character Level)|Physical Resist 5%|Socketed (3)"
+  ],
+  [
+    "The Eviscerator",
+    "Short Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: 37 to 38|Required Level: 100|Required Strength: 376|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|2% of Maximum Life added as Physical Damage while holding a shield|Eviscerate fires no projectiles if you've Blocked recently|100% Chance to cast level 5 Eviscerate on Melee Attack|(1 to 7)% Base Block Chance|Magic Resist +(1 to 7)%|Socketed (3)"
+  ],
+  [
+    "Kraken's Cutlass",
+    "Scimitar",
+    "One-Handed Swords",
+    "One-Hand Damage: (103 - 185) to (186 - 228)|Required Level: 100|Required Strength: 421|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Mana Pulse: +50% Duration|75% Attack Speed|Adds (10 to 80)-(90 to 120) Damage|Adds 200-300 Cold Damage|+(140 to 170)% Enhanced Damage|-(20 to 25)% to Enemy Cold Resistance|Slow Target 10%|Maximum Cold Resist +1%|-20% Mana Cost of Skills|Socketed (3)"
+  ],
+  [
+    "Saber of the Stormsail",
+    "Saber",
+    "One-Handed Swords",
+    "One-Hand Damage: (137 - 188) to (179 - 210)|Required Level: 100|Required Strength: 443|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|5% Chance to cast level 5 Squall Wave on Melee Attack|5% Chance to cast level 5 Charged Strike on Melee Attack|20% Attack Speed|Adds (60 to 90)-(100 to 110) Damage|Adds 100-200 Lightning Damage|Adds 100-200 Cold Damage|-(5 to 15)% to Enemy Lightning Resistance|+(90 to 140)% Enhanced Damage|-(5 to 15)% to Enemy Cold Resistance|Half Freeze Duration|''Cross the Wide, Somber Seas I Will Sail|Three's a Company''|Socketed (3)"
+  ],
+  [
+    "Alnair",
+    "Saber",
+    "One-Handed Swords",
+    "One-Hand Damage: 123 to 126|Required Level: 100|Required Strength: 443|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|You Cannot Summon Blade Spirits Directly|+(2 to 3) to All Skills|40% Chance to cast level 50 Blade Spirits on Melee Attack|Ignore Target's Defense|+200% Enhanced Damage|+1 to Blade Spirits|(10 to 15)% Deadly Strike|Weapon Physical Damage +150%|+(100 to 200)% to Summon Attack Rating|100% Bonus to Defense|Socketed (3)"
+  ],
+  [
+    "Sherazade",
+    "Falchion",
+    "One-Handed Swords",
+    "One-Hand Damage: (105 - 121) to (110 - 127)|Required Level: 100|Required Strength: 466|Item Level: 110|Strength Damage Bonus: (0.11 per Strength)%|+(2 to 3) to All Skills|2% Chance to cast level 60 Punishers on Striking|1% Base Block Chance|+400 Poison Damage over 2 seconds|+(150 to 190)% Enhanced Damage|+(15 to 25)% to Poison Spell Damage|-(21 to 35)% to Enemy Poison Resistance|Physical Resist 5%|2% Reanimate as: Random Monster|Socketed (3)"
+  ],
+  [
+    "Aeterna",
+    "Broad Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: (101 - 118) to (105 - 124)|Required Level: 100|Required Strength: 488|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Amazing Grace|+(3 to 5) to All Skills|4% Chance to cast level 50 Blizzard on Death Blow|+100 Spell Focus|(20 to 50)% Cast Speed|+(20 to 40)% to Spell Damage|+(130 to 170)% Enhanced Damage|(10 to 20)% to Strength|Socketed (6)"
+  ],
+  [
+    "Sarandeshi Hellcaller",
+    "Broad Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: 44 to 46|Required Level: 100|Required Strength: 488|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|4% Chance to cast level 63 Apocalypse on Death Blow|10% Chance to cast level 50 Pentagram on Melee Attack|+75 Spell Focus|100% Attack Speed|100% Bonus to Attack Rating|-(30 to 40)% to Enemy Fire Resistance|+75 to Energy|Socketed (6)"
+  ],
+  [
+    "The Defender",
+    "Long Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: (164 - 222) to (215 - 249)|Required Level: 100|Required Strength: 270|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|+150% Bonus Fire Damage to Retaliate|Adds (65 to 105)-(110 to 125) Damage|(50 to 100)% Bonus to Attack Rating|5% Life stolen per Hit|-20% to Enemy Fire Resistance|+(120 to 160)% Enhanced Damage|+(10 to 20) to Retaliate|(10 to 20)% to Strength|Physical Resist 5%|Requirements -50%|Socketed (6)"
+  ],
+  [
+    "Astral Blade",
+    "Long Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: 45 to 48|Required Level: 100|Required Strength: 540|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|+1 Hunting Banshee/Ember Spirit Projectile|8% Chance to cast level 13 Mythal on Melee Attack|15% Chance to cast level 60 Ember Spirit on Melee Attack|15% Chance to cast level 60 Hunting Banshee on Melee Attack|+(100 to 125) Spell Focus|100% Attack Speed|+(20 to 25)% to Fire Spell Damage|-(15 to 20)% to Enemy Fire Resistance|+(20 to 25)% to Cold Spell Damage|-(15 to 20)% to Enemy Cold Resistance|Socketed (6)"
+  ],
+  [
+    "Aurumvorax",
+    "War Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: 46 to 50|Required Level: 100|Required Strength: 581|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|30% Cast Speed|+(25 to 40)% to Fire Spell Damage|-(15 to 25)% to Enemy Fire Resistance|+(10 to 19) to Pentagram|+20% to Summon Elemental Resistances|+(75 to 150) Life Regenerated per Second|Maximum Fire Resist +(1 to 2)%|Elemental Resists +20%|-10% Gold Find|+5 to Light Radius|Socketed (3)"
+  ],
+  [
+    "Eternal Vigil",
+    "War Sword",
+    "One-Handed Swords",
+    "One-Hand Damage: 46 to 50|Required Level: 100|Required Strength: 1162|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|+(3 to 4) to All Skills|4% Chance to cast level 53 Glacial Nova on Death Blow|4% Chance to cast level 53 Supernova on Death Blow|+200 Spell Focus|+(31 to 40)% to Spell Damage|-(28 to 35)% to Enemy Elemental Resistances|+(200 to 250) to Mana|Requirements +100%|Socketed (3)"
+  ],
+  [
+    "Durandal the Blazing Sword",
+    "Claymore",
+    "Two-Handed Swords",
+    "One-Hand Damage: (268 - 280) to (301 - 313)|Two-Hand Damage: (323 - 340) to (355 - 373)|Required Level: 100|Required Strength: 450|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|+(2 to 3) to Barbarian Skill Levels|15% Chance to cast level 13 Shockwave on Melee Attack|25% Attack Speed|Adds 160-190 Damage|(100 to 150)% Bonus to Attack Rating|+(172 to 200)% Enhanced Damage|+100 to Strength|-40% Mana Cost of Skills|(50 to 100)% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Qarak's Will",
+    "Giant Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: (175 - 188) to (208 - 221)|Two-Hand Damage: (231 - 250) to (260 - 280)|Required Level: 100|Required Strength: 480|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|15% Chance to cast level 34 Spike Nova on Melee Attack|6% Chance to cast level 40 Pentagram on Melee Attack|10% Chance to cast level 36 Bloodlust on Kill|+(30 to 60)% Bonus Damage to Bloodlust|Adds 75-100 Damage|Adds 84-167 Fire Damage|+(26 to 38)% to Fire Spell Damage|+(140 to 170)% Enhanced Damage|+(100 to 250) Life after each Kill|5% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Azgar's Crystal",
+    "Giant Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: 42 to 45|Two-Hand Damage: 65 to 67|(Druid Only)|Required Level: 100|Required Strength: 480|Item Level: 130|Strength Damage Bonus: (0.16 per Strength)%|While in Werewolf Form: Adds 50% of Current Mana as Cold Damage|10% Grit|100% Attack Speed|150% Bonus to Attack Rating|-100% to Enemy Cold Resistance|Maximum Cold Resist +(2 to 5)%|Cannot Be Frozen|Socketed (4)"
+  ],
+  [
+    "Tylwulf's Betrayal",
+    "Bastard Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: (171 - 224) to (219 - 242)|Two-Hand Damage: (231 - 292) to (276 - 307)|Required Level: 60|Required Strength: 535|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|5% of Missing Life added as Flat Physical Damage Reduction|2% Chance to cast level 1 Timefield when Struck|4% Chance to cast level 1 Visions of the Past when Struck|Adds (70 to 110)-(111 to 120) Damage|+(130 to 160)% Enhanced Damage|+1 to Visions of the Past|Slows Attacker by (0 to 20)%|(10 to 20)% to Strength|Attacker Takes Damage of 250|Socketed (4)"
+  ],
+  [
+    "Shadowfang",
+    "Bastard Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: 44 to 47|Two-Hand Damage: 70 to 72|(Necromancer Only)|Required Level: 100|Required Strength: 535|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Pestilence: duration reduced by 50%|Pestilence: regenerates 4% of Maximum Life per Second|50% Chance to cast level 50 Veil King Plague Grasp on Melee Attack|200% Bonus to Attack Rating|+100% to Poison Spell Damage|+60 to Stormlord|Slow Target 25%|+200 Life after each Kill|2% Reanimate as: Veil Terror|Socketed (4)"
+  ],
+  [
+    "Blacktongue",
+    "Flamberge",
+    "Two-Handed Swords",
+    "One-Hand Damage: (101 - 119) to (110 - 130)|Two-Hand Damage: (165 - 195) to (169 - 200)|Required Level: 100|Required Strength: 300|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|15% Chance to cast level 44 Rotting Flesh on Melee Attack|+25% Bonus to Poison Skill Duration|+(120 to 160)% Enhanced Damage|+(40 to 60)% to Poison Spell Damage|-(20 to 35)% to Enemy Poison Resistance|+(14 to 20) to Amatoxin|Slow Target 15%|Maximum Poison Resist +(1 to 2)%|Requirements -50%|Socketed (6)"
+  ],
+  [
+    "Carsomyr",
+    "Flamberge",
+    "Two-Handed Swords",
+    "One-Hand Damage: (269 - 288) to (305 - 325)|Two-Hand Damage: (345 - 375) to (375 - 406)|Required Level: 100|Required Strength: 600|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|5% Chance to cast level 13 Shower of Rocks on Kill|50% Attack Speed|Adds 150-175 Damage|100% Bonus to Attack Rating|+(160 to 200)% Enhanced Damage|+(40 to 50) to Strength|+(40 to 50) to Vitality|Physical Resist 10%|+250 Life after each Kill|1% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Feltongue",
+    "Great Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: 48 to 52|Two-Hand Damage: 79 to 81|Required Level: 100|Required Strength: 670|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Adds 300% of Crushing Blow as Fire and Cold Spell Damage|+(5 to 7) to All Skills|20% Movement Speed|4% Chance to cast level 20 Pagan Rites on Death Blow|-(10 to 20)% to Enemy Fire Resistance|-(10 to 20)% to Enemy Cold Resistance|+(2000 to 4000) Defense|Maximum Fire Resist +1%|Maximum Cold Resist +1%|Socketed (6)"
+  ],
+  [
+    "The Grandfather",
+    "Great Sword",
+    "Two-Handed Swords",
+    "One-Hand Damage: (229 - 314) to (327 - 336)|Two-Hand Damage: (322 - 407) to (414 - 423)|Required Level: 120|Required Strength: 1340|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|+400% Deadly Strike|-5% Deadly Strike per 1% Attack Speed|Adds (85 to 170)-(171 to 180) Damage|(150 to 300)% Bonus to Attack Rating|+200% Enhanced Damage|+(30 to 40) to Ancients' Hand|+50 to all Attributes|Maximum Life +(5 to 7)%|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Shadowsabre",
+    "Crystal Sword",
+    "Crystal Swords",
+    "Required Level: 100|Required Dexterity: 510|Item Level: 105|Innate Cold Damage: (49.0% of Dexterity)|Crucify: total number of projectiles increased by 25%|50% Attack Speed|Adds 160-250 Cold Damage|-20% to Enemy Elemental Resistances|+15 to Way of the Raven (Assassin Only)|+15 to Way of the Gryphon (Assassin Only)|+15 to Way of the Phoenix (Assassin Only)|+(15 to 25) to Crucify (Assassin Only)|Fire Absorb 5%|Lightning Absorb 5%|Cold Absorb 5%|+4 Life on Striking|Socketed (6)"
+  ],
+  [
+    "Cold Blood",
+    "Crystal Sword",
+    "Crystal Swords",
+    "Required Level: 100|Required Dexterity: 1020|Item Level: 120|Innate Cold Damage: (49.0% of Dexterity)|Regens 15% Life Over 5 Seconds Upon Taking Weapon Damage|100% Chance to cast level 50 Shatter the Flesh on Kill|1% Chance to cast level 63 Blizzard on Striking|25% Attack Speed|Adds (460 to 660)-(750 to 950) Cold Damage|+150% to Cold Spell Damage|-(20 to 30)% to Enemy Cold Resistance|Maximum Mana -50%|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Azurewrath",
+    "Crystal Sword",
+    "Crystal Swords",
+    "Required Level: 100|Required Dexterity: 1020|Item Level: 130|Innate Cold Damage: (49.0% of Dexterity)|100% of Vitality Added as Cold Damage to Weapon|Max Life gained per point of Vitality reduced by 0.9|You Cannot Deal Fire, Lightning or Poison Damage|40% Chance to cast level 30 Azure Orb on Melee Attack|Adds 160-250 Cold Damage|-100% to Enemy Cold Resistance|Slow Target 25%|Maximum Cold Resist +10%|Physical Resist 10%|100% Bonus to Defense|Cannot Be Frozen|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Grotesque Bite",
+    "Hand Axe",
+    "One-Handed Axes",
+    "One-Hand Damage: 37 to 39|Required Level: 100|Required Strength: 376|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|+25% to Experience Gained Until Level 120|+15% Physical Resist After Level 120|+(2 to 3) to All Skills|100% Chance to cast level 40 Harvest on Melee Attack|50% Attack Speed|+(20 to 30)% to Poison Spell Damage|Maximum Poison Resist +4%|+100 Life on Melee Attack|Socketed (3)"
+  ],
+  [
+    "Headsman",
+    "Hand Axe",
+    "One-Handed Axes",
+    "One-Hand Damage: (366 - 381) to (370 - 385)|Required Level: 100|Required Strength: 376|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|25% Chance to cast level 13 Shockwave on Melee Attack|25% Attack Speed|+300 Damage|150% Bonus to Attack Rating|+(80 to 120)% Enhanced Damage|30% Gold Find|25% Magic Find|+(3 to 5) to Light Radius|Socketed (3)"
+  ],
+  [
+    "Cumulonimbus",
+    "Axe",
+    "One-Handed Axes",
+    "One-Hand Damage: 39 to 43|Required Level: 100|Required Strength: 432|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Flash: Strength and Radius of Blinding effect Doubled|+(1 to 3) to All Skills|20% Movement Speed|20% Combat Speeds|+(21 to 25)% to Lightning Spell Damage|-(15 to 20)% to Enemy Lightning Resistance|+(13 to 20) to Flash|+(750 to 1000) Defense|Socketed (6)"
+  ],
+  [
+    "The Captain",
+    "Military Pick",
+    "One-Handed Axes",
+    "One-Hand Damage: (151 - 218) to (219 - 260)|Required Level: 100|Required Strength: 500|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|(10 to 40)% Attack Speed|Adds (55 to 100)-(105 to 120) Damage|+(120 to 170)% Enhanced Damage|+(14 to 20) to Crucify|+2000 Defense vs. Missile|+100 to Vitality|Socketed (6)"
+  ],
+  [
+    "The Colonel",
+    "Military Pick",
+    "One-Handed Axes",
+    "One-Hand Damage: 132 to 156|Required Level: 100|Required Strength: 500|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|+500% Weapon Physical Damage|50% Chance to cast level 1 Snake Bite on Melee Attack|+24% Bonus Damage to Bloodlust|+24% Bonus Damage to Mark of the Wild|30% Attack Speed|+200% Enhanced Damage|10% Deadly Strike|Socketed (6)"
+  ],
+  [
+    "Nimmenjuushin",
+    "War Axe",
+    "One-Handed Axes",
+    "One-Hand Damage: (128 - 170) to (190 - 224)|Required Level: 100|Required Strength: 464|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|+(4 to 5) to Druid Skill Levels|5% Chance to cast level 10 Tornado on Striking|+12% Bonus Damage to Mark of the Wild|(151 to 175)% Duration Bonus to Mark of the Wild|30% Attack Speed|50% Hit Recovery|Adds (30 to 60)-(70 to 90) Damage|(8 to 15)% Life stolen per Hit|+(115 to 140)% Enhanced Damage|(21 to 30)% to Strength|Requirements -20%|Socketed (6)"
+  ],
+  [
+    "Dux Infernum",
+    "War Axe",
+    "One-Handed Axes",
+    "One-Hand Damage: (115 - 128) to (140 - 156)|Required Level: 100|Required Strength: 581|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|Level 8 Hellfire Aura|-16% to Enemy Elemental Resistances|Maximum Fire Resist +5%|7.3 Yard Radius|+(4 to 5) to All Skills|Adds 500-1000 Fire Damage|0.5% to Fire Spell Damage (Based on Character Level)|+(150 to 180)% Enhanced Damage|+200% to Summon Life|Maximum Cold Resist -2%|+200 Life on Melee Attack|Socketed (6)"
+  ],
+  [
+    "Hephasto's Reaver",
+    "Battle Axe",
+    "Two-Handed Axes",
+    "Required Level: 60|Required Strength: 972|Item Level: 105|Innate Fire Damage: (84.0% of Strength)|Area Effect Attack|Adds (350 to 450)-(550 to 650) Fire Damage|-(10 to 20)% to Enemy Fire Resistance|+(10 to 20) to Shower of Rocks|(10 to 20)% Chance of Crushing Blow|+300 Life Regenerated per Second|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Elder Law",
+    "Great Axe",
+    "Two-Handed Axes",
+    "Two-Hand Damage: 82 to 91|Required Level: 100|Required Strength: 600|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Adds 2000 Fire Damage to Idol of Scosglen|This Fire Damage is Increased by 15% per Wildfire Base Level|60% Attack Speed|+(30 to 60)% to Fire Spell Damage|-(20 to 40)% to Enemy Fire Resistance|+(30 to 60)% to Poison Spell Damage|-(20 to 40)% to Enemy Poison Resistance|+(5 to 10) to Harvest (Druid Only)|+(5 to 10) to Wildfire (Druid Only)|+1000 Defense|+150 Life Regenerated per Second|Activation Frequency 15%|Socketed (6)"
+  ],
+  [
+    "Gotterdammerung",
+    "Great Axe",
+    "Two-Handed Axes",
+    "Two-Hand Damage: 571 to 598|Required Level: 100|Required Strength: 5400|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Mega Impact|Thunderfury|Area Effect Attack|50% Attack Speed|+325 Damage|+200% Enhanced Damage|Requirements +800%|Ragh nar Rook|Socketed (6)"
+  ],
+  [
+    "Malus Domestica",
+    "Club",
+    "Maces",
+    "One-Hand Damage: 41 to 42|Required Level: 100|Required Strength: 376|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Increased Healing Rate from Apples by 100%|Apple Healing Effect While Equipped|+(0 to 2) to All Skills|Level 10 Inner Fire (5/5 Charges)|(11 to 20)% to Vitality|+(1 to 1000) to Life|Maximum Life +3%|Physical Resist (6 to 10)%|10% Reanimate as: Random Monster|Socketed (3)"
+  ],
+  [
+    "Dreamflange",
+    "Mace",
+    "Maces",
+    "One-Hand Damage: 44 to 50|Required Level: 100|Required Strength: 442|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|+(3 to 4) to All Skills|+(51 to 75) Spell Focus|50% Cast Speed|+(16 to 20)% to Spell Damage|+(51 to 100) to Energy|Maximum Elemental Resists +2%|+2 to Light Radius|Socketed (3)"
+  ],
+  [
+    "Firequeen",
+    "Morning Star",
+    "Maces",
+    "One-Hand Damage: 45 to 53|Required Level: 100|Required Strength: 278|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|+2 to Amazon Skill Levels|+(15 to 20)% Bonus Elemental Damage to Bloodlust|20% Cast Speed|+(41 to 50)% to Summon Life|(21 to 25)% to Dexterity|(21 to 25)% to Energy|+2 Life Regenerated per Second (Based on Character Level)|Requirements -40%|Socketed (3)"
+  ],
+  [
+    "Stormpick",
+    "Flail",
+    "Maces",
+    "One-Hand Damage: (108 - 122) to (129 - 145)|Required Level: 100|Required Strength: 486|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|+3% Lightning Spell Damage per 5% Gold Find|(15 to 35)% Cast Speed|Adds 375-625 Lightning Damage|+(131 to 160)% Enhanced Damage|Maximum Lightning Resist +(2 to 4)%|Physical Resist (6 to 15)%|+100 Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Witherfang",
+    "Flail",
+    "Maces",
+    "One-Hand Damage: 47 to 56|Required Level: 100|Required Strength: 486|Item Level: 130|Strength Damage Bonus: (0.11 per Strength)%|Dragon Jaws area increased by 33%|Dragon Jaws reduces enemy physical resist by 30% for 1 second|+(2 to 4) to Paladin Skill Levels|+(25 to 50)% to Physical/Magic Spell Damage|+(25 to 50)% to Fire Spell Damage|(21 to 25)% to Vitality|+(201 to 250) to Energy|Fire Absorb 6%|Lightning Absorb 6%|Cold Absorb 6%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Cagebreaker",
+    "War Hammer",
+    "Hammers",
+    "One-Hand Damage: (195 - 209) to (227 - 243)|Required Level: 100|Required Strength: 450|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|Gain 20 Fire Damage to Weapon per 1% Life stolen per Hit|Adds 90-110 Damage|(15 to 20)% Life stolen per Hit|-(25 to 30)% to Enemy Fire Resistance|+(150 to 185)% Enhanced Damage|Physical Resist (6 to 10)%|Socketed (6)"
+  ],
+  [
+    "Schaefer's Hammer",
+    "War Hammer",
+    "Hammers",
+    "One-Hand Damage: 42 to 47|Required Level: 100|Required Strength: 450|Item Level: 130|Strength Damage Bonus: (0.14 per Strength)%|Adds 35% of current mana as lightning damage|Magnetic Field: Deals 65% of Weapon Lighting Damage per Hit. Does Not Trigger On-Hit Effects|2% Chance to cast level 60 Magnetic field on Striking|-(50 to 60)% to Enemy Lightning Resistance|Maximum Mana +(15 to 20)%|Regenerate Mana +(19 to 27)%|Lightning Absorb (5 to 8)%|+(1 to 3) to Light Radius|Socketed (6)"
+  ],
+  [
+    "Viper Mandate",
+    "Maul",
+    "Hammers",
+    "Two-Hand Damage: 74 to 82|(Barbarian Only)|Required Level: 100|Required Strength: 630|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|-3% Enemy Poison Resist per Snake Stance Base Level|20% Chance to cast level 30 Death Star on Melee Attack|30% Attack Speed|(50 to 200)% Bonus to Attack Rating|+(8 to 12) to Snake Stance (Barbarian Only)|25% to Vitality|Maximum Poison Resist +(1 to 3)%|Poison Length Reduction 50%|Socketed (6)"
+  ],
+  [
+    "Mjolner",
+    "Maul",
+    "Hammers",
+    "Two-Hand Damage: (332 - 347) to (404 - 421)|Required Level: 115|Required Strength: 1890|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Reckoning of Zerae: Grants +1% Lightning Pierce per 1% Deadly Strike|10% Chance to cast level 10 Thunder Hammer on Striking|Adds 125-175 Damage|+(180 to 200)% Enhanced Damage|+10 to Thundergod|25% Chance of Crushing Blow|+1000 Defense|Lightning Absorb 5%|Physical Resist 10%|Requirements +200%|Socketed (6)"
+  ],
+  [
+    "Stake Driver",
+    "Great Maul",
+    "Hammers",
+    "Two-Hand Damage: (276 - 332) to (360 - 452)|Required Level: 100|Required Strength: 736|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|17% Chance to Stake Enemies on Melee Attack|(reduces movement speed by 25% and nullifies range of most Teleport skills)|30% Chance to cast level 18 Spike Nova on Melee Attack|Adds (86 to 127)-(138 to 212) Damage|+(200 to 350)% Damage to Undead|+(150 to 170)% Enhanced Damage|Maximum Fire Resist +(2 to 4)%|+5 to Light Radius|Socketed (6)"
+  ],
+  [
+    "Hammer of Jholm",
+    "Great Maul",
+    "Hammers",
+    "Two-Hand Damage: 76 to 89|Required Level: 100|Required Strength: 1472|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|While Using Windform: Adds 3 - 5 Fire Damage per 20 Attributes|Adds 3 - 5 Lightning Damage per 20 Attributes|+200% to Fire and Lightning Spell Damage|-1% to Enemy Fire and Lightning Resists per 60 Attributes|15% Chance to cast level 60 Nova on Melee Attack|15% Chance to cast level 63 Apocalypse on Melee Attack|120% Attack Speed|+20 to Windform|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Legionnaire",
+    "Scepter",
+    "Scepters",
+    "One-Hand Damage: (172 - 221) to (235 - 250)|Required Level: 100|Required Dexterity: 404|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|10% Chance to cast level 25 Thunder Hammer on Striking|1% Base Block Chance|Adds (100 to 140)-(150 to 155) Damage|+90% Damage to Undead|Adds 1-400 Lightning Damage|+(150 to 180)% Enhanced Damage|+(11 to 20) to Balance (Amazon Only)|-20% Mana Cost of Skills|Socketed (3)"
+  ],
+  [
+    "Solar Scion",
+    "Scepter",
+    "Scepters",
+    "One-Hand Damage: 29 to 34|Required Level: 110|Required Dexterity: 404|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Conductivity: Chance to Cast Doubled|+(5 to 7) to Amazon Skill Levels|2% Base Block Chance|+(100 to 200) Spell Focus|+33% to Spell Damage|(15 to 20)% to Strength|(15 to 20)% to Energy|+(100 to 150) Life Regenerated per Second|Maximum Mana +10%|Socketed (3)"
+  ],
+  [
+    "Dead Lake's Lady",
+    "Grand Scepter",
+    "Scepters",
+    "One-Hand Damage: 36 to 40|Required Level: 90|Required Dexterity: 449|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|+4 to Amazon Skill Levels|+4 to Paladin Skill Levels|+200 Spell Focus|50% Block Speed|+(21 to 25)% to Physical/Magic Spell Damage|+(21 to 25)% to Lightning Spell Damage|(21 to 25)% to Strength|(21 to 25)% to Dexterity|(21 to 25)% to Energy|-15% Mana Cost of Skills|Socketed (3)"
+  ],
+  [
+    "The Redeemer",
+    "Grand Scepter",
+    "Scepters",
+    "One-Hand Damage: 36 to 40|Required Level: 100|Required Dexterity: 449|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|If there is at least one enemy nearby: Jitan's Gate summons 9 Fire Elementals|+3 to All Skills|+(50 to 100) Spell Focus|Jitan's Gate Cooldown Reduced by 2 seconds|0.4375% to Fire Spell Damage (Based on Character Level)|-(20 to 25)% to Enemy Fire Resistance|+1 to Ignis Mortem|+(50 to 100) to Energy|Maximum Cold Resist +(1 to 3)%|Socketed (3)"
+  ],
+  [
+    "Stormhammer",
+    "War Scepter",
+    "Scepters",
+    "One-Hand Damage: (91 - 98) to (124 - 135)|Required Level: 100|Required Dexterity: 494|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Reckoning of Zerae: Doubled Lightning Damage Bonus to Hammer of Zerae|4% Chance to cast level 14 Hammertime on Death Blow|Adds 500-1000 Lightning Damage|-(21 to 35)% to Enemy Lightning Resistance|+(140 to 160)% Enhanced Damage|Physical Resist 10%|+(2 to 4) Life on Striking|Socketed (6)"
+  ],
+  [
+    "Battlemaiden",
+    "War Scepter",
+    "Scepters",
+    "One-Hand Damage: (190 - 274) to (300 - 356)|(Amazon Only)|Required Level: 100|Required Dexterity: 494|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|40% Attack Speed|40% Cast Speed|Adds (95 to 160)-(170 to 200) Damage|(5 to 10)% Life stolen per Hit|+(150 to 200)% Enhanced Damage|Weapon Physical Damage +2.4375% (Based on Character Level)|Maximum Fire Resist +4%|-20% Mana Cost of Skills|Socketed (6)"
+  ],
+  [
+    "Screaming Serpent",
+    "Short Spear",
+    "Javelins",
+    "Throw Damage: 207 to 240|One-Hand Damage: 135 to 150|Required Level: 100|Required Dexterity: 924|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(2 to 3) to All Skills|4% Chance to cast level 1 Psionic Scream on Kill|4% Chance to cast level 1 Javelin Nova on Kill|+200% Enhanced Damage|-(25 to 50)% to Enemy Poison Resistance|+10 to Curare (Amazon Only)|Weapon Physical Damage +(30 to 90)%|Maximum Poison Resist +2%|Poison Length Reduction 50%|Requirements +100%|Socketed (3)"
+  ],
+  [
+    "Vizjerei Fury",
+    "Short Spear",
+    "Javelins",
+    "Throw Damage: 69 to 80|One-Hand Damage: 45 to 50|Required Level: 100|Required Dexterity: 1386|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|You may only use Melee, Summon and Support Skills|25% Chance to cast level 60 Trinity Beam on Melee Attack|Ignore Target's Defense|-33% to Enemy Fire Resistance|-33% to Enemy Lightning Resistance|-33% to Enemy Cold Resistance|(20 to 25)% to Dexterity|(20 to 25)% to Vitality|Maximum Elemental Resists +2%|Physical Resist 10%|+(60 to 100) Life after each Kill|Requirements +200%|Socketed (3)"
+  ],
+  [
+    "Night's Embrace",
+    "Glaive",
+    "Javelins",
+    "Throw Damage: (207 - 276) to (281 - 348)|One-Hand Damage: (145 - 198) to (204 - 252)|Required Level: 100|Required Dexterity: 496|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Eviscerate: +2 Projectiles|+(1 to 2) to All Skills|5% Chance to cast level 26 Burning Veil on Kill|Adds (35 to 60)-(75 to 90) Damage|+200% Damage to Demons|+(140 to 200)% Enhanced Damage|10% Chance of Crushing Blow|(15 to 25)% to All Attributes|Socketed (4)"
+  ],
+  [
+    "Moonfang",
+    "Glaive",
+    "Javelins",
+    "Throw Damage: 72 to 86|One-Hand Damage: 46 to 54|Required Level: 100|Required Dexterity: 496|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Hunting Banshee: +2 Projectiles|33% Chance to cast level 60 Hunting Banshee on Melee Attack|(50 to 100)% Attack Speed|Adds (800 to 1200)-(1600 to 2000) Cold Damage|-40% to Enemy Cold Resistance|+100 Life on Melee Attack|100% Bonus to Defense|Cannot Be Frozen|Socketed (4)"
+  ],
+  [
+    "Lancea",
+    "Throwing Spear",
+    "Javelins",
+    "Throw Damage: (183 - 309) to (303 - 383)|One-Hand Damage: (131 - 239) to (227 - 281)|Required Level: 100|Required Dexterity: 530|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|25% Chance to cast level 10 Flurry of Javelins on Melee Attack|40% Attack Speed|40% Hit Recovery|Adds (35 to 110)-(115 to 130) Damage|+(100 to 170)% Enhanced Damage|+(500 to 1000) Defense|+1 Life on Striking|Socketed (4)"
+  ],
+  [
+    "Thrillseeker",
+    "Throwing Spear",
+    "Javelins",
+    "Throw Damage: (192 - 222) to (244 - 282)|One-Hand Damage: (124 - 144) to (145 - 168)|(Amazon Only)|Required Level: 100|Required Dexterity: 530|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|+2 to Maximum Damage (Based on Character Level)|10% Life stolen per Hit|+(160 to 200)% Enhanced Damage|+(5 to 10) to APF-20 'Maelstrom' MkI|(15 to 25)% to Dexterity|+(250 to 500) to Life|5% Chance to Avoid Damage|Socketed (4)"
+  ],
+  [
+    "Steel Pillar",
+    "Trident",
+    "Spears",
+    "Two-Hand Damage: (229 - 245) to (273 - 292)|Required Level: 100|Required Strength: 408|Required Dexterity: 428|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Adds 100-125 Damage|+1.5 to Maximum Damage (Based on Character Level)|+(140 to 170)% Enhanced Damage|+(1500 to 3000) Defense|+(75 to 150) Life Regenerated per Second|Physical Resist 10%|+(50 to 100) Life on Melee Attack|(75 to 150)% Bonus to Defense|8% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "The Retiarius",
+    "Trident",
+    "Spears",
+    "Two-Hand Damage: (199 - 270) to (278 - 317)|Required Level: 100|Required Strength: 408|Required Dexterity: 428|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|+100% Magic Find if Wielded by a Mercenary|+20% Deadly Strike if Wielded by a Player|50% Attack Speed|Adds (70 to 125)-(130 to 150) Damage|+(140 to 170)% Enhanced Damage|Slow Target 25%|(20 to 25)% to Dexterity|(20 to 25)% to Vitality|Physical Resist 10%|+15 Mana on Melee Attack|Socketed (6)"
+  ],
+  [
+    "Darkspite",
+    "Spetum",
+    "Spears",
+    "Two-Hand Damage: (170 - 278) to (297 - 342)|Required Level: 80|Required Strength: 453|Required Dexterity: 492|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Shower of Rocks: Cooldown reduced by 1.5 seconds|15% Chance to cast level 6 Rust Storm on Melee Attack|(20 to 50)% Attack Speed|Adds (45 to 130)-(135 to 150) Damage|+(120 to 160)% Enhanced Damage|(5 to 10)% Deadly Strike|Curse Length Reduction 50%|-5 to Light Radius|Socketed (6)"
+  ],
+  [
+    "The Pride of Caldeum",
+    "Pike",
+    "Spears",
+    "Two-Hand Damage: (244 - 259) to (350 - 374)|Required Level: 100|Required Strength: 475|Required Dexterity: 524|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(6 to 8) to All Skills|12% Chance to cast level 1 Guard Tower on Kill|Additional Strength Damage Bonus: 0.0390625%|Adds 100-125 Damage|+(172 to 200)% Enhanced Damage|25% to Strength|25% to Dexterity|25% Magic Find|Socketed (6)"
+  ],
+  [
+    "Stormchaser",
+    "Pike",
+    "Spears",
+    "Two-Hand Damage: (144 - 159) to (225 - 249)|Required Level: 100|Required Strength: 712 to 950|Required Dexterity: 786 to 1048|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|50% Movement Speed|50% Hit Recovery|Adds 2000-3000 Lightning Damage|-100% to Enemy Lightning Resistance|+(172 to 200)% Enhanced Damage|+50 to Nova Charge|+(6 to 16) to Great Hunt|Maximum Elemental Resists +2%|Cannot Be Frozen|Requirements +(50 to 100)%|Socketed (6)"
+  ],
+  [
+    "Bitter Harvest",
+    "Scythe",
+    "Scythes",
+    "Two-Hand Damage: (127 - 159) to (175 - 219)|(Necromancer Only)|Required Level: 100|Required Strength: 466|Required Dexterity: 466|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Adds (80 to 110)% of Dexterity as Magic Damage to Weapon|10% Chance to cast level 30 Wyrd on Melee Attack|+(140 to 200)% Enhanced Damage|Maximum Fire Resist +(0 to 2)%|Maximum Lightning Resist +(0 to 2)%|Maximum Cold Resist +(0 to 2)%|Maximum Poison Resist +(0 to 2)%|Physical Resist (1 to 10)%|+200 Life on Melee Attack|If you have killed over 50 000 Enemies in Level 130 Duncraig|Cube to change class restriction to your class|Socketed (6)"
+  ],
+  [
+    "Freakshow",
+    "Scythe",
+    "Scythes",
+    "Two-Hand Damage: 53 to 73|Required Level: 100|Required Strength: 699|Required Dexterity: 699|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(51 to 70)% to Poison Spell Damage|-25% to Enemy Poison Resistance|+(11 to 24) to Pestilence|Maximum Poison Resist +4%|Physical Resist 10%|5% Reanimate as: Random Monster|Requirements +50%|Socketed (6)"
+  ],
+  [
+    "Soul Reaver",
+    "Scythe",
+    "Scythes",
+    "Two-Hand Damage: 53 to 73|Required Level: 100|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|-50% to Enemy Fire Resistance|+1 to Ravenous Flames|(65 to 75)% to All Attributes|+200 Life on Melee Attack|Requirements -100%|Socketed (6)"
+  ],
+  [
+    "Bone Scalpel",
+    "Dagger",
+    "Daggers",
+    "One-Hand Damage: 37|Required Level: 100|Required Dexterity: 376|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(4 to 5) to Necromancer Skill Levels|+(4 to 5) to Paladin Skill Levels|8% Chance to cast level 24 Disintegrate on Death Blow|+(30 to 40)% to Physical/Magic Spell Damage|+30% to Summon Life|+20% to Summon Elemental Resistances|+75 to Vitality|-25% Mana Cost of Skills|+(25 to 50) Life after each Kill|50% Magic Find|Socketed (2)"
+  ],
+  [
+    "Wizardspike",
+    "Dagger",
+    "Daggers",
+    "One-Hand Damage: 37|Required Level: 100|Required Dexterity: 376|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|-70% to Enemy Elemental Resistances|50% Cast Speed|+13 to Trinity Beam|+2 to Life (Based on Character Level)|Maximum Mana +20%|Regenerate Mana +30%|Socketed (2)"
+  ],
+  [
+    "Frostneedle",
+    "Kriss",
+    "Daggers",
+    "One-Hand Damage: 39 to 40|Required Level: 100|Required Dexterity: 454|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|You may only use Melee, Summon and Support Skills|+(1 to 2) to All Skills|2% Chance to cast level 19 Glacial Nova on Death Blow|+(25 to 40)% to Cold Spell Damage|-(15 to 25)% to Enemy Cold Resistance|+(20 to 25) to Winter Avatar|Maximum Cold Resist +(1 to 2)%|50% Bonus to Defense|Cannot Be Frozen|Socketed (3)"
+  ],
+  [
+    "Black Razor",
+    "Kriss",
+    "Daggers",
+    "One-Hand Damage: 39 to 40|Required Level: 120|Required Dexterity: 454|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Cast a random Deadly Curse on attack|It also applies to you|-200 Life on Melee Attack|Ignore Target's Defense|+666 to Life|Maximum Elemental Resists +(1 to 2)%|Curse Length Reduction -50%|Socketed (3)"
+  ],
+  [
+    "Shard of Refraction",
+    "Kriss",
+    "Daggers",
+    "One-Hand Damage: 39 to 40|Required Level: 100|Required Dexterity: 454|Item Level: 130|Dexterity Damage Bonus: (0.11 per Dexterity)%|Innate Tri-Elemental Damage: (54.0% of Dexterity)|10% Chance to cast level 25 Trinity Arrow on Melee Attack|Adds 500-700 Magic Damage|+1 to Tracking|+(80 to 100) to Dexterity|7% Chance to Avoid Damage|+1 Life on Striking|Socketed (3)"
+  ],
+  [
+    "Plunderbird",
+    "Blade",
+    "Daggers",
+    "One-Hand Damage: (200 - 290) to (321 - 356)|(Druid Only)|Required Level: 100|Required Dexterity: 488|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|-6% Weapon Physical Damage per 1% Crushing Blow|30% Movement Speed|Adds (80 to 170)-(195 to 230) Damage|+200% Enhanced Damage|Maximum Life +(2 to 5)%|Elemental Resists +25%|Physical Resist (1 to 10)%|Socketed (3)"
+  ],
+  [
+    "Strixclaw",
+    "Blade",
+    "Daggers",
+    "One-Hand Damage: (233 - 245) to (239 - 251)|Required Level: 120|Required Dexterity: 2928|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|-100% to Enemy Lightning Resistance (Requires 100% Crushing Blow)|8% Chance to cast level 50 Egg Trap on Kill|15% Chance to cast level 50 Egg Trap when Struck|+125 Damage|Adds 2000-3000 Lightning Damage|+(172 to 200)% Enhanced Damage|+10 to|Ranged Egg Trap|Requirements +500%|Socketed (3)"
+  ],
+  [
+    "Meshif's Iron Parrot",
+    "Throwing Knife",
+    "Throwing Knives",
+    "Throw Damage: (207 - 223) to (239 - 255)|One-Hand Damage: (166 - 177) to (196 - 207)|Required Level: 100|Required Dexterity: 402|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|+8 Storm Crows Projectiles if you have not taken weapon damage recently|+1 to Assassin Skill Levels|5% Chance to cast level 1 Knife Throw on Striking|Adds 80-110 Damage|(16 to 20)% Life stolen per Hit|+(140 to 170)% Enhanced Damage|+(51 to 75) to Dexterity|25% Reanimate as: Parrot (Critter)|(20 to 30)% Gold Find|(25 to 40)% Magic Find|Socketed (2)"
+  ],
+  [
+    "Dark Nemesis",
+    "Throwing Knife",
+    "Throwing Knives",
+    "Throw Damage: 53 to 54|One-Hand Damage: 36|Required Level: 100|Required Dexterity: 402|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Innate Cold Damage: (45.0% of Dexterity)|25% Combat Speeds|Adds 200-250 Cold Damage|-(30 to 45)% to Enemy Cold Resistance|+25 to Wychwind|10% to Dexterity|+(1 to 2) Life on Striking|Socketed (2)"
+  ],
+  [
+    "Warshrike",
+    "Flying Knife",
+    "Throwing Knives",
+    "Throw Damage: (151 - 166) to (171 - 186)|One-Hand Damage: (106 - 116) to (123 - 133)|Required Level: 100|Required Dexterity: 473|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|+1 to All Skills|1% Chance to cast level 40 Punisher Barrage on Kill|1% Base Block Chance|Adds 25-40 Damage|+(115 to 140)% Enhanced Damage|-40% to Enemy Poison Resistance|+(7 to 10) to Way of the Spider (Assassin Only)|+(16 to 32) to Balance|Elemental Resists +20%|+(75 to 100) Life after each Kill|Socketed (2)"
+  ],
+  [
+    "Piranha Swarm",
+    "Flying Knife",
+    "Throwing Knives",
+    "Throw Damage: 59 to 61|One-Hand Damage: 38 to 39|Required Level: 100|Required Dexterity: 473|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Scorpion Blade: Always Explodes, Max Range -25%|+(4 to 7) to Assassin Skill Levels|+99% to Poison Spell Damage|Regenerate Mana +50%|Maximum Elemental Resists +2%|+150 Life after each Kill|50% Magic Find|Socketed (2)"
+  ],
+  [
+    "Penumbra",
+    "Balanced Knife",
+    "Throwing Knives",
+    "Throw Damage: (170 - 222) to (218 - 250)|One-Hand Damage: (108 - 154) to (153 - 180)|Required Level: 100|Required Dexterity: 612|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Your Ways Passives No Longer Grant Elemental Damage|1 Dexterity for Each Skill Level of Your Ways Passives|+(1 to 3) to Assassin Skill Levels|30% Attack Speed|Adds (1 to 40)-(41 to 60) Damage|(101 to 150)% Bonus to Attack Rating|+(161 to 180)% Enhanced Damage|+(7 to 10) to APF-20 'Maelstrom' MkV (Assassin Only)|(25 to 30)% to Dexterity|+1 Life on Striking|Socketed (2)"
+  ],
+  [
+    "Sky Murder",
+    "Balanced Knife",
+    "Throwing Knives",
+    "Throw Damage: (253 - 272) to (280 - 300)|One-Hand Damage: (192 - 204) to (217 - 230)|Required Level: 100|Required Dexterity: 612|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|+1 Extra Target to Storm Crows|+(3 to 4) to Assassin Skill Levels|50% Attack Speed|Adds 90-110 Damage|-30% to Enemy Elemental Resistances|+(151 to 180)% Enhanced Damage|5% Deadly Strike|Maximum Lightning Resist +(2 to 4)%|Socketed (2)"
+  ],
+  [
+    "Worldstone Shard",
+    "Balanced Knife",
+    "Throwing Knives",
+    "Throw Damage: (241 - 252) to (268 - 280)|One-Hand Damage: (185 - 192) to (210 - 217)|Required Level: 100|Required Dexterity: 612|Item Level: 130|Dexterity Damage Bonus: (0.11 per Dexterity)%|Black Wind: +5% Chance to Cast on Striking|Adds 90-110 Damage|+333 Magic Damage|+(133 to 150)% Enhanced Damage|+(6 to 10) to Black Wind (Assassin Only)|+(12 to 17) to Way of the Raven (Assassin Only)|+(12 to 17) to Way of the Gryphon (Assassin Only)|+(12 to 17) to Way of the Phoenix (Assassin Only)|Maximum Elemental Resists +(1 to 2)%|Socketed (2)"
+  ],
+  [
+    "Lacerator",
+    "Throwing Axe",
+    "Throwing Axes",
+    "(Barbarian Only)|Required Level: 100|Required Strength: 402|Item Level: 105|Innate Lightning Damage: (55.0% of Strength)|Adds 160-(950 to 1150) Lightning Damage|-(15 to 30)% to Enemy Lightning Resistance|20% Chance of Crushing Blow|Slow Target 10%|+100 Life after each Kill|Socketed (2)"
+  ],
+  [
+    "Shock and Awe",
+    "Throwing Axe",
+    "Throwing Axes",
+    "(Barbarian Only)|Required Level: 100|Required Strength: 402|Item Level: 120|Innate Lightning Damage: (55.0% of Strength)|+15 Lightning Damage per 1% Lightning Pierce|50% Movement Speed|2% Chance to cast level 60 Tempest on Striking|2% Chance to cast level 60 Forked Lightning on Striking|5% Base Block Chance|Adds 160-250 Lightning Damage|+50 to Witch Blood|Socketed (2)"
+  ],
+  [
+    "Griefbringer",
+    "Balanced Axe",
+    "Throwing Axes",
+    "Throw Damage: (247 - 270) to (286 - 312)|One-Hand Damage: (148 - 159) to (192 - 206)|Required Level: 100|Required Strength: 600|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|+5 Axes to Overkill|1% Chance to cast level 6 Rebound on Striking|Adds 60-80 Damage|(101 to 150)% Bonus to Attack Rating|+120% Damage to Undead|+(140 to 170)% Enhanced Damage|(5 to 10)% Chance of Crushing Blow|Weapon Physical Damage +60%|-25 to Energy|Socketed (6)"
+  ],
+  [
+    "Ophiophagus",
+    "Balanced Axe",
+    "Throwing Axes",
+    "Throw Damage: (234 - 289) to (277 - 338)|One-Hand Damage: (140 - 166) to (188 - 221)|(Barbarian Only)|Required Level: 120|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|-1% to Enemy Poison Resist per 1% Block Chance|15% of Dexterity added as Weapon Physical Damage|+5 to Barbarian Skill Levels|Adds 55-80 Damage|+(130 to 200)% Enhanced Damage|Maximum Life +5%|Maximum Poison Resist +2%|Maximum Block Chance +10%|Requirements -100%|Socketed (6)"
+  ],
+  [
+    "Vizjerei's Folly",
+    "Short Staff",
+    "Staves",
+    "Two-Hand Damage: 53 to 55|Required Level: 80|Required Dexterity: 188|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Demon Blood Aura|You and Undead Minions: Maximum Life +6%|26.6 Yard Radius|Orb Effects Applied to this Item are Doubled|+(6 to 9) to All Skills|+(40 to 80)% to Summon Life|+(40 to 80)% to Summon Damage|Poison Length Reduction 50%|Socketed (3)"
+  ],
+  [
+    "Deckard Cain's Heirloom",
+    "Short Staff",
+    "Staves",
+    "Two-Hand Damage: 53 to 55|Required Level: 100|Required Dexterity: 188|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|+2% Spell Damage per 1% Additional Experience Gain|Cain's Marbles retain their Experience bonus past level 100|-(20 to 25)% to Enemy Fire Resistance|-(20 to 25)% to Enemy Lightning Resistance|-(20 to 25)% to Enemy Cold Resistance|Maximum Fire Resist +2%|Maximum Lightning Resist +2%|Maximum Cold Resist +2%|2% Reanimate as: Horadric Spark|(21 to 60)% Magic Find|''Knowledge is Power''|Socketed (3)"
+  ],
+  [
+    "Shamanka",
+    "Long Staff",
+    "Staves",
+    "Two-Hand Damage: 56 to 58|Required Level: 100|Required Dexterity: 203|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(3 to 6) to Sorceress Skill Levels|45% Cast Speed|45% Hit Recovery|+(21 to 25)% to Fire Spell Damage|+(21 to 25)% to Cold Spell Damage|+(21 to 25)% to Poison Spell Damage|+(6 to 16) to Bloodlust|Maximum Life +(10 to 13)%|Fire Resist +(50 to 70)%|Lightning Resist +(50 to 70)%|Socketed (4)"
+  ],
+  [
+    "Staff of Shadows",
+    "Long Staff",
+    "Staves",
+    "Two-Hand Damage: 56 to 58|Required Level: 100|Required Dexterity: 203|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|5% Chance to Cast Level 50 Slayer on Death Blow|+(9 to 10) to All Skills|+(150 to 200) Spell Focus|+(10 to 20)% Bonus to Spell Focus|50% Cast Speed|+(35 to 50)% to Spell Damage|15% to Energy|+2.5 to Energy (Based on Character Level)|+150 Life Regenerated per Second|+(15 to 25) Mana after each Kill|Socketed (4)"
+  ],
+  [
+    "Wintry Majesty",
+    "Long Staff",
+    "Staves",
+    "Two-Hand Damage: 56 to 58|Required Level: 100|Required Dexterity: 203|Item Level: 130|Dexterity Damage Bonus: (0.15 per Dexterity)%|Accumulate AoE charges for Periodic Cold Skills while moving|(AoE charges gradually decay while stationary)|Accumulate Frequency charges for Periodic Cold Skills while stationary|(Frequency charges gradually decay while moving)|Gain Life after Each Kill or Life Regen based on which counter is higher|+(10 to 11) to All Skills|5% Chance to cast level 50 Glacial Nova on Death Blow|+(220 to 265) Spell Focus|+(41 to 60)% to Cold Spell Damage|-(42 to 50)% to Enemy Cold Resistance|+35 to|Coronation|Maximum Elemental Resists +1%|50% Magic Find|Socketed (4)"
+  ],
+  [
+    "Aerin Nexus",
+    "Gnarled Staff",
+    "Staves",
+    "Two-Hand Damage: 59 to 62|Required Level: 100|Required Dexterity: 218|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(6 to 8) to All Skills|+(25 to 40)% Bonus to Spell Focus|-(20 to 25)% to Enemy Lightning Resistance|+(15 to 20) to Stormclash|+225 Life Regenerated per Second|Physical Resist (5 to 10)%|5% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Spire of Sarnakyle",
+    "Gnarled Staff",
+    "Staves",
+    "Two-Hand Damage: 59 to 62|Required Level: 100|Required Dexterity: 218|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(9 to 10) to All Skills|+(26 to 50)% to Cold Spell Damage|-(29 to 35)% to Enemy Cold Resistance|+(10 to 20) to Avalanche|Poison Length Reduction 50%|+(201 to 250) Life after each Demon Kill|50% Bonus to Defense|Cannot Be Frozen|25% Gold Find|Socketed (4)"
+  ],
+  [
+    "The Point of No Return",
+    "Gnarled Staff",
+    "Staves",
+    "Two-Hand Damage: 59 to 62|Required Level: 50|Required Dexterity: 218|Item Level: 130|Dexterity Damage Bonus: (0.15 per Dexterity)%|Corrupted|Can be corrupted 10 times|Empowered corruption outcomes|Failed corruptions do not increase Required Level|Successful corruptions increase Required Level by 10|Orb of Annihilation: +10% Total Damage per Corrupted Item worn|101% Movement Speed|+25 to Orb of Annihilation|Regenerate Mana +202%|Socketed (4)"
+  ],
+  [
+    "Xorine's Cane",
+    "Battle Staff",
+    "Staves",
+    "Two-Hand Damage: 61 to 66|Required Level: 100|Required Dexterity: 234|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(7 to 9) to All Skills|+(101 to 150) Spell Focus|60% Cast Speed|+(26 to 30)% to Spell Damage|+1 to Bane|Maximum Mana +(10 to 25)%|Physical Resist 15%|-20% Mana Cost of Skills|Socketed (4)"
+  ],
+  [
+    "Ribcracker",
+    "Battle Staff",
+    "Staves",
+    "Two-Hand Damage: (389 - 408) to (403 - 423)|Required Level: 100|Required Dexterity: 1404|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|Mega Impact|50% Attack Speed|50% Hit Recovery|+225 Damage|+(170 to 200)% Enhanced Damage|50% Chance of Crushing Blow|Physical Resist (8 to 15)%|100% Bonus to Defense|Requirements +500%|Socketed (4)"
+  ],
+  [
+    "Absolute Zero",
+    "Battle Staff",
+    "Staves",
+    "Two-Hand Damage: 61 to 66|Required Level: 100|Required Dexterity: 234|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|Glacial Nova: +150% Total Damage|Fire Spell Damage Reduces Cold Spell Damage|Fire Pierce Reduces Cold Pierce|Glacial Nova Cooldown Reduced by 4 seconds|-40% to Enemy Cold Resistance|+(20 to 30) to Glacial Nova|Maximum Fire Resist -5%|Maximum Cold Resist +10%|(50 to 100)% Bonus to Defense|Cannot Be Frozen|Socketed (4)"
+  ],
+  [
+    "Spire of Kehjan",
+    "War Staff",
+    "Staves",
+    "Two-Hand Damage: 63 to 69|Required Level: 100|Required Dexterity: 199|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|+(8 to 10) to All Skills|+(101 to 150) Spell Focus|20% Cast Speed|(25 to 50)% to All Attributes|+250 Life Regenerated per Second|Elemental Resists +(30 to 40)%|+(201 to 250) Life after each Kill|250% Damage Reflected|Requirements -40%|Socketed (6)"
+  ],
+  [
+    "Valthek's Command",
+    "War Staff",
+    "Staves",
+    "Two-Hand Damage: 63 to 69|(Sorceress Only)|Required Level: 100|Required Dexterity: 333|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|Mana Sweep: +30% Total Damage, Leeches no Mana|+(9 to 11) to Sorceress Skill Levels|4% Chance to cast level 50 Vizjerei Rage on Death Blow|+(500 to 888) to Life|+(500 to 888) to Mana|Physical Resist 10%|+50% Mana Cost of Skills|Socketed (6)"
+  ],
+  [
+    "Chillstring",
+    "Hunter's Bow",
+    "Bows",
+    "Two-Hand Damage: (140 - 168) to (147 - 177)|Required Level: 100|Required Dexterity: 425|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|Gematria|(Bonus for each Socketed Great/Elemental Rune)|Adds 100-200 Cold Damage|-7% to Enemy Cold Resistance|+10% Weapon Physical Damage|7% Chance to cast level 50 Ice Lance on Striking|+(150 to 200)% Enhanced Damage|Maximum Lightning Resist +(1 to 2)%|Maximum Cold Resist +(1 to 2)%|+(1 to 4) Life on Striking|Cannot Be Frozen|5% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Etrayu",
+    "Hunter's Bow",
+    "Bows",
+    "Two-Hand Damage: (193 - 338) to (309 - 407)|Required Level: 100|Required Dexterity: 425|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|33% Chance to cast level 50 Arrow on Striking|50% Attack Speed|Adds (70 to 170)-(180 to 230) Damage|+(120 to 200)% Enhanced Damage|(1 to 20)% Chance of Crushing Blow|Slow Target (1 to 50)%|+(1 to 100) to Dexterity|Elemental Resists +(1 to 25)%|Physical Resist (1 to 10)%|+(1 to 100) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Gjallarhorn",
+    "Composite Bow",
+    "Bows",
+    "Two-Hand Damage: (215 - 239) to (251 - 278)|Required Level: 100|Required Dexterity: 470|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|4% Chance to cast level 26 Stormblast on Kill|10% Chance to cast level 15 Thunder Hammer on Striking|Adds 75-100 Damage|Adds 1-500 Lightning Damage|-(20 to 35)% to Enemy Lightning Resistance|+(130 to 170)% Enhanced Damage|Weapon Physical Damage +(90 to 150)%|(5 to 15)% to Strength|(10 to 30)% to Dexterity|5% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Signal Fire",
+    "Composite Bow",
+    "Bows",
+    "Two-Hand Damage: (242 - 273) to (275 - 308)|(Amazon Only)|Required Level: 100|Required Dexterity: 470|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|Sun Strike: +25% Bonus Fire Damage per Base Level in the Bow Tree|50% Attack Speed|Adds 90-110 Damage|-(30 to 60)% to Enemy Fire Resistance|+(150 to 200)% Enhanced Damage|+(30 to 60) to Sun Strike|+300 Life Regenerated per Second|Maximum Fire Resist +(3 to 5)%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Stormstrike",
+    "Short Battle Bow",
+    "Bows",
+    "Required Level: 100|Required Dexterity: 738|Item Level: 105|Innate Lightning Damage: (62.0% of Dexterity)|2% Chance to cast level 3 Life Spark on Striking|Adds (350 to 425)-(525 to 600) Lightning Damage|(5 to 20)% Innate Elemental Damage|+(10 to 20) to Barrage|Maximum Fire Resist +(0 to 1)%|Maximum Lightning Resist +(0 to 1)%|Maximum Cold Resist +(0 to 1)%|Maximum Poison Resist +(0 to 1)%|-30% Mana Cost of Skills|(20 to 30)% Magic Find|Requirements +50%|Socketed (6)"
+  ],
+  [
+    "Fleshstinger",
+    "Short War Bow",
+    "Bows",
+    "Two-Hand Damage: (203 - 315) to (324 - 365)|Required Level: 100|Required Dexterity: 590|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|+(1 to 4) to Barbarian Skill Levels|+(1 to 4) to Sorceress Skill Levels|+(1 to 4) to Paladin Skill Levels|4% Chance to cast level 20 Heartseeker on Kill|Adds (40 to 125)-(140 to 150) Damage|(50 to 200)% Bonus to Attack Rating|+100% Damage to Demons|+(140 to 180)% Enhanced Damage|+(15 to 30) to Split Arrow|4% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Hellreach",
+    "Long War Bow",
+    "Bows",
+    "Two-Hand Damage: (215 - 243) to (271 - 303)|Required Level: 100|Required Dexterity: 650|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|Adds 140% of Your Fire Spell Damage as Bonus Weapon Physical Damage|Adds 140% of Your Physical/Magic Spell Damage as Bonus Weapon Physical Damage|2% Chance to cast level 50 Searing Glow on Striking|+(15 to 20)% Bonus to Spell Focus|Adds 33-66 Damage|+(160 to 200)% Enhanced Damage|+(333 to 666) to Life|Maximum Fire Resist +4%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Windforce",
+    "Long War Bow",
+    "Bows",
+    "Two-Hand Damage: (154 - 182) to (173 - 205)|Required Level: 100|Required Dexterity: 1950|Item Level: 130|Dexterity Damage Bonus: (0.13 per Dexterity)%|Steady tailwinds follow wherever you go|(radius scales with stamina spent)|30% Movement Speed|3% Chance to cast level 10 Tornado on Striking|+4 to Maximum Damage (Based on Character Level)|+(120 to 160)% Enhanced Damage|+25 to Hurricane|-10% Mana Cost of Skills|75% Magic Find|Requirements +200%|Socketed (6)"
+  ],
+  [
+    "Ratbane",
+    "Heavy Crossbow",
+    "Crossbows",
+    "Two-Hand Damage: (237 - 285) to (287 - 345)|Required Level: 100|Required Strength: 614|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Adds (800 to 1000)-(1500 to 2000) Fire Damage|-(30 to 40)% to Enemy Fire Resistance|+(150 to 200)% Enhanced Damage|+(10 to 20) to Barrage|10% Chance of Crushing Blow|(30 to 40)% to Strength|-20% Mana Cost of Skills|1% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Buriza-Do Kyanon",
+    "Heavy Crossbow",
+    "Crossbows",
+    "Two-Hand Damage: (238 - 485) to (488 - 595)|Required Level: 120|Required Strength: 614|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|3% Chance to cast level 60 Blizzard on Striking|20% Attack Speed|Adds (1 to 200)-(201 to 250) Damage|Ignore Target's Defense|Adds 350-400 Cold Damage|+(150 to 200)% Enhanced Damage|+(50 to 75)% to Cold Spell Damage|-(50 to 75)% to Enemy Cold Resistance|Socketed (6)"
+  ],
+  [
+    "Nihlathak's Bombard",
+    "Repeating Crossbow",
+    "Crossbows",
+    "Two-Hand Damage: (209 - 261) to (309 - 346)|Required Level: 100|Required Strength: 670|Item Level: 105|Strength Damage Bonus: (0.11 per Strength)%|Gematria|(Bonus for Socketed Great/Elemental Rune)|+30% Attack Speed|Adds 75-150 Fire Damage|+(5 to 6) to Necromancer Skill Levels|Adds (5 to 40)-(45 to 60) Damage|Adds 450-900 Fire Damage|-(20 to 25)% to Enemy Fire Resistance|+(140 to 160)% Enhanced Damage|+20% to Summon Elemental Resistances|Socketed (6)"
+  ],
+  [
+    "Manticore Sting",
+    "Repeating Crossbow",
+    "Crossbows",
+    "Two-Hand Damage: (281 - 335) to (376 - 450)|Required Level: 100|Required Strength: 670|Item Level: 120|Strength Damage Bonus: (0.11 per Strength)%|-1% to Enemy Poison Resistance per 25 Strength|16% Chance to cast level 60 Punisher Bolt on Striking|Adds (60 to 80)-(90 to 120) Damage|(200 to 250)% Bonus to Attack Rating|+3000 Poison Damage over 2 seconds|+(160 to 200)% Enhanced Damage|+100% to Poison Spell Damage|10% Chance of Crushing Blow|+(700 to 1000) to Life|Socketed (6)"
+  ],
+  [
+    "Vizjerei Hunter",
+    "Stag Bow",
+    "Amazon Bows",
+    "(Amazon Only)|Required Level: 100|Required Dexterity: 557|Item Level: 105|Innate Tri-Elemental Damage: (62.0% of Dexterity)|+3 to Amazon Skill Levels|5% Chance to cast level 40 Trinity Beam on Striking|+(65 to 100) Spell Focus|Adds 300-400 Fire Damage|Adds 300-400 Lightning Damage|Adds 300-400 Cold Damage|-(20 to 35)% to Enemy Elemental Resistances|10% Chance of Crushing Blow|(21 to 25)% to Dexterity|+200 Life Regenerated per Second|Socketed (6)"
+  ],
+  [
+    "Athulua's Wrath",
+    "Stag Bow",
+    "Amazon Bows",
+    "(Amazon Only)|Required Level: 100|Required Dexterity: 557|Item Level: 120|Innate Tri-Elemental Damage: (62.0% of Dexterity)|3% Chance to cast level 63 Sun Strike on Striking|2% Chance to cast level 5 Life Spark on Striking|Adds 400-950 Fire Damage|Adds 400-950 Lightning Damage|Adds 400-950 Cold Damage|-33% to Enemy Elemental Resistances|Elemental Resists -33%|1% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Askarbydd",
+    "Reflex Bow",
+    "Amazon Bows",
+    "Two-Hand Damage: (215 - 361) to (345 - 405)|(Amazon Only)|Required Level: 100|Required Dexterity: 1020|Item Level: 105|Dexterity Damage Bonus: (0.17 per Dexterity)%|Barrage: 50% Pierce Chance|50% Attack Speed|Adds (55 to 160)-(165 to 180) Damage|15% Life stolen per Hit|+(140 to 200)% Enhanced Damage|25% Chance of Crushing Blow|Maximum Poison Resist +2%|Poison Length Reduction 25%|Requirements +50%|Socketed (6)"
+  ],
+  [
+    "Chasmstriker",
+    "Reflex Bow",
+    "Amazon Bows",
+    "Two-Hand Damage: (242 - 331) to (344 - 395)|(Amazon Only)|Required Level: 100|Required Dexterity: 680|Item Level: 120|Dexterity Damage Bonus: (0.17 per Dexterity)%|11% Chance to cast level 14 Shower of Rocks on Kill|18% Chance to cast level 1 Arrow on Striking|Adds (60 to 130)-(140 to 170) Damage|(0 to 10)% Life stolen per Hit|+(172 to 200)% Enhanced Damage|+(100 to 200) to Strength|+(100 to 200) to Dexterity|Socketed (6)"
+  ],
+  [
+    "Luminescence",
+    "Maiden Spear",
+    "Amazon Spears",
+    "Two-Hand Damage: (160 - 337) to (345 - 418)|(Amazon Only)|Required Level: 100|Required Strength: 346|Required Dexterity: 500|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Amazing Grace|Fury: +4 seconds Base Duration|10% Chance to cast level 7 Fortress on Kill|Adds (1 to 150)-(160 to 200) Damage|(11 to 20)% Life stolen per Hit|+(121 to 160)% Enhanced Damage|Maximum Life +(4 to 10)%|-25% Mana Cost of Skills|+5 to Light Radius|Socketed (6)"
+  ],
+  [
+    "Serenthia's Scorn",
+    "Maiden Pike",
+    "Amazon Spears",
+    "Two-Hand Damage: (124 - 167) to (224 - 302)|(Amazon Only)|Required Level: 100|Required Strength: 350|Required Dexterity: 590|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Amazing Grace|Gematria|(Bonus for each Socketed Great/Elemental Rune)|+2.5% Physical Resist|+30 Life After Each Kill|-4% to Enemy Poison Resistance|+6 to All Skills|1% Chance to cast level 50 Rotting Flesh on Striking|+1000 Poison Damage over 2 seconds|+(100 to 170)% Enhanced Damage|+(1000 to 2000) Defense|+(50 to 100) to all Attributes|+(400 to 750) to Life|Socketed (6)"
+  ],
+  [
+    "Panthera's Bite",
+    "Maiden Pike",
+    "Amazon Spears",
+    "Two-Hand Damage: (242 - 261) to (402 - 436)|(Amazon Only)|Required Level: 100|Required Strength: 350|Required Dexterity: 590|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|Amazing Grace|2% Chance to cast level 10 Short Duration Superbeast on Kill|5% Chance to cast level 15 Amplify Damage on Striking|Adds 75-100 Damage|Ignore Target's Defense|+(170 to 200)% Enhanced Damage|Slow Target 30%|+150 Life after each Kill|+20% to Experience Gained|50% Magic Find|Socketed (6)"
+  ],
+  [
+    "Hellrain",
+    "Maiden Javelin",
+    "Amazon Javelins",
+    "Throw Damage: (241 - 263) to (337 - 364)|One-Hand Damage: (174 - 188) to (245 - 262)|(Amazon Only)|Required Level: 100|Required Strength: 310|Required Dexterity: 600|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|Adds 1% Crushing Blow per 4% Fire Spell Damage|+2 to Amazon Skill Levels|5% Chance to cast level 60 Cataclysm on Kill|2% Chance to cast level 60 Rain of Fire on Striking|Adds 50-100 Damage|-(20 to 60)% to Enemy Fire Resistance|+(170 to 200)% Enhanced Damage|Slow Target 25%|+100 to Dexterity|Socketed (3)"
+  ],
+  [
+    "Titan's Revenge",
+    "Maiden Javelin",
+    "Amazon Javelins",
+    "Throw Damage: (258 - 313) to (369 - 389)|One-Hand Damage: (183 - 238) to (267 - 287)|(Amazon Only)|Required Level: 120|Required Strength: 697 to 930|Required Dexterity: 1350 to 1800|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|Shieldmaiden: +15% Weapon Physical Damage per character level above 120|+4 to Amazon Skill Levels|10% Chance to cast level 1 Javelin on Striking|Adds (45 to 100)-(105 to 125) Damage|(15 to 20)% Life stolen per Hit|+200% Enhanced Damage|Maximum Elemental Resists +1%|Requirements +(125 to 200)%|Socketed (3)"
+  ],
+  [
+    "Dreamweaver",
+    "Wrist Blade",
+    "Assassin Claws",
+    "(Assassin Only)|Required Level: 100|Required Dexterity: 341|Item Level: 105|Innate Lightning Damage: (62.0% of Dexterity)|Queen of Blades: +2500 Lightning Damage|+(4 to 6) to Assassin Skill Levels|20% Chance to cast level 12 Charged Strike on Melee Attack|Adds 160-250 Lightning Damage|-(15 to 25)% to Enemy Fire Resistance|-(15 to 25)% to Enemy Lightning Resistance|+100 to Strength|+100 to Vitality|Maximum Fire Resist +1%|Maximum Lightning Resist +1%|Socketed (3)"
+  ],
+  [
+    "Mekanism",
+    "Wrist Blade",
+    "Assassin Claws",
+    "(Assassin Only)|Required Level: 100|Required Dexterity: 341|Item Level: 120|Innate Lightning Damage: (62.0% of Dexterity)|Shuriken Flurry: Shurikens deal 150% Weapon Damage|+(4 to 5) to Assassin Skill Levels|15% Chance to cast level 30 Shuriken Flurry on Melee Attack|Adds 160-250 Lightning Damage|-(20 to 30)% to Enemy Elemental Resistances|30% to Dexterity|+400 to Life|Maximum Elemental Resists +1%|+2 Life on Striking|Socketed (3)"
+  ],
+  [
+    "Twin Terrors",
+    "Cestus",
+    "Assassin Claws",
+    "One-Hand Damage: (100 - 204) to (189 - 230)|(Assassin Only)|Required Level: 100|Required Dexterity: 349|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|While Dual Wielding This Weapon: Noctule: Magic Damage synergy doubled|Adds (10 to 90)-(95 to 110) Damage|5% Life stolen per Hit|+(120 to 180)% Enhanced Damage|+(3 to 7) to Noctule (Assassin Only)|Elemental Resists +(10 to 25)%|Socketed (3)"
+  ],
+  [
+    "Sagittarius",
+    "Cestus",
+    "Assassin Claws",
+    "One-Hand Damage: 41 to 43|(Assassin Only)|Required Level: 100|Required Dexterity: 349|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|Vessel of Judgement: +3 Targets|+7 to Assassin Skill Levels|+100% Damage to Vessel of Justice|+100% Damage to Vessel of Retribution|+(50 to 60) to Vessel of Judgement|+(100 to 150) to Energy|+(300 to 400) to Life|Maximum Mana +(20 to 25)%|Physical Resist 5%|Socketed (3)"
+  ],
+  [
+    "Implement V.II",
+    "Claws",
+    "Assassin Claws",
+    "One-Hand Damage: 42 to 44|(Assassin Only)|Required Level: 120|Required Dexterity: 400|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|-25% to Enemy Elemental Resistances for Your Traps|+5 to Assassin Skill Levels|25% Block Speed|15% Life stolen per Hit|Fire Absorb 1%|Lightning Absorb 1%|+(300 to 400) Life on Melee Attack|Socketed (3)"
+  ],
+  [
+    "Mind Rake",
+    "Claws",
+    "Assassin Claws",
+    "One-Hand Damage: 42 to 44|(Assassin Only)|Required Level: 100|Required Dexterity: 400|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|+(3 to 5) to Assassin Skill Levels|10% Chance to cast level 60 Doom on Death Blow|-50% Cast Speed|+(51 to 70)% to Physical/Magic Spell Damage|Regenerate Mana +33%|Physical Damage Taken Reduced by 50|+100 Life after each Kill|1% Reanimate as: Random Monster|Socketed (3)"
+  ],
+  [
+    "Scirocco",
+    "Blade Talons",
+    "Assassin Claws",
+    "One-Hand Damage: (164 - 178) to (192 - 207)|(Assassin Only)|Required Level: 100|Required Dexterity: 562|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|7% Chance to cast level 19 Bladestorm on Melee Attack|10% Chance to cast level 10 Spike Nova on Melee Attack|15% Chance to cast level 4 Shockwave on Melee Attack|Adds 40-60 Damage|Adds 125-250 Fire Damage|+(171 to 200)% Enhanced Damage|+(4 to 8) to Whirlwind|Socketed (3)"
+  ],
+  [
+    "Shyan's Focus",
+    "Blade Talons",
+    "Assassin Claws",
+    "One-Hand Damage: 46 to 49|(Assassin Only)|Required Level: 100|Required Dexterity: 1000|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|+(5 to 7) to Assassin Skill Levels|+(66 to 77) Spell Focus|-15% Cast Speed|+(35 to 45)% to Physical/Magic Spell Damage|+(35 to 50) to Blade Sentinels|-(5 to 7) to Light Radius|Requirements +78%|Socketed (3)"
+  ],
+  [
+    "Life Shear",
+    "Scissors Katar",
+    "Assassin Claws",
+    "One-Hand Damage: (160 - 192) to (174 - 207)|(Assassin Only)|Required Level: 100|Required Dexterity: 485|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|While Dual Wielding Any Two Claws: +100 Vitality|Adds 75-100 Damage|+15% Critical Strike Chance|5% Movement Speed|15% Chance to cast level 30 Backstab on Melee Attack|Adds (70 to 80)-(80 to 90) Damage|(5 to 11)% Life stolen per Hit|+(100 to 150)% Enhanced Damage|(11 to 20)% to Dexterity|Physical Damage Taken Reduced by 30|Socketed (3)"
+  ],
+  [
+    "Legio Di Manes",
+    "Scissors Katar",
+    "Assassin Claws",
+    "One-Hand Damage: (129 - 246) to (233 - 281)|(Assassin Only)|Required Level: 100|Required Dexterity: 485|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|20% Chance to cast level 20 Thunder Hammer Nova on Melee Attack|100% Chance to cast level 50 Thunder Hammer on Kill|(0 to 2)% Base Block Chance|50% Block Speed|Adds (30 to 120)-(130 to 150) Damage|+(120 to 180)% Enhanced Damage|(1 to 10)% Deadly Strike|(11 to 20)% to Dexterity|Maximum Block Chance +20%|Socketed (3)"
+  ],
+  [
+    "Zular Khan's Tempest",
+    "Halberd",
+    "Assassin Naginatas",
+    "Two-Hand Damage: 71 to 100|(Assassin Only)|Required Level: 100|Required Dexterity: 558|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Area Effect Attack|10% Chance to cast level 1 Stormpike on Striking|Broadside Cooldown Reduced by 2 seconds|-30% to Enemy Elemental Resistances|+(25 to 30) to Way of the Raven (Assassin Only)|+(25 to 30) to Way of the Gryphon (Assassin Only)|+(25 to 30) to Way of the Spider (Assassin Only)|+(25 to 30) to Way of the Phoenix (Assassin Only)|+(51 to 100) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Black Ice",
+    "Halberd",
+    "Assassin Naginatas",
+    "Two-Hand Damage: 71 to 100|(Assassin Only)|Required Level: 70|Required Dexterity: 558|Item Level: 120|Dexterity Damage Bonus: (0.15 per Dexterity)%|Innate Cold Damage: (45.0% of Vitality)|Area Effect Attack|Orb Effects Applied to this Item are Doubled|+(10 to 15) to Assassin Skill Levels|200% Bonus to Attack Rating|20% Innate Elemental Damage|-30% to Enemy Cold Resistance|+(3 to 9) to Whirlpool|Maximum Elemental Resists +(1 to 2)%|+4 Life on Striking|Socketed (6)"
+  ],
+  [
+    "Frysturgard",
+    "Naginata",
+    "Assassin Naginatas",
+    "Two-Hand Damage: (424 - 453) to (476 - 510)|(Assassin Only)|Required Level: 100|Required Dexterity: 558|Item Level: 105|Dexterity Damage Bonus: (0.15 per Dexterity)%|Area Effect Attack|+(5 to 7) to Assassin Skill Levels|15% Chance to cast level 12 Fortress on Melee Attack|5% Chance to cast level 18 Glacial Nova on Kill|+150 Damage|+(172 to 200)% Enhanced Damage|10% Chance of Crushing Blow|Weapon Physical Damage +90%|(21 to 25)% to Strength|(21 to 25)% to Dexterity|Socketed (6)"
+  ],
+  [
+    "Storm Blade",
+    "Naginata",
+    "Assassin Naginatas",
+    "Two-Hand Damage: 558 to 670|(Assassin Only)|Required Level: 125|Required Dexterity: 548|Item Level: 130|Dexterity Damage Bonus: (0.15 per Dexterity)%|Ethereal|Area Effect Attack|20% Chance to cast level 13 Javelin Nova on Kill|100% Hit Recovery|Adds 180-220 Damage|-50% to Enemy Elemental Resistances|+200% Enhanced Damage|+(3 to 9) to Pounce|50% to Dexterity|75% Magic Find|-5 to Light Radius|Socketed (6)"
+  ],
+  [
+    "Kaskara of the Taan",
+    "Spatha",
+    "Barbarian Swords",
+    "One-Hand Damage: (122 - 185) to (186 - 230)|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|+200% Bonus Magic Damage to Spiral Dance|Adds (30 to 80)-(90 to 120) Damage|Adds (200 to 400)-(800 to 1000) Magic Damage|+(100 to 130)% Enhanced Damage|+(7 to 14) to Wolf Companion (Barbarian Only)|+(7 to 14) to Mountain King (Barbarian Only)|+(30 to 40) to Spiral Dance|+50 Mana on Melee Attack|(20 to 25)% Magic Find|Socketed (3)"
+  ],
+  [
+    "Gladiator's Rage",
+    "Spatha",
+    "Barbarian Swords",
+    "One-Hand Damage: 46 to 48|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|+6 to Barbarian Skill Levels|+(1 to 2) to Maximum Barbarian Minions|+(50 to 75)% to Summon Life|+50% to Summon Damage|+25% to Summon Physical Resist|+150% to Summon Attack Rating|Maximum Elemental Resists +1%|-25% Mana Cost of Skills|Socketed (3)"
+  ],
+  [
+    "Talic the Unwilling",
+    "Backsword",
+    "Barbarian Swords",
+    "One-Hand Damage: (176 - 240) to (223 - 257)|(Barbarian Only)|Required Level: 100|Required Strength: 526|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|+33% Increased Leap Speed|1% Base Block Chance|50% Attack Speed|Thunder Slam Cooldown Reduced by 3 seconds|Adds (80 to 120)-(121 to 130) Damage|(1 to 10)% Life stolen per Hit|+(100 to 150)% Enhanced Damage|Weapon Physical Damage +200%|+(300 to 500) to Life|Socketed (3)"
+  ],
+  [
+    "Berserrker",
+    "Backsword",
+    "Barbarian Swords",
+    "One-Hand Damage: (130 - 144) to (138 - 153)|(Barbarian Only)|Required Level: 100|Required Strength: 526|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|+(2 to 3) to All Skills|1% Chance to cast level 2 Gift of Inner Fire on Striking|+(18 to 24)% Bonus Damage to Bloodlust|+(18 to 24)% Bonus Damage to Mark of the Wild|60% Attack Speed|+(171 to 200)% Enhanced Damage|+1 to Bloodlust|+1 to Gift of the Wild|Socketed (3)"
+  ],
+  [
+    "The Pathless",
+    "Ida",
+    "Barbarian Swords",
+    "One-Hand Damage: (250 - 290) to (298 - 317)|(Barbarian Only)|Required Level: 100|Required Strength: 552|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|If You Have no Points in combat stances: Thunder Slam: cooldown reduced by 4 seconds|Shower of Rocks: cooldown reduced by 1 second|Adds (120 to 160)-(161 to 180) Damage|5% Life stolen per Hit|+160% Enhanced Damage|Physical Resist 5%|+50 Mana on Melee Attack|150% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Claw of the Spirit Wolf",
+    "Ida",
+    "Barbarian Swords",
+    "One-Hand Damage: 50 to 53|(Barbarian Only)|Required Level: 100|Required Strength: 552|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|+2% Fire, Cold and Lightning resistances per Wolf Companion Skill Level|Gain 65% of your Wolf Companion Base Damage as Flat Physical Damage|+(4 to 6) to Barbarian Skill Levels|100% Attack Speed|+300 Life Regenerated per Second|10% Reanimate as: Spirit Wolf|Socketed (6)"
+  ],
+  [
+    "Esubane",
+    "Bronze Sword",
+    "Barbarian Swords",
+    "One-Hand Damage: 52 to 55|(Barbarian Only)|Required Level: 100|Required Strength: 576|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|Salvation Aura|5% Fire, Cold, and Lightning Absorb|20 Yard Radius|+(3 to 5) to Barbarian Skill Levels|(-50 to 100) to all Attributes|Elemental Resists +(10 to 25)%|Poison Length Reduction (20 to 50)%|(25 to 75)% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Giyua's Grace",
+    "Bronze Sword",
+    "Barbarian Swords",
+    "One-Hand Damage: 256 to 275|(Barbarian Only)|Required Level: 100|Required Strength: 576|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|(-15 to 30)% Movement Speed|10% Chance to cast level 1 Devastation on Melee Attack|-40% Attack Speed|Adds 100-110 Damage|+200% Enhanced Damage|Weapon Physical Damage +(80 to 100)%|5% Chance to Avoid Damage|Socketed (6)"
+  ],
+  [
+    "Skeld's Battlesong",
+    "Kriegsmesser",
+    "Barbarian Swords",
+    "One-Hand Damage: 53 to 57|(Barbarian Only)|Required Level: 100|Required Strength: 642|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|Guardian Spirits Inherit 100% of Your Deadly Strike|+(3 to 5) to Barbarian Skill Levels|1% Base Block Chance|+(13 to 25)% to Summon Damage|+(25 to 75) to Vitality|Regenerate Mana +(10 to 30)%|Maximum Lightning Resist +(1 to 2)%|Socketed (6)"
+  ],
+  [
+    "Thunder King of Sescheron",
+    "Kriegsmesser",
+    "Barbarian Swords",
+    "One-Hand Damage: 53 to 57|(Barbarian Only)|Required Level: 100|Required Strength: 642|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Stormblast: +1 Projectile|Thundergod Nova Deals 5000 Lightning Damage|Lightning Shield: +(18 to 30) Lightning Damage to Weapon per Skill Level|20% Chance to cast level 10 Life Spark on Melee Attack|Adds (200 to 300)-(450 to 600) Lightning Damage|-(30 to 40)% to Enemy Lightning Resistance|+10 to Stormblast|10% Chance of Crushing Blow|100% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Cleaver of Mirrors",
+    "Hammerhead Axe",
+    "Barbarian One-Handed Axes",
+    "One-Hand Damage: (193 - 263) to (280 - 305)|(Barbarian Only)|Required Level: 100|Required Strength: 630|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|While Dual Wielding This Weapon: +1 Projectile to Iceburst|Adds (40 to 110)-(115 to 140) Damage|+200% Enhanced Damage|-(20 to 40)% to Enemy Cold Resistance|+(10 to 20) to Deathgaze|+1 to Iceburst|+(100 to 150) Life Regenerated per Second|Maximum Cold Resist +(1 to 2)%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Peace Warder",
+    "Hammerhead Axe",
+    "Barbarian One-Handed Axes",
+    "One-Hand Damage: (187 - 343) to (328 - 375)|(Barbarian Only)|Required Level: 100|Required Strength: 630|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Fortress: 60% Pierce Chance|Dual wield: No cooldown until Skill Level 16|+(0 to 3) to Barbarian Skill Levels|5% Chance to cast level 1 Arrow on Striking|Adds (60 to 190)-(191 to 210) Damage|+(150 to 200)% Enhanced Damage|Maximum Elemental Resists +(0 to 2)%|Socketed (6)"
+  ],
+  [
+    "Ord Rekar's Testament",
+    "Ono",
+    "Barbarian Two-Handed Axes",
+    "(Barbarian Only)|Required Level: 100|Required Strength: 733|Item Level: 105|Innate Lightning Damage: (88.0% of Strength)|-4% to Enemy Elemental Resistances per Nephalem Spirit Base Level|10% Chance to cast level 50 Spiral Dance on Melee Attack|Adds 400-500 Fire Damage|Adds 550-650 Lightning Damage|Adds 250-350 Lightning Damage|Adds 400-500 Cold Damage|+(500 to 2000) Defense|+(50 to 150) to Vitality|Elemental/Magic Damage Taken Reduced by (50 to 100)|+(30 to 100) Life after each Kill|Requirements +50%|Socketed (6)"
+  ],
+  [
+    "Yaggai's Sagaris",
+    "Labrys",
+    "Barbarian Two-Handed Axes",
+    "Two-Hand Damage: (466 - 496) to (471 - 502)|(Barbarian Only)|Required Level: 100|Required Strength: 796|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Thunderfury|50% Chance to cast level 16 Stormblast on Melee Attack|50% Attack Speed|+175 Damage|-35% to Enemy Lightning Resistance|+(172 to 200)% Enhanced Damage|+100 to Strength|+100 to Vitality|Elemental Resists +(10 to 20)%|+250 Life on Melee Attack|Socketed (6)"
+  ],
+  [
+    "The King of Ents",
+    "Labrys",
+    "Barbarian Two-Handed Axes",
+    "Two-Hand Damage: (346 - 411) to (391 - 437)|(Barbarian Only)|Required Level: 100|Required Strength: 796|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Thunderfury|Treewarden Morph|+1 to Barbarian Skill Levels|50% Attack Speed|Adds (55 to 90)-(95 to 110) Damage|+(172 to 200)% Enhanced Damage|+(5 to 15) to Rend|+(50 to 100) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Faerie Pyre",
+    "Serpent Bow",
+    "Druid Bows",
+    "Two-Hand Damage: (213 - 311) to (302 - 352)|(Druid Only)|Required Level: 100|Required Strength: 555|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Laughing Ghost: +8% Bonus Magic Damage per Summon Skill Base Level|1% Chance to cast level 10 Arrow on Striking|Adds (50 to 120)-(130 to 150) Damage|15% Life stolen per Hit|+(130 to 170)% Enhanced Damage|+28 to Laughing Ghost|Fire Absorb (1 to 5)%|Lightning Absorb (1 to 5)%|Cold Absorb (1 to 5)%|(25 to 50)% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Zephyr",
+    "Maple Bow",
+    "Druid Bows",
+    "(Druid Only)|Required Level: 100|Required Strength: 600|Item Level: 105|Innate Fire Damage: (80.0% of Strength)|+1% Attack Speed per 25 Strength|Adds 450-650 Fire Damage|-(15 to 30)% to Enemy Fire Resistance|+9 to Heartseeker (Druid Only)|+9 to Cascade (Druid Only)|10% Chance of Crushing Blow|+25% to Summon Elemental Resistances|25% Magic Find|Socketed (6)"
+  ],
+  [
+    "Void-Touched",
+    "Maple Bow",
+    "Druid Bows",
+    "(Druid Only)|Required Level: 100|Required Strength: 3000|Item Level: 120|Innate Fire Damage: (80.0% of Strength)|Erupting Strike grants 8% extra bonus fire damage per character level above 137|15% Chance to cast level 1 Corrupted Vines on Death Blow|Adds 250-350 Fire Damage|-20% to Enemy Fire Resistance|Physical Resist 10%|50% Magic Find|Requirements +400%|Hunter Only Upgrade: Must have at least 3000 Strength|Survive the Edge of Nothingness battle for 11 minutes|Transmute in the Horadric Cube to Upgrade|Socketed (6)"
+  ],
+  [
+    "Azgar's Mark",
+    "Viper Bow",
+    "Druid Bows",
+    "Two-Hand Damage: (244 - 267) to (299 - 324)|(Druid Only)|Required Level: 100|Required Strength: 660|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|+(2 to 4) to Druid Skill Levels|1% Chance to cast level 60 Meteor Shower on Kill|20% Chance to cast level 4 Arrow on Striking|+(12 to 24)% Bonus Damage to Mark of the Wild|(51 to 100)% Duration Bonus to Mark of the Wild|Adds 60-100 Damage|(6 to 10)% Life stolen per Hit|-(10 to 15)% to Enemy Fire Resistance|+(140 to 170)% Enhanced Damage|+75 Life Regenerated per Second|Socketed (6)"
+  ],
+  [
+    "Storm Arc",
+    "Viper Bow",
+    "Druid Bows",
+    "Two-Hand Damage: 77 to 83|(Druid Only)|Required Level: 100|Required Strength: 660|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Mind Flay: +2 Projectiles|Level 20 Eagle Stance|Restores 2.8% Life per Second|Regenerate Mana +40%|75% Cast Speed|75% Hit Recovery|+75% to Lightning Spell Damage|-50% to Enemy Lightning Resistance|+(45 to 60) to Mind Flay|Maximum Lightning Resist +10%|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Guardian of Scosglen",
+    "Recurve Bow",
+    "Druid Bows",
+    "Two-Hand Damage: 81 to 90|(Druid Only)|Required Level: 100|Required Strength: 725|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Adds 1 - 4 Fire, Cold and Lightning Damage to Weapon per 1 Spell Focus until capped|1% Chance to cast level 5 Charged Strike on Striking|-(5 to 20)% to Enemy Elemental Resistances|+1 to Trinity Arrow|+25% to Summon Elemental Resistances|Poison Length Reduction 50%|-15% Mana Cost of Skills|+(1 to 50) Life after each Kill|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Mr. Painless",
+    "Recurve Bow",
+    "Druid Bows",
+    "Two-Hand Damage: (272 - 294) to (319 - 343)|(Druid Only)|Required Level: 100|Required Strength: 725|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|+4 to Druid Skill Levels|9% Chance to cast level 50 Punisher Bolt on Striking|40% Attack Speed|Adds 75-100 Damage|+(144 to 171)% Enhanced Damage|-(25 to 30)% to Enemy Poison Resistance|Slow Target (21 to 25)%|+100 to Dexterity|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Hanfod Tan",
+    "Flamen Staff",
+    "Druid Staves",
+    "Two-Hand Damage: 48 to 51|(Druid Only)|Required Level: 100|Required Strength: 240|Item Level: 105|Strength Damage Bonus: (0.06 per Strength)%|Ember Spirit: +25% Total Damage|+(7 to 9) to Druid Skill Levels|30% Cast Speed|+(15 to 30)% to Fire Spell Damage|-(10 to 20)% to Enemy Fire Resistance|+(15 to 30)% to Cold Spell Damage|-(10 to 20)% to Enemy Cold Resistance|+20% to Summon Physical Resist|Regenerate Mana +25%|Physical Damage Taken Reduced by 50|Socketed (4)"
+  ],
+  [
+    "The Searing Heat",
+    "Flamen Staff",
+    "Druid Staves",
+    "Two-Hand Damage: 48 to 51|(Druid Only)|Required Level: 100|Required Strength: 240|Item Level: 120|Strength Damage Bonus: (0.06 per Strength)%|Hunting Banshee Nullified|+3 Ember Spirit Projectiles|+(9 to 10) to Druid Skill Levels|+150 Spell Focus|25% Cast Speed|+(25 to 40)% to Fire Spell Damage|-(20 to 30)% to Enemy Fire Resistance|15% to Energy|Physical Resist 5%|5% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "The Biting Frost",
+    "Flamen Staff",
+    "Druid Staves",
+    "Two-Hand Damage: 48 to 51|(Druid Only)|Required Level: 100|Required Strength: 240|Item Level: 120|Strength Damage Bonus: (0.06 per Strength)%|Ember Spirit Nullified|+2 Hunting Banshee Projectiles|+(9 to 10) to Druid Skill Levels|+150 Spell Focus|25% Cast Speed|+(25 to 40)% to Cold Spell Damage|-(20 to 30)% to Enemy Cold Resistance|15% to Energy|Physical Resist 5%|5% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Iron Shard",
+    "Raptor Scythe",
+    "Necromancer Scythes",
+    "Two-Hand Damage: (297 - 360) to (335 - 390)|(Necromancer Only)|Required Level: 100|Required Strength: 1439|Item Level: 105|Dexterity Damage Bonus: (0.14 per Dexterity)%|Strength Damage Bonus: (0.14 per Strength)%|Ethereal|Mega Impact|When Iron Golem Consumes This Item: +20% Deadly Strike|+20% Crushing Blow|+160% to Iron Golem Damage|10% Chance to cast level 10 Spike Rush on Melee Attack|Adds (105 to 130)-(135 to 150) Damage|(101 to 150)% Bonus to Attack Rating|+(100 to 140)% Enhanced Damage|+(1001 to 5000) Defense|Maximum Life -20%|5% Reanimate as: Random Monster|Requirements +250%|Socketed (6)"
+  ],
+  [
+    "Reaper's Hand",
+    "Bonesplitter",
+    "Necromancer Scythes",
+    "Two-Hand Damage: (258 - 396) to (353 - 442)|(Necromancer Only)|Required Level: 100|Required Strength: 512|Item Level: 105|Dexterity Damage Bonus: (0.14 per Dexterity)%|Strength Damage Bonus: (0.14 per Strength)%|Mega Impact|20% Chance to cast level 1 Raid on Melee Attack|Additional Strength Damage Bonus: 0.046875%|Adds (70 to 150)-(160 to 190) Damage|(150 to 250)% Bonus to Attack Rating|(5 to 10)% Life stolen per Hit|+(130 to 200)% Enhanced Damage|Freezes Target +1|Socketed (6)"
+  ],
+  [
+    "Karybdus' Descent",
+    "Marrow Staff",
+    "Necromancer Staves",
+    "Two-Hand Damage: 45 to 49|(Necromancer Only)|Required Level: 100|Required Strength: 275|Item Level: 105|Strength Damage Bonus: (0.06 per Strength)%|Bane: +100% Duration|Enhances Death Ripple|+(8 to 11) to Necromancer Skill Levels|2% Chance to cast level 50 Blood Skeleton on Death Blow|-25% Cast Speed|Maximum Elemental Resists (-1 to 1)%|Physical Resist (5 to 10)%|Socketed (6)"
+  ],
+  [
+    "Shadowfiend",
+    "Marrow Staff",
+    "Necromancer Staves",
+    "Two-Hand Damage: 45 to 49|(Necromancer Only)|Required Level: 100|Required Strength: 275|Item Level: 120|Strength Damage Bonus: (0.06 per Strength)%|+8 to Necromancer Skill Levels|(50 to 70)% Cast Speed|+100% to Summon Life|+(125 to 200)% to Summon Damage|+(25 to 50)% to Summon Elemental Resistances|+(100 to 130) Life after each Kill|10% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "The Worshipper",
+    "Marrow Staff",
+    "Necromancer Staves",
+    "Two-Hand Damage: 45 to 49|(Necromancer Only)|Required Level: 120|Required Strength: 275|Item Level: 130|Strength Damage Bonus: (0.06 per Strength)%|+1 Extra Totems|+(8 to 11) to Necromancer Skill Levels|Bend the Shadows Cooldown Reduced by 1 seconds|-50% to Enemy Fire Resistance|-50% to Enemy Lightning Resistance|-50% to Enemy Cold Resistance|+(501 to 1000) to Life|+(251 to 500) to Mana|(51 to 100)% Magic Find|Slain Monsters Rest in Peace|Socketed (6)"
+  ],
+  [
+    "Dreamflayer",
+    "Hexblade",
+    "Necromancer Daggers",
+    "(Necromancer Only)|Required Level: 100|Required Dexterity: 463|Item Level: 105|Innate Fire Damage: (52.0% of Dexterity)|-3% to Enemy Elemental Resistances per Carnage Base Level|Adds 160-250 Fire Damage|Adds 300-600 Lightning Damage|Adds 300-600 Cold Damage|+1500 Poison Damage over 1 seconds|+(500 to 1500) Defense|+(500 to 1000) to Life|Maximum Mana -33%|+(100 to 150) Life on Melee Attack|Socketed (3)"
+  ],
+  [
+    "Heart of Fire",
+    "Hexblade",
+    "Necromancer Daggers",
+    "(Necromancer Only)|Required Level: 100|Required Dexterity: 926|Item Level: 120|Innate Fire Damage: (52.0% of Dexterity)|+(4 to 5) to Necromancer Skill Levels|20% Chance to cast level 60 Pyroblast on Melee Attack|1% Chance to cast level 40 Pentagram on Striking|Adds 160-250 Fire Damage|-(40 to 60)% to Enemy Fire Resistance|+1000 Defense|Physical Resist 10%|+(100 to 200) Life on Melee Attack|100% Bonus to Defense|Requirements +100%|Socketed (3)"
+  ],
+  [
+    "Mente Scura",
+    "Spirit Edge",
+    "Necromancer Daggers",
+    "One-Hand Damage: (156 - 206) to (266 - 293)|(Necromancer Only)|Required Level: 100|Required Dexterity: 537|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Strength Damage Bonus: (0.11 per Strength)%|Parasite: +200% Bonus Magic Damage|+(2 to 4) to Necromancer Skill Levels|10% Chance to cast level 12 Charged Strike on Melee Attack|Adds (80 to 120)-(130 to 140) Damage|+(140 to 170)% Enhanced Damage|10% Chance of Crushing Blow|+100 to Vitality|Maximum Elemental Resists +(0 to 1)%|5% Reanimate as: Random Monster|Socketed (3)"
+  ],
+  [
+    "The Defiler",
+    "Spirit Edge",
+    "Necromancer Daggers",
+    "One-Hand Damage: (180 - 281) to (332 - 371)|(Necromancer Only)|Required Level: 100|Required Dexterity: 537|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|Strength Damage Bonus: (0.11 per Strength)%|Area Effect Attack|Deathlord Morph|+(1 to 3) to Necromancer Skill Levels|Adds (100 to 185)-(190 to 200) Damage|(10 to 15)% Life stolen per Hit|+(150 to 200)% Enhanced Damage|+1 to Void Tendrils|(10 to 15)% Deadly Strike|Socketed (3)"
+  ],
+  [
+    "Hwanin's Hwacha",
+    "Needle Crossbow",
+    "Necromancer Crossbows",
+    "(Necromancer Only)|Required Level: 100|Required Strength: 244|Item Level: 105|Innate Fire Damage: (80.0% of Strength)|Alchemic Preparation: Flametail Shot gains +1 Projectile per 4 Base Levels|Flametail Shot Inherits Catapult Shot's Fire Damage|+5 to Necromancer Skill Levels|4% Chance to cast level 24 Flametail Shot on Striking|60% Attack Speed|Adds 250-350 Fire Damage|(5 to 12)% Innate Elemental Damage|+150 to Strength|-100 to Dexterity|Socketed (6)"
+  ],
+  [
+    "Breath of Fire",
+    "Needle Crossbow",
+    "Necromancer Crossbows",
+    "(Necromancer Only)|Required Level: 100|Required Strength: 244|Item Level: 120|Innate Fire Damage: (80.0% of Strength)|Flameburst shot: +10 projectiles|+(3 to 5) to Necromancer Skill Levels|4% Chance to cast level 25 Flamefront on Striking|40% Attack Speed|Adds 400-650 Fire Damage|-(20 to 30)% to Enemy Fire Resistance|Maximum Elemental Resists +2%|Physical Resist 5%|Socketed (6)"
+  ],
+  [
+    "Death's Reach",
+    "Dart Thrower",
+    "Necromancer Crossbows",
+    "Two-Hand Damage: (272 - 455) to (440 - 503)|(Necromancer Only)|Required Level: 100|Required Strength: 395|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Widowmaker and Life Steal Nullified|50 Life Regeneration per Widowmaker Base Level|Deathly Effigy: +4 to Maximum Effigies|Sacrifices: -2 Seconds to Cooldown|25% Cast Speed|25% Hit Recovery|Adds (60 to 200)-(225 to 245) Damage|+(150 to 200)% Enhanced Damage|+(1500 to 2000) Defense|(10 to 20)% to Strength|Maximum Elemental Resists +1%|Socketed (6)"
+  ],
+  [
+    "Advent of Hatred",
+    "Dart Thrower",
+    "Necromancer Crossbows",
+    "Two-Hand Damage: (322 - 455) to (416 - 508)|(Necromancer Only)|Required Level: 100|Required Strength: 1185 to 1580|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Deathly Effigy: +1 Maximum Effigy Allowed|10% Chance to cast level 1 Bolt on Striking|30% Attack Speed|Adds (110 to 200)-(201 to 250) Damage|(75 to 150)% Bonus to Attack Rating|+(150 to 200)% Enhanced Damage|20% to Strength|Requirements +(200 to 300)%|Socketed (6)"
+  ],
+  [
+    "Nymyr's Shadow",
+    "Trebuchet",
+    "Necromancer Crossbows",
+    "Two-Hand Damage: (246 - 354) to (375 - 431)|(Necromancer Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|+4 to Necromancer Skill Levels|5% Chance to cast level 20 Flametail Shot on Kill|40% Attack Speed|Adds (40 to 110)-(120 to 130) Damage|(5 to 10)% Life stolen per Hit|+(120 to 160)% Enhanced Damage|+(26 to 34) to Flametail Shot|-20% Mana Cost of Skills|Socketed (6)"
+  ],
+  [
+    "Stygian Fury",
+    "Trebuchet",
+    "Necromancer Crossbows",
+    "Two-Hand Damage: (305 - 443) to (490 - 544)|(Necromancer Only)|Required Level: 100|Required Strength: 500|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Total Defense reduced by 25%|+1% Deadly Strike per 6% Fire Spell Damage|3% Chance to cast level 63 Apocalypse on Kill|1% Chance to cast level 50 Funeral Pyre on Striking|Adds (70 to 180)-(200 to 220) Damage|-15% to Enemy Fire Resistance|+(150 to 180)% Enhanced Damage|Slow Target 15%|Physical Resist 5%|Socketed (6)"
+  ],
+  [
+    "Grim Visor",
+    "Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 35 to 36|(Necromancer Only)|Required Level: 100|Required Dexterity: 166|Item Level: 105|Dexterity Damage Bonus: (0.06 per Dexterity)%|Grim Vision: Aura Level Increased by 5|+4 to All Skills|+(0 to 1) to Maximum Necromancer Minions|+(31 to 60)% to Summon Life|+(11 to 25)% to Summon Elemental Resistances|+10% to Summon Physical Resist|+(101 to 150)% to Summon Attack Rating|+(1001 to 2500) Defense|(21 to 25)% to Vitality|Socketed (2)"
+  ],
+  [
+    "Hand of Rathma",
+    "Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 35 to 36|(Necromancer Only)|Required Level: 80|Required Dexterity: 166|Item Level: 120|Dexterity Damage Bonus: (0.06 per Dexterity)%|+1% Maximum Elemental Resists per Totem of that Element|+1.5% Physical Resist per Resurgence Base Level|Orb Effects Applied to this Item are Doubled|-33% to Enemy Elemental Resistances|+(76 to 100)% to Summon Damage|+5000 Defense|Socketed (2)"
+  ],
+  [
+    "Manastorm",
+    "Yew Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 36 to 38|(Necromancer Only)|Required Level: 100|Required Dexterity: 168|Item Level: 105|Dexterity Damage Bonus: (0.06 per Dexterity)%|+(2 to 3) to All Skills|+(31 to 40)% to Physical/Magic Spell Damage|+(9 to 20) to Immersion|+20% to Summon Elemental Resistances|+3000 Defense vs. Melee|(20 to 25)% to Energy|Maximum Lightning Resist +2%|Maximum Cold Resist +2%|Physical Resist 5%|Socketed (2)"
+  ],
+  [
+    "Daydreamer",
+    "Yew Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 36 to 38|(Necromancer Only)|Required Level: 130|Required Dexterity: 168|Item Level: 120|Dexterity Damage Bonus: (0.06 per Dexterity)%|If you have No Ultimate Skill: +30% Nightwalker damage bonus|+375 Life Regenerated per Second|-150% to Summon Damage|+(3 to 5) to Necromancer Skill Levels|2% Base Block Chance|+(61 to 75) Spell Focus|50% Cast Speed|+(31 to 50)% to Physical/Magic Spell Damage|+20% to Poison Spell Damage|Socketed (2)"
+  ],
+  [
+    "Storm Focus",
+    "Bone Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 37 to 40|(Necromancer Only)|Required Level: 100|Required Dexterity: 170|Item Level: 105|Dexterity Damage Bonus: (0.06 per Dexterity)%|+(4 to 6) to Necromancer Skill Levels|+(50 to 100) Spell Focus|30% Cast Speed|+(20 to 30)% to Lightning Spell Damage|-(20 to 30)% to Enemy Lightning Resistance|+(30 to 40)% to Summon Life|Maximum Lightning Resist +2%|30% Gold Find|Socketed (2)"
+  ],
+  [
+    "Malevolence",
+    "Bone Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 37 to 40|(Necromancer Only)|Required Level: 100|Required Dexterity: 170|Item Level: 120|Dexterity Damage Bonus: (0.06 per Dexterity)%|+10% Bonus to Spell Focus|+(21 to 50)% to Physical/Magic Spell Damage|+(21 to 50)% to Poison Spell Damage|-(26 to 35)% to Enemy Poison Resistance|+(17 to 27) to Venomcloud Totem|+(101 to 150) to Energy|Maximum Mana +(11 to 15)%|Socketed (2)"
+  ],
+  [
+    "King's Desire",
+    "Grim Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 39 to 44|(Necromancer Only)|Required Level: 100|Required Dexterity: 172|Item Level: 105|Dexterity Damage Bonus: (0.06 per Dexterity)%|Veil King: +25% Total Damage|Night Hawks: +10% Total Damage and +2 Extra Hawks|+(1 to 4) to Necromancer Skill Levels|25% Cast Speed|+(16 to 30)% to Summon Damage|+100 to Strength|+(501 to 1000) to Life|Physical Resist -5%|Socketed (2)"
+  ],
+  [
+    "Smokeless Fire",
+    "Grim Wand",
+    "Necromancer Wands",
+    "One-Hand Damage: 39 to 44|(Necromancer Only)|Required Level: 100|Required Dexterity: 172|Item Level: 120|Dexterity Damage Bonus: (0.06 per Dexterity)%|+1 Extra Fireheart Totem|+(2 to 3) to Necromancer Skill Levels|1% Base Block Chance|+66% to Fire Spell Damage|+(51 to 75)% to Summon Damage|(11 to 20)% to All Attributes|Fire Absorb 5%|+(101 to 200) Life after each Kill|Socketed (2)"
+  ],
+  [
+    "The Pyre",
+    "Bonebreaker",
+    "Paladin Maces",
+    "One-Hand Damage: 51 to 52|(Paladin Only)|Required Level: 100|Required Strength: 544|Item Level: 105|Strength Damage Bonus: (0.14 per Strength)%|+(2 to 3) to Paladin Skill Levels|50% Cast Speed|+(30 to 40)% to Physical/Magic Spell Damage|+(15 to 25)% to Fire Spell Damage|-15% to Enemy Fire Resistance|+(17 to 28) to Flamestrike|Elemental Resists +15%|+(75 to 100) Life after each Kill|30% Gold Find|Socketed (3)"
+  ],
+  [
+    "Mad King's Spine",
+    "Bonebreaker",
+    "Paladin Maces",
+    "One-Hand Damage: (222 - 313) to (294 - 346)|(Paladin Only)|Required Level: 100|Required Strength: 544|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Superbeast adds Deadly Strike Instead of Spell Damage at 50% efficiency|+(1 to 3) to All Skills|25% Chance to cast level 1 Rend on Melee Attack|Adds (100 to 160)-(170 to 190) Damage|10% Life stolen per Hit|Stun Attack|+(140 to 200)% Enhanced Damage|Physical Resist -(5 to 10)%|Socketed (3)"
+  ],
+  [
+    "Darkfeast",
+    "Goedendag",
+    "Paladin Maces",
+    "One-Hand Damage: 53 to 54|Required Strength: 574|Required Level: 100|Item Level: 105|(Paladin Only)|Strength Damage Bonus: (0.18 per Strength)%|+(2 to 3) Projectile to Hunting Banshee|+(50 to 200) Spell Focus|+50% Damage to Undead|+(30 to 50)% to Cold Spell Damage|-(10 to 25)% to Enemy Cold Resistance|+(18 to 30) to Hunting Banshee|+50 Life Regenerated per Second|Total Character Defense (30 to 60)%|+50 Life after each Kill|Socketed (3)"
+  ],
+  [
+    "Adjudicator",
+    "Goedendag",
+    "Paladin Maces",
+    "One-Hand Damage: 53 to 54|(Paladin Only)|Required Level: 100|Required Strength: 574|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Holy: Holy Fire Deals 4.5% of Strength as More Total Damage (max 250%)|Unholy: Blood Thorns: +40% Damage Multiplier|Nephalem: +25% Total Vessel Damage Bonus from Passives|+1 to Paladin Skill Levels|Adds 175-325 Fire Damage|Adds 1-600 Lightning Damage|Adds 200-250 Cold Damage|+800 Poison Damage over 1 seconds|-(15 to 25)% to Enemy Elemental Resistances|Socketed (3)"
+  ],
+  [
+    "Herald of Pestilence",
+    "Angel Star",
+    "Paladin Maces",
+    "One-Hand Damage: 55 to 58|(Paladin Only)|Required Level: 100|Required Strength: 602|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Deal No Fire, Cold or Lightning Damage|Graveyard: +40% Total Damage and +2 Projectiles|+(1 to 2) to All Skills|3% Chance to cast level 40 Rotting Flesh on Kill|+(25 to 50)% Bonus to Poison Skill Duration|+(25 to 40)% to Poison Spell Damage|-(15 to 30)% to Enemy Poison Resistance|+(10 to 15) to Devouring Cloud|+(20 to 30) to Graveyard|Socketed (3)"
+  ],
+  [
+    "The Angiris Star",
+    "Angel Star",
+    "Paladin Maces",
+    "One-Hand Damage: 55 to 58|(Paladin Only)|Required Level: 100|Required Strength: 602|Item Level: 120|Strength Damage Bonus: (0.14 per Strength)%|Enhances Death Ripple|+(4 to 6) to Paladin Skill Levels|20% Movement Speed|10% Chance to cast level 40 Death Ripple on Death Blow|+30% to Physical/Magic Spell Damage|+(19 to 28) to Death Ripple|(5 to 20)% to Vitality|(5 to 20)% to Energy|Maximum Elemental Resists +1%|Socketed (3)"
+  ],
+  [
+    "Chober Chaber",
+    "Hand of God",
+    "Paladin Hammers",
+    "Two-Hand Damage: 104 to 105|(Paladin Only)|Required Level: 100|Required Strength: 832|Item Level: 105|Strength Damage Bonus: (0.18 per Strength)%|Amazing Grace|Level 30 Kraken Stance|Adds 150-375 Fire, Cold, and Lightning Damage|Kraken Stance: +3% Damage per Base Level in the Templar Tree|(100 to 150)% Attack Speed|Ignore Target's Defense|Adds 150-300 Fire Damage|Adds 150-300 Lightning Damage|Adds 150-300 Cold Damage|-(25 to 35)% to Enemy Elemental Resistances|Socketed (6)"
+  ],
+  [
+    "Malleus Maleficarum",
+    "Hand of God",
+    "Paladin Hammers",
+    "Two-Hand Damage: (408 - 512) to (435 - 540)|(Paladin Only)|Required Level: 100|Required Strength: 832|Item Level: 120|Strength Damage Bonus: (0.18 per Strength)%|Amazing Grace|If you have at least 450% Damage to Demons|+10% Fire Absorb|+10% Cold Absorb|+10% Lightning Absorb|+25% Deadly Strike|7% Chance to cast level 1 Heaven's Fury on Melee Attack|20% Chance to cast level 10 Thunder Hammer Nova on Melee Attack|Adds 200-225 Damage|(100 to 200)% Bonus to Attack Rating|15% Life stolen per Hit|+(100 to 200)% Enhanced Damage|15% Chance of Crushing Blow|+1000 Defense|+100 Mana on Melee Attack|Fear No Evil|Socketed (6)"
+  ],
+  [
+    "In Fero Salva",
+    "Holy Lance",
+    "Paladin Spears",
+    "Two-Hand Damage: 49 to 85|(Paladin Only)|Required Level: 100|Required Strength: 514|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Amazing Grace|You may only use Melee, Summon and Support Skills|+(150 to 200) Spell Focus|50% Attack Speed|+(35 to 50)% to Fire Spell Damage|+(35 to 50)% to Cold Spell Damage|+(12 to 15) to Lemures (Paladin Only)|+(12 to 15) to Blood Thorns (Paladin Only)|+5000 Defense|Maximum Fire Resist +2%|Maximum Cold Resist +2%|Socketed (6)"
+  ],
+  [
+    "Venom Sting",
+    "Holy Lance",
+    "Paladin Spears",
+    "Two-Hand Damage: (307 - 322) to (405 - 430)|(Paladin Only)|Required Level: 100|Required Strength: 514|Item Level: 120|Strength Damage Bonus: (0.16 per Strength)%|Amazing Grace|+(2 to 3) to Paladin Skill Levels|10% Chance to cast level 50 Punishers on Striking|60% Attack Speed|+175 Damage|150% Bonus to Attack Rating|30% Life stolen per Hit|+(171 to 200)% Enhanced Damage|+100% to Poison Spell Damage|-(50 to 70)% to Enemy Poison Resistance|+(50 to 100) to all Attributes|Socketed (6)"
+  ],
+  [
+    "Black Sun Spear",
+    "Tepoztopilli",
+    "Paladin Spears",
+    "Two-Hand Damage: 68 to 75|(Paladin Only)|Required Level: 100|Required Strength: 733|Item Level: 105|Strength Damage Bonus: (0.16 per Strength)%|Amazing Grace|+(7 to 11) to Paladin Skill Levels|+(150 to 250) Spell Focus|+(30 to 40)% to Physical/Magic Spell Damage|+(30 to 40)% to Lightning Spell Damage|-(35 to 50)% to Enemy Lightning Resistance|+(10 to 16) to Overcharged|+150 Life Regenerated per Second|100% Bonus to Defense|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Inarius' Testament",
+    "Tepoztopilli",
+    "Paladin Spears",
+    "Two-Hand Damage: (393 - 414) to (417 - 440)|(Paladin Only)|Required Level: 100|Required Strength: 733|Item Level: 130|Strength Damage Bonus: (0.16 per Strength)%|Innate Lightning Damage: (56.0% of Strength)|Amazing Grace|Sanctity and Consecration: penalties removed|Adds 210-215 Damage|250% Bonus to Attack Rating|-50% to Enemy Elemental Resistances|+(170 to 200)% Enhanced Damage|+1 to Consecration (Paladin Only)|+1 to Sanctity (Paladin Only)|+777 to Life|Socketed (6)"
+  ],
+  [
+    "Habacalva's Legacy",
+    "Eagle Orb",
+    "Sorceress Orbs",
+    "One-Hand Damage: 35 to 36|(Sorceress Only)|Required Level: 100|Required Dexterity: 171|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Flamefront: +30% Damage Multiplier|-(11 to 25)% to Enemy Fire Resistance|-50% to Lightning Spell Damage|-50% to Cold Spell Damage|-50% to Poison Spell Damage|+(8 to 15) to Living Flame (Sorceress Only)|+(8 to 15) to Flamestrike (Sorceress Only)|+(8 to 15) to Flamefront (Sorceress Only)|+(20 to 25) to Pyroblast|Socketed (2)"
+  ],
+  [
+    "Holy Wars",
+    "Eagle Orb",
+    "Sorceress Orbs",
+    "One-Hand Damage: 35 to 36|(Sorceress Only)|Required Level: 100|Required Dexterity: 171|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|+4 to Sorceress Skill Levels|7% Chance to cast level 60 Fire Cannonade on Death Blow|50% Cast Speed|+(20 to 30)% to Spell Damage|-(20 to 30)% to Enemy Elemental Resistances|+(30 to 35) to Emerald Prison|20% to Energy|+(80 to 100) Life after each Kill|3% Reanimate as: Random Monster|Socketed (2)"
+  ],
+  [
+    "Ghostmoon",
+    "Sacred Globe",
+    "Sorceress Orbs",
+    "One-Hand Damage: 36 to 37|(Sorceress Only)|Required Level: 100|Required Dexterity: 177|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Forked Lightning: +48% Damage Multiplier|+(4 to 6) to Sorceress Skill Levels|+20% to Spell Damage|-20% to Enemy Elemental Resistances|(10 to 20)% to Energy|Regenerate Mana +(15 to 40)%|Maximum Elemental Resists +(0 to 1)%|(15 to 25)% Gold Find|(15 to 25)% Magic Find|Socketed (2)"
+  ],
+  [
+    "Mistress of Pain",
+    "Sacred Globe",
+    "Sorceress Orbs",
+    "One-Hand Damage: 36 to 37|(Sorceress Only)|Required Level: 100|Required Dexterity: 177|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|If You Have any Points in Vengeful Power, Living Flame or Snow Queen|20 Second Cooldown to All Lightning Tree Spells|+(9 to 10) to Sorceress Skill Levels|25% Movement Speed|+(40 to 60)% to Lightning Spell Damage|-(30 to 40)% to Enemy Lightning Resistance|+(4000 to 5000) Defense|+(175 to 225) to Energy|(10 to 15)% Chance to Avoid Damage|Socketed (2)"
+  ],
+  [
+    "Bane of the Horadrim",
+    "Smoked Sphere",
+    "Sorceress Orbs",
+    "One-Hand Damage: 37 to 39|(Sorceress Only)|Required Level: 100|Required Dexterity: 183|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Mana Shield: 54% less Mana Drained when Hit|+(6 to 8) to Sorceress Skill Levels|+50% to Spell Damage|-10% to Enemy Elemental Resistances|Regenerate Mana +25%|Physical Resist 5%|+50 Life after each Kill|1% Reanimate as: Random Monster|+5 to Light Radius|Socketed (2)"
+  ],
+  [
+    "Glowing Vertigo",
+    "Smoked Sphere",
+    "Sorceress Orbs",
+    "One-Hand Damage: 37 to 39|(Sorceress Only)|Required Level: 100|Required Dexterity: 183|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|(80 to 100)% Cast Speed|+(20 to 25)% to Spell Damage|+(10 to 15) to Psicrown|+(100 to 150) to Energy|+(450 to 600) to Mana|Maximum Mana +40%|Elemental Resists -10%|10% Chance to Avoid Damage|+80 Life after each Kill|8% Weapon Damage Taken Restores Mana|Socketed (2)"
+  ],
+  [
+    "Gravetalon",
+    "Clasped Orb",
+    "Sorceress Orbs",
+    "One-Hand Damage: 39 to 41|(Sorceress Only)|Required Level: 100|Required Dexterity: 188|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|You Cannot Summon Ice Elementals Directly|+(5 to 6) to Sorceress Skill Levels|20% Chance to cast level 35 Ice Elementals on Kill|+25% Bonus to Poison Skill Duration|-(25 to 30)% to Enemy Cold Resistance|-(25 to 30)% to Enemy Poison Resistance|+1 to Ice Elementals|Poison Length Reduction 50%|Curse Length Reduction 33%|Cannot Be Frozen|Socketed (2)"
+  ],
+  [
+    "Atanna's Key",
+    "Clasped Orb",
+    "Sorceress Orbs",
+    "One-Hand Damage: 39 to 41|(Sorceress Only)|Required Level: 100|Required Dexterity: 188|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|+(6 to 7) to Sorceress Skill Levels|2% Chance to cast level 1 Force Blast on Death Blow|+(30 to 40)% to Cold Spell Damage|-(25 to 30)% to Enemy Cold Resistance|Maximum Life +3%|Maximum Cold Resist +5%|(100 to 200)% Bonus to Defense|Socketed (2)"
+  ],
+  [
+    "Leah's Vision",
+    "Jared's Stone",
+    "Sorceress Orbs",
+    "One-Hand Damage: 40 to 43|(Sorceress Only)|Required Level: 100|Required Dexterity: 242|Item Level: 105|Dexterity Damage Bonus: (0.11 per Dexterity)%|Enhanced Death Ripple|+1% Physical/Magic Spell Damage per 20 Vitality|+(5 to 7) to Sorceress Skill Levels|+20% to Physical/Magic Spell Damage|+(40 to 50) to Death Ripple|Regenerate Mana +25%|Elemental Resists -20%|3% Reanimate as: Random Monster|Socketed (3)"
+  ],
+  [
+    "Galeona's Lash",
+    "Jared's Stone",
+    "Sorceress Orbs",
+    "One-Hand Damage: (234 - 300) to (301 - 339)|(Sorceress Only)|Required Level: 100|Required Dexterity: 242|Item Level: 120|Dexterity Damage Bonus: (0.11 per Dexterity)%|+2% Deadly Strike per Firedance Base Level|40% Chance to cast level 1 Ancients' Hand on Melee Attack|Adds (130 to 180)-(190 to 210) Damage|-50% to Enemy Fire Resistance|+(160 to 200)% Enhanced Damage|10% Chance of Crushing Blow|+(1001 to 10000) Defense|Socketed (3)"
+  ],
+  [
+    "Starhawk",
+    "Warp Blade",
+    "Sorceress Crystal Swords",
+    "One-Hand Damage: 49 to 86|(Sorceress Only)|Required Level: 100|Required Dexterity: 400|Item Level: 105|Dexterity Damage Bonus: (0.13 per Dexterity)%|Innate Tri-Elemental Damage: (54.0% of Dexterity)|Area Effect Attack|+(3 to 5) to Sorceress Skill Levels|25% Chance to cast level 50 Magic Missiles on Melee Attack|50% Attack Speed|Adds 400-500 Magic Damage|-(25 to 35)% to Enemy Elemental Resistances|10% Chance to Avoid Damage|Socketed (6)"
+  ],
+  [
+    "Steel Punisher",
+    "Warp Blade",
+    "Sorceress Crystal Swords",
+    "One-Hand Damage: (192 - 207) to (312 - 338)|(Sorceress Only)|Required Level: 100|Required Dexterity: 400|Item Level: 120|Dexterity Damage Bonus: (0.13 per Dexterity)%|Area Effect Attack|Spiral Dance: +300% Bonus Magic Damage|+(1 to 2) to Sorceress Skill Levels|15% Chance to cast level 25 ATMG Sentry on Melee Attack|Adds 60-80 Damage|(15 to 20)% Life stolen per Hit|+(170 to 200)% Enhanced Damage|10% Deadly Strike|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Screen of Viz-Jaq'Taar",
+    "Quilted Armor",
+    "Body Armors",
+    "Defense: (11132 - 11789) to (12317 - 12993)|Required Level: 100|Required Strength: 500|Item Level: 105|+(171 to 200)% Enhanced Defense|+(5000 to 6000) Defense|2% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Beastfur Pelt",
+    "Quilted Armor",
+    "Body Armors",
+    "Defense: (4978 - 5883) to (5128 - 6060)|Required Level: 100|Required Strength: 500|Item Level: 120|+(1 to 2) to All Skills|+(80 to 90) Spell Focus|Winter Avatar Cooldown Reduced by 0.3 seconds|-(30 to 35)% to Enemy Cold Resistance|+1 to Warmth|+(120 to 160)% Enhanced Defense|+(80 to 100) to Dexterity|Maximum Cold Resist +1%|+2 to Light Radius|Socketed (6)"
+  ],
+  [
+    "Natalya's Deception",
+    "Quilted Armor",
+    "Body Armors",
+    "Defense: 2263 to 2331|Required Level: 65|Required Strength: 500|Item Level: 130|Orb Effects Applied to this Item are Quadrupled|Socketed (6)"
+  ],
+  [
+    "Razorspine",
+    "Hard Leather Armor",
+    "Body Armors",
+    "Defense: (3714 - 4372) to (3961 - 4663)|Required Level: 100|Required Strength: 550|Item Level: 105|20% Chance to cast level 7 Spike Nova when Struck|+(58 to 86)% Enhanced Defense|+(41 to 50) to Strength|+(250 to 400) Life Regenerated per Second|Physical Resist 15%|Socketed (6)"
+  ],
+  [
+    "The Petulant",
+    "Hard Leather Armor",
+    "Body Armors",
+    "Defense: 7053 to 7521|Required Level: 100|Required Strength: 550|Item Level: 120|While Tantrum is Active: +0.5% Deadly Strike per Tantrum Skill Level|+0.5% Crushing Blow per Tantrum Skill Level|+3% Weapon Physical Damage per Tantrum Skill Level|25% Movement Speed|Weapon Physical Damage +(30 to 60)%|+200% Enhanced Defense|(15 to 20)% to All Attributes|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Hratli's Craft",
+    "Ring Mail",
+    "Body Armors",
+    "Defense: (6628 - 7311) to (7292 - 8043)|Required Level: 100|Required Strength: 330|Item Level: 105|+1 to All Skills|25% Cast Speed|50% Hit Recovery|+(41 to 50)% to Summon Life|+(172 to 200)% Enhanced Defense|+75 to Dexterity|Physical Resist 10%|40% Magic Find|Requirements -40%|Socketed (6)"
+  ],
+  [
+    "Scales of the Drake",
+    "Ring Mail",
+    "Body Armors",
+    "Defense: (5239 - 5921) to (5764 - 6514)|Required Level: 100|Required Strength: 550|Item Level: 120|+(1 to 2) to All Skills|30% Cast Speed|+(25 to 38)% to Poison Spell Damage|-35% to Enemy Poison Resistance|+(14 to 18) to Lorenado|+(115 to 143)% Enhanced Defense|+300 to Life|Maximum Poison Resist +5%|Physical Resist (5 to 10)%|Socketed (6)"
+  ],
+  [
+    "Alchemist Apron",
+    "Scale Mail",
+    "Body Armors",
+    "Defense: 4960 to 5538|Required Level: 100|Required Strength: 575|Item Level: 105|1% Chance to cast level 50 Cluster Bomb on Death Blow|+(10 to 30)% to Spell Damage|+(10 to 15) to Blast Wave|+(15 to 20) to Powder Keg|+100% Enhanced Defense|Poison Length Reduction 75%|Physical Resist (1 to 10)%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Flameskin",
+    "Scale Mail",
+    "Body Armors",
+    "Defense: (7200 - 8440) to (8922 - 10307)|Required Level: 100|Required Strength: 1150|Item Level: 120|Adds 5 - 7 Fire Damage to Weapon per 2% Attack Speed|Weapon Physical Damage -150%|1% Chance to cast level 6 Life Spark on Striking|-20% to Enemy Fire Resistance|+(150 to 200)% Enhanced Defense|+(1000 to 2000) Defense|Maximum Fire Resist +2%|(50 to 75)% Bonus to Defense|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Hepsheeba's Mantle",
+    "Chain Mail",
+    "Body Armors",
+    "Defense: (6060 - 7575) to (6854 - 8568)|Required Level: 100|Required Strength: 600|Item Level: 105|+(2 to 4) to Paladin Skill Levels|+(2 to 4) to Sorceress Skill Levels|4% Chance to cast level 60 Meteor Shower on Death Blow|30% Cast Speed|-(20 to 30)% to Enemy Fire Resistance|+(15 to 25) to Pentagram|+(140 to 200)% Enhanced Defense|+100 Life Regenerated per Second|Maximum Fire Resist +3%|Socketed (6)"
+  ],
+  [
+    "Hide of the Basilisk",
+    "Chain Mail",
+    "Body Armors",
+    "Defense: (5807 - 6817) to (6568 - 7711)|Required Level: 100|Required Strength: 600|Item Level: 120|+(1 to 2) to All Skills|30% Cast Speed|+(25 to 38)% to Lightning Spell Damage|-35% to Enemy Lightning Resistance|+(13 to 16) to Thunderstone|+(130 to 170)% Enhanced Defense|+250 to Mana|Maximum Lightning Resist +4%|Physical Resist 15%|1% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Bulwark of the Archon",
+    "Breast Plate",
+    "Body Armors",
+    "Defense: 2568 to 2943|Required Level: 100|Required Strength: 600|Item Level: 105|+(2 to 3) to All Skills|+(20 to 30)% to Physical/Magic Spell Damage|+(20 to 30)% to Fire Spell Damage|+(400 to 600) to Mana|Physical Resist (8 to 10)%|+(3 to 5) to Light Radius|Socketed (6)"
+  ],
+  [
+    "Body of the Forbidden One",
+    "Breast Plate",
+    "Body Armors",
+    "Defense: (6163 - 7704) to (7063 - 8829)|Required Level: 100|Required Strength: 600|Item Level: 120|Exodia Minions no longer block each other|Your Minions have no Attack Rating|50% Cast Speed|-75% to Spell Damage|-50% to Enemy Elemental Resistances|+1 to Maximum Exodia Minions|+(99 to 150)% to Summon Life|+(140 to 200)% Enhanced Defense|Maximum Fire Resist +(2 to 3)%|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Candlewake",
+    "Splint Mail",
+    "Body Armors",
+    "Defense: (8032 - 9339) to (11077 - 12593)|Required Level: 100|Required Strength: 600|Item Level: 105|-2% Base Block Chance|Additional Strength Damage Bonus: 0.0390625%|-(11 to 15)% to Enemy Cold Resistance|+(150 to 200)% Enhanced Defense|+(1500 to 3500) Defense|(10 to 25)% to Strength|(50 to 100)% Bonus to Defense|Cannot Be Frozen|(1/2 chance to appear)|Socketed (6)"
+  ],
+  [
+    "Arkaine's Valor",
+    "Splint Mail",
+    "Body Armors",
+    "Defense: (9532 - 10839) to (12577 - 14093)|Required Level: 100|Required Strength: 600|Item Level: 120|50% of Your Bonus to Defense Added as Vitality|+(1 to 2) to All Skills|50% Hit Recovery|+(150 to 200)% Enhanced Defense|+(3000 to 5000) Defense|Physical Resist 10%|Socketed (6)"
+  ],
+  [
+    "Skin of Kabraxis",
+    "Plate Mail",
+    "Body Armors",
+    "Defense: (5412 - 8068) to (7238 - 10357)|Required Level: 100|Required Strength: 625|Item Level: 105|+120% Weapon Physical Damage if Wielding a Scepter|1% Chance to cast level 24 Pagan Rites on Kill|+(100 to 200)% Enhanced Defense|+(100 to 1000) Defense|(5 to 20)% to Dexterity|Physical Resist (1 to 5)%|(10 to 100)% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Wolverine Skin",
+    "Plate Mail",
+    "Body Armors",
+    "Defense: (6374 - 7171) to (7485 - 8421)|Required Level: 100|Required Strength: 312|Item Level: 120|+(1 to 2) to All Skills|15% Chance to cast level 20 Crucify on Melee Attack|50% Hit Recovery|+40 to Maximum Damage|(10 to 15)% Life stolen per Hit|+(140 to 170)% Enhanced Defense|+(50 to 100) to Strength|+(50 to 100) to Dexterity|+50 Life Regenerated per Second|50% Magic Find|Requirements -50%|Socketed (6)"
+  ],
+  [
+    "Icetomb",
+    "Field Plate",
+    "Body Armors",
+    "Defense: (5937 - 7017) to (7053 - 8335)|Required Level: 100|Required Strength: 625|Item Level: 105|+(1 to 2) to All Skills|+50 Spell Focus|+(20 to 30)% to Cold Spell Damage|-(20 to 25)% to Enemy Cold Resistance|+(120 to 160)% Enhanced Defense|+(31 to 40) to all Attributes|(11 to 15)% to Strength|Maximum Fire Resist -1%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Segnitia",
+    "Field Plate",
+    "Body Armors",
+    "Defense: 2699 to 3206|Required Level: 100|Required Strength: 625|Item Level: 120|Guard Tower: +1 Arrow|Cherubim: +(50-75) Magic Damage per Skill Level|If you have at least 30 Levels in any of the following Skills: ATMG, Charged Strike, Cherubim, Guard Tower, Lex Talionis, Rock Shock, Time Wave|+20% Slow Target|+100 Life after each Kill|+20% Chance of Crushing Blow|Physical Damage Reduced by 150|5% Chance to cast level 10 Thunder Hammer on Striking|Weapon Physical Damage +(200 to 250)%|Elemental Resists +50%|Physical Resist (15 to 20)%|Socketed (6)"
+  ],
+  [
+    "Elemental Disciple",
+    "Light Plate",
+    "Body Armors",
+    "Defense: (6034 - 7131) to (7246 - 8564)|Required Level: 80|Required Strength: 650|Item Level: 105|+(1 to 4) to Paladin Skill Levels|+(1 to 4) to Assassin Skill Levels|+(1 to 4) to Druid Skill Levels|1% Base Block Chance|+(15 to 35)% to Fire Spell Damage|-15% to Enemy Fire Resistance|+(15 to 35)% to Lightning Spell Damage|-15% to Enemy Lightning Resistance|+(120 to 160)% Enhanced Defense|Regenerate Mana +30%|20% Gold Find|Socketed (6)"
+  ],
+  [
+    "Auriel's Robe",
+    "Light Plate",
+    "Body Armors",
+    "Defense: (7583 - 9229) to (8905 - 10882)|Required Level: 100|Required Strength: 650|Item Level: 120|50% Movement Speed|+(12 to 18)% Bonus to Spell Focus|Weapon Physical Damage +100%|+(140 to 200)% Enhanced Defense|+1000 Defense|+3000 Defense vs. Missile|Physical Resist 10%|+(11 to 15) to Light Radius|Socketed (6)"
+  ],
+  [
+    "Scales of the Serpent",
+    "Gothic Plate",
+    "Body Armors",
+    "Defense: (7481 - 8308) to (9074 - 10078)|Required Level: 100|Required Strength: 675|Item Level: 105|15% Chance to cast level 40 Arachnomancy on Melee Attack|4% Chance to cast level 12 Time Strike on Striking|(31 to 40)% Hit Recovery|+90% Damage to Undead|Adds 200-300 Poison Damage over 2 seconds|-35% to Enemy Poison Resistance|5% Chance of Crushing Blow|Weapon Physical Damage +(25 to 30)%|+(144 to 171)% Enhanced Defense|+100 to Strength|+50 Life on Melee Attack|Socketed (6)"
+  ],
+  [
+    "Strength Beyond Strength",
+    "Gothic Plate",
+    "Body Armors",
+    "Defense: (8339 - 9198) to (10115 - 11157)|Required Level: 100|Required Strength: 675|Item Level: 120|Adds 25-40 Damage|150% Bonus to Attack Rating|+50% Damage to Demons|25% Life stolen per Hit|10% Deadly Strike|+(172 to 200)% Enhanced Defense|1% Reanimate as: Random Monster|-5 to Light Radius|Socketed (6)"
+  ],
+  [
+    "Arrogance",
+    "Gothic Plate",
+    "Body Armors",
+    "Defense: (8308 - 9198) to (10078 - 11157)|Required Level: 120|Required Strength: 1350|Item Level: 130|Restitution|(Based on Restore Percentage)|+50% Combat Speeds|Physical Resist +15%|Maximum Life +7%|Cube with Heavenly Soul: Restore +4%|25% Movement Speed|Adds 15-25 Damage|+(18 to 32) to Stormlord|5% Deadly Strike|+(171 to 200)% Enhanced Defense|+(40 to 50) to all Attributes|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Robe of Steel",
+    "Full Plate Mail",
+    "Body Armors",
+    "Defense: (6692 - 7471) to (8202 - 9156)|Required Level: 100|Required Strength: 469|Item Level: 105|+(11 to 20)% Bonus to Spell Focus|25% Cast Speed|+(21 to 30)% to Spell Damage|+(115 to 140)% Enhanced Defense|+100 to Strength|+100 to Energy|Elemental Resists +20%|+250 Life after each Demon Kill|50% Bonus to Defense|Requirements -33%|Socketed (6)"
+  ],
+  [
+    "Goetia Plate",
+    "Full Plate Mail",
+    "Body Armors",
+    "Defense: (8467 - 9339) to (10376 - 11445)|Required Level: 100|Required Strength: 700|Item Level: 120|+3 to All Skills|+(0 to 1) to Maximum Paladin Minions|+(0 to 1) to Maximum Barbarian Minions|+(0 to 1) to Maximum Necromancer Minions|+(151 to 200)% to Summon Life|+(51 to 75)% to Summon Damage|+(172 to 200)% Enhanced Defense|+100 Life Regenerated per Second|+750 to Life|+375 to Mana|-4 to Light Radius|Socketed (6)"
+  ],
+  [
+    "The Awakening",
+    "Full Plate Mail",
+    "Body Armors",
+    "Defense: 11673 to 14304|Required Level: 130|Required Strength: 690|Item Level: 130|Ethereal|When Cubed with The Sleep, Enables an Additional Awakening|(The Armor will be Disenchanted by the Recipe)|+(1 to 4) to All Skills|5% Chance to cast level 50 Banish on Death Blow|50% Combat Speeds|-(31 to 35)% to Enemy Elemental Resistances|+200% Enhanced Defense|+25 Maximum Stamina|Magic Resist +5%|Socketed (6)"
+  ],
+  [
+    "Silks of the Victor",
+    "Ancient Armor",
+    "Body Armors",
+    "Defense: (8603 - 9489) to (10651 - 11748)|Required Level: 100|Required Strength: 770|Item Level: 105|Level 10 Nephalem Weapons|5% Innate Elemental Damage|Adds Fire and Lightning Damage: 20-30% of base Strength and Dexterity|10-15% of base Vitality|+1 to All Skills|+(172 to 200)% Enhanced Defense|+1.125% Enhanced Defense (Based on Character Level)|+(500 to 1000) to Life|-20% Mana Cost of Skills|Socketed (6)"
+  ],
+  [
+    "Khazra Plate",
+    "Ancient Armor",
+    "Body Armors",
+    "Defense: (8603 - 9489) to (10651 - 11748)|Required Level: 100|Required Strength: 2310|Item Level: 120|Demon Blood Aura|You and Undead Minions: Maximum Life +6%|26.6 Yard Radius|+60% Damage to Demons|5% Chance of Crushing Blow|10% Deadly Strike|+(172 to 200)% Enhanced Defense|(20 to 25)% to Strength|(20 to 25)% to Vitality|Physical Resist 10%|Requirements +200%|Socketed (6)"
+  ],
+  [
+    "Tyrael's Might",
+    "Ancient Armor",
+    "Body Armors",
+    "Defense: 11859 to 14685|Required Level: 130|Item Level: 130|Ethereal|50% Movement Speed|+100% Damage to Demons|+100% Damage to Undead|+200% Enhanced Defense|Maximum Elemental Resists +15%|Physical Resist 50%|Cannot Be Frozen|Requirements -100%|Celeri Caelesti Iustitia|Socketed (6)"
+  ],
+  [
+    "Khazra Pouch",
+    "Cap",
+    "Helms",
+    "Defense: 1187 to 1201|Required Level: 90|Required Strength: 500|Item Level: 105|60% of Strength Added as Magic Damage to Area of Effect attack bonus|If you have an item source with Area of Effect attack|Adds 15-25 Damage|2% Bonus to Attack Rating (Based on Character Level)|Maximum Fire Resist +(2 to 3)%|Maximum Lightning Resist +(2 to 3)%|Physical Resist 5%|+(25 to 50) Mana on Melee Attack|(25 to 50)% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Tinker's Gambit",
+    "Cap",
+    "Helms",
+    "Defense: 1187 to 1201|(Assassin Only)|Required Level: 100|Required Strength: 500|Item Level: 120|+1% Trap Damage per 5 Base Strength|+3 to Assassin Skill Levels|5% Chance to cast level 30 Banish when Attacked|25% Block Speed|25% Hit Recovery|Regenerate Mana +25%|Maximum Elemental Resists +1%|Physical Resist -5%|Socketed (4)"
+  ],
+  [
+    "Endless Pride",
+    "Cap",
+    "Helms",
+    "Defense: 1187 to 1201|Required Level: 120|Required Strength: 500|Item Level: 130|Restitution|(Based on Restore Percentage)|+2 to All Skills|+50% Bonus to Defense|Maximum Elemental Resists +3%|Cube with Heavenly Soul: Restore +20%|+4 to Life (Based on Character Level)|+2 to Mana (Based on Character Level)|Elemental Resists +10%|(1 to 50)% Magic Find|Socketed (4)"
+  ],
+  [
+    "Lacuni Cowl",
+    "Skull Cap",
+    "Helms",
+    "Defense: (2865 - 3115) to (2964 - 3222)|Required Level: 90|Required Strength: 550|Item Level: 105|Orb Effects Applied to this Item are Doubled|Adds 200-300 Fire Damage|Adds 200-300 Lightning Damage|-(15 to 25)% to Enemy Fire Resistance|-(15 to 25)% to Enemy Lightning Resistance|+(130 to 150)% Enhanced Defense|Maximum Elemental Resists +1%|2% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Skull of the Viz-Jaq'taar",
+    "Skull Cap",
+    "Helms",
+    "Defense: 746 to 789|Required Level: 100|Required Strength: 275|Item Level: 120|Scorpion Blade: +2 Projectiles|+(0 to 1) to Assassin Skill Levels|5% Chance to cast level 40 Scorpion Blade on Kill|-(21 to 30)% to Enemy Poison Resistance|5% Chance of Crushing Blow|-500 Defense|+50 to Dexterity|(11 to 20)% to Dexterity|20% Magic Find|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Shiverhood",
+    "Full Helm",
+    "Helms",
+    "Defense: (3596 - 4141) to (4218 - 4803)|Required Level: 100|Required Strength: 300|Item Level: 105|You may only use Melee, Summon and Support Skills|+(1 to 2) to All Skills|+(30 to 40)% to Cold Spell Damage|-(15 to 25)% to Enemy Cold Resistance|+(15 to 20) to Winter Avatar|+(120 to 160)% Enhanced Defense|+(600 to 1000) Defense|Maximum Mana +(10 to 20)%|Maximum Cold Resist +3%|+100 Life on Melee Attack|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Reapers",
+    "Full Helm",
+    "Helms",
+    "Defense: 4086 to 4389|Required Level: 100|Required Strength: 600|Item Level: 120|+1 to All Skills|4% Chance to cast level 40 Fire Cannonade on Death Blow|+300 Fire Damage|+(20 to 30)% to Fire Spell Damage|-20% to Enemy Fire Resistance|+200% Enhanced Defense|Maximum Fire Resist +5%|-20% Mana Cost of Skills|Socketed (4)"
+  ],
+  [
+    "Metalhead",
+    "Great Helm",
+    "Helms",
+    "Defense: 1420 to 1551|Required Level: 80|Required Strength: 1250|Item Level: 105|Gives stats that are doubled for every 2000 defense this helm has|+50% Faster Hit Recovery|+2% Lightning Absorb|+2% Physical Resist|8% Chance to cast level 10 Rust Storm on Melee Attack|+(1 to 2) Life on Striking|-5 to Light Radius|Requirements +100%|Socketed (4)"
+  ],
+  [
+    "Veil of Steel",
+    "Great Helm",
+    "Helms",
+    "Defense: 9260 to 9653|Required Level: 100|Required Strength: 625|Item Level: 120|Weapon Physical Damage +200%|Hit Causes Monster to Flee +15%|+200% Enhanced Defense|+5000 Defense|Maximum Mana -50%|Socketed (4)"
+  ],
+  [
+    "Aidan's Lament",
+    "Crown",
+    "Helms",
+    "Defense: (3753 - 4493) to (5603 - 6422)|Required Level: 100|Required Strength: 337|Item Level: 105|+(90 to 120)% Damage to Demons|+(90 to 120)% Damage to Undead|+(10 to 19) to Charged Strike|+(120 to 170)% Enhanced Defense|+(500 to 2000) Defense|Maximum Elemental Resists +1%|Physical Resist (4 to 8)%|5% Reanimate as: Random Monster|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Undead Crown",
+    "Crown",
+    "Helms",
+    "Defense: 4437 to 4914|Required Level: 110|Required Strength: 675|Item Level: 120|10% of Minion Damage Increases Added as Deadly Strike|65% of Minion Life Increases Added as Bonus to Defense|Deal No Crushing Blows|Orb Effects Applied to this Item are Doubled|50% Attack Speed|+200% Enhanced Defense|Socketed (4)"
+  ],
+  [
+    "Eyes of Septumos",
+    "Circlet",
+    "Circlets",
+    "Defense: 505 to 571|Required Level: 80|Required Dexterity: 262|Item Level: 105|1% Chance to cast level 10 Cold Fear on Death Blow|+(80 to 150) Spell Focus|-(15 to 20)% to Enemy Cold Resistance|+(14 to 22) to Avalanche|+50% to Summon Life|(10 to 20)% to Energy|Elemental Resists +(15 to 25)%|Socketed (4)"
+  ],
+  [
+    "Dark Pact",
+    "Circlet",
+    "Circlets",
+    "Defense: 505 to 571|(Assassin Only)|Required Level: 100|Required Dexterity: 262|Item Level: 120|Bloodbath Is Active|Orb Effects Applied to this Item are Doubled|40% Combat Speeds|5% Chance to Avoid Damage|Maximum Avoid Chance +5%|Socketed (4)"
+  ],
+  [
+    "Unveiling Eye",
+    "Circlet",
+    "Circlets",
+    "Defense: 505 to 571|Required Level: 130|Required Dexterity: 262|Item Level: 130|Hidden Reliquary|(Bonus for each equipped Hidden Craft Item)|+50 Spell Focus|+20% to Elemental Spell Damage|+2 to All Skills|-(21 to 30)% to Enemy Elemental Resistances|Maximum Elemental Resists +(1 to 2)%|Slain Monsters Rest in Peace|50% Magic Find|Socketed (4)"
+  ],
+  [
+    "Gromotvod",
+    "Coronet",
+    "Circlets",
+    "Defense: 605 to 684|(Amazon Only)|Required Level: 100|Required Dexterity: 327|Item Level: 105|Discharge deals your Askari Lightning damage to its main target|+(2 to 3) to Amazon Skill Levels|(20 to 40)% Cast Speed|+(10 to 15)% to Lightning Spell Damage|-(5 to 15)% to Enemy Lightning Resistance|Maximum Lightning Resist +(1 to 2)%|Physical Resist (5 to 10)%|+(20 to 60) Life after each Kill|Socketed (4)"
+  ],
+  [
+    "Soulmender",
+    "Coronet",
+    "Circlets",
+    "Defense: 605 to 684|Required Level: 100|Required Dexterity: 327|Item Level: 120|Veil King: does not resurrect on death|Gain half of Summon Physical Resist bonuses as Physical Resist|+4 to Necromancer Skill Levels|+(50 to 100)% to Summon Life|+20% to Summon Physical Resist|+200 Life Regenerated per Second|Maximum Poison Resist +4%|Socketed (4)"
+  ],
+  [
+    "Royal Circlet",
+    "Tiara",
+    "Circlets",
+    "Defense: (1740 - 1957) to (1968 - 2214)|Required Level: 100|Required Dexterity: 392|Item Level: 105|+2 to All Skills|+50% Damage to Demons|+50% Damage to Undead|+(140 to 170)% Enhanced Defense|(16 to 25)% to All Attributes|Elemental Resists +(25 to 30)%|Physical Resist 5%|(16 to 25)% Magic Find|Socketed (4)"
+  ],
+  [
+    "Radiance",
+    "Tiara",
+    "Circlets",
+    "Defense: 725 to 820|Required Level: 100|Required Dexterity: 392|Item Level: 120|+5 Spell Focus per 1 Light Radius|+3% Fire Spell Damage per 1 Light Radius|-1% Cold Spell Damage per 1 Light Radius|+(2 to 3) to All Skills|-(15 to 25)% to Enemy Fire Resistance|Physical Resist 10%|Cannot Be Frozen|-5% to All Vendor Prices|Socketed (4)"
+  ],
+  [
+    "Crown of the Black Rose",
+    "Diadem",
+    "Circlets",
+    "Defense: 870 to 983|Required Level: 110|Required Dexterity: 524|Item Level: 105|Orb Effects Applied to this Item are Doubled|+(2 to 3) to All Skills|+(20 to 30)% to Poison Spell Damage|-(10 to 15)% to Enemy Poison Resistance|+(14 to 20) to Black Lotus Strike|+(90 to 150) Life Regenerated per Second|Maximum Poison Resist +(2 to 3)%|(25 to 50)% Bonus to Defense|Cannot Be Frozen|Socketed (4)"
+  ],
+  [
+    "Griffon's Eye",
+    "Diadem",
+    "Circlets",
+    "Defense: 870 to 983|Required Level: 100|Required Dexterity: 524|Item Level: 120|20% of Lightning Resistance Added as Lightning Spell Damage|+(2 to 3) to All Skills|40% Cast Speed|-(20 to 30)% to Enemy Lightning Resistance|Lightning Absorb 10%|Socketed (4)"
+  ],
+  [
+    "Trang-Oul's Breath",
+    "Mask",
+    "Special Helms",
+    "Defense: (1316 - 2256) to (1405 - 2409)|Required Level: 100|Required Strength: 600|Item Level: 105|Dragon Breath: Reduces Weapon Physical Damage by 25%|+(1 to 2) to All Skills|+(15 to 40)% to Physical/Magic Spell Damage|+(40 to 140)% Enhanced Defense|+250 to Mana|Maximum Fire Resist +(1 to 2)%|Maximum Cold Resist +(1 to 2)%|Socketed (4)"
+  ],
+  [
+    "Idol of Rygnar",
+    "Mask",
+    "Special Helms",
+    "Defense: (2068 - 2350) to (2208 - 2510)|Required Level: 100|Required Strength: 600|Item Level: 120|+2 to Necromancer Skill Levels|25% Life stolen per Hit|Weapon Physical Damage +(60 to 90)%|Hit Causes Monster to Flee +1%|+(120 to 150)% Enhanced Defense|+(40 to 50) to Strength|+(40 to 50) to Dexterity|Target Takes Additional Damage of 500|25% Gold Find|+5 to Light Radius|Socketed (4)"
+  ],
+  [
+    "Gaze of the Dead",
+    "Bone Helm",
+    "Special Helms",
+    "Defense: 968 to 1049|Required Level: 120|Required Strength: 625|Item Level: 105|+150% Damage to Demons|+2% Enhanced Defense (Based on Character Level)|+5.5 Defense (Based on Character Level)|+2 Life Regenerated per Second (Based on Character Level)|+3.5 to Life (Based on Character Level)|+2.25 to Mana (Based on Character Level)|Maximum Fire Resist +(0 to 1)%|Maximum Lightning Resist +(0 to 1)%|Maximum Cold Resist +(0 to 1)%|Maximum Poison Resist +(0 to 1)%|+180% Damage to The Zakarum|Socketed (4)"
+  ],
+  [
+    "Black Masquerade",
+    "Bone Helm",
+    "Special Helms",
+    "Defense: (2420 - 2904) to (2622 - 3147)|Required Level: 80|Item Level: 120|+90 Spell Focus|+90% to Physical/Magic Spell Damage|+(150 to 200)% Enhanced Defense|+200 Life Regenerated per Second|Physical Resist (0 to 10)%|Requirements -100%|Socketed (4)"
+  ],
+  [
+    "The Intrepid",
+    "Buckler",
+    "Shields",
+    "Defense: 1061 to 1101|Chance to Block: Class %|Required Level: 100|Required Strength: 500|Required Dexterity: 469|Item Level: 105|20% Movement Speed|7% Chance to cast level 36 Bloodlust on Block|(15 to 35)% Block Speed|Adds (1 to 50)-(55 to 60) Damage|-500 Defense|Maximum Life +(2 to 8)%|Socketed (4)"
+  ],
+  [
+    "Witch Drum",
+    "Small Shield",
+    "Shields",
+    "Defense: (2638 - 3298) to (2841 - 3552)|Chance to Block: Class %|Required Level: 100|Required Strength: 300 to 350|Required Dexterity: 299 to 349|Item Level: 105|+(1 to 4) to Amazon Skill Levels|+(1 to 4) to Sorceress Skill Levels|+(1 to 4) to Assassin Skill Levels|+(25 to 40)% to Physical/Magic Spell Damage|+(15 to 30)% to Lightning Spell Damage|+(15 to 30)% to Cold Spell Damage|+(60 to 100)% Enhanced Defense|+1 to Energy (Based on Character Level)|Cannot Be Frozen|Requirements -(30 to 40)%|Socketed (4)"
+  ],
+  [
+    "The Flying Saucer",
+    "Small Shield",
+    "Shields",
+    "Defense: (3627 - 3957) to (3907 - 4262)|Chance to Block: 1% + Class %|Required Level: 100|Required Strength: 500|Required Dexterity: 499|Item Level: 120|30% Movement Speed|1% Chance to cast level 60 Cryo Beam on Striking|1% Base Block Chance|-25% to Enemy Lightning Resistance|-25% to Enemy Cold Resistance|+(120 to 140)% Enhanced Defense|Physical Resist 5%|Socketed (4)"
+  ],
+  [
+    "Zakarum's Guidance",
+    "Large Shield",
+    "Shields",
+    "Defense: (3734 - 4220) to (4196 - 4743)|Chance to Block: Class %|Required Level: 100|Required Strength: 393 to 420|Required Dexterity: 396 to 423|Item Level: 105|+(15 to 20)% to Physical/Magic Spell Damage|+(15 to 20)% to Fire Spell Damage|-(15 to 25)% to Enemy Fire Resistance|+(115 to 143)% Enhanced Defense|20% to Strength|(30 to 40)% Magic Find|+5 to Light Radius|Requirements -(20 to 25)%|Socketed (4)"
+  ],
+  [
+    "Lightforge",
+    "Kite Shield",
+    "Shields",
+    "Defense: (4144 - 5055) to (5252 - 6315)|Chance to Block: Class %|Required Level: 100|Required Strength: 550|Required Dexterity: 559|Item Level: 105|Gematria|(Bonus for each Socketed Great/Elemental Rune)|+5% Physical Resist|-5% Elemental Resists|+25% Bonus to Defense|-10% Movement Speed|1% Chance to cast level 10 Thunder Hammer on Striking|+(100 to 150)% Enhanced Defense|+(500 to 1000) Defense|+(1000 to 2000) Defense vs. Missile|+(30 to 50) to all Attributes|+(30 to 50) Life after each Demon Kill|Socketed (4)"
+  ],
+  [
+    "Stormflyer",
+    "Kite Shield",
+    "Shields",
+    "Defense: (4190 - 4737) to (4889 - 5527)|Chance to Block: 1% + Class %|Required Level: 100|Required Strength: 550|Required Dexterity: 559|Item Level: 120|25% Chance to cast level 60 Forked Lightning on Melee Attack|1% Base Block Chance|+(30 to 40)% to Lightning Spell Damage|-(15 to 20)% to Enemy Lightning Resistance|+(130 to 160)% Enhanced Defense|(11 to 15)% to Dexterity|(31 to 40)% to Energy|Lightning Absorb 5%|25% Weapon Damage Taken Restores Mana|Socketed (4)"
+  ],
+  [
+    "Vaetia's Wall",
+    "Tower Shield",
+    "Shields",
+    "Defense: (4603 - 5157) to (5543 - 6210)|Chance to Block: -1% + Class %|(Sorceress Only)|Required Level: 100|Required Strength: 460|Required Dexterity: 471|Item Level: 105|-1% Base Block Chance|-(11 to 15)% to Enemy Elemental Resistances|+(4 to 8) to Vengeful Power (Sorceress Only)|+(4 to 8) to Warp Armor (Sorceress Only)|+(4 to 8) to Snow Queen (Sorceress Only)|+(4 to 8) to Living Flame (Sorceress Only)|+(141 to 170)% Enhanced Defense|Maximum Mana +(11 to 25)%|Maximum Elemental Resists +(0 to 1)%|Requirements -20%|Socketed (6)"
+  ],
+  [
+    "Shield of Hakan II",
+    "Gothic Shield",
+    "Shields",
+    "Defense: (6995 - 7994) to (9190 - 10428)|Chance to Block: 1% + Class %|Required Level: 100|Required Strength: 600|Required Dexterity: 619|Item Level: 105|1% Base Block Chance|-25% Cast Speed|-50% to Spell Damage|Slows Attacker by 25%|+(150 to 200)% Enhanced Defense|+(2000 to 3000) Defense|Maximum Life +(3 to 5)%|Maximum Elemental Resists +(0 to 2)%|Physical Resist 5%|Socketed (6)"
+  ],
+  [
+    "Madawc Val Narian",
+    "Gothic Shield",
+    "Shields",
+    "Defense: (5434 - 5994) to (6734 - 7428)|Chance to Block: 1% + Class %|Required Level: 100|Required Strength: 600|Required Dexterity: 619|Item Level: 120|+2 to All Skills|4% Chance to cast level 20 Rebound on Kill|1% Base Block Chance|40% Block Speed|(75 to 200)% Bonus to Attack Rating|+(15 to 30) to Overkill|+(172 to 200)% Enhanced Defense|Fire Resist -30%|Poison Length Reduction 50%|5% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Rainbow Fury",
+    "Bone Shield",
+    "Special Shields",
+    "Defense: (1640 - 2123) to (1902 - 2461)|Chance to Block: Class %|Required Level: 100|Required Dexterity: 527|Item Level: 105|+1 to All Skills|Adds 25-50 Fire Damage|Adds 25-50 Lightning Damage|Adds 25-50 Cold Damage|-10% to Enemy Elemental Resistances|+(8 to 20) to Storm Crows|+(70 to 120)% Enhanced Defense|+(50 to 75) to Dexterity|+1 Life on Striking|Socketed (6)"
+  ],
+  [
+    "The Collector",
+    "Bone Shield",
+    "Special Shields",
+    "Defense: 965 to 1119|Chance to Block: Class %|Required Level: 110|Required Dexterity: 527|Item Level: 120|Gematria|(Bonus for each Socketed Great/Elemental Rune)|+25% Bonus to Defense|+10 Life after each Kill|+8% to Physical/Magic Spell Damage|Orb Effects Applied to this Item are Doubled|+6 to All Skills|Socketed (6)"
+  ],
+  [
+    "Stone Guardian",
+    "Spiked Shield",
+    "Special Shields",
+    "Defense: (2424 - 3030) to (2892 - 3615)|Chance to Block: Class %|Required Level: 100|Required Dexterity: 550|Item Level: 105|+(2 to 3) to All Skills|+50% to Summon Life|+(10 to 20)% to Summon Damage|+(10 to 25)% to Summon Elemental Resistances|+10% to Summon Physical Resist|+(140 to 200)% Enhanced Defense|+(15 to 50) to Strength|Maximum Life +5%|50% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Celestial Barrier",
+    "Spiked Shield",
+    "Special Shields",
+    "Defense: (2525 - 2828) to (3012 - 3374)|Chance to Block: 1% + Class %|Required Level: 100|Required Dexterity: 550|Item Level: 120|+(4 to 5) to All Skills|1% Base Block Chance|-50% Attack Speed|30% Cast Speed|-(20 to 25)% to Enemy Elemental Resistances|+(150 to 180)% Enhanced Defense|50% Bonus to Defense|1% Reanimate as: Random Monster|Socketed (6)"
+  ],
+  [
+    "Sash of the Frozen Seas",
+    "Sash",
+    "Belts",
+    "Defense: (2036 - 2329) to (2064 - 2362)|Required Level: 100|Required Strength: 500|Item Level: 105|-75% Mana Drain in Werewolf Form|30% Attack Speed|Winter Avatar Cooldown Reduced by 0.3 seconds|+(501 to 1000) to Attack Rating|-(6 to 15)% to Enemy Cold Resistance|+(101 to 130)% Enhanced Defense|+(51 to 250) to Mana|+100 Life on Melee Attack|Socketed (2)"
+  ],
+  [
+    "Thirst Eternum",
+    "Sash",
+    "Belts",
+    "Defense: (2400 - 2887) to (2433 - 2926)|Required Level: 100|Required Strength: 500|Item Level: 120|Potions last 5 extra seconds, can drink all 3 types of potions at the same time|Hammertime boons from drinking potions have double effect|Drains 5% of Maximum Life per second|+(31 to 42) to Hammertime|(13 to 20)% Potion Effectiveness|+(137 to 185)% Enhanced Defense|(10 to 15)% to All Attributes|+(400 to 600) to Life|-10% to All Vendor Prices|Socketed (2)"
+  ],
+  [
+    "The Endless Loop",
+    "Light Belt",
+    "Belts",
+    "Defense: 1101 to 1143|Required Level: 100|Required Strength: 550|Item Level: 105|40% Combat Speeds|+(10 to 19) to Charged Strike|Slow Target 10%|+50 to all Attributes|+75 Life Regenerated per Second|-(10 to 20)% Mana Cost of Skills|Socketed (2)"
+  ],
+  [
+    "Lunar Eclipse",
+    "Light Belt",
+    "Belts",
+    "Defense: (2091 - 2422) to (2171 - 2514)|Required Level: 100|Required Strength: 550|Item Level: 120|+2 to All Skills|+(51 to 60) Spell Focus|25% Cast Speed|30% Hit Recovery|+(10 to 15)% to Spell Damage|+(90 to 120)% Enhanced Defense|+(40 to 50) to Energy|+100 to Life|Elemental Resists +15%|+5 to Light Radius|Socketed (2)"
+  ],
+  [
+    "Ashaera's Armor",
+    "Belt",
+    "Belts",
+    "Defense: 1687 to 1760|Required Level: 100|Required Strength: 575|Item Level: 105|+(0 to 1) to All Skills|+(21 to 45) Spell Focus|+(11 to 15)% to Spell Damage|+500 Defense|(11 to 15)% to Energy|Elemental Resists +(10 to 15)%|Physical Resist 10%|Socketed (2)"
+  ],
+  [
+    "Dementia",
+    "Belt",
+    "Belts",
+    "Defense: (3111 - 3348) to (3272 - 3524)|Required Level: 100|Required Strength: 690|Item Level: 120|15% Chance to cast level 14 Fowl Fight on Melee Attack|-(15 to 20)% to Enemy Elemental Resistances|Slow Target 5%|+(120 to 140)% Enhanced Defense|+500 Defense|Maximum Life +(2 to 5)%|Maximum Elemental Resists +1%|Physical Resist 5%|Requirements +20%|Socketed (2)"
+  ],
+  [
+    "Nor Tiraj's Wisdom",
+    "Heavy Belt",
+    "Belts",
+    "Defense: (2805 - 3315) to (3029 - 3580)|Required Level: 100|Required Strength: 687 to 937|Item Level: 105|+100 Spell Focus|-(20 to 25)% to Enemy Lightning Resistance|+(15 to 20) to Lightning Shield|+(15 to 20) to Stormclash|+(120 to 160)% Enhanced Defense|Maximum Mana +10%|(10 to 50)% Bonus to Defense|+2% to Experience Gained|Requirements +(10 to 50)%|Socketed (2)"
+  ],
+  [
+    "Black Void",
+    "Heavy Belt",
+    "Belts",
+    "Defense: (3060 - 3442) to (3304 - 3717)|Required Level: 100|Required Strength: 625|Item Level: 120|20% Attack Speed|Adds 10-15 Damage|(10 to 15)% Life stolen per Hit|Slow Target 10%|+(140 to 170)% Enhanced Defense|10% to Strength|10% to Dexterity|30% Magic Find|Socketed (2)"
+  ],
+  [
+    "Lilith's Temptation",
+    "Plated Belt",
+    "Belts",
+    "Defense: (3680 - 4089) to (4031 - 4479)|Required Level: 100|Item Level: 105|Goblin Glee lasts 3 extra seconds but reduces your maximum life by 66%|Level 7 Goblin Glee (30/30 Charges)|+(170 to 200)% Enhanced Defense|-100 to Life|+35 Life after each Kill|(60 to 100)% Magic Find|Requirements -100%|Cube with Sacred Essence and Ist rune to recharge|Socketed (2)"
+  ],
+  [
+    "Champion of the Triune",
+    "Plated Belt",
+    "Belts",
+    "Defense: 5209 to 6598|Required Level: 115|Required Strength: 665|Item Level: 120|Ethereal|6% Chance to cast level 1 Force Blast on Melee Attack|5% Deadly Strike|+200% Enhanced Defense|+(100 to 1000) Defense|+(100 to 150) to Strength|Elemental Resists -15%|Physical Resist 5%|Socketed (2)"
+  ],
+  [
+    "Blackjade's Legacy",
+    "Leather Gloves",
+    "Gloves",
+    "Defense: 470 to 477|Required Level: 100|Required Strength: 250|Item Level: 105|Shadow Refuge: -1% to Enemy Fire, Cold and Lightning Resists per Base Level|+(0 to 2) to Assassin Skill Levels|+(100 to 250) to Life|+(50 to 150) Life on Melee Attack|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Demonic Touch",
+    "Leather Gloves",
+    "Gloves",
+    "Defense: 470 to 477|Required Level: 100|Required Strength: 500|Item Level: 120|15% Innate Elemental Damage|+100 Life Regenerated per Second|Maximum Cold Resist +(3 to 5)%|Poison Length Reduction 75%|Physical Resist 10%|-20% Mana Cost of Skills|Socketed (4)"
+  ],
+  [
+    "Hellmouth",
+    "Heavy Gloves",
+    "Gloves",
+    "Defense: (1680 - 1976) to (3252 - 3566)|Required Level: 100|Required Strength: 525|Item Level: 105|Adds 125-250 Magic Damage|+12 to Rock Shock|+(140 to 200)% Enhanced Defense|+(500 to 2000) Defense|(15 to 25)% to Strength|Regenerate Mana -50%|Maximum Fire Resist +2%|Maximum Poison Resist +2%|50% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Rogue Foresight",
+    "Heavy Gloves",
+    "Gloves",
+    "Defense: 492 to 522|Required Level: 100|Required Strength: 525|Item Level: 120|+1 to All Skills|5% Deadly Strike|-10% to Strength|20% to Dexterity|Physical Resist 5%|Socketed (4)"
+  ],
+  [
+    "Athulua's Blessing",
+    "Heavy Gloves",
+    "Gloves",
+    "Defense: (1328 - 1476) to (1409 - 1566)|(Amazon Only)|Required Level: 100|Required Strength: 525|Item Level: 130|3% Chance to cast level 1 Arrow on Striking|30% Attack Speed|+(10 to 15) to Sky Siege|+(170 to 200)% Enhanced Defense|(12 to 15)% to Strength|(12 to 15)% to Dexterity|+(75 to 113) Life Regenerated per Second|5% Chance to Avoid Damage|Socketed (4)"
+  ],
+  [
+    "Dacana's Fist",
+    "Chain Gloves",
+    "Gloves",
+    "Defense: (515 - 1545) to (565 - 1695)|Required Level: 100|Required Strength: 575|Item Level: 105|+(0 to 200)% Enhanced Defense|(-300 to 300) to Life|Elemental Resists (-50 to 30)%|1% Reanimate as: Random Monster|(-25 to 15)% to Experience Gained|(-100 to 60)% Gold Find|(0 to 60)% Magic Find|Socketed (4)"
+  ],
+  [
+    "Facebreaker",
+    "Chain Gloves",
+    "Gloves",
+    "Defense: (1784 - 1939) to (2299 - 2469)|Required Level: 100|Required Strength: 575|Item Level: 120|+1% Attack Speed and Attack Rating per 25 Strength|-(1 to 3)% Base Block Chance|Stun Attack|+(130 to 160)% Enhanced Defense|+(600 to 1000) Defense|Physical Resist 5%|+2 Life on Striking|Socketed (4)"
+  ],
+  [
+    "Blind Anger",
+    "Light Gauntlets",
+    "Gloves",
+    "Defense: (1179 - 1447) to (1342 - 1647)|Required Level: 100|Required Strength: 600|Item Level: 105|+(0 to 1) to All Skills|8% Chance to cast level 13 Crucify on Melee Attack|(1 to 5)% Chance of Crushing Blow|Blinds Attacker +3|+(120 to 170)% Enhanced Defense|(11 to 15)% to All Attributes|Socketed (4)"
+  ],
+  [
+    "Lorekeeper",
+    "Light Gauntlets",
+    "Gloves",
+    "Defense: (1018 - 1179) to (1159 - 1342)|Required Level: 80|Required Strength: 300|Item Level: 120|Spiral Dance: always chooses single-target variant while affected by Firedance|+3 to All Skills|20% Combat Speeds|+(10 to 16) to Spiral Dance|+(5 to 10) to Firedance|+(90 to 120)% Enhanced Defense|Regenerate Mana +(40 to 60)%|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Hammerfist",
+    "Gauntlets",
+    "Gloves",
+    "Defense: (1227 - 1450) to (1436 - 1697)|Required Level: 100|Required Strength: 625|Item Level: 105|Adds (1 to 15)-(20 to 30) Damage|5% Life stolen per Hit|+(15 to 25) to Spiral Dance|5% Chance of Crushing Blow|Weapon Physical Damage +(30 to 60)%|+(120 to 160)% Enhanced Defense|Elemental Resists +15%|Socketed (4)"
+  ],
+  [
+    "Lamha Na Draoithe",
+    "Gauntlets",
+    "Gloves",
+    "Defense: (1339 - 1506) to (1567 - 1763)|Required Level: 100|Required Strength: 625|Item Level: 120|+2 to All Skills|+150 Spell Focus|30% Cast Speed|+(16 to 20)% to Spell Damage|+(140 to 170)% Enhanced Defense|+75 to Strength|-100 to Life|Elemental Resists +15%|Socketed (4)"
+  ],
+  [
+    "Boots of Blinding Bluster",
+    "Boots",
+    "Boots",
+    "Defense: 651 to 671|Required Level: 80|Item Level: 100|(70 to 100)% Movement Speed|Blinds Attacker +(1 to 5)|+(75 to 150) Life Regenerated per Second|-25% to Experience Gained|Requirements -100%|Socketed (4)"
+  ],
+  [
+    "Clockwork Slippers",
+    "Boots",
+    "Boots",
+    "Defense: (1171 - 1497) to (1207 - 1543)|Required Level: 80|Required Strength: 500|Item Level: 120|Movement accumulates Dynamo charges|Charges are released when you stop moving or reach the cap|Grants Activation Frequency buff that scales with charges released|+(0 to 1) to All Skills|(10 to 40)% Movement Speed|20% Cast Speed|40% Hit Recovery|+(10 to 25)% to Spell Damage|+(80 to 130)% Enhanced Defense|Socketed (4)"
+  ],
+  [
+    "Elemental Trance",
+    "Boots",
+    "Boots",
+    "Defense: (1113 - 1302) to (1147 - 1342)|Required Level: 100|Required Strength: 500|Item Level: 130|Gain 0.75% of your Highest Attribute as Elemental Pierce to an element|Str: Fire|||Dex: Cold|||Ene: Lightning|||Vita: Poison|||Multiple if tied|(10 to 40)% Movement Speed|(6 to 10)% Innate Elemental Damage|+(71 to 100)% Enhanced Defense|(0 to 20)% to Strength|(0 to 20)% to Dexterity|(0 to 20)% to Vitality|(0 to 20)% to Energy|(30 to 50)% Gold Find|Socketed (4)"
+  ],
+  [
+    "Titan's Steps",
+    "Heavy Boots",
+    "Boots",
+    "Defense: (1322 - 1531) to (1400 - 1621)|Required Level: 100|Required Strength: 550|Item Level: 105|(10 to 40)% Movement Speed|Adds 40-50 Magic Damage|Adds 40-50 Fire Damage|Adds 40-50 Lightning Damage|Adds 40-50 Cold Damage|-(7 to 10)% to Enemy Elemental Resistances|+(90 to 120)% Enhanced Defense|+200 to Life|Elemental Resists +10%|+(40 to 50) Life after each Kill|5% Weapon Damage Taken Restores Mana|Socketed (4)"
+  ],
+  [
+    "Waterwalk",
+    "Heavy Boots",
+    "Boots",
+    "Defense: (1461 - 1914) to (1547 - 2026)|Required Level: 100|Required Strength: 550|Item Level: 120|Whirlpool: Only Produces Largest Whirlpool|(20 to 50)% Movement Speed|Adds 20-30 Damage|-(15 to 20)% to Enemy Elemental Resistances|+1 to Whirlpool|+(110 to 175)% Enhanced Defense|+(45 to 60) to Dexterity|+(15 to 20) Maximum Stamina|Maximum Fire Resist +(1 to 2)%|Socketed (4)"
+  ],
+  [
+    "Spirit Walker",
+    "Heavy Boots",
+    "Boots",
+    "Defense: 696 to 737|Required Level: 100|Required Strength: 550|Item Level: 120|+1% Physical Resist per 18% Mana Regeneration|+2 to All Skills|(10 to 40)% Movement Speed|+(50 to 100) Spell Focus|Jitan's Gate Cooldown Reduced by 1 seconds|+35% to Physical/Magic Spell Damage|-15% to Enemy Elemental Resistances|Socketed (4)"
+  ],
+  [
+    "Shrill Sacrament",
+    "Chain Boots",
+    "Boots",
+    "Defense: (1625 - 1995) to (1762 - 2162)|Required Level: 100|Required Strength: 575|Item Level: 105|Exorcism - per 5% damage to demons: 1% increased damage (up to 100%)|1% reduced duration (to a minimum of 6.6 seconds)|(10 to 40)% Movement Speed|10% Chance to cast level 20 Nightmare on Melee Attack|+(10 to 75)% Damage to Demons|+(10 to 30)% to Physical/Magic Spell Damage|+(9 to 13) to Exorcism|+(120 to 170)% Enhanced Defense|(15 to 25)% to Vitality|Socketed (4)"
+  ],
+  [
+    "Angel's Wrath",
+    "Chain Boots",
+    "Boots",
+    "Defense: (1625 - 2217) to (1762 - 2403)|Required Level: 100|Required Strength: 575|Item Level: 120|Cherubim: -1.5 Second Cooldown while wielding a Two-Handed Melee Weapon|+(0 to 2) to All Skills|(10 to 40)% Movement Speed|+(3 to 6) to Cherubim|+(3 to 6) to Serafiend Prison|+(120 to 200)% Enhanced Defense|Maximum Life +5%|Physical Resist 10%|Socketed (4)"
+  ],
+  [
+    "Binding Treads",
+    "Light Plated Boots",
+    "Boots",
+    "Defense: (2224 - 2538) to (3909 - 4256)|Required Level: 100|Required Strength: 625|Item Level: 105|+100% Duration to Solar Flare|+(1 to 2) to Paladin Skill Levels|(20 to 50)% Movement Speed|25% Hit Recovery|5% Life stolen per Hit|+(8 to 20)% to Spell Damage|+(120 to 160)% Enhanced Defense|+(500 to 2000) Defense|+(75 to 150) to Mana|Socketed (4)"
+  ],
+  [
+    "Akarat's Trek",
+    "Light Plated Boots",
+    "Boots",
+    "Defense: (1960 - 2352) to (2170 - 2604)|Required Level: 100|Required Strength: 625|Item Level: 120|(10 to 40)% Movement Speed|2% Chance to cast level 30 Hammertime on Melee Attack|2% Chance to cast level 30 Thunder Wave on Melee Attack|2% Chance to cast level 30 Thunder Hammer Nova on Melee Attack|+(15 to 20) to Charged Strike|Weapon Physical Damage +(60 to 90)%|+(150 to 200)% Enhanced Defense|10% to All Attributes|+10 to Light Radius|Socketed (4)"
+  ],
+  [
+    "Rodeo's Tramplers",
+    "Greaves",
+    "Boots",
+    "Defense: (1819 - 2315) to (2052 - 2612)|Required Level: 100|Required Strength: 650|Item Level: 105|You may only use Melee, Summon and Support Skills|+1 to All Skills|(30 to 60)% Movement Speed|+(10 to 25)% to Fire Spell Damage|-(5 to 20)% to Enemy Fire Resistance|+(15 to 25) to Death Blossom|+(120 to 180)% Enhanced Defense|+(200 to 250) to Mana|Maximum Fire Resist +1%|Physical Resist 5%|Socketed (4)"
+  ],
+  [
+    "Knight's Grace",
+    "Greaves",
+    "Boots",
+    "Defense: (2232 - 2481) to (2519 - 2799)|Required Level: 100|Required Strength: 780|Item Level: 120|+1 to All Skills|(10 to 40)% Movement Speed|2% Chance to cast level 35 Knife Throw on Striking|25% Attack Speed|Adds 10-25 Damage|+(170 to 200)% Enhanced Defense|+(15 to 25) to all Attributes|Physical Resist 5%|Requirements +20%|Socketed (4)"
+  ],
+  [
+    "Karcheus' Temptation",
+    "Morion",
+    "Amazon Helms",
+    "Defense: (1708 - 2049) to (1728 - 2073)|(Amazon Only)|Required Level: 100|Required Strength: 500|Item Level: 105|+3 seconds to Balefire Buff Duration|Self-Immolation damage per cast unchanged|+(2 to 3) to Amazon Skill Levels|1% Base Block Chance|25% Cast Speed|+25% to Physical/Magic Spell Damage|+(16 to 24) to Balefire|+(100 to 140)% Enhanced Defense|Socketed (4)"
+  ],
+  [
+    "Rakkis' Benediction",
+    "Morion",
+    "Amazon Helms",
+    "Defense: 854 to 864|(Amazon Only)|Required Level: 100|Required Strength: 500|Item Level: 120|Hammer Path: -30% Enemy Lightning Resistance|Thunder Path: 150 Life after Each Kill|+(1 to 2) to Amazon Skill Levels|-1% Base Block Chance|+40% to Lightning Spell Damage|(15 to 20)% to Dexterity|+500 to Life|Physical Resist 10%|50% Bonus to Defense|30% Magic Find|Socketed (4)"
+  ],
+  [
+    "Lionblood Crest",
+    "Cervelliere",
+    "Amazon Helms",
+    "Defense: (2065 - 2535) to (2175 - 2670)|(Amazon Only)|Required Level: 100|Required Strength: 550|Item Level: 105|+100% Damage to Demons|-(15 to 20)% to Enemy Poison Resistance|Weapon Physical Damage +(40 to 100)%|+(120 to 170)% Enhanced Defense|(11 to 20)% to All Attributes|+500 to Life|Maximum Fire Resist +3%|Maximum Poison Resist +3%|Cold Resist -30%|Socketed (4)"
+  ],
+  [
+    "Rainbow Maiden",
+    "Cervelliere",
+    "Amazon Helms",
+    "Defense: 939 to 989|(Amazon Only)|Required Level: 100|Required Strength: 550|Item Level: 120|+(1 to 2) to Amazon Skill Levels|Adds 75-100 Fire Damage|Adds 75-100 Lightning Damage|Adds 75-100 Cold Damage|-(20 to 25)% to Enemy Fire Resistance|-(20 to 25)% to Enemy Lightning Resistance|-(20 to 25)% to Enemy Cold Resistance|Maximum Elemental Resists +2%|Physical Resist 5%|5% Chance to Avoid Damage|+1 Life on Striking|Socketed (4)"
+  ],
+  [
+    "Jeweled Crown",
+    "Einherjar Helm",
+    "Amazon Helms",
+    "Defense: (1762 - 2447) to (1895 - 2632)|(Amazon Only)|Required Level: 100|Required Dexterity: 267|Item Level: 105|1% of total Vitality added as Energy for each Jewel in your gear|(Doubled for Jewels socketed in the Crown itself)|+2 to Amazon Skill Levels|+(5 to 13) to Psicrown|+(5 to 21) to Psionic Storm|+(80 to 150)% Enhanced Defense|Regenerate Mana +(30 to 50)%|+(5 to 8)% to Experience Gained|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Deviant Crown",
+    "Einherjar Helm",
+    "Amazon Helms",
+    "Defense: 1958 to 2106|(Amazon Only)|Required Level: 60|Required Dexterity: 534|Item Level: 120|If you have No Points in Lioness, Shieldmaiden,|Thundermaiden, Crimson Rite and Dragonlore: +50% Cast Speed|+100% Magic Find|+33% Deadly Strike|+25% Physical Resist|+600 Spell Focus|+(4 to 5) to Amazon Skill Levels|+100% Enhanced Defense|Maximum Elemental Resists +2%|Socketed (4)"
+  ],
+  [
+    "Helepolis",
+    "Spangenhelm",
+    "Amazon Helms",
+    "Defense: (2894 - 3192) to (3206 - 3537)|(Amazon Only)|Required Level: 100|Required Strength: 675|Item Level: 105|+38 to Maximum Damage|+(14 to 24) to Guard Tower|10% Chance of Crushing Blow|+(172 to 200)% Enhanced Defense|(21 to 30)% to Strength|Physical Resist 20%|(31 to 50)% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Asgardsreia",
+    "Spangenhelm",
+    "Amazon Helms",
+    "Defense: (2894 - 3192) to (3206 - 3537)|(Amazon Only)|Required Level: 100|Required Strength: 337|Item Level: 120|15% Movement Speed|5% Chance to cast level 1 Arrow on Striking|-2% Base Block Chance|+(4 to 7) to Resurrect|10% Chance of Crushing Blow|(6 to 7)% Deadly Strike|+(172 to 200)% Enhanced Defense|(31 to 40)% to Dexterity|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Vision of the Furies",
+    "Athulua's Hand",
+    "Amazon Shields",
+    "Defense: (2410 - 3151) to (2595 - 3394)|Chance to Block: 4%|(Amazon Only)|Required Level: 100|Required Dexterity: 349|Item Level: 105|Fire Elementals: cooldown reduced by 10%|+(15 to 35)% Bonus Elemental Damage to Bloodlust|+75 Spell Focus|-(10 to 20)% to Enemy Fire Resistance|+(95 to 155)% Enhanced Defense|(15 to 25)% to Vitality|15% to Energy|+50 Life Regenerated per Second|Physical Damage Taken Reduced by (50 to 100)|Socketed (4)"
+  ],
+  [
+    "Danmaku",
+    "Athulua's Hand",
+    "Amazon Shields",
+    "Defense: (2657 - 3003) to (2861 - 3234)|Chance to Block: 5%|(Amazon Only)|Required Level: 100|Required Dexterity: 349|Item Level: 120|Your Javelin procs always Pierce|+(2 to 3) to Amazon Skill Levels|1% Chance to cast level 5 Flurry of Javelins on Striking|15% Chance to cast level 5 Javelin on Striking|35% Chance to cast level 1 Javelin Nova on Block|1% Base Block Chance|(25 to 50)% Block Speed|+(115 to 143)% Enhanced Defense|(10 to 20)% to Dexterity|Socketed (4)"
+  ],
+  [
+    "Impundulu",
+    "Phoenix Shield",
+    "Amazon Shields",
+    "Defense: (2864 - 3385) to (3218 - 3803)|Chance to Block: 4%|(Amazon Only)|Required Level: 100|Required Strength: 490|Item Level: 105|+3 to Amazon Skill Levels|20% Chance to cast level 25 Lifeblood when Attacked|+25% to Lightning Spell Damage|-15% to Enemy Lightning Resistance|+(15 to 20) to Stormclash|+(120 to 160)% Enhanced Defense|+250 to Life|Maximum Lightning Resist +2%|Requirements -30%|Socketed (6)"
+  ],
+  [
+    "Crimson Dream",
+    "Phoenix Shield",
+    "Amazon Shields",
+    "Defense: 1302 to 1463|Chance to Block: 4%|(Amazon Only)|Required Level: 100|Required Strength: 700|Item Level: 120|12% of Damage is taken from Mana before Life|+(3 to 4) to Amazon Skill Levels|3% Chance to cast level 20 Mana Sweep when Attacked|+(20 to 40)% to Fire Spell Damage|-(15 to 25)% to Enemy Fire Resistance|+(4 to 6) to Eldritch Storm (Amazon Only)|+(4 to 6) to Lava Pit (Amazon Only)|Regenerate Mana +(50 to 80)%|Socketed (6)"
+  ],
+  [
+    "Golden Chariot",
+    "Setzschild",
+    "Amazon Shields",
+    "Defense: (11002 - 13867) to (14557 - 17982)|Chance to Block: 4%|(Amazon Only)|Required Level: 100|Required Strength: 770|Item Level: 105|Gematria|(Bonus for each Socketed Great/Elemental Rune)|+250 to Life|+0.5% to Maximum Elemental Resists|+(2 to 3) to Amazon Skill Levels|15% Chance to cast level 1 Mythal on Melee Attack|+(120 to 180)% Enhanced Defense|+(500 to 2000) Defense|Physical Resist 10%|+(25 to 100) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Hammerfall",
+    "Setzschild",
+    "Amazon Shields",
+    "Defense: 14322 to 17124|Chance to Block: 4%|(Amazon Only)|Required Level: 100|Required Strength: 770|Item Level: 120|Deal No Lightning Damage|40% Movement Speed|50% Chance to cast level 30 Thunder Hammer Nova on Melee Attack|+50 Damage|20% Life stolen per Hit|Weapon Physical Damage +(120 to 180)%|+200% Enhanced Defense|Elemental Resists -25%|Socketed (6)"
+  ],
+  [
+    "Silver Scorpion",
+    "Parma",
+    "Assassin Shields",
+    "Defense: (2875 - 3375) to (3231 - 3793)|Chance to Block: 4%|(Assassin Only)|Required Level: 100|Required Strength: 525|Required Dexterity: 529|Item Level: 105|+8 Storm Crows Projectiles if you have not taken weapon damage recently|+(1 to 2) to Assassin Skill Levels|+363 Poison Damage over 1 seconds|10% Chance of Crushing Blow|Slow Target 10%|+(130 to 170)% Enhanced Defense|+2 Life on Striking|Socketed (4)"
+  ],
+  [
+    "The Doom Gong of Xiansai",
+    "Aspis",
+    "Assassin Shields",
+    "Defense: (3146 - 3539) to (3672 - 4131)|Chance to Block: 5%|(Assassin Only)|Required Level: 100|Required Strength: 550|Required Dexterity: 559|Item Level: 105|2% Chance to cast level 12 Thunder Slam on Melee Attack|1% Base Block Chance|Adds (20 to 40)-(50 to 85) Damage|(10 to 40)% Life stolen per Hit|+(140 to 170)% Enhanced Defense|20% to Dexterity|Socketed (4)"
+  ],
+  [
+    "Liberty",
+    "Aspis",
+    "Assassin Shields",
+    "Defense: (3146 - 3539) to (3672 - 4131)|Chance to Block: 6%|(Assassin Only)|Required Level: 100|Required Strength: 825|Required Dexterity: 838|Item Level: 120|Patriot Sentry: rate of fire doubled, duration halved|15% Movement Speed|2% Base Block Chance|-(10 to 20)% to Enemy Elemental Resistances|+(8 to 16) to Patriot Sentry|5% Deadly Strike|+(140 to 170)% Enhanced Defense|Requirements +50%|Socketed (4)"
+  ],
+  [
+    "Hexward",
+    "Totem Shield",
+    "Assassin Shields",
+    "Defense: (1668 - 2085) to (1932 - 2415)|Chance to Block: 4%|(Assassin Only)|Required Level: 100|Required Dexterity: 527|Item Level: 105|Maelstrom MkI: +25% Bonus Magic Damage|2% Chance to cast level 50 Shadow Blade on Striking|+(140 to 200)% Enhanced Defense|(20 to 30)% to Dexterity|Curse Length Reduction 33%|Physical Resist 5%|Socketed (6)"
+  ],
+  [
+    "Death Sentence",
+    "Totem Shield",
+    "Assassin Shields",
+    "Defense: 695 to 805|Chance to Block: 4%|(Assassin Only)|Required Level: 100|Required Dexterity: 527|Item Level: 120|Familiars Cast Crucify when Killed/Unsummoned|+5 to Assassin Skill Levels|10% Chance to cast level 60 Doom on Melee Attack|100% Hit Recovery|Adds 90-110 Damage|25% to Dexterity|+666 to Life|Maximum Block Chance -50%|Socketed (6)"
+  ],
+  [
+    "Banner of Bitter Winds",
+    "Bladed Shield",
+    "Assassin Shields",
+    "Defense: (1672 - 2035) to (1996 - 2430)|Chance to Block: 4%|(Assassin Only)|Required Level: 100|Required Dexterity: 550|Item Level: 105|+1% Cold Spell Damage for Each Skill Level of Your Ways Passives|Limpet Laser: Scatters Mines Around You|(Always Fires 7 Mines)|+(3 to 4) to Assassin Skill Levels|-(10 to 20)% to Enemy Cold Resistance|+(130 to 180)% Enhanced Defense|Maximum Cold Resist +(1 to 2)%|Physical Resist 5%|Cannot Be Frozen|Socketed (6)"
+  ],
+  [
+    "Zayl's Temptation",
+    "Bladed Shield",
+    "Assassin Shields",
+    "Defense: (2035 - 2181) to (2430 - 2604)|Chance to Block: 5%|(Assassin Only)|Required Level: 100|Required Dexterity: 1100|Item Level: 120|Regens 15% Life Over 5 Seconds Upon Taking Weapon Damage|+(4 to 6) to Assassin Skill Levels|1% Base Block Chance|-(11 to 15)% to Enemy Elemental Resistances|Slow Target (15 to 25)%|+(180 to 200)% Enhanced Defense|Maximum Elemental Resists +1%|Maximum Block Chance +10%|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Shadowtwin",
+    "Fanged Helm",
+    "Barbarian Helms",
+    "Defense: (2978 - 3285) to (3149 - 3474)|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Guardian Spirit: 2% Reanimate as Corrupted Barbarian Level 131|+(2 to 3) to Barbarian Skill Levels|+(41 to 50)% to Summon Life|+(31 to 40)% to Summon Elemental Resistances|+25% to Summon Attack Rating|+(172 to 200)% Enhanced Defense|Maximum Cold Resist +(1 to 2)%|Socketed (4)"
+  ],
+  [
+    "Warmonger",
+    "Fanged Helm",
+    "Barbarian Helms",
+    "Defense: (4347 - 4785) to (5010 - 5474)|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 120|Area Effect Attack|Adds 100-200 Fire Damage|Adds 100-200 Lightning Damage|Adds 100-200 Cold Damage|+(160 to 200)% Enhanced Defense|+(1500 to 2000) Defense|Elemental/Magic Damage Taken Reduced by 40|10% Chance to Avoid Damage|Socketed (4)"
+  ],
+  [
+    "Bear Grin",
+    "Horned Helm",
+    "Barbarian Helms",
+    "Defense: (2175 - 2633) to (2346 - 2840)|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Lion Stance Does not Reduce Your Physical Resistance|+60 Attack Rating per Character Level Above 105|1% Chance to cast level 10 Snake Bite on Striking|+(90 to 130)% Enhanced Defense|(1 to 15)% to Strength|Elemental Resists -15%|(1 to 20)% Magic Find|Socketed (4)"
+  ],
+  [
+    "Voice of Arreat",
+    "Horned Helm",
+    "Barbarian Helms",
+    "Defense: 6435 to 7705|(Barbarian Only)|Required Level: 100|Required Strength: 500|Item Level: 120|+(25 to 40)% to Physical/Magic Spell Damage|+(15 to 20) to War Cry|+200% Enhanced Defense|+(3000 to 4000) Defense|Maximum Mana +15%|Maximum Elemental Resists +1%|Socketed (4)"
+  ],
+  [
+    "Eagle Eye",
+    "Assault Helmet",
+    "Barbarian Helms",
+    "Defense: 3591 to 3930|(Barbarian Only)|Required Level: 80|Required Strength: 600|Item Level: 105|Arrow Swarm: 50% More Projectiles|30% Attack Speed|(1 to 15)% Deadly Strike|+200% Enhanced Defense|-30% to Strength|(15 to 30)% to Dexterity|(30 to 60)% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Boarfrost",
+    "Assault Helmet",
+    "Barbarian Helms",
+    "Defense: (2238 - 2561) to (2449 - 2803)|(Barbarian Only)|Required Level: 100|Required Strength: 600|Item Level: 120|25% Chance to cast level 40 Ice Bolt Nova on Melee Attack|20% Attack Speed|Adds 63-125 Cold Damage|+(21 to 25)% to Cold Spell Damage|-50% to Enemy Cold Resistance|+10 to Deathgaze|Weapon Physical Damage +90%|+(87 to 114)% Enhanced Defense|(21 to 25)% to Strength|Socketed (4)"
+  ],
+  [
+    "Bul Kathos' Temper",
+    "Avenger Guard",
+    "Barbarian Helms",
+    "Defense: (2868 - 3242) to (3185 - 3601)|(Barbarian Only)|Required Level: 100|Required Strength: 625|Item Level: 105|1% Chance to cast level 60 Tempest on Death Blow|+(20 to 30)% to Lightning Spell Damage|-(10 to 20)% to Enemy Lightning Resistance|+(10 to 16) to Overcharged|+(14 to 20) to Forked Lightning|+(10 to 20) to Lightning Shield|+(130 to 160)% Enhanced Defense|+30 Life after each Kill|Socketed (4)"
+  ],
+  [
+    "Lilith's Legion",
+    "Avenger Guard",
+    "Barbarian Helms",
+    "Defense: (3691 - 4041) to (4067 - 4455)|(Barbarian Only)|Required Level: 100|Required Strength: 625|Item Level: 120|+2 to Barbarian Skill Levels|150% Bonus to Attack Rating|+(172 to 200)% Enhanced Defense|+300 Defense|20% to Strength|10% to Vitality|Physical Resist 10%|2% Reanimate as: Random Monster|(30 to 60)% Gold Find|50% Magic Find|Socketed (4)"
+  ],
+  [
+    "Rodeo's Hide",
+    "Bull Shield",
+    "Barbarian Shields",
+    "Defense: (3466 - 4208) to (4694 - 5493)|Chance to Block: 1%|(Barbarian Only)|Required Level: 100|Required Strength: 500|Required Dexterity: 374|Item Level: 105|10% Chance to cast level 14 Fowl Fight on Melee Attack|5% Chance of Crushing Blow|+(140 to 200)% Enhanced Defense|+(500 to 1500) Defense|+(200 to 1000) to Life|Maximum Life +(2 to 6)%|25% Gold Find|25% Magic Find|Socketed (6)"
+  ],
+  [
+    "Pawnstorm",
+    "Bull Shield",
+    "Barbarian Shields",
+    "Defense: 7708 to 7993|Chance to Block: 3%|(Barbarian Only)|Required Level: 100|Required Strength: 500|Required Dexterity: 374|Item Level: 120|2% Base Block Chance|25% Block Speed|25% Hit Recovery|10% Deadly Strike|+200% Enhanced Defense|+4000 Defense|(10 to 25)% to Strength|(10 to 25)% to Dexterity|Socketed (6)"
+  ],
+  [
+    "Toraja's Champion",
+    "Gilded Shield",
+    "Barbarian Shields",
+    "Defense: (7944 - 8978) to (9847 - 11129)|Chance to Block: 1%|(Barbarian Only)|Required Level: 100|Required Strength: 700|Item Level: 105|+(2 to 3) to Barbarian Skill Levels|+2 to Maximum Barbarian Minions|+(30 to 38)% Damage to Protector Spirit Bloodlust|40% Cast Speed|+(21 to 25)% to Summon Damage|+(115 to 143)% Enhanced Defense|+500 to Life|+250 to Mana|Elemental Resists +10%|+10 Life on Striking|-25% Mana Cost of Skills|Socketed (4)"
+  ],
+  [
+    "The Ancients' Legacy",
+    "Gilded Shield",
+    "Barbarian Shields",
+    "Defense: (15050 - 16085) to (17457 - 18740)|Chance to Block: 3%|(Barbarian Only)|Required Level: 100|Required Strength: 2450|Item Level: 120|+4 to Barbarian Skill Levels|2% Base Block Chance|40% Block Speed|Weapon Physical Damage +90%|+(172 to 200)% Enhanced Defense|+5000 Defense|30% Bonus to Defense|Requirements +250%|Socketed (4)"
+  ],
+  [
+    "Coldhunger",
+    "Wolf Head",
+    "Druid Helms",
+    "Defense: (1842 - 2082) to (1915 - 2165)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 105|+(1 to 2) to Druid Skill Levels|4% Chance to cast level 50 Ice Lance on Striking|Adds 13-38 Damage|Adds 30-35 Cold Damage|(14 to 17)% Life stolen per Hit|-(29 to 35)% to Enemy Cold Resistance|+(115 to 143)% Enhanced Defense|+(41 to 50) to Dexterity|+(41 to 50) to Vitality|Cold Resist +(30 to 50)%|Socketed (4)"
+  ],
+  [
+    "Augur's Pelt",
+    "Hawk Helm",
+    "Druid Helms",
+    "Defense: (1943 - 2196) to (2064 - 2332)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 105|3% Chance to cast level 12 Bloodlust on Death Blow|5% Chance to cast level 10 Time Strike on Striking|Adds 25-38 Damage|+(115 to 143)% Enhanced Defense|+(41 to 50) to Dexterity|+(41 to 50) to Vitality|(31 to 40)% Magic Find|Socketed (4)"
+  ],
+  [
+    "Cedar Shake",
+    "Hawk Helm",
+    "Druid Helms",
+    "Defense: 904 to 960|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 120|+(4 to 5) to Druid Skill Levels|Adds 125-200 Lightning Damage|Adds 125-200 Cold Damage|-(18 to 20)% to Enemy Elemental Resistances|+50% to Summon Life|+(11 to 15)% to Summon Elemental Resistances|10% to Dexterity|Maximum Fire Resist +(2 to 3)%|Socketed (4)"
+  ],
+  [
+    "Forest Defender",
+    "Antlers",
+    "Druid Helms",
+    "Defense: (2277 - 2562) to (2474 - 2783)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Spiritual Alignment Adds 5% Lightning Spell Damage per Base Level|Spiritual Alignment No Longer Adds Fire/Cold Spell Damage|+2 to Druid Skill Levels|20% Movement Speed|20% Cast Speed|-(20 to 25)% to Enemy Lightning Resistance|+(15 to 20) to Stormclash|+(140 to 170)% Enhanced Defense|Maximum Lightning Resist +1%|(35 to 50)% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Greenwalker's Charge",
+    "Antlers",
+    "Druid Helms",
+    "Defense: (2372 - 2657) to (2577 - 2886)|(Druid Only)|Required Level: 100|Required Strength: 3000|Item Level: 120|Idol of Scosglen has no Cooldown|+(1 to 2) to Druid Skill Levels|Adds 30-50 Damage|+(11 to 20) to Rend (Druid Only)|10% Chance of Crushing Blow|+(150 to 180)% Enhanced Defense|Activation Frequency (10 to 15)%|+(100 to 200) Life on Melee Attack|Requirements +500%|Socketed (4)"
+  ],
+  [
+    "Phoenix Beak",
+    "Falcon Mask",
+    "Druid Helms",
+    "Defense: 996 to 1101|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Ember Spirit: +10% Total Damage|+(2 to 3) to Druid Skill Levels|20% Combat Speeds|+(20 to 25)% to Fire Spell Damage|-(10 to 15)% to Enemy Fire Resistance|Maximum Lightning Resist +(2 to 3)%|Physical Resist 5%|Half Freeze Duration|Socketed (4)"
+  ],
+  [
+    "Sky Spirit",
+    "Falcon Mask",
+    "Druid Helms",
+    "Defense: (2390 - 2689) to (2642 - 2972)|(Druid Only)|Required Level: 100|Required Strength: 500|Item Level: 120|2% Chance to cast level 32 Tempest on Striking|150% Bonus to Attack Rating|Adds 42-84 Lightning Damage|+(20 to 25)% to Lightning Spell Damage|-(28 to 35)% to Enemy Lightning Resistance|10% Chance of Crushing Blow|+(140 to 170)% Enhanced Defense|Physical Resist 10%|+1 Life on Striking|+(4 to 5) to Light Radius|Socketed (4)"
+  ],
+  [
+    "Nature's Orphan",
+    "Spirit Mask",
+    "Druid Helms",
+    "Defense: (2294 - 2711) to (2574 - 3042)|(Druid Only)|Required Level: 100|Required Strength: 650|Item Level: 105|Pagan Rites also Restores Mana|+(2 to 3) to Druid Skill Levels|1% Chance to cast level 36 Lightning Streak on Death Blow|-(10 to 20)% to Enemy Lightning Resistance|+25% to Cold Spell Damage|-(10 to 20)% to Enemy Cold Resistance|+(120 to 160)% Enhanced Defense|Maximum Lightning Resist +2%|Socketed (4)"
+  ],
+  [
+    "Ranger's Disguise",
+    "Spirit Mask",
+    "Druid Helms",
+    "Defense: (2836 - 3129) to (3182 - 3510)|(Druid Only)|Required Level: 100|Required Strength: 650|Item Level: 120|2% Chance to cast level 20 Sun Strike on Striking|80% Attack Speed|+10 to Widowmaker|+(172 to 200)% Enhanced Defense|15% to Strength|Maximum Life +(2 to 3)%|Physical Resist 10%|Socketed (4)"
+  ],
+  [
+    "Bottled Will-o-Wisp",
+    "Preserved Head",
+    "Necromancer Shields",
+    "Defense: (2430 - 3037) to (2600 - 3250)|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 436|Item Level: 105|+(3 to 4) to Necromancer Skill Levels|-20% to Enemy Lightning Resistance|+40% to Summon Life|+(100 to 150)% Enhanced Defense|Maximum Elemental Resists +1%|Lightning Absorb 10%|Socketed (4)"
+  ],
+  [
+    "Homunculus",
+    "Preserved Head",
+    "Necromancer Shields",
+    "Defense: 1215 to 1300|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 436|Item Level: 120|10% Chance to cast level 25 Infected Roots on Melee Attack|4% Chance to cast level 21 Lifeblood on Kill|+(50 to 100) Spell Focus|+(20 to 30)% to Poison Spell Damage|-30% to Enemy Poison Resistance|+(10 to 16) to Pestilence (Necromancer Only)|+(100 to 150) to Vitality|Maximum Poison Resist +(2 to 3)%|50% Bonus to Defense|Socketed (4)"
+  ],
+  [
+    "Dark Guardian",
+    "Zombie Head",
+    "Necromancer Shields",
+    "Defense: 5822 to 8251|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 219|Item Level: 105|+(2 to 3) to Necromancer Skill Levels|+20% to Summon Elemental Resistances|+10% to Summon Physical Resist|+200% Enhanced Defense|+(2000 to 4000) Defense|Physical Resist 5%|(50 to 1000)% Bonus to Defense|Requirements -50%|Socketed (4)"
+  ],
+  [
+    "Feardrinker",
+    "Zombie Head",
+    "Necromancer Shields",
+    "Defense: (2802 - 3312) to (3117 - 3684)|Chance to Block: 4%|(Necromancer Only)|Required Level: 100|Required Dexterity: 438|Item Level: 120|+20% Nightwalker damage bonus|+(2 to 5) to Necromancer Skill Levels|2% Base Block Chance|+(30 to 40)% to Physical/Magic Spell Damage|-(21 to 35)% to Enemy Poison Resistance|+(120 to 160)% Enhanced Defense|+120 Life Regenerated per Second|+(300 to 500) to Life|Maximum Elemental Resists +1%|Socketed (4)"
+  ],
+  [
+    "Grim Silhouette",
+    "Gargoyle Head",
+    "Necromancer Shields",
+    "Defense: (3694 - 4389) to (4792 - 5617)|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 443|Item Level: 105|Veil King: +100% Life and Damage|+(3 to 5) to Necromancer Skill Levels|+(31 to 60)% to Summon Damage|+(75 to 150)% to Summon Attack Rating|+(130 to 180)% Enhanced Defense|+(500 to 1000) Defense|Maximum Cold Resist +(1 to 2)%|Elemental Resists +(15 to 25)%|Socketed (4)"
+  ],
+  [
+    "The Sentinel's Sorrow",
+    "Gargoyle Head",
+    "Necromancer Shields",
+    "Defense: (3333 - 3750) to (3957 - 4452)|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 443|Item Level: 120|-1 to Maximum Totems|Minion Damage Also Increases Your Spell Damage at 50% Efficiency|+(3 to 4) to Necromancer Skill Levels|-15% to Enemy Elemental Resistances|+(140 to 170)% Enhanced Defense|+(75 to 150) Life Regenerated per Second|Regenerate Mana +15%|Elemental Resists -30%|Socketed (4)"
+  ],
+  [
+    "Sinwar",
+    "Demon Head",
+    "Necromancer Shields",
+    "Defense: 1448 to 1766|Chance to Block: 4%|(Necromancer Only)|Required Level: 100|Required Dexterity: 445|Item Level: 105|+(5 to 6) to Necromancer Skill Levels|2% Base Block Chance|+100 Spell Focus|+(20 to 30)% to Spell Damage|-30% to Enemy Elemental Resistances|-10% to Summon Elemental Resistances|Physical Resist 15%|Cannot Be Frozen|Total Defense = 0|Socketed (4)"
+  ],
+  [
+    "Back To The Abyss",
+    "Demon Head",
+    "Necromancer Shields",
+    "Defense: 1448 to 1766|Chance to Block: 2%|(Necromancer Only)|Required Level: 100|Required Dexterity: 445|Item Level: 120|Abyss Knights and Night Hawks Die After Being Summoned|+6% Total Damage to Night Hawks|+(2 to 3) to Necromancer Skill Levels|+150% to Summon Damage|+(101 to 150) to Energy|+200 Life Regenerated per Second|Maximum Life -10%|Physical Resist 20%|50% Magic Find|Socketed (4)"
+  ],
+  [
+    "Barghest's Howl",
+    "Hundsgugel",
+    "Paladin Helms",
+    "Defense: 5327 to 5684|(Paladin Only)|Required Level: 100|Required Strength: 500|Item Level: 105|Level 1 Wolf Stance|28% Attack Speed|40% Movement Speed|28% Hit Recovery|10% Crushing Blow|10% Weapon Physical Damage|5% Chance to cast level 23 Bloodlust on Melee Attack|(15 to 20)% Life stolen per Hit|Hit Causes Monster to Flee +1%|Slow Target 5%|+200% Enhanced Defense|+2000 Defense|+50 to Strength|+100 Life Regenerated per Second|3% Reanimate as: Random Monster|-2 to Light Radius|Socketed (4)"
+  ],
+  [
+    "Imperius' Might",
+    "Hundsgugel",
+    "Paladin Helms",
+    "Defense: 5327 to 5684|(Paladin Only)|Required Level: 100|Required Strength: 500|Item Level: 120|+50% Damage to Demons|(9 to 17)% Life stolen per Hit|+(10 to 15) to Divine Judgement (Paladin Only)|+(7 to 16) to Retaliate (Paladin Only)|+1 to Heaven's Fury|+200% Enhanced Defense|+2000 Defense|+(2 to 5) to Light Radius|Socketed (4)"
+  ],
+  [
+    "Veil of the Tainted Sun",
+    "Blackguard Helm",
+    "Paladin Helms",
+    "Defense: (3042 - 3434) to (3680 - 4093)|(Paladin Only)|Required Level: 100|Required Dexterity: 387|Item Level: 120|+(3 to 4) to Paladin Skill Levels|+150 Spell Focus|+(35 to 40)% to Physical/Magic Spell Damage|+(25 to 30)% to Fire Spell Damage|-(20 to 25)% to Enemy Fire Resistance|+(10 to 15) to Pentagram|+(160 to 200)% Enhanced Defense|+(500 to 1000) Defense|Physical Resist -6%|1% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Blessed Wrath",
+    "Blackguard Helm",
+    "Paladin Helms",
+    "Defense: (1956 - 2445) to (2062 - 2577)|(Paladin Only)|Required Level: 100|Required Dexterity: 387|Item Level: 120|Can be Blessed|(up to 5 times, Blessings are intensified)|For each Blessed item equipped: +1 to All Skills|Maximum Fire and Cold Resists +1%|+30 Life after each Kill|+(100 to 150)% Enhanced Defense|(25 to 50)% Bonus to Defense|Half Freeze Duration|+5 to Light Radius|Socketed (4)"
+  ],
+  [
+    "The Book of Kalen",
+    "Targe",
+    "Paladin Shields",
+    "Defense: (3513 - 4471) to (3737 - 4757)|Chance to Block: 3%|(Paladin Only)|Required Level: 100|Required Dexterity: 437|Item Level: 105|Dragon's Blessing Attribute Bonus Halved|1% Base Block Chance|30% Hit Recovery|+(20 to 40) to Smite|+(120 to 180)% Enhanced Defense|+2000 Defense vs. Missile|Maximum Life +3%|+20 to Light Radius|Socketed (4)"
+  ],
+  [
+    "Mark of the Que-Hegan",
+    "Targe",
+    "Paladin Shields",
+    "Defense: (4742 - 5541) to (5247 - 6097)|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Dexterity: 437|Item Level: 120|+4 to Paladin Skill Levels|-(20 to 30)% to Enemy Fire Resistance|+20 to|Ranged Blood Thorns|+20% to Summon Elemental Resistances|+(150 to 200)% Enhanced Defense|+(750 to 1000) Defense|+(75 to 225) Life Regenerated per Second|Maximum Fire Resist +2%|5% Reanimate as: Random Monster|Socketed (4)"
+  ],
+  [
+    "Orationis Tenebris",
+    "Rondache",
+    "Paladin Shields",
+    "Defense: (3669 - 4503) to (4048 - 4968)|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Dexterity: 440|Item Level: 105|Sanguine Covenant Regenerates 2% of Maximum Life per Second|+(2 to 3) to Paladin Skill Levels|40% Hit Recovery|+(25 to 50)% to Fire Spell Damage|+(25 to 50)% to Cold Spell Damage|+(120 to 170)% Enhanced Defense|Cannot Be Frozen|Socketed (4)"
+  ],
+  [
+    "The Vanquisher",
+    "Rondache",
+    "Paladin Shields",
+    "Defense: 5004 to 5520|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Dexterity: 440|Item Level: 120|+30% Total Mind Flay Damage if You Have Not Been Hit Recently|+4 to Paladin Skill Levels|30% Movement Speed|30% Cast Speed|30% Hit Recovery|-25% to Enemy Lightning Resistance|+200% Enhanced Defense|Regenerate Mana +(20 to 30)%|Maximum Lightning Resist +(0 to 2)%|+(30 to 50) Life after each Kill|Socketed (4)"
+  ],
+  [
+    "Argentek's Tide",
+    "Heraldic Shield",
+    "Paladin Shields",
+    "Defense: 5712 to 6940|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Strength: 500|Item Level: 105|+200% Fire Damage to Colosseum|+(1 to 2) to Paladin Skill Levels|Adds 125-225 Fire Damage|-15% to Enemy Fire Resistance|-15% to Enemy Poison Resistance|+200% Enhanced Defense|+(501 to 1000) Defense|+(201 to 500) to Life|Maximum Fire Resist +2%|Socketed (6)"
+  ],
+  [
+    "The Last Crusader",
+    "Heraldic Shield",
+    "Paladin Shields",
+    "Defense: 14513 to 18425|Chance to Block: 2%|(Paladin Only)|Required Level: 120|Required Strength: 490|Item Level: 120|Ethereal|10% Movement Speed|Adds 300-400 Magic Damage|+25 to Lex Talionis|+200% Enhanced Defense|+(8000 to 11000) Defense|Maximum Life +(10 to 15)%|Socketed (6)"
+  ],
+  [
+    "Astreon's Citadel",
+    "Aerin Shield",
+    "Paladin Shields",
+    "Defense: (4336 - 5059) to (5085 - 5933)|Chance to Block: 3%|(Paladin Only)|Required Level: 100|Required Strength: 500|Item Level: 105|1% Base Block Chance|+25% to Physical/Magic Spell Damage|+25% to Lightning Spell Damage|-15% to Enemy Lightning Resistance|+(4 to 6) to Slayer (Paladin Only)|+(4 to 6) to Mind Flay (Paladin Only)|+(140 to 180)% Enhanced Defense|+75 to Energy|Cold Absorb 7%|Socketed (6)"
+  ],
+  [
+    "Herald of Zakarum",
+    "Aerin Shield",
+    "Paladin Shields",
+    "Defense: (4517 - 5421) to (5297 - 6357)|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Strength: 1000|Item Level: 120|Gematria|(Bonus for each Socketed Great/Elemental Rune)|+0.75% Base Block Chance|+20% to Elemental Resists|+6 to All Skills|+1 to Paladin Skill Levels|50% Block Speed|-15% to Enemy Elemental Resistances|+(1 to 10) to Champions of the Sun|+(150 to 200)% Enhanced Defense|+1.5 to Energy (Based on Character Level)|Requirements +100%|Socketed (6)"
+  ],
+  [
+    "Ignis Demonia",
+    "Crown Shield",
+    "Paladin Shields",
+    "Defense: (4319 - 5070) to (5198 - 6102)|Chance to Block: 2%|(Paladin Only)|Required Level: 100|Required Dexterity: 782|Item Level: 105|+(2 to 3) to Paladin Skill Levels|6% Chance to cast level 40 Annihilation on Death Blow|+(30 to 40)% to Physical/Magic Spell Damage|-(15 to 25)% to Enemy Fire Resistance|+(130 to 170)% Enhanced Defense|(5 to 15)% to Energy|Maximum Mana +(5 to 15)%|Requirements +75%|Socketed (4)"
+  ],
+  [
+    "Angelhost",
+    "Crown Shield",
+    "Paladin Shields",
+    "Defense: 10634 to 11780|Chance to Block: 4%|(Paladin Only)|Required Level: 100|Required Dexterity: 447|Item Level: 120|30% Chance to cast level 20 Cherubim on Melee Attack|2% Base Block Chance|Adds 50-70 Damage|+200% Enhanced Defense|+5000 Defense|-30% to Strength|20% to Dexterity|Maximum Elemental Resists +2%|+200 Life on Melee Attack|Socketed (4)"
+  ],
+  [
+    "The Ritualist",
+    "Gambeson",
+    "Sorceress Body Armors",
+    "Defense: (5583 - 6345) to (5951 - 6762)|(Sorceress Only)|Required Level: 100|Required Dexterity: 486|Item Level: 105|+(3 to 5) to Sorceress Skill Levels|+50 Spell Focus|Firedance Cooldown Reduced by 6 seconds|+20% to Fire Spell Damage|-20% to Enemy Fire Resistance|+(120 to 150)% Enhanced Defense|+3000 Defense vs. Missile|Fire Absorb 5%|+(30 to 50) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Cloak of the Outcast",
+    "Gambeson",
+    "Sorceress Body Armors",
+    "Defense: 2538 to 2705|(Sorceress Only)|Required Level: 100|Required Dexterity: 486|Item Level: 120|Mana Shield: +20% Damage Reduction|+4 to Sorceress Skill Levels|+150 Life Regenerated per Second|+750 to Mana|Maximum Mana +30%|+(50 to 75) Mana after each Kill|(70 to 100)% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Dervish of Aranoch",
+    "Kazarghand",
+    "Sorceress Body Armors",
+    "Defense: (5959 - 6735) to (6832 - 7722)|(Sorceress Only)|Required Level: 100|Required Dexterity: 550|Item Level: 105|Tornado: +1 Extra Projectile with 350% Attack Speed|4% Chance to cast level 6 Tornado on Striking|40% Attack Speed|(5 to 20)% Life stolen per Hit|Stun Attack|Weapon Physical Damage +30%|+(115 to 143)% Enhanced Defense|20% to Dexterity|-20% to Energy|+1000 to Life|Socketed (6)"
+  ],
+  [
+    "Adamantine Guard",
+    "Kazarghand",
+    "Sorceress Body Armors",
+    "Defense: (7459 - 8235) to (8332 - 9222)|(Sorceress Only)|Required Level: 100|Required Dexterity: 550|Item Level: 120|+(3 to 4) to Sorceress Skill Levels|4% Chance to cast level 36 Glacial Nova on Kill|30% Cast Speed|+(25 to 38)% to Poison Spell Damage|-35% to Enemy Poison Resistance|+(11 to 16) to Warp Armor (Sorceress Only)|+(115 to 143)% Enhanced Defense|+1500 Defense|(15 to 20)% to Energy|Socketed (6)"
+  ],
+  [
+    "Bartuc's Curse",
+    "Lamellar Armor",
+    "Sorceress Body Armors",
+    "Defense: (4647 - 5680) to (5040 - 6160)|(Sorceress Only)|Required Level: 100|Required Dexterity: 499|Item Level: 105|2% Base Block Chance|+100 Spell Focus|+(25 to 50)% to Fire Spell Damage|+(1 to 50)% to Cold Spell Damage|+(1 to 15) to Phoenix Wave|+(80 to 120)% Enhanced Defense|(21 to 25)% to All Attributes|-30% Gold Find|Socketed (6)"
+  ],
+  [
+    "Frozen Heart",
+    "Lamellar Armor",
+    "Sorceress Body Armors",
+    "Defense: 9681 to 10500|(Sorceress Only)|Required Level: 100|Required Dexterity: 489|Item Level: 120|Ethereal|Wintertide: +100% Damage Multiplier|+(3 to 4) to Sorceress Skill Levels|+(9 to 12) to Ice Elementals (Sorceress Only)|+(50 to 75)% to Summon Life|+250% to Summon Damage|+(25 to 30)% to Summon Elemental Resistances|+200% Enhanced Defense|Physical Resist 10%|100% Bonus to Defense|Socketed (6)"
+  ],
+  [
+    "Zann Prodigy",
+    "Banded Plate",
+    "Sorceress Body Armors",
+    "Defense: (6721 - 7943) to (8234 - 9731)|(Sorceress Only)|Required Level: 100|Required Dexterity: 219|Item Level: 105|Tempest: +3 Projectiles|+(3 to 5) to Sorceress Skill Levels|+(15 to 25)% Bonus to Spell Focus|-(15 to 25)% to Enemy Lightning Resistance|+(10 to 16) to Overcharged|+(120 to 160)% Enhanced Defense|+(100 to 150) to Energy|(5 to 10)% Chance to Avoid Damage|-5% to Experience Gained|Requirements -65%|Socketed (6)"
+  ],
+  [
+    "Lachdanan's Visage",
+    "Banded Plate",
+    "Sorceress Body Armors",
+    "Defense: (8973 - 10165) to (14769 - 16229)|(Sorceress Only)|Required Level: 100|Required Dexterity: 627|Item Level: 120|Mana Shield: 65% less Mana Drained when Hit|You may only use Melee, Summon and Support Skills|Adds 200-300 Magic Damage|Adds 150-200 Fire Damage|Adds 150-200 Lightning Damage|Adds 150-200 Cold Damage|-30% to Enemy Elemental Resistances|+(161 to 200)% Enhanced Defense|+(1000 to 5000) Defense|Socketed (6)"
+  ],
+  [
+    "Armor of the Old Religion",
+    "Ceremonial Armor",
+    "Sorceress Body Armors",
+    "Defense: (8437 - 9306) to (10452 - 11529)|(Sorceress Only)|Required Level: 100|Required Dexterity: 722|Item Level: 105|+(4 to 5) to Sorceress Skill Levels|+200 Spell Focus|50% Hit Recovery|+(35 to 50)% to Fire Spell Damage|+(35 to 50)% to Lightning Spell Damage|+(35 to 50)% to Cold Spell Damage|+(9 to 12) to Sacrifices|+(172 to 200)% Enhanced Defense|Elemental Resists +25%|10% Chance to Avoid Damage|+(101 to 150) Life after each Kill|Socketed (6)"
+  ],
+  [
+    "Atanna Khan's Dress",
+    "Ceremonial Armor",
+    "Sorceress Body Armors",
+    "Defense: 10306 to 14529|(Sorceress Only)|Required Level: 100|Required Dexterity: 722|Item Level: 120|+8 to Maximum Raven Familiar Base Level|30% Movement Speed|5% Chance to cast level 60 Magic Missiles on Death Blow|+(20 to 40)% to Physical/Magic Spell Damage|+(8 to 13) to Arcane Swarm|+200% Enhanced Defense|+(1000 to 3000) Defense|Physical Resist (5 to 10)%|10% Chance to Avoid Damage|Socketed (6)"
+  ],
+  [
+    "Klaatu Barada Nikto",
+    "Amulet",
+    "Amulets",
+    "Required Level: 110|Item Level: 105|30% Enhanced Damage vs. Necrobots|+2 to All Skills|10% Chance to cast level 40 Nova Bomb on Melee Attack|25% Attack Speed|Adds 1-188 Lightning Damage|+650 Poison Damage over 2 seconds|Stun Attack|+(11 to 16) to Hive|Lightning Resist +(40 to 50)%|Poison Resist +(40 to 50)%"
+  ],
+  [
+    "Black Dwarf",
+    "Amulet",
+    "Amulets",
+    "Required Level: 110|Item Level: 105|+2 to All Skills|20% Cast Speed|20% Hit Recovery|+(15 to 25)% to Lightning Spell Damage|-(5 to 20)% to Enemy Lightning Resistance|+(15 to 25)% to Cold Spell Damage|-(5 to 20)% to Enemy Cold Resistance|+(21 to 29) to Supernova|(30 to 40)% Bonus to Defense|-5 to Light Radius"
+  ],
+  [
+    "Vizjerei's Necklace",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 105|+(1 to 3) to All Skills|+(20 to 30)% to Physical/Magic Spell Damage|(10 to 20)% to Energy|Maximum Mana +10%|+(25 to 50) Life after each Kill"
+  ],
+  [
+    "The Tesseract",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 105|+2 to All Skills|25% Cast Speed|+(1 to 30)% to Fire Spell Damage|-(1 to 20)% to Enemy Fire Resistance|+(1 to 30)% to Lightning Spell Damage|-(1 to 20)% to Enemy Lightning Resistance|+(1 to 30)% to Cold Spell Damage|-(1 to 20)% to Enemy Cold Resistance|+(1 to 30)% to Poison Spell Damage|-(1 to 20)% to Enemy Poison Resistance"
+  ],
+  [
+    "Gallowlaugh",
+    "Amulet",
+    "Amulets",
+    "Required Level: 110|Item Level: 105|+(1 to 3) to All Skills|+50% Bonus to Poison Skill Duration|-(20 to 30)% to Enemy Poison Resistance|+1 to Sacrifices|Poison Resist +(20 to 30)%|Poison Length Reduction 50%"
+  ],
+  [
+    "Dyers Eve",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|+2 to All Skills|5% Chance to cast level 5 Time Strike on Striking|Adds 15-20 Damage|5% Life stolen per Hit|Elemental Resists +10%|Physical Resist (1 to 10)%"
+  ],
+  [
+    "Locket of Dreams",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|+1 to Maximum Stamina per 60 Vitality|+(2 to 3) to All Skills|+10% to Summon Physical Resist|+100 to Vitality|+(150 to 200) Life when Struck by an Enemy|25% Gold Find|+10 to Light Radius"
+  ],
+  [
+    "Quov Tsin's Talisman",
+    "Amulet",
+    "Amulets",
+    "Required Level: 110|Item Level: 110|15% Innate Elemental Damage|-(20 to 30)% to Enemy Elemental Resistances"
+  ],
+  [
+    "Beads of the Snake Queen",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|4% Chance to cast level 33 Scorpion Blade on Kill|Adds 5-10 Damage|Stun Attack|+(200 to 500) Defense|(20 to 25)% to Strength|(20 to 25)% to Dexterity|+100 Life after each Kill"
+  ],
+  [
+    "Death Ward",
+    "Amulet",
+    "Amulets",
+    "Required Level: 120|Item Level: 120|+(1 to 3) to All Skills|Maximum Elemental Resists +1%|Elemental Resists +(15 to 25)%|Poison Length Reduction 30%|Curse Length Reduction 30%"
+  ],
+  [
+    "Niradyahk",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|Singularity: base cooldown increased by 1 second|Activation Frequency lowers Singularity's cooldown|(At 125% Effectiveness)|+(2 to 3) to All Skills|3% Chance to cast level 50 Singularity on Melee Attack|20% Cast Speed|+(5 to 10) to Singularity|+250 to Life|+125 to Mana|Activation Frequency (8 to 12)%|(1 to 3)% Reanimate as: Magineer"
+  ],
+  [
+    "In For The Kill",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|20% Movement Speed|2% Chance to cast level 20 Widowmaker on Kill|2% Chance to cast level 20 APF-20 'Maelstrom' MkV on Kill|2% Chance to cast level 20 Thunder Hammer Nova on Kill|Elemental Resists -20%|(25 to 50)% Magic Find"
+  ],
+  [
+    "Lamen of the Archbishop",
+    "Amulet",
+    "Amulets",
+    "Required Level: 100|Item Level: 120|Can be Blessed|(Blessing will have perfect rolls)|Orb Effects Applied to this Item are Doubled|+4 to All Skills"
+  ],
+  [
+    "Mark of the Angiris",
+    "Amulet",
+    "Amulets",
+    "Required Level: 50|Item Level: 139|Transmute with Soulforged Mystic Orbs to apply with double effect|+2% Movement Speed for each affix from Rare/Crafted/Magic gear|+5% Weapon Physical Damage for each affix from Rare/Crafted/Magic gear"
+  ],
+  [
+    "Mark of the Angiris",
+    "Amulet",
+    "Amulets",
+    "Required Level: 50|Item Level: 139|Transmute with Soulforged Mystic Orbs to apply with double effect|+2% Movement Speed for each affix from Rare/Crafted/Magic gear|+3% Physical/Magic Spell Damage for each affix from Rare/Crafted/Magic gear"
+  ],
+  [
+    "Earth Rouser",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 105|3% Chance to cast level 10 Earthquake on Melee Attack|5% Chance to cast level 20 Shockwave on Melee Attack|(6 to 10)% Chance of Crushing Blow|Weapon Physical Damage +(15 to 30)%|(6 to 10)% to Strength"
+  ],
+  [
+    "Der Nebelring",
+    "Ring",
+    "Rings",
+    "Required Level: 110|Item Level: 105|+(20 to 30)% to Summon Life|+15% to Summon Damage|+1000 Defense|+400 to Life|Physical Resist (4 to 6)%|+(40 to 50) Life after each Kill|+2 to Light Radius"
+  ],
+  [
+    "Sigil of Tur Dulra",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 105|+(1 to 2) to Druid Skill Levels|+(15 to 20)% Bonus to Poison Skill Duration|20% Cast Speed|-(1 to 10)% to Enemy Poison Resistance|Elemental Resists +(20 to 25)%"
+  ],
+  [
+    "Ras Algethi",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 105|4% Chance to cast level 44 Magic Missiles on Death Blow|+(40 to 50) Spell Focus|+(15 to 20)% to Physical/Magic Spell Damage|+(15 to 20)% to Fire Spell Damage|-10% to Enemy Fire Resistance|Physical Resist -2%"
+  ],
+  [
+    "Seal of the Nephalem Kings",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|+(1 to 2) to All Skills|(10 to 15)% to Strength|(10 to 15)% to Vitality|(10 to 15)% Bonus to Defense|(10 to 20)% Gold Find"
+  ],
+  [
+    "Ouroboros",
+    "Ring",
+    "Rings",
+    "Required Level: 110|Item Level: 120|+1 to All Skills|(-15 to 25)% to Strength|(-15 to 25)% to Dexterity|(-15 to 25)% to Vitality|(-15 to 25)% to Energy"
+  ],
+  [
+    "Witchcraft",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|+2 to All Skills|20% Cast Speed|-5% to Enemy Elemental Resistances|Maximum Mana (-5 to 5)%|20% Bonus to Defense"
+  ],
+  [
+    "Giant's Knuckle",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|20% Attack Speed|Adds 10-15 Damage|(5 to 10)% Life stolen per Hit|5% Deadly Strike|+25 Life Regenerated per Second|Physical Resist 5%"
+  ],
+  [
+    "Ring of Woe",
+    "Ring",
+    "Rings",
+    "Required Level: 80|Item Level: 120|Corrupted|(Cube with Oil of Craft to Reveal)|+200 to Life|Can be corrupted any number of times|60% Success | 33% to Add 50 Required Level|7% to Remove 10 Required Level"
+  ],
+  [
+    "Empyrean Glory",
+    "Ring",
+    "Rings",
+    "Required Level: 50|Item Level: 120|1% Chance to cast level 40 Singularity on Death Blow|(6 to 10)% to All Attributes|Maximum Life +5%|Maximum Mana +15%|15% Gold Find"
+  ],
+  [
+    "Bad Mood",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|-20% Cast Speed|Adds 50-100 Fire Damage|Adds 50-100 Lightning Damage|Adds 50-100 Cold Damage|-(5 to 20)% to Enemy Fire Resistance|-(5 to 20)% to Enemy Lightning Resistance|-(5 to 20)% to Enemy Cold Resistance"
+  ],
+  [
+    "Elemental Band",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|Cube with one of the matching relics to specialize|+10% to Spell Damage|+1 to Path of Flames|+1 to Nova Charge|+1 to Frigid Domain|+1 to Hive|Activation Frequency 10%"
+  ],
+  [
+    "Adrenaline Rush",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|+1 to All Skills|40% Movement Speed|40% Combat Speeds|Maximum Elemental Resists +1%"
+  ],
+  [
+    "Signet of the Gladiator",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|+1 to All Skills|25% Chance to cast level 20 Retaliate on Block|1% Base Block Chance|Colosseum Cooldown Reduced by 0 seconds|Elemental Resists -15%"
+  ],
+  [
+    "Black Hand Sigil",
+    "Ring",
+    "Rings",
+    "Required Level: 100|Item Level: 120|4% Chance to cast level 50 Shuriken Flurry on Death Blow|4% Chance to cast level 50 Drakemaw on Death Blow|4% Chance to cast level 50 Doom on Death Blow|Elemental Resists -25%"
+  ],
+  [
+    "Farsight Globe",
+    "Jewel",
+    "Jewels",
+    "Required Level: 80|Item Level: 105|Can be Inserted into Socketed Items|(-5 to 0)% to Enemy Fire Resistance|(-5 to 0)% to Enemy Lightning Resistance|(-5 to 0)% to Enemy Cold Resistance|(-5 to 0)% to Enemy Poison Resistance"
+  ],
+  [
+    "Heavenstone",
+    "Jewel",
+    "Jewels",
+    "Required Level: 80|Item Level: 110|Can be Inserted into Socketed Items|+(4 to 8)% Damage to Demons|+(200 to 350) Defense|+(6 to 12) to all Attributes"
+  ],
+  [
+    "Xepera Xeper Xeperu",
+    "Jewel",
+    "Jewels",
+    "Required Level: 110|Item Level: 105|Can be Inserted into Socketed Items|Slow Target 2%|+10 to Strength|+10 to Energy|1% Reanimate as: Random Monster"
+  ],
+  [
+    "Arcane Dynamo",
+    "Jewel",
+    "Jewels",
+    "Required Level: 90|Item Level: 120|Can be Inserted into Socketed Items|+3 to Maximum Dynamo charges|(Stackable)|2% Movement Speed|(2 to 3)% to Energy"
+  ],
+  [
+    "Zann Esu's Stone",
+    "Jewel",
+    "Jewels",
+    "Required Level: 100|Item Level: 115|Can be Inserted into Socketed Items|5% Cast Speed|+3% to Spell Damage|Maximum [Random Elemental] Resist +1%"
+  ],
+  [
+    "Suicide Note",
+    "Jewel",
+    "Jewels",
+    "Required Level: 110|Item Level: 115|Can be Inserted into Socketed Items|+1 to All Skills|+100 Defense|Elemental Resists -5%|+10 Required Level"
+  ],
+  [
+    "Inarius' Rock",
+    "Jewel",
+    "Jewels",
+    "Required Level: 100|Item Level: 115|Can be Inserted into Socketed Items|1% Chance to cast level 13 Time Strike on Striking|10% Attack Speed|Adds 2-3 Damage|1% Life stolen per Hit"
+  ],
+  [
+    "Atomus",
+    "Jewel",
+    "Jewels",
+    "Required Level: 120|Item Level: 120|Can be Inserted into Socketed Items|+1 to All Skills|+20 to all Attributes|+1% to Experience Gained"
+  ],
+  [
+    "Arkenstone",
+    "Jewel",
+    "Jewels",
+    "Required Level: 100|Item Level: 130|Can be Inserted into Socketed Items|Physical Resist 3%|Cannot Be Frozen|Crown Jewel|(while this is the only jewel socketed in all your gear)|2% of Maximum Life Regenerated per second|Maximum Elemental Resists +1%|Counts as 10 jewels"
+  ],
+  [
+    "Jewel of Luck",
+    "Jewel",
+    "Jewels",
+    "Item Level: 130|Can be Inserted into Socketed Items|50% Magic Find"
+  ],
+  [
+    "Bag of Tricks",
+    "Arrow Quiver",
+    "Arrow Quivers",
+    "Required Level: 100|Item Level: 120|1% Chance to cast level 7 Goblin Glee on Death Blow|3% Chance to cast level 1 Knife Throw on Striking|3% Chance to cast level 1 Arrow on Striking|3% Chance to cast level 1 Javelin on Striking|Cube with 2 Sacred Essences to transform into a Bolt Quiver|(Mystic Orbs and other upgrades are lost upon transformation)"
+  ],
+  [
+    "Auriel's Satchel",
+    "Arrow Quiver",
+    "Arrow Quivers",
+    "Required Level: 110|Item Level: 120|1-4 Magic Damage to Weapon per 1 Spell Focus until capped|+1% Weapon Physical Damage per 1% move speed|2% Chance to cast level 50 Searing Glow on Striking|25% Magic Find|+15 to Light Radius"
+  ],
+  [
+    "Kingsport's Signals",
+    "Arrow Quiver",
+    "Arrow Quivers",
+    "Required Level: 110|Item Level: 120|1% Chance to Gain Heart of the Pack for 3 seconds on Striking|-100% Attack Speed|-50% to Enemy Fire Resistance|+1 to Steady Shot|+60 to Heartseeker|Maximum Fire Resist +5%"
+  ],
+  [
+    "Bag of Tricks",
+    "Bolt Quiver",
+    "Crossbow Quivers",
+    "Required Level: 100|Item Level: 120|1% Chance to cast level 7 Goblin Glee on Death Blow|3% Chance to cast level 1 Knife Throw on Striking|3% Chance to cast level 1 Arrow on Striking|3% Chance to cast level 1 Javelin on Striking|Cube with 2 Sacred Essences to transform into an Arrow Quiver|(Mystic Orbs and other upgrades are lost upon transformation)"
+  ],
+  [
+    "Lammergeier",
+    "Bolt Quiver",
+    "Crossbow Quivers",
+    "Required Level: 100|Item Level: 120|Physical Resist 5%|+(100 to 150) Life after each Kill|+(15 to 25) Mana after each Kill|(25 to 50)% Bonus to Defense|3% Reanimate as: Random Monster"
+  ],
+  [
+    "Devil's Dance",
+    "Bolt Quiver",
+    "Crossbow Quivers",
+    "Required Level: 100|Item Level: 120|+(3 to 4) to Druid Skill Levels|+(3 to 4) to Amazon Skill Levels|+(3 to 4) to Necromancer Skill Levels|7% Chance to cast level 1 Stormpike on Striking|50% Attack Speed|-20% to Enemy Lightning Resistance"
+  ]
+]

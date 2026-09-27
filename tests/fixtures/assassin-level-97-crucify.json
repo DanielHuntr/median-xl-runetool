@@ -1,0 +1,149 @@
+{
+  "v": 2,
+  "cls": "Assassin",
+  "level": 97,
+  "points": {
+    "way_of_the_spider": 25,
+    "crucify": 10,
+    "laserblade": 1,
+    "barrier_strike": 1,
+    "backstab": 20
+  },
+  "quests": {},
+  "attrs": {
+    "strength": 362,
+    "dexterity": 113,
+    "vitality": 0,
+    "energy": 0
+  },
+  "signets": 0,
+  "difficulty": "Hell",
+  "gear": {
+    "amulet": {
+      "ref": "tu:223",
+      "variant": 0,
+      "orbs": [
+        "umo-farnham-s-lost-marble",
+        "mo-15"
+      ]
+    },
+    "ring1": {
+      "ref": "tu:236",
+      "variant": 0,
+      "orbs": [
+        "umo-farnham-s-lost-marble",
+        "umo-marksman-s-eye",
+        "umo-marksman-s-eye",
+        "umo-farnham-s-lost-marble",
+        "mo-15"
+      ]
+    },
+    "ring2": {
+      "ref": "tu:236",
+      "variant": 0,
+      "orbs": [
+        "umo-marksman-s-eye",
+        "umo-marksman-s-eye",
+        "umo-farnham-s-lost-marble",
+        "umo-farnham-s-lost-marble",
+        "mo-15"
+      ]
+    },
+    "helm": {
+      "ref": "tu:144",
+      "variant": 2,
+      "sockets": [
+        "tu:245",
+        "tu:243",
+        "sock:60",
+        "sock:60"
+      ],
+      "orbs": [
+        "umo-marksman-s-eye",
+        "umo-marksman-s-eye",
+        "umo-apple-of-discord"
+      ]
+    },
+    "body": {
+      "ref": "set:1:3",
+      "variant": 0,
+      "sockets": [
+        "sock:60",
+        "sock:60",
+        "sock:60",
+        "sock:60",
+        "sock:60",
+        "sock:60"
+      ],
+      "orbs": [
+        "mo-1"
+      ]
+    },
+    "gloves": {
+      "ref": "su:288",
+      "variant": 0,
+      "sockets": [
+        "sock:60",
+        "sock:60",
+        "sock:60",
+        "sock:60"
+      ],
+      "orbs": [
+        "umo-marksman-s-eye",
+        "mo-1"
+      ]
+    },
+    "belt": {
+      "ref": "set:7:1",
+      "variant": 0,
+      "sockets": [
+        "sock:60",
+        "sock:60"
+      ],
+      "orbs": [
+        "mo-1"
+      ]
+    },
+    "boots": {
+      "ref": "set:32:1",
+      "variant": 0,
+      "sockets": [
+        "sock:60",
+        "sock:60",
+        "sock:60",
+        "sock:60"
+      ],
+      "orbs": [
+        "mo-1"
+      ]
+    },
+    "weapon": {
+      "ref": "tu:84",
+      "variant": 3,
+      "orbs": [
+        "mo-47",
+        "mo-47",
+        "mo-47",
+        "mo-47",
+        "mo-47",
+        "mo-42",
+        "mo-42",
+        "mo-42"
+      ],
+      "sockets": [
+        "sock:57",
+        "sock:57",
+        "sock:57",
+        "sock:57",
+        "sock:60",
+        "sock:60"
+      ]
+    }
+  },
+  "swap": false,
+  "inventory": [],
+  "buffs": [],
+  "leftSkill": "crucify",
+  "rightSkill": null,
+  "skillBar": []
+}

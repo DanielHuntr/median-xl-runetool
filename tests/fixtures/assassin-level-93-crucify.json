@@ -1,0 +1,27 @@
+{
+  "v": 2,
+  "cls": "Assassin",
+  "level": 93,
+  "points": { "way_of_the_spider": 25, "crucify": 10 },
+  "quests": {},
+  "attrs": { "strength": 1, "dexterity": 76, "vitality": 0, "energy": 0 },
+  "signets": 0,
+  "difficulty": "Hell",
+  "gear": {
+    "amulet": { "ref": "tu:223", "variant": 0, "orbs": ["mo-20", "mo-21", "mo-20"] },
+    "ring1": { "ref": "tu:229", "variant": 0, "orbs": ["mo-21", "mo-20", "mo-21", "mo-20", "mo-21", "mo-20", "mo-21", "mo-20", "mo-21", "mo-20", "umo-marksman-s-eye", "umo-marksman-s-eye", "umo-apple-of-discord", "umo-apple-of-discord", "mo-15", "mo-15"] },
+    "ring2": { "ref": "tu:229", "variant": 0, "orbs": ["mo-21", "umo-marksman-s-eye", "umo-marksman-s-eye", "umo-apple-of-discord", "umo-apple-of-discord", "mo-15", "mo-15", "mo-15", "mo-15", "mo-15", "umo-the-endless-light", "umo-the-endless-light", "mo-9"] },
+    "weapon": { "ref": "rw:30", "base": "base:55", "baseVariant": 3, "orbs": ["umo-larzuk-s-round-shot"] },
+    "helm": { "ref": "tu:150", "variant": 2, "orbs": ["mo-35", "mo-35", "umo-marksman-s-eye", "umo-marksman-s-eye", "umo-apple-of-discord", "umo-idol-of-stars"], "sockets": ["tu:243", "tu:241", "tu:246"] },
+    "body": { "ref": "rw:133", "base": "base:127", "baseVariant": 1, "orbs": ["umo-weight-of-talent", "mo-1", "mo-1"] },
+    "gloves": { "ref": "rw:168", "base": "base:167", "baseVariant": 1, "orbs": ["umo-marksman-s-eye", "umo-marksman-s-eye", "umo-apple-of-discord", "umo-apple-of-discord"] },
+    "belt": { "ref": "rw:159", "base": "base:162", "baseVariant": 1, "orbs": ["umo-marksman-s-eye"] },
+    "boots": { "ref": "rw:180", "base": "base:172", "baseVariant": 1, "orbs": ["umo-marksman-s-eye", "umo-marksman-s-eye"] }
+  },
+  "swap": false,
+  "inventory": [],
+  "buffs": [],
+  "leftSkill": "crucify",
+  "rightSkill": null,
+  "skillBar": []
+}

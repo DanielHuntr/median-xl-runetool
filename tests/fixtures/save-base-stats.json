@@ -1,0 +1,8 @@
+{
+  "about": "Base (no gear) life and mana read from the project owner's Median XL 2.14.4 single-player saves (stat 7 max life and 9 max mana, 1/256 units). The saves themselves aren't in the repository.",
+  "saves": [
+    { "file": "eee.d2s", "cls": "Amazon", "level": 3, "attrs": { "strength": 0, "dexterity": 0, "vitality": 0, "energy": 0 }, "maxLife": 127.5, "maxMana": 30 },
+    { "file": "pala.d2s", "cls": "Paladin", "level": 3, "attrs": { "strength": 0, "dexterity": 0, "vitality": 0, "energy": 0 }, "maxLife": 140, "maxMana": 25 },
+    { "file": "Ashashin.d2s", "cls": "Assassin", "level": 93, "attrs": { "strength": 101, "dexterity": 361, "vitality": 0, "energy": 0 }, "maxMana": 705, "note": "Its 2,921 max life includes about 50 from a quest reward the save doesn't identify, so only mana is checked." }
+  ]
+}

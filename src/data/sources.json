@@ -1,0 +1,31 @@
+{
+  "gameVersion": "2.14",
+  "retrievedAt": "2026-09-25",
+  "runewords": "https://docs.median-xl.com/doc/items/runewords",
+  "tieredUniques": "https://docs.median-xl.com/doc/items/tiereduniques",
+  "runeImages": "Preserved embedded rune artwork from the supplied HTML.",
+  "importerAttribution": "Tiered unique import, and the sets / sacred-unique parsing in lib/docs-catalog.mjs, adapted from azadix/medianxl-db (MIT). See THIRD_PARTY_LICENSES.txt.",
+  "sacredUniques": "https://docs.median-xl.com/doc/items/sacreduniques",
+  "sets": "https://docs.median-xl.com/doc/items/sets",
+  "socketables": "https://docs.median-xl.com/doc/items/socketables",
+  "baseItems": "https://docs.median-xl.com/doc/items/baseitems",
+  "gemImages": "Gem artwork from docs.median-xl.com/images/runes, embedded in socketable-images.json.",
+  "liveCatalog": "Sacred uniques, sets, socketables and base items are refreshed at build time (prebuild) and fetched live at runtime from /api/catalog. The bundled snapshot date is in catalog-meta.json.",
+  "planner": "Skills, trees, class stats, charms, relics and icons: azadix/medianxl-db (MIT), commit recorded in public/planner/data.json (dataset 2.14). Game rules: Median XL patch notes and docs (see src/planner/rules.js).",
+  "gameFiles": {
+    "patch": "2.14.4",
+    "files": [
+      "medianxl-YmludGJsdHh0.mpq (game tables: skills.bin, skills2.bin, skilldesc.bin, skillscode.bin, skilldesccode.bin, skillcalc.bin, string tables)",
+      "medianxl-version.mpq (version.mxl)"
+    ],
+    "method": "scripts/extract-game-data.mjs reads the installed game's MPQ archives (scripts/lib/mpq.mjs) and compiled D2 1.13c tables; output with file hashes in data/game/2.14.4/skills.json. Merged into the planner only when its major.minor matches the MedianDB dataset (scripts/lib/merge-game.mjs).",
+    "inGameObservations": "data/game/2.14.4/fixtures.json (Way of the Spider tooltip screenshot, 2026-09-25)"
+  },
+  "mechanics": {
+    "weaponPoison": "Median XL forum poison mechanics guide (October 2021, before 2.0): weapon poison isn't raised by (poison) spell damage; item durations average. Treated as inferred for 2.14.",
+    "patchNotes": "Median XL changelog, patch 2.3 (Scorpion Blade scales with spell damage)",
+    "docs": "https://docs.median-xl.com",
+    "medianDbStats": "azadix/medianxl-db skills.json, subskills.json, stats.json"
+  },
+  "itemArt": "Inventory art rendered from the installed Median XL 2.14.4 (uniqueitems/setitems/weapons/armor/misc.bin, DC6 graphics, pal.dat and item colour maps) by scripts/extract-item-art.mjs; manifest in data/game/2.14.4/item-art.json."
+}

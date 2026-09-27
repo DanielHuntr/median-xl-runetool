@@ -1,0 +1,32 @@
+{
+  "v": 2,
+  "cls": "Assassin",
+  "level": 150,
+  "points": {
+    "way_of_the_spider": 25, "crucify": 10, "laserblade": 1, "barrier_strike": 1,
+    "queen_of_blades": 10, "shuriken_flurry": 1, "psionic_scream": 1, "psionic_storm": 1,
+    "energize": 1, "mind_ripple": 1, "pinnacle": 25, "anathema": 20,
+    "way_of_the_gryphon": 25, "way_of_the_phoenix": 10, "backstab": 20
+  },
+  "quests": {},
+  "attrs": { "strength": 362, "dexterity": 113, "vitality": 0, "energy": 0 },
+  "signets": 0,
+  "difficulty": "Hell",
+  "gear": {
+    "weapon": { "ref": "tu:84", "variant": 3, "sockets": ["sock:90", "sock:90", "sock:90", "sock:90", "sock:90", "sock:90"], "orbs": ["umo-larzuk-s-round-shot", "umo-larzuk-s-round-shot", "mo-27", "mo-27", "mo-27", "mo-27", "mo-27"] },
+    "helm": { "ref": "rw:144", "base": "base:147", "baseVariant": 2, "orbs": ["mo-3", "mo-3", "mo-3", "mo-3", "mo-3", "mo-1", "mo-1", "mo-1", "mo-1", "mo-1", "mo-25", "mo-25"] },
+    "amulet": { "ref": "su:381", "variant": 0, "orbs": ["mo-15", "mo-15", "mo-15", "mo-15", "mo-15", "mo-8", "mo-8", "mo-8", "mo-8", "mo-8"] },
+    "body": { "ref": "su:232", "variant": 0, "sockets": ["su:414", "sock:101", "sock:101", "sock:101", "sock:101", "sock:101"], "orbs": [] },
+    "gloves": { "ref": "rw:170", "base": "base:171", "baseVariant": 3, "orbs": ["mo-3", "mo-3", "mo-3", "mo-3", "mo-3", "mo-1", "mo-1", "mo-1", "mo-1", "mo-1", "mo-25", "mo-25"] },
+    "ring1": { "ref": "su:398", "variant": 0, "orbs": ["mo-15", "mo-15", "mo-15", "mo-15", "mo-15", "mo-8", "mo-8", "mo-8", "mo-8", "mo-8", "mo-10", "mo-10"] },
+    "ring2": { "ref": "su:398", "variant": 0, "orbs": ["mo-15", "mo-15", "mo-15", "mo-15", "mo-15", "mo-8", "mo-8", "mo-8", "mo-8", "mo-8", "mo-10", "mo-10"] },
+    "belt": { "ref": "rw:163", "base": "base:165", "baseVariant": 3, "orbs": ["mo-3", "mo-3", "mo-3", "mo-3", "mo-3", "mo-1", "mo-1", "mo-1"] },
+    "boots": { "ref": "rw:185", "base": "base:176", "baseVariant": 3, "orbs": ["mo-3", "mo-3", "mo-3", "mo-3", "mo-3", "mo-1", "mo-1"] }
+  },
+  "swap": false,
+  "inventory": [],
+  "buffs": [],
+  "leftSkill": "backstab",
+  "rightSkill": "queen_of_blades",
+  "skillBar": []
+}

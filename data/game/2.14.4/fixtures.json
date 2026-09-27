@@ -1,0 +1,1098 @@
+{
+  "patch": "2.14.4",
+  "about": "In-game tooltip observations used to check calculations. Values are exactly as displayed; inputs the tooltip doesn't show are marked as inferred, with how.",
+  "fixtures": [
+    {
+      "id": "way-of-the-spider-41",
+      "skill": "way_of_the_spider",
+      "source": "In-game Way of the Spider tooltip screenshot supplied by the project owner, 2026-09-25 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 41,
+          "how": "shown: Current Skill Level 41"
+        },
+        "blvl": {
+          "value": 25,
+          "how": "inferred: the only Base Level giving the shown Poison Pierce 30% (game formula bl34 = 6 + (Base Level - 1) × 1)"
+        },
+        "ulvl": {
+          "value": 93,
+          "how": "inferred: the only Character Level giving the shown Poison Spell Damage 84% at level 41 (game formula ln12/2 + max(0, (100 - ulvl) × 2))"
+        },
+        "conditions": {
+          "value": {},
+          "how": "assumed: no Crucify hidden stat 310 and no value from helper skill 2045 (neither is shown on the tooltip)"
+        }
+      },
+      "observed": {
+        "current": {
+          "poison_pierce": [
+            30
+          ],
+          "poison_spell_damage": [
+            84
+          ],
+          "poison_dot": [
+            2440,
+            3329,
+            2
+          ]
+        },
+        "next": {
+          "poison_spell_damage": [
+            85
+          ],
+          "poison_dot": [
+            2547,
+            3465,
+            2
+          ]
+        }
+      },
+      "synergyText": [
+        "-1% to Enemy Poison Resistance per Base Level",
+        "+20% Poison Damage to Weapon per Base Level",
+        "+2% Poison Spell Damage per Character Level under 100"
+      ],
+      "independentChecks": "Poison Damage to Weapon (current) and next-level Poison Spell Damage are not used to infer any input, so reproducing them checks the calculation. Next-level Poison Damage to Weapon also fixes how the Next Level block is computed (see nextLevel).",
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "inferred: the Next Level block is Effective Level + 1 with Base Level unchanged. Only that reproduces the shown next-level poison (Base Level 26 would give 2625-3571), and Poison Pierce (a Base Level formula) is not listed under Next Level because it does not change."
+      }
+    },
+    {
+      "id": "incineration-trap-first-level",
+      "skill": "incineration_trap",
+      "source": "In-game Incineration Trap tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-25 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1 (confirmed by Askari Lightning showing 300%)"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "inferred: the only Character Level at which the game damage formula gives both 81 and 88 at level 1"
+        },
+        "conditions": {
+          "value": {},
+          "how": "assumed: Subterfuge not learned (its ast6 has no formula, so 0 either way); Median XL syn1/syn2 = 0, the only values giving the shown pierce (4%) and range (8 yards)"
+        }
+      },
+      "observed": {
+        "current": {
+          "fire_damage": [
+            81,
+            88
+          ],
+          "fire_pierce": [
+            4
+          ]
+        }
+      },
+      "otherLines": [
+        "Activation Delay: 13 frames",
+        "Range: 8 yards",
+        "Damage Pierces 4% Enemy Fire Resistance",
+        "Fire Damage: 81-88 per second",
+        "Duration: 10 seconds",
+        "Mana Cost: 5"
+      ],
+      "synergyText": [
+        "+4% Fire Resistance Pierce per Base Level",
+        "+0.6 Yards Range per 2 Base Levels",
+        "Activation Frequency Multiplier: 100%"
+      ],
+      "independentChecks": "Fire damage max (88) checks the Character Level inferred from the min (81); pierce, duration and the synergy lines use no inferred input beyond syn1/syn2."
+    },
+    {
+      "id": "askari-lightning-first-level",
+      "skill": "askari_lightning",
+      "source": "In-game Askari Lightning tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "not shown; none of the checked values depend on Character Level"
+        },
+        "conditions": {
+          "value": {},
+          "how": "none needed"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Deals 300% of Your Stormcall Damage",
+        "Mana Cost: 5"
+      ],
+      "synergyText": [
+        "+1% Total Damage per Base Level"
+      ],
+      "independentChecks": "300% needs Base Level 0 at First Level: (299 + lvl) × (100 + blvl) / 100 is 303 at Base Level 1."
+    },
+    {
+      "id": "discharge-first-level",
+      "skill": "discharge",
+      "source": "In-game Discharge tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "not shown; none of the checked values depend on Character Level"
+        },
+        "conditions": {
+          "value": {},
+          "how": "none needed"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Enemy Lightning Resistance: -20%",
+        "Duration: 180 seconds",
+        "Mana Cost: 240"
+      ],
+      "synergyText": [
+        "Thunder Frequency improved by 0.5 seconds per Base Level (Min 2s)"
+      ],
+      "notShown": [
+        "Thunder Frequency",
+        "Activation Frequency Multiplier",
+        "Lightning Damage"
+      ],
+      "independentChecks": "Lines worth 0 (Thunder Frequency, Activation Frequency Multiplier, damage) are not shown in game."
+    },
+    {
+      "id": "lava-pit-first-level",
+      "skill": "lava_pit",
+      "source": "In-game Lava Pit tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 1,
+          "how": "inferred: the only Character Level at which Lava Pit's damage (enma × 5, exma × 5) is 40-45 with Energy 15; the Amazon was later level 6 (Stormcall)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15,
+            "spell_focus": 0
+          },
+          "how": "inferred: Energy 12-15 with no Spell Focus gives the shown +8% (Amazon starting Energy is 15)"
+        },
+        "conditions": {
+          "value": {},
+          "how": "none needed"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Lava Pit Radius: 2 yards",
+        "Duration: 3 seconds",
+        "Mana Cost: 10",
+        "Fire Damage per second: 40-45"
+      ],
+      "synergyText": [
+        "Energy: +8% Increased Damage"
+      ],
+      "independentChecks": "Radius, duration and mana use no inferred input."
+    },
+    {
+      "id": "blood-skeleton-first-level",
+      "skill": "blood_skeleton",
+      "source": "In-game Blood Skeleton tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 2,
+          "how": "inferred: life 120 means character level 1 or 2 (the extra minion life % is (level - 1) / 2)"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Necromancer skills learned"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Cooldown: 2.4 seconds",
+        "Skeletons: 2",
+        "Damage: 2-12",
+        "Attack Rating: 200",
+        "Mana Cost: 1",
+        "Life: 120 hit points"
+      ],
+      "synergyText": [
+        "+1 Skeleton per 4 Base Levels",
+        "Gain 67% global damage reduction at Base Level 20",
+        "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+      ],
+      "independentChecks": "Damage 2-12 reads Flameburst Shot exma multiplied by a term that is 0 at First Level; multi-line synergy text is shown bottom-up."
+    },
+    {
+      "id": "death-pact-first-level",
+      "skill": "death_pact",
+      "source": "In-game Death Pact tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "not shown; none of the checked values depend on Character Level"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no points in other trees"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [],
+      "synergyText": [
+        "bonuses unlock after putting points into the other trees",
+        "+15% Improved Effect per Base Level"
+      ],
+      "independentChecks": "The tree-bonus lines are worth 0 without points in the other trees and are not shown."
+    },
+    {
+      "id": "blood-skeleton-level-1",
+      "skill": "blood_skeleton",
+      "source": "In-game Blood Skeleton tooltip screenshot (one point: Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "one point spent (0 remaining skill points)"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner: the character was level 3"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Necromancer skills learned"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged (as Way of the Spider and Askari Lightning)"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Cooldown: 2.4 seconds",
+        "Skeletons: 2",
+        "Damage: 2-12",
+        "Attack Rating: 200",
+        "Mana Cost: 1",
+        "Life: 121 hit points"
+      ],
+      "nextLines": [
+        "Skeletons: 2",
+        "Damage: 4-14",
+        "Attack Rating: 300",
+        "Mana Cost: 1",
+        "Life: 242 hit points"
+      ],
+      "independentChecks": "Next-level damage 4-14 comes from the skill's damage table at level 2; attack rating 200 → 300 contradicts reading mnar from skills.bin 0x6c."
+    },
+    {
+      "id": "stormcall-level-1",
+      "skill": "stormcall",
+      "source": "In-game Stormcall tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "one point"
+        },
+        "ulvl": {
+          "value": 6,
+          "how": "inferred: with Energy 20-24 (Stormcall's +10% synergy line), only Character Level 6 gives Stormcall's 4-5 and next level 5-7"
+        },
+        "charStats": {
+          "value": {
+            "energy": 22,
+            "spell_focus": 0
+          },
+          "how": "inferred: Energy 20-24 gives the shown +10%"
+        },
+        "conditions": {
+          "value": {},
+          "how": "none"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged (as Way of the Spider and Askari Lightning)"
+      },
+      "observed": {
+        "current": {
+          "lightning_damage": [
+            4,
+            5
+          ]
+        }
+      },
+      "otherLines": [
+        "Lightning Damage: 4-5",
+        "Mana Cost: 2"
+      ],
+      "nextLines": [
+        "Lightning Damage: 5-7",
+        "Mana Cost: 4"
+      ],
+      "synergyText": [
+        "Energy: +10% Increased Damage"
+      ],
+      "independentChecks": "Next-level damage 5-7 and both mana costs aren't used to infer anything."
+    },
+    {
+      "id": "askari-lightning-level-1",
+      "skill": "askari_lightning",
+      "source": "In-game Askari Lightning tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "one point"
+        },
+        "ulvl": {
+          "value": 6,
+          "how": "inferred: with Energy 20-24 (Stormcall's +10% synergy line), only Character Level 6 gives Stormcall's 4-5 and next level 5-7"
+        },
+        "points": {
+          "value": {
+            "stormcall": 1
+          },
+          "how": "shown on the Stormcall tooltip taken with it: Current Skill Level 1"
+        },
+        "charStats": {
+          "value": {
+            "energy": 22,
+            "spell_focus": 0
+          },
+          "how": "as Stormcall"
+        },
+        "conditions": {
+          "value": {},
+          "how": "none"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "304% = (299 + 2) × (100 + 1) / 100: level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {
+          "lightning_damage": [
+            15,
+            15
+          ]
+        }
+      },
+      "otherLines": [
+        "Lightning Damage: 15",
+        "Deals 303% of Your Stormcall Damage",
+        "Mana Cost: 5"
+      ],
+      "nextLines": [
+        "Lightning Damage: 15",
+        "Deals 304% of Your Stormcall Damage",
+        "Mana Cost: 8"
+      ],
+      "synergyText": [
+        "+1% Total Damage per Base Level"
+      ],
+      "independentChecks": "Askari's 15 comes from Stormcall's exma/enma (its shown 4-5): ((5 + 4) / 2 - 100) × 101 / 100 + 1 = -95, then 300 × 5 / 100 = 15."
+    },
+    {
+      "id": "blood-skeleton-level-2",
+      "skill": "blood_skeleton",
+      "source": "In-game Blood Skeleton tooltip screenshot (two points: Current Skill Level 2 and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 2,
+          "how": "shown: Current Skill Level 2"
+        },
+        "blvl": {
+          "value": 2,
+          "how": "two points (0 remaining skill points)"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner: the character was level 3"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Necromancer skills learned"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Cooldown: 2.4 seconds",
+        "Skeletons: 2",
+        "Damage: 4-14",
+        "Attack Rating: 300",
+        "Mana Cost: 1",
+        "Life: 242 hit points"
+      ],
+      "nextLines": [
+        "Skeletons: 2",
+        "Damage: 6-16",
+        "Attack Rating: 400",
+        "Mana Cost: 1",
+        "Life: 363 hit points"
+      ],
+      "independentChecks": "Damage 6-16 comes from the skill's damage table at level 3; attack rating follows MedianDB's 100 + 100 × lvl."
+    },
+    {
+      "id": "guardian-spirit-level-1",
+      "skill": "guardian_spirit",
+      "source": "In-game Guardian Spirit tooltip screenshot (one point: Current Skill Level and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "one point"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner: the character was level 3"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Barbarian skills learned"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Ancient Spirits: 2",
+        "Cooldown: 2.4 seconds",
+        "Life: 144 hit points",
+        "Damage: 2",
+        "Attack Rating: 100",
+        "Mana Cost: 1"
+      ],
+      "nextLines": [
+        "Life: 212 hit points",
+        "Damage: 6",
+        "Attack Rating: 250",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "+9% Minion Life per Base Level",
+        "+14% Minion Damage per Base Level",
+        "Minions inherit your on Kill/Death Blow triggers"
+      ],
+      "independentChecks": "Next level (level 2, Base Level 1) separates the level and Base Level effects from the level-2 screenshot."
+    },
+    {
+      "id": "guardian-spirit-level-2",
+      "skill": "guardian_spirit",
+      "source": "In-game Guardian Spirit tooltip screenshot (two points: Current Skill Level and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 2,
+          "how": "shown: Current Skill Level 2"
+        },
+        "blvl": {
+          "value": 2,
+          "how": "two points"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner: the character was level 3"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Barbarian skills learned"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Ancient Spirits: 2",
+        "Cooldown: 2.4 seconds",
+        "Life: 228 hit points",
+        "Damage: 7",
+        "Attack Rating: 250",
+        "Mana Cost: 1"
+      ],
+      "nextLines": [
+        "Life: 300 hit points",
+        "Damage: 12",
+        "Attack Rating: 400",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "+9% Minion Life per Base Level",
+        "+14% Minion Damage per Base Level",
+        "Minions inherit your on Kill/Death Blow triggers"
+      ],
+      "independentChecks": "Damage 7 vs 6 at the same level shows the +14% per Base Level minion damage bonus."
+    },
+    {
+      "id": "guardian-spirit-first-level",
+      "skill": "guardian_spirit",
+      "source": "In-game Guardian Spirit tooltip screenshot (not learned, \"First Level\", character level 3) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "not learned"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no Barbarian skills learned"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Ancient Spirits: 2",
+        "Cooldown: 2.4 seconds",
+        "Life: 132 hit points",
+        "Damage: 2",
+        "Attack Rating: 100",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "+9% Minion Life per Base Level",
+        "+14% Minion Damage per Base Level",
+        "Minions inherit your on Kill/Death Blow triggers"
+      ],
+      "independentChecks": "Unlearned life 132 (33 × 4) with no Base Level bonus; with Blood Skeleton's unlearned 120, the extra 1% minion life applies only once a skill is learned."
+    },
+    {
+      "id": "blood-skeleton-first-level-3",
+      "skill": "blood_skeleton",
+      "source": "In-game Blood Skeleton tooltip screenshot (not learned, \"First Level\", character level 3) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "not learned"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "stated by the project owner"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no Necromancer skills learned"
+        }
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Cooldown: 2.4 seconds",
+        "Skeletons: 2",
+        "Life: 121 hit points",
+        "Damage: 2-12",
+        "Attack Rating: 200",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "+1 Skeleton per 4 Base Levels",
+        "Gain 67% global damage reduction at Base Level 20",
+        "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+      ],
+      "independentChecks": "Unlearned life 121 at level 3 vs 120 earlier: the extra minion life % depends on character level, not on learning the skill."
+    },
+    {
+      "id": "blood-skeleton-level-20-char-99",
+      "skill": "blood_skeleton",
+      "source": "In-game Blood Skeleton tooltip screenshot (character level 99 via an edited single-player test save; Current Skill Level and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 20,
+          "how": "shown: Current Skill Level 20"
+        },
+        "blvl": {
+          "value": 20,
+          "how": "20 points"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "stated by the project owner"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Necromancer skills learned"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "+67% Global Damage Reduction",
+        "Cooldown: 8.4 seconds",
+        "Skeletons: 7",
+        "Life: 3576 hit points",
+        "Damage: 48-58",
+        "Attack Rating: 2100",
+        "Mana Cost: 1"
+      ],
+      "nextLines": [
+        "Skeletons: 7",
+        "Life: 3755 hit points",
+        "Damage: 51-61",
+        "Attack Rating: 2200",
+        "Mana Cost: 1"
+      ],
+      "independentChecks": "Minion life at character level 99 fixes the extra minion life % at 49 ((99 - 1) / 2); \"+67% Global Damage Reduction\" places the aura-stat formulas at skills.bin 0x68.",
+      "knownDifferences": [
+        {
+          "game": "Life: 3755 hit points",
+          "planner": "Life: 3754 hit points",
+          "why": "2520 × 1.49 = 3754.8: the planner truncates; the game shows 3755. Rounding to nearest would fix this but break level 3 (363.6 shown as 363), so the game's exact rounding path is still unknown. The other 16 in-game summon life values match exactly."
+        }
+      ]
+    },
+    {
+      "id": "abyss-knight-level-25-char-99",
+      "skill": "abyss_knight",
+      "source": "In-game Abyss Knight tooltip screenshot (character level 99 via an edited single-player test save; Current Skill Level and Next Level) supplied by the project owner, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 25,
+          "how": "shown: Current Skill Level 25"
+        },
+        "blvl": {
+          "value": 25,
+          "how": "25 points"
+        },
+        "ulvl": {
+          "value": 99,
+          "how": "stated by the project owner"
+        },
+        "conditions": {
+          "value": {},
+          "how": "no other Necromancer skills besides Blood Skeleton"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged"
+      },
+      "observed": {
+        "current": {}
+      },
+      "otherLines": [
+        "Cooldown: 6 seconds",
+        "Knights: 5",
+        "Life: 5422 hit points",
+        "Magic Damage: 301-301",
+        "Mana Cost: 1"
+      ],
+      "nextLines": [
+        "Knights: 5",
+        "Life: 5623 hit points",
+        "Magic Damage: 318-318",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "+1 Knight per 6 Base Levels",
+        "Minions inherit your on Kill/Death Blow triggers"
+      ],
+      "independentChecks": "A second summon at character level 99 with different parameters (133 + 45 per level) gives the same +49% minion life."
+    },
+    {
+      "id": "magic-missiles-first-level",
+      "skill": "magic_missiles",
+      "source": "In-game Magic Missiles tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner in GitHub issue #1, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "shown: stated with the screenshot (Character Level 3)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15
+          },
+          "how": "stated: no attribute points spent, so the Amazon's starting Energy of 15; checked by the +8% Energy synergy line (130 × 35 ÷ 515 = 8.8)"
+        },
+        "conditions": {
+          "value": {},
+          "how": "stated: no + skills from gear; syn1/syn2 = 0 and ast6 = 0 as for Incineration Trap"
+        }
+      },
+      "observed": {
+        "current": {
+          "magic_damage": [
+            2
+          ],
+          "mana_cost": [
+            1
+          ]
+        }
+      },
+      "otherLines": [
+        "Explosion Radius: 2 yards",
+        "Magic Damage: 2",
+        "6 bolts",
+        "Mana Cost: 1"
+      ],
+      "synergyText": [
+        "Energy: +8% Increased Damage",
+        "+1 Projectile per 5 Skill Levels (Max 15)"
+      ],
+      "independentChecks": "Nothing is inferred from the shown values: Character Level, points and Energy are all stated with the screenshot."
+    },
+    {
+      "id": "magic-missiles-level-1",
+      "skill": "magic_missiles",
+      "source": "In-game Magic Missiles tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner in GitHub issue #1, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "shown: 1 point (1/2 on the skill)"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "shown: stated with the screenshot (Character Level 3)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15
+          },
+          "how": "stated: no attribute points spent, so the Amazon's starting Energy of 15; checked by the +8% Energy synergy line (130 × 35 ÷ 515 = 8.8)"
+        },
+        "conditions": {
+          "value": {},
+          "how": "stated: no + skills from gear; syn1/syn2 = 0 and ast6 = 0 as for Incineration Trap"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged (as Way of the Spider, Askari Lightning and Stormcall)"
+      },
+      "observed": {
+        "current": {
+          "magic_damage": [
+            2
+          ],
+          "mana_cost": [
+            1
+          ]
+        }
+      },
+      "otherLines": [
+        "Explosion Radius: 2 yards",
+        "Magic Damage: 2",
+        "6 bolts",
+        "Mana Cost: 1"
+      ],
+      "nextLines": [
+        "Magic Damage: 3",
+        "6 bolts",
+        "Mana Cost: 3"
+      ],
+      "synergyText": [
+        "Energy: +8% Increased Damage",
+        "+1 Projectile per 5 Skill Levels (Max 15)"
+      ],
+      "independentChecks": "Nothing is inferred from the shown values; the next level (Magic Damage 3, Mana Cost 3) is a second, independent check of the damage and mana formulas."
+    },
+    {
+      "id": "mind-flay-first-level",
+      "skill": "mind_flay",
+      "source": "In-game Mind Flay tooltip screenshot (not yet learned, \"First Level\") supplied by the project owner in GitHub issue #2, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: First Level"
+        },
+        "blvl": {
+          "value": 0,
+          "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+        },
+        "ulvl": {
+          "value": 1,
+          "how": "inferred: not stated; Character Level 1 or 2 give the same values (a new character, before its first skill point)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15
+          },
+          "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+        },
+        "conditions": {
+          "value": {},
+          "how": "stated: no gear or other skills adding levels"
+        }
+      },
+      "observed": {
+        "current": {
+          "lightning_damage": [
+            4,
+            5
+          ],
+          "mana_cost": [
+            2
+          ]
+        }
+      },
+      "otherLines": [
+        "Beams: 1",
+        "Physical Damage: +2",
+        "Lightning Damage: 4-5",
+        "Mana Cost: 2"
+      ],
+      "synergyText": [
+        "Shock",
+        "Enemy Movement Speed: -30%",
+        "Enemy Elemental Damage: -10%",
+        "Duration: 2 seconds",
+        "Synergies",
+        "+1 Beam per 15 Base Levels",
+        "Energy: +8% Increased Damage"
+      ],
+      "independentChecks": "The Character Level is inferred from these values, so this screenshot doesn't check the damage formulas on its own; the two below do."
+    },
+    {
+      "id": "mind-flay-level-1",
+      "skill": "mind_flay",
+      "source": "In-game Mind Flay tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner in GitHub issue #2, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 1,
+          "how": "shown: Current Skill Level 1"
+        },
+        "blvl": {
+          "value": 1,
+          "how": "shown: 1 point"
+        },
+        "ulvl": {
+          "value": 2,
+          "how": "inferred: not stated; Character Level 2 is the only level giving both this level and the Next Level (a skill point per level)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15
+          },
+          "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+        },
+        "conditions": {
+          "value": {},
+          "how": "stated: no gear or other skills adding levels"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged (as Way of the Spider, Askari Lightning and Stormcall)"
+      },
+      "observed": {
+        "current": {
+          "lightning_damage": [
+            4,
+            5
+          ],
+          "mana_cost": [
+            2
+          ]
+        }
+      },
+      "otherLines": [
+        "Beams: 1",
+        "Physical Damage: +2",
+        "Lightning Damage: 4-5",
+        "Mana Cost: 2"
+      ],
+      "nextLines": [
+        "Physical Damage: 2-3",
+        "Lightning Damage: 5-6",
+        "Mana Cost: 4"
+      ],
+      "synergyText": [
+        "Shock",
+        "Enemy Movement Speed: -30%",
+        "Enemy Elemental Damage: -10%",
+        "Duration: 2 seconds",
+        "Synergies",
+        "+1 Beam per 15 Base Levels",
+        "Energy: +8% Increased Damage"
+      ],
+      "independentChecks": "One Character Level must fit six damage values and two mana costs at once; only level 2 does."
+    },
+    {
+      "id": "mind-flay-level-2",
+      "skill": "mind_flay",
+      "source": "In-game Mind Flay tooltip screenshot (Current Skill Level 2 and Next Level) supplied by the project owner in GitHub issue #2, 2026-09-26 (Median XL 2.14.4)",
+      "inputs": {
+        "lvl": {
+          "value": 2,
+          "how": "shown: Current Skill Level 2"
+        },
+        "blvl": {
+          "value": 2,
+          "how": "shown: 2 points"
+        },
+        "ulvl": {
+          "value": 3,
+          "how": "inferred: not stated; Character Level 3 is the only level giving both this level and the Next Level (the character levelled for its second point)"
+        },
+        "charStats": {
+          "value": {
+            "energy": 15
+          },
+          "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+        },
+        "conditions": {
+          "value": {},
+          "how": "stated: no gear or other skills adding levels"
+        }
+      },
+      "nextLevel": {
+        "blvl": 0,
+        "lvl": 1,
+        "how": "level + 1 with Base Level unchanged (as Way of the Spider, Askari Lightning and Stormcall)"
+      },
+      "observed": {
+        "current": {
+          "lightning_damage": [
+            5,
+            6
+          ],
+          "mana_cost": [
+            4
+          ]
+        }
+      },
+      "otherLines": [
+        "Beams: 1",
+        "Physical Damage: 2-3",
+        "Lightning Damage: 5-6",
+        "Mana Cost: 4"
+      ],
+      "nextLines": [
+        "Physical Damage: +3",
+        "Lightning Damage: 6-7",
+        "Mana Cost: 6"
+      ],
+      "synergyText": [
+        "Shock",
+        "Enemy Movement Speed: -30%",
+        "Enemy Elemental Damage: -10%",
+        "Duration: 2 seconds",
+        "Synergies",
+        "+1 Beam per 15 Base Levels",
+        "Energy: +8% Increased Damage"
+      ],
+      "independentChecks": "As level 1: one Character Level must fit all six damage values and both mana costs; only level 3 does."
+    }
+  ]
+}

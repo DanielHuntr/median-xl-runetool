@@ -1,0 +1,1112 @@
+[
+  [
+    "Diamond",
+    "Gems",
+    12,
+    "+2% to Spell Damage",
+    "3% to Strength",
+    "Elemental Resists +3%",
+    "gem:Diamond",
+    "https://docs.median-xl.com/images/runes/invgswc.jpg"
+  ],
+  [
+    "Flawless Diamond",
+    "Gems",
+    15,
+    "+2% to Spell Damage",
+    "4% to Strength",
+    "Elemental Resists +4%",
+    "gem:Flawless Diamond",
+    "https://docs.median-xl.com/images/runes/invgswd.jpg"
+  ],
+  [
+    "Perfect Diamond",
+    "Gems",
+    18,
+    "+3% to Spell Damage",
+    "5% to Strength",
+    "Elemental Resists +5%",
+    "gem:Perfect Diamond",
+    "https://docs.median-xl.com/images/runes/invgswe.jpg"
+  ],
+  [
+    "Amethyst",
+    "Gems",
+    12,
+    "30% Bonus to Attack Rating",
+    "3% to Dexterity",
+    "+3 Mana when Struck by an Enemy",
+    "gem:Amethyst",
+    "https://docs.median-xl.com/images/runes/invgsvc.jpg"
+  ],
+  [
+    "Flawless Amethyst",
+    "Gems",
+    15,
+    "40% Bonus to Attack Rating",
+    "4% to Dexterity",
+    "+4 Mana when Struck by an Enemy",
+    "gem:Flawless Amethyst",
+    "https://docs.median-xl.com/images/runes/invgsvd.jpg"
+  ],
+  [
+    "Perfect Amethyst",
+    "Gems",
+    18,
+    "50% Bonus to Attack Rating",
+    "5% to Dexterity",
+    "+5 Mana when Struck by an Enemy",
+    "gem:Perfect Amethyst",
+    "https://docs.median-xl.com/images/runes/invgsve.jpg"
+  ],
+  [
+    "Ruby",
+    "Gems",
+    12,
+    "+6 Life after each Kill",
+    "2% to Vitality",
+    "Fire Resist +18%",
+    "gem:Ruby",
+    "https://docs.median-xl.com/images/runes/invgsrc.jpg"
+  ],
+  [
+    "Flawless Ruby",
+    "Gems",
+    15,
+    "+8 Life after each Kill",
+    "3% to Vitality",
+    "Fire Resist +24%",
+    "gem:Flawless Ruby",
+    "https://docs.median-xl.com/images/runes/invgsrd.jpg"
+  ],
+  [
+    "Perfect Ruby",
+    "Gems",
+    18,
+    "+10 Life after each Kill",
+    "4% to Vitality",
+    "Fire Resist +30%",
+    "gem:Perfect Ruby",
+    "https://docs.median-xl.com/images/runes/invgsre.jpg"
+  ],
+  [
+    "Topaz",
+    "Gems",
+    12,
+    "+8 Spell Focus",
+    "3% to Energy",
+    "Lightning Resist +18%",
+    "gem:Topaz",
+    "https://docs.median-xl.com/images/runes/invgsyc.jpg"
+  ],
+  [
+    "Flawless Topaz",
+    "Gems",
+    15,
+    "+9 Spell Focus",
+    "4% to Energy",
+    "Lightning Resist +24%",
+    "gem:Flawless Topaz",
+    "https://docs.median-xl.com/images/runes/invgsyd.jpg"
+  ],
+  [
+    "Perfect Topaz",
+    "Gems",
+    18,
+    "+10 Spell Focus",
+    "5% to Energy",
+    "Lightning Resist +30%",
+    "gem:Perfect Topaz",
+    "https://docs.median-xl.com/images/runes/invgsye.jpg"
+  ],
+  [
+    "Bloodstone",
+    "Gems",
+    12,
+    "+6% to Summon Life",
+    "Fire Resist +12%",
+    "+3% to Summon Elemental Resistances",
+    "gem:Bloodstone",
+    "https://docs.median-xl.com/images/runes/invgscc.jpg"
+  ],
+  [
+    "Flawless Bloodstone",
+    "Gems",
+    15,
+    "+8% to Summon Life",
+    "Fire Resist +16%",
+    "+4% to Summon Elemental Resistances",
+    "gem:Flawless Bloodstone",
+    "https://docs.median-xl.com/images/runes/invgscd.jpg"
+  ],
+  [
+    "Perfect Bloodstone",
+    "Gems",
+    18,
+    "+10% to Summon Life",
+    "Fire Resist +20%, Maximum Fire Resist +1%",
+    "+5% to Summon Elemental Resistances",
+    "gem:Perfect Bloodstone",
+    "https://docs.median-xl.com/images/runes/invgsce.jpg"
+  ],
+  [
+    "Onyx",
+    "Gems",
+    12,
+    "+3% to Summon Damage",
+    "Cold Resist +12%",
+    "Slow Target 1%",
+    "gem:Onyx",
+    "https://docs.median-xl.com/images/runes/invgsoc.jpg"
+  ],
+  [
+    "Flawless Onyx",
+    "Gems",
+    15,
+    "+4% to Summon Damage",
+    "Cold Resist +16%",
+    "Slow Target 2%",
+    "gem:Flawless Onyx",
+    "https://docs.median-xl.com/images/runes/invgsod.jpg"
+  ],
+  [
+    "Perfect Onyx",
+    "Gems",
+    18,
+    "+5% to Summon Damage",
+    "Cold Resist +20%, Maximum Cold Resist +1%",
+    "Slow Target 2%",
+    "gem:Perfect Onyx",
+    "https://docs.median-xl.com/images/runes/invgsoe.jpg"
+  ],
+  [
+    "Amber",
+    "Gems",
+    12,
+    "1% Reanimate as: Walker",
+    "Lightning Resist +12%",
+    "Slows Attacker by 1%",
+    "gem:Amber",
+    "https://docs.median-xl.com/images/runes/invgsac.jpg"
+  ],
+  [
+    "Flawless Amber",
+    "Gems",
+    15,
+    "1% Reanimate as: Walker",
+    "Lightning Resist +16%",
+    "Slows Attacker by 2%",
+    "gem:Flawless Amber",
+    "https://docs.median-xl.com/images/runes/invgsad.jpg"
+  ],
+  [
+    "Perfect Amber",
+    "Gems",
+    18,
+    "2% Reanimate as: Walker",
+    "Lightning Resist +20%, Maximum Lightning Resist +1%",
+    "Slows Attacker by 2%",
+    "gem:Perfect Amber",
+    "https://docs.median-xl.com/images/runes/invgsae.jpg"
+  ],
+  [
+    "Turquoise",
+    "Gems",
+    12,
+    "Regenerate Mana +6%",
+    "Poison Resist +12%",
+    "4% Magic Find",
+    "gem:Turquoise",
+    "https://docs.median-xl.com/images/runes/invgstc.jpg"
+  ],
+  [
+    "Flawless Turquoise",
+    "Gems",
+    15,
+    "Regenerate Mana +8%",
+    "Poison Resist +16%",
+    "6% Magic Find",
+    "gem:Flawless Turquoise",
+    "https://docs.median-xl.com/images/runes/invgstd.jpg"
+  ],
+  [
+    "Perfect Turquoise",
+    "Gems",
+    18,
+    "Regenerate Mana +10%",
+    "Poison Resist +20%, Maximum Poison Resist +1%",
+    "8% Magic Find",
+    "gem:Perfect Turquoise",
+    "https://docs.median-xl.com/images/runes/invgste.jpg"
+  ],
+  [
+    "Sapphire",
+    "Gems",
+    12,
+    "+5 Mana after each Kill",
+    "Cold Resist +12%",
+    "Cold Resist +18%",
+    "gem:Sapphire",
+    "https://docs.median-xl.com/images/runes/invgsbc.jpg"
+  ],
+  [
+    "Flawless Sapphire",
+    "Gems",
+    15,
+    "+6 Mana after each Kill",
+    "Cold Resist +16%",
+    "Cold Resist +24%",
+    "gem:Flawless Sapphire",
+    "https://docs.median-xl.com/images/runes/invgsbd.jpg"
+  ],
+  [
+    "Perfect Sapphire",
+    "Gems",
+    18,
+    "+8 Mana after each Kill",
+    "Cold Resist +20%",
+    "Cold Resist +30%",
+    "gem:Perfect Sapphire",
+    "https://docs.median-xl.com/images/runes/invgsbe.jpg"
+  ],
+  [
+    "Emerald",
+    "Gems",
+    12,
+    "+3 to Maximum Damage",
+    "+6 Life Regenerated per Second",
+    "Poison Resist +18%",
+    "gem:Emerald",
+    "https://docs.median-xl.com/images/runes/invgsgc.jpg"
+  ],
+  [
+    "Flawless Emerald",
+    "Gems",
+    15,
+    "+4 to Maximum Damage",
+    "+8 Life Regenerated per Second",
+    "Poison Resist +24%",
+    "gem:Flawless Emerald",
+    "https://docs.median-xl.com/images/runes/invgsgd.jpg"
+  ],
+  [
+    "Perfect Emerald",
+    "Gems",
+    18,
+    "+5 to Maximum Damage",
+    "+10 Life Regenerated per Second",
+    "Poison Resist +30%",
+    "gem:Perfect Emerald",
+    "https://docs.median-xl.com/images/runes/invgsge.jpg"
+  ],
+  [
+    "Rainbow Stone",
+    "Gems",
+    12,
+    "2% Innate Elemental Damage",
+    "4% Gold Find",
+    "Curse Length Reduction 4%",
+    "gem:Rainbow Stone",
+    "https://docs.median-xl.com/images/runes/og3.jpg"
+  ],
+  [
+    "Flawless Rainbow Stone",
+    "Gems",
+    15,
+    "2% Innate Elemental Damage",
+    "6% Gold Find",
+    "Curse Length Reduction 5%",
+    "gem:Flawless Rainbow Stone",
+    "https://docs.median-xl.com/images/runes/og4.jpg"
+  ],
+  [
+    "Perfect Rainbow Stone",
+    "Gems",
+    18,
+    "3% Innate Elemental Damage",
+    "8% Gold Find",
+    "Curse Length Reduction 6%",
+    "gem:Perfect Rainbow Stone",
+    "https://docs.median-xl.com/images/runes/og5.jpg"
+  ],
+  [
+    "Skull",
+    "Gems",
+    12,
+    "+7% Enhanced Damage",
+    "+7% Enhanced Defense",
+    "Poison Length Reduction 3%",
+    "gem:Skull",
+    "https://docs.median-xl.com/images/runes/invsku.jpg"
+  ],
+  [
+    "Flawless Skull",
+    "Gems",
+    15,
+    "+8% Enhanced Damage",
+    "+8% Enhanced Defense",
+    "Poison Length Reduction 4%",
+    "gem:Flawless Skull",
+    "https://docs.median-xl.com/images/runes/invskl.jpg"
+  ],
+  [
+    "Perfect Skull",
+    "Gems",
+    18,
+    "+10% Enhanced Damage",
+    "+10% Enhanced Defense",
+    "Poison Length Reduction 5%",
+    "gem:Perfect Skull",
+    "https://docs.median-xl.com/images/runes/invskz.jpg"
+  ],
+  [
+    "El",
+    "Standard runes",
+    6,
+    "+3 to all Attributes",
+    "+3 to all Attributes",
+    "+3 to all Attributes",
+    "El",
+    "https://docs.median-xl.com/images/runes/invrEl.jpg"
+  ],
+  [
+    "Eld",
+    "Standard runes",
+    8,
+    "+5 to Maximum Damage",
+    "+3 to Maximum Damage",
+    "+3 to Maximum Damage",
+    "Eld",
+    "https://docs.median-xl.com/images/runes/invrEld.jpg"
+  ],
+  [
+    "Tir",
+    "Standard runes",
+    10,
+    "+3% to Fire Spell Damage",
+    "+3% to Fire Spell Damage",
+    "+3% to Fire Spell Damage",
+    "Tir",
+    "https://docs.median-xl.com/images/runes/invrTir.jpg"
+  ],
+  [
+    "Nef",
+    "Standard runes",
+    13,
+    "+3% to Lightning Spell Damage",
+    "+3% to Lightning Spell Damage",
+    "+3% to Lightning Spell Damage",
+    "Nef",
+    "https://docs.median-xl.com/images/runes/invrNef.jpg"
+  ],
+  [
+    "Eth",
+    "Standard runes",
+    15,
+    "+3% to Cold Spell Damage",
+    "+3% to Cold Spell Damage",
+    "+3% to Cold Spell Damage",
+    "Eth",
+    "https://docs.median-xl.com/images/runes/invrEth.jpg"
+  ],
+  [
+    "Ith",
+    "Standard runes",
+    18,
+    "+3% to Poison Spell Damage",
+    "+3% to Poison Spell Damage",
+    "+3% to Poison Spell Damage",
+    "Ith",
+    "https://docs.median-xl.com/images/runes/invrIth.jpg"
+  ],
+  [
+    "Tal",
+    "Standard runes",
+    20,
+    "+3% to Physical/Magic Spell Damage",
+    "+3% to Physical/Magic Spell Damage",
+    "+3% to Physical/Magic Spell Damage",
+    "Tal",
+    "https://docs.median-xl.com/images/runes/invrTal.jpg"
+  ],
+  [
+    "Ral",
+    "Standard runes",
+    23,
+    "Fire Resist +30%",
+    "Fire Resist +25%",
+    "Fire Resist +25%",
+    "Ral",
+    "https://docs.median-xl.com/images/runes/invrRal.jpg"
+  ],
+  [
+    "Ort",
+    "Standard runes",
+    25,
+    "Lightning Resist +30%",
+    "Lightning Resist +25%",
+    "Lightning Resist +25%",
+    "Ort",
+    "https://docs.median-xl.com/images/runes/invrOrt.jpg"
+  ],
+  [
+    "Thul",
+    "Standard runes",
+    28,
+    "Cold Resist +30%",
+    "Cold Resist +25%",
+    "Cold Resist +25%",
+    "Thul",
+    "https://docs.median-xl.com/images/runes/invrThul.jpg"
+  ],
+  [
+    "Amn",
+    "Standard runes",
+    30,
+    "Poison Resist +30%",
+    "Poison Resist +25%",
+    "Poison Resist +25%",
+    "Amn",
+    "https://docs.median-xl.com/images/runes/invrAmn.jpg"
+  ],
+  [
+    "Sol",
+    "Standard runes",
+    33,
+    "+60 to Mana",
+    "+40 to Mana",
+    "+40 to Mana",
+    "Sol",
+    "https://docs.median-xl.com/images/runes/invrSol.jpg"
+  ],
+  [
+    "Shael",
+    "Standard runes",
+    35,
+    "+15% Bonus to Poison Skill Duration",
+    "+10% Bonus to Poison Skill Duration",
+    "+10% Bonus to Poison Skill Duration",
+    "Shael",
+    "https://docs.median-xl.com/images/runes/invrShae.jpg"
+  ],
+  [
+    "Dol",
+    "Standard runes",
+    38,
+    "+10% to Summon Life",
+    "+10% to Summon Life",
+    "+10% to Summon Life",
+    "Dol",
+    "https://docs.median-xl.com/images/runes/invrDol.jpg"
+  ],
+  [
+    "Hel",
+    "Standard runes",
+    40,
+    "+5% to Summon Damage",
+    "+5% to Summon Damage",
+    "+5% to Summon Damage",
+    "Hel",
+    "https://docs.median-xl.com/images/runes/invrHel.jpg"
+  ],
+  [
+    "Io",
+    "Standard runes",
+    43,
+    "+50% to Summon Attack Rating",
+    "+50% to Summon Attack Rating",
+    "+50% to Summon Attack Rating",
+    "Io",
+    "https://docs.median-xl.com/images/runes/invrIo.jpg"
+  ],
+  [
+    "Lum",
+    "Standard runes",
+    45,
+    "+5% to Summon Elemental Resistances",
+    "+5% to Summon Elemental Resistances",
+    "+5% to Summon Elemental Resistances",
+    "Lum",
+    "https://docs.median-xl.com/images/runes/invrLum.jpg"
+  ],
+  [
+    "Ko",
+    "Standard runes",
+    48,
+    "5% to Strength",
+    "5% to Strength",
+    "5% to Strength",
+    "Ko",
+    "https://docs.median-xl.com/images/runes/invrKo.jpg"
+  ],
+  [
+    "Fal",
+    "Standard runes",
+    50,
+    "5% to Dexterity",
+    "5% to Dexterity",
+    "5% to Dexterity",
+    "Fal",
+    "https://docs.median-xl.com/images/runes/invrFal.jpg"
+  ],
+  [
+    "Lem",
+    "Standard runes",
+    53,
+    "4% to Vitality",
+    "4% to Vitality",
+    "4% to Vitality",
+    "Lem",
+    "https://docs.median-xl.com/images/runes/invrLem.jpg"
+  ],
+  [
+    "Pul",
+    "Standard runes",
+    55,
+    "5% to Energy",
+    "5% to Energy",
+    "5% to Energy",
+    "Pul",
+    "https://docs.median-xl.com/images/runes/invrPul.jpg"
+  ],
+  [
+    "Um",
+    "Standard runes",
+    58,
+    "Elemental Resists +10%",
+    "Elemental Resists +10%",
+    "Elemental Resists +10%",
+    "Um",
+    "https://docs.median-xl.com/images/runes/invrUm.jpg"
+  ],
+  [
+    "Mal",
+    "Standard runes",
+    60,
+    "3% to All Attributes",
+    "3% to All Attributes",
+    "3% to All Attributes",
+    "Mal",
+    "https://docs.median-xl.com/images/runes/invrMal.jpg"
+  ],
+  [
+    "Ist",
+    "Standard runes",
+    63,
+    "10% Magic Find",
+    "7% Magic Find",
+    "7% Magic Find",
+    "Ist",
+    "https://docs.median-xl.com/images/runes/invrIst.jpg"
+  ],
+  [
+    "Gul",
+    "Standard runes",
+    65,
+    "15% Attack Speed",
+    "15% Attack Speed",
+    "15% Attack Speed",
+    "Gul",
+    "https://docs.median-xl.com/images/runes/invrGul.jpg"
+  ],
+  [
+    "Vex",
+    "Standard runes",
+    68,
+    "15% Cast Speed",
+    "15% Cast Speed",
+    "15% Cast Speed",
+    "Vex",
+    "https://docs.median-xl.com/images/runes/invrVex.jpg"
+  ],
+  [
+    "Ohm",
+    "Standard runes",
+    70,
+    "15% Hit Recovery",
+    "15% Hit Recovery",
+    "15% Hit Recovery",
+    "Ohm",
+    "https://docs.median-xl.com/images/runes/invrOhm.jpg"
+  ],
+  [
+    "Lo",
+    "Standard runes",
+    73,
+    "15% Block Speed",
+    "15% Block Speed",
+    "15% Block Speed",
+    "Lo",
+    "https://docs.median-xl.com/images/runes/invrLo.jpg"
+  ],
+  [
+    "Sur",
+    "Standard runes",
+    75,
+    "Regenerate Mana +15%",
+    "Regenerate Mana +5%",
+    "Regenerate Mana +5%",
+    "Sur",
+    "https://docs.median-xl.com/images/runes/invrSur.jpg"
+  ],
+  [
+    "Ber",
+    "Standard runes",
+    78,
+    "Slow Target 3%",
+    "Slows Attacker by 2%",
+    "Slows Attacker by 2%",
+    "Ber",
+    "https://docs.median-xl.com/images/runes/invrBer.jpg"
+  ],
+  [
+    "Jah",
+    "Standard runes",
+    80,
+    "+15% Enhanced Damage",
+    "+15% Enhanced Defense",
+    "+15% Enhanced Defense",
+    "Jah",
+    "https://docs.median-xl.com/images/runes/invrJo.jpg"
+  ],
+  [
+    "Cham",
+    "Standard runes",
+    83,
+    "Maximum Mana +3%",
+    "Maximum Mana +2%",
+    "Maximum Mana +2%",
+    "Cham",
+    "https://docs.median-xl.com/images/runes/invrCham.jpg"
+  ],
+  [
+    "Zod",
+    "Standard runes",
+    85,
+    "+15 Life after each Kill",
+    "+15 Life after each Kill",
+    "+15 Life after each Kill",
+    "Zod",
+    "https://docs.median-xl.com/images/runes/invrZod.jpg"
+  ],
+  [
+    "Ol",
+    "Enchanted runes",
+    90,
+    "+13 to all Attributes",
+    "+13 to all Attributes",
+    "+13 to all Attributes",
+    "Ol",
+    "https://docs.median-xl.com/images/runes/xisEl.jpg"
+  ],
+  [
+    "Elq",
+    "Enchanted runes",
+    90,
+    "+20 to Maximum Damage",
+    "+10 to Maximum Damage",
+    "+10 to Maximum Damage",
+    "Elq",
+    "https://docs.median-xl.com/images/runes/xisEld.jpg"
+  ],
+  [
+    "Tyr",
+    "Enchanted runes",
+    90,
+    "+5% to Fire Spell Damage",
+    "+5% to Fire Spell Damage",
+    "+5% to Fire Spell Damage",
+    "Tyr",
+    "https://docs.median-xl.com/images/runes/xisTir.jpg"
+  ],
+  [
+    "Nif",
+    "Enchanted runes",
+    95,
+    "+5% to Lightning Spell Damage",
+    "+5% to Lightning Spell Damage",
+    "+5% to Lightning Spell Damage",
+    "Nif",
+    "https://docs.median-xl.com/images/runes/xisNef.jpg"
+  ],
+  [
+    "Xeth",
+    "Enchanted runes",
+    95,
+    "+5% to Cold Spell Damage",
+    "+5% to Cold Spell Damage",
+    "+5% to Cold Spell Damage",
+    "Xeth",
+    "https://docs.median-xl.com/images/runes/xisEth.jpg"
+  ],
+  [
+    "Xith",
+    "Enchanted runes",
+    95,
+    "+5% to Poison Spell Damage",
+    "+5% to Poison Spell Damage",
+    "+5% to Poison Spell Damage",
+    "Xith",
+    "https://docs.median-xl.com/images/runes/xisIth.jpg"
+  ],
+  [
+    "Thal",
+    "Enchanted runes",
+    100,
+    "+5% to Physical/Magic Spell Damage",
+    "+5% to Physical/Magic Spell Damage",
+    "+5% to Physical/Magic Spell Damage",
+    "Thal",
+    "https://docs.median-xl.com/images/runes/xisTal.jpg"
+  ],
+  [
+    "Rhal",
+    "Enchanted runes",
+    100,
+    "Fire Resist +35%",
+    "Fire Resist +35%",
+    "Fire Resist +45%",
+    "Rhal",
+    "https://docs.median-xl.com/images/runes/xisRal.jpg"
+  ],
+  [
+    "Urt",
+    "Enchanted runes",
+    100,
+    "Lightning Resist +35%",
+    "Lightning Resist +35%",
+    "Lightning Resist +45%",
+    "Urt",
+    "https://docs.median-xl.com/images/runes/xisOrt.jpg"
+  ],
+  [
+    "Tuul",
+    "Enchanted runes",
+    100,
+    "Cold Resist +35%",
+    "Cold Resist +35%",
+    "Cold Resist +45%",
+    "Tuul",
+    "https://docs.median-xl.com/images/runes/xisThul.jpg"
+  ],
+  [
+    "Ahmn",
+    "Enchanted runes",
+    100,
+    "Poison Resist +35%",
+    "Poison Resist +35%",
+    "Poison Resist +45%",
+    "Ahmn",
+    "https://docs.median-xl.com/images/runes/xisAmn.jpg"
+  ],
+  [
+    "Zol",
+    "Enchanted runes",
+    100,
+    "+100 to Mana",
+    "+75 to Mana",
+    "+75 to Mana",
+    "Zol",
+    "https://docs.median-xl.com/images/runes/xisSol.jpg"
+  ],
+  [
+    "Shaen",
+    "Enchanted runes",
+    105,
+    "+20% Bonus to Poison Skill Duration",
+    "+13% Bonus to Poison Skill Duration",
+    "+13% Bonus to Poison Skill Duration",
+    "Shaen",
+    "https://docs.median-xl.com/images/runes/xisShael.jpg"
+  ],
+  [
+    "Doj",
+    "Enchanted runes",
+    105,
+    "+20% to Summon Life",
+    "+20% to Summon Life",
+    "+20% to Summon Life",
+    "Doj",
+    "https://docs.median-xl.com/images/runes/xisDol.jpg"
+  ],
+  [
+    "Hem",
+    "Enchanted runes",
+    105,
+    "+10% to Summon Damage",
+    "+10% to Summon Damage",
+    "+10% to Summon Damage",
+    "Hem",
+    "https://docs.median-xl.com/images/runes/xisHel.jpg"
+  ],
+  [
+    "Iu",
+    "Enchanted runes",
+    105,
+    "+70% to Summon Attack Rating",
+    "+70% to Summon Attack Rating",
+    "+70% to Summon Attack Rating",
+    "Iu",
+    "https://docs.median-xl.com/images/runes/xisIo.jpg"
+  ],
+  [
+    "Lux",
+    "Enchanted runes",
+    105,
+    "+7% to Summon Elemental Resistances",
+    "+7% to Summon Elemental Resistances",
+    "+7% to Summon Elemental Resistances",
+    "Lux",
+    "https://docs.median-xl.com/images/runes/xisLum.jpg"
+  ],
+  [
+    "Ka",
+    "Enchanted runes",
+    105,
+    "7% to Strength",
+    "7% to Strength",
+    "7% to Strength",
+    "Ka",
+    "https://docs.median-xl.com/images/runes/xisKo.jpg"
+  ],
+  [
+    "Fel",
+    "Enchanted runes",
+    110,
+    "7% to Dexterity",
+    "7% to Dexterity",
+    "7% to Dexterity",
+    "Fel",
+    "https://docs.median-xl.com/images/runes/xisFal.jpg"
+  ],
+  [
+    "Lew",
+    "Enchanted runes",
+    110,
+    "6% to Vitality",
+    "6% to Vitality",
+    "6% to Vitality",
+    "Lew",
+    "https://docs.median-xl.com/images/runes/xisLem.jpg"
+  ],
+  [
+    "Phul",
+    "Enchanted runes",
+    110,
+    "7% to Energy",
+    "7% to Energy",
+    "7% to Energy",
+    "Phul",
+    "https://docs.median-xl.com/images/runes/xisPul.jpg"
+  ],
+  [
+    "Un",
+    "Enchanted runes",
+    110,
+    "Elemental Resists +13%",
+    "Elemental Resists +13%",
+    "Elemental Resists +13%",
+    "Un",
+    "https://docs.median-xl.com/images/runes/xisUm.jpg"
+  ],
+  [
+    "Mhal",
+    "Enchanted runes",
+    110,
+    "4% to All Attributes",
+    "4% to All Attributes",
+    "4% to All Attributes",
+    "Mhal",
+    "https://docs.median-xl.com/images/runes/xisMal.jpg"
+  ],
+  [
+    "Yst",
+    "Enchanted runes",
+    110,
+    "13% Magic Find",
+    "10% Magic Find",
+    "10% Magic Find",
+    "Yst",
+    "https://docs.median-xl.com/images/runes/xisIst.jpg"
+  ],
+  [
+    "Gur",
+    "Enchanted runes",
+    115,
+    "40% Attack Speed",
+    "30% Attack Speed",
+    "30% Attack Speed",
+    "Gur",
+    "https://docs.median-xl.com/images/runes/xisGul.jpg"
+  ],
+  [
+    "Vez",
+    "Enchanted runes",
+    115,
+    "40% Cast Speed",
+    "30% Cast Speed",
+    "30% Cast Speed",
+    "Vez",
+    "https://docs.median-xl.com/images/runes/xisVex.jpg"
+  ],
+  [
+    "Ohn",
+    "Enchanted runes",
+    115,
+    "30% Hit Recovery",
+    "30% Hit Recovery",
+    "40% Hit Recovery",
+    "Ohn",
+    "https://docs.median-xl.com/images/runes/xisOhm.jpg"
+  ],
+  [
+    "Loz",
+    "Enchanted runes",
+    115,
+    "+4% to Summon Physical Resist",
+    "+3% to Summon Physical Resist",
+    "60% Block Speed",
+    "Loz",
+    "https://docs.median-xl.com/images/runes/xisLo.jpg"
+  ],
+  [
+    "Zur",
+    "Enchanted runes",
+    115,
+    "Regenerate Mana +22%",
+    "Regenerate Mana +11%",
+    "Regenerate Mana +11%",
+    "Zur",
+    "https://docs.median-xl.com/images/runes/xisSur.jpg"
+  ],
+  [
+    "Bur",
+    "Enchanted runes",
+    115,
+    "Slow Target 5%",
+    "Slows Attacker by 4%",
+    "Slows Attacker by 5%",
+    "Bur",
+    "https://docs.median-xl.com/images/runes/xisBer.jpg"
+  ],
+  [
+    "Iah",
+    "Enchanted runes",
+    120,
+    "+25% Enhanced Damage",
+    "+25% Enhanced Defense",
+    "+25% Enhanced Defense",
+    "Iah",
+    "https://docs.median-xl.com/images/runes/xisJah.jpg"
+  ],
+  [
+    "Yham",
+    "Enchanted runes",
+    120,
+    "Maximum Mana +5%",
+    "Maximum Life and Mana +2%",
+    "Maximum Life +3%",
+    "Yham",
+    "https://docs.median-xl.com/images/runes/xisCham.jpg"
+  ],
+  [
+    "Xod",
+    "Enchanted runes",
+    120,
+    "+1 to All Skills",
+    "+1 to All Skills",
+    "+1 to All Skills",
+    "Xod",
+    "https://docs.median-xl.com/images/runes/xisZod.jpg"
+  ],
+  [
+    "Taha",
+    "Great runes",
+    100,
+    "-3% to Enemy Elemental Resistances",
+    "-2% to Enemy Elemental Resistances",
+    "-2% to Enemy Elemental Resistances",
+    "Taha",
+    "https://docs.median-xl.com/images/runes/r-d-02.jpg"
+  ],
+  [
+    "Ghal",
+    "Great runes",
+    100,
+    "+25 Spell Focus",
+    "+15 Spell Focus",
+    "+15 Spell Focus",
+    "Ghal",
+    "https://docs.median-xl.com/images/runes/r-d-05.jpg"
+  ],
+  [
+    "Qor",
+    "Great runes",
+    100,
+    "3% Deadly Strike",
+    "2% Deadly Strike",
+    "2% Deadly Strike",
+    "Qor",
+    "https://docs.median-xl.com/images/runes/r-d-11.jpg"
+  ],
+  [
+    "Fire",
+    "Elemental runes",
+    100,
+    "-5% to Enemy Fire Resistance",
+    "-3% to Enemy Fire Resistance",
+    "Fire Absorb 1%",
+    "Ign",
+    "https://docs.median-xl.com/images/runes/fire-rune.jpg"
+  ],
+  [
+    "Stone",
+    "Elemental runes",
+    100,
+    "Adds 8-12 Damage",
+    "Adds 4-6 Damage",
+    "Physical Resist 1%",
+    "Sil",
+    "https://docs.median-xl.com/images/runes/phys-rune.jpg"
+  ],
+  [
+    "Arcane",
+    "Elemental runes",
+    100,
+    "+4% Bonus to Spell Focus",
+    "+2% Bonus to Spell Focus",
+    "Magic Resist +1%",
+    "Arc",
+    "https://docs.median-xl.com/images/runes/magic-rune.jpg"
+  ],
+  [
+    "Poison",
+    "Elemental runes",
+    100,
+    "-5% to Enemy Poison Resistance",
+    "-3% to Enemy Poison Resistance",
+    "Poison Length Reduction 15%",
+    "Ven",
+    "https://docs.median-xl.com/images/runes/pois-rune.jpg"
+  ],
+  [
+    "Light",
+    "Elemental runes",
+    100,
+    "-5% to Enemy Lightning Resistance",
+    "-3% to Enemy Lightning Resistance",
+    "Lightning Absorb 1%",
+    "Ful",
+    "https://docs.median-xl.com/images/runes/ltng-rune.jpg"
+  ],
+  [
+    "Ice",
+    "Elemental runes",
+    100,
+    "-5% to Enemy Cold Resistance",
+    "-3% to Enemy Cold Resistance",
+    "Cold Absorb 1%",
+    "Gla",
+    "https://docs.median-xl.com/images/runes/cold-rune.jpg"
+  ]
+]

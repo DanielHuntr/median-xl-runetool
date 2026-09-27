@@ -1,0 +1,27 @@
+{
+  "v": 2,
+  "cls": "Amazon",
+  "level": 80,
+  "points": {"thundermaiden":25,"stormcall":25,"askari_lightning":25,"conductivity":7},
+  "quests": {},
+  "attrs": {"strength":0,"dexterity":415,"vitality":0,"energy":0},
+  "signets": 0,
+  "difficulty": "Hell",
+  "gear": {
+    "weapon":{"ref":"tu:55","variant":3,"orbs":["mo-46","mo-46","mo-46","mo-46","mo-46"],"sockets":["tu:245","sock:57","sock:44"]},
+    "helm":{"ref":"su:308","variant":0,"orbs":["mo-25","mo-25","mo-25","mo-25","mo-25"],"sockets":["sock:57","sock:57","sock:57","sock:57"]},
+    "amulet":{"ref":"tu:223","variant":0,"orbs":[]},
+    "body":{"ref":"rw:133","base":"base:141","baseVariant":4,"orbs":["mo-25","mo-25"],"sockets":[]},
+    "gloves":{"ref":"su:288","variant":0,"orbs":[],"sockets":["sock:57","tu:239","sock:61","sock:61"]},
+    "ring1":{"ref":"tu:235","variant":0,"orbs":["mo-19","mo-6","mo-6","mo-6","mo-6"],"sockets":[]},
+    "ring2":{"ref":"tu:235","variant":0,"orbs":["mo-6","mo-6","mo-6","mo-6","mo-6"],"sockets":[]},
+    "belt":{"ref":"tu:164","variant":3,"orbs":["mo-25","mo-25","mo-25"],"sockets":["sock:61","sock:61"]},
+    "boots":{"ref":"rw:180","base":"base:176","baseVariant":4,"orbs":["mo-25"],"sockets":[]}
+  },
+  "swap": false,
+  "inventory": [],
+  "buffs": [],
+  "leftSkill": "attack",
+  "rightSkill": null,
+  "skillBar": []
+}
