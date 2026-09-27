@@ -1,0 +1,50 @@
+{
+ "patch": "2.14.4",
+ "source": "qualityitems.bin and properties.bin (medianxl-YmludGJsdHh0.mpq); see scripts/extract-superior.mjs",
+ "variants": [
+  {
+   "id": 0,
+   "appliesTo": "weapon",
+   "lines": [
+    "+(35 to 60)% Enhanced Damage"
+   ],
+   "effects": [
+    "improved to hit",
+    "improved damage"
+   ]
+  },
+  {
+   "id": 1,
+   "appliesTo": "weapon",
+   "lines": [
+    "(50 to 100)% Bonus to Attack Rating",
+    "+(35 to 50)% Enhanced Damage"
+   ],
+   "effects": [
+    "improved to hit",
+    "improved damage"
+   ]
+  },
+  {
+   "id": 2,
+   "appliesTo": "armor",
+   "lines": [
+    "+(35 to 60)% Enhanced Defense"
+   ],
+   "effects": [
+    "improved armor class"
+   ]
+  },
+  {
+   "id": 3,
+   "appliesTo": "armor",
+   "lines": [
+    "+(35 to 50)% Enhanced Defense",
+    "+1% Physical Resist"
+   ],
+   "effects": [
+    "improved armor class"
+   ]
+  }
+ ]
+}
