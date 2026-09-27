@@ -2,7 +2,10 @@
 //
 //   node scripts/build-presets.mjs            (after changes to skills, items or the recommender)
 //
-// Each preset below names a class, a main skill and optionally a second skill. The rest is
+// One preset per skill tree (scripts/lib/preset-plan.mjs): the hand-picked presets below keep
+// their trees, and every other tree gets its main skill from the data.
+//   ONLY=id1,id2 node scripts/build-presets.mjs   builds just those, without publishing.
+// Each preset names a class, a main skill and optionally a second skill. The rest is
 // the planner's own work, the same as a player would do it in the app:
 //   1. points: the main skill to its maximum, then every skill the main skill's formulas read
 //      (its synergies, from the game files), then the listed extras, through the planner's
@@ -14,8 +17,10 @@
 // against the target with −enemy resistance. Problems are printed and the script exits with
 // an error, so a preset never ships with a skill whose damage ignores the player's choices.
 import { createServer } from "vite";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { publishPresets } from "./lib/publish-presets.mjs";
+import { planTrees } from "./lib/preset-plan.mjs";
+import { probePointScaling } from "./lib/point-scaling.mjs";
 import { effectScope } from "vue";
 
 const PRESETS = [
@@ -53,8 +58,9 @@ try {
   const { skillDamage } = await load("/src/planner/damage.js");
   const { againstTarget, typicalTarget } = await load("/src/planner/target.js");
   const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { isToggleSkill } = await load("/src/planner/skillEffects.js");
   const { fundLoadout, spendRemaining, releaseUnusedRequirements, wearableBothSets } = await load("/src/planner/attributeAllocation.js");
-  const { buildProfile } = await load("/src/planner/recommend.js");
+  const { buildProfile, recommendForSlot, wantedStats } = await load("/src/planner/recommend.js");
   const { combatScore } = await load("/src/planner/combatScore.js");
   const planner = JSON.parse(await readFile("public/planner/data.json", "utf8"));
   const engine = createEngine(planner);
@@ -77,24 +83,40 @@ try {
     const vs = d && againstTarget(d, c, target, "Hell");
     return { d, vsParts: vs?.parts || [], raw: d?.all?.[1] ?? d?.total?.[1] ?? 0, vs: vs?.all?.[1] ?? vs?.total?.[1] ?? 0 };
   };
+  // The top weapon Suggest gear would pick for a probe build (tree planning).
+  const recommendWeapon = (b) => {
+    const c = computeCharacter(b, { engine, catalog, planner }), profile = buildProfile(b, engine);
+    return recommendForSlot("weapon", { build: b, engine, catalog, planner, character: c, profile, want: wantedStats(profile, c) }, 1)[0];
+  };
   const probe = (b, text) => ({ ...b, inventory: [...b.inventory, { ref: "custom", custom: { name: "Probe", slotType: "charm", text } }] });
 
-  function check(p, b, id) {
+  // Skill-bar skills (secondary = true) may legitimately not gain damage from their own
+  // points (War Spirit is a fixed 50% weapon hit; Mana Pulse's cold damage grows with
+  // character level): they only have to deal damage that responds to something the player
+  // chooses. The left and right skills must pass every check.
+  function check(p, b, id, secondary = false) {
     const base = damage(b, id);
     const name = engine.skillName(id);
-    const fail = (msg) => problems.push(`${p.name} (${p.cls}), ${name}: ${msg}`);
+    const soft = [];
+    const fail = (msg, pointsOnly = false) => (secondary && pointsOnly ? soft.push(msg) : problems.push(`${p.name} (${p.cls}), ${name}: ${msg}`));
+    let responds = false;
     if (!(base.raw > 0)) return fail(`no damage (${base.d?.kind}: ${base.d?.lines?.join("; ")})`);
     const report = [`${name} ${base.d.kind} ${base.raw} (vs typical Hell ${base.vs})`];
-    // Points in the skill itself.
+    // Start about 20% lower (6 at 30), then look past rounded plateaus if needed:
+    // some skills gain less than 1 damage per point, or one axe per 4 levels.
     if (b.points[id] > 1) {
-      const less = damage({ ...b, points: { ...b.points, [id]: b.points[id] - 1 } }, id);
-      if (!(less.raw < base.raw)) fail(`one point fewer doesn't lower damage (${less.raw} vs ${base.raw})`);
+      const less = probePointScaling(b.points[id], base.raw,
+        (n) => damage({ ...b, points: { ...b.points, [id]: n } }, id).raw);
+      report.push(`  with ${b.points[id] - less.fewer} fewer points: ${less.damage}`);
+      if (!less.scales) fail(`${b.points[id] - less.fewer} points fewer doesn't lower damage (${less.damage} vs ${base.raw})`, true);
+      else responds = true;
     }
     // Each synergy with points.
     for (const ref of refsOf(id).filter((r) => b.points[r])) {
       const without = damage({ ...b, points: { ...b.points, [ref]: 0 } }, id);
       report.push(`  without ${engine.skillName(ref)}: ${without.raw} (vs ${without.vs})`);
-      if (without.raw > base.raw || without.vs > base.vs) fail(`removing ${engine.skillName(ref)} raises damage (${without.raw} vs ${base.raw})`);
+      if (without.raw > base.raw || without.vs > base.vs) fail(`removing ${engine.skillName(ref)} raises damage (${without.raw} vs ${base.raw})`, true);
+      if (without.raw < base.raw) responds = true;
     }
     // A matching damage bonus from gear.
     const els = [...new Set(base.d.parts.map((x) => x.element))];
@@ -106,7 +128,8 @@ try {
     if (bonus) {
       const up = damage(probe(b, bonus), id);
       report.push(`  with ${bonus.replace(/\n/g, ", ")}: ${up.raw}`);
-      if (!(up.raw > base.raw)) fail(`${bonus.replace(/\n/g, ", ")} doesn't raise damage (${up.raw} vs ${base.raw})`);
+      if (!(up.raw > base.raw)) fail(`${bonus.replace(/\n/g, ", ")} doesn't raise damage (${up.raw} vs ${base.raw})`, true);
+      else responds = true;
     }
     // −enemy resistance, for elements the target resists.
     // (Not for a trap using its own pierce: yours doesn't apply to it, see damage.js.)
@@ -115,18 +138,90 @@ try {
       const pierce = damage(probe(b, `-20% to Enemy ${e[0].toUpperCase() + e.slice(1)} Resistance`), id);
       if (!(pierce.vs > base.vs)) fail(`−20% enemy ${e} resistance doesn't raise damage against the target (${pierce.vs} vs ${base.vs})`);
     }
+    if (secondary && !responds) problems.push(`${p.name} (${p.cls}), ${name}: damage responds to nothing the player chooses (${soft.join("; ")})`);
+    else if (soft.length) report.push(`  (skill bar; noted: ${soft.join("; ")})`);
     console.log("   " + report.join("\n   "));
   }
 
-  const out = [];
-  for (const def of PRESETS) {
+  const out = [], stages = {};
+  // The levelling guide: the preset built again at these levels (Median XL's areas: Normal
+  // monsters are levels 1-50, Nightmare 51-100, Hell 100-125; levels.bin 0x16/0x18/0x1A).
+  const STAGES = [[25, "Normal"], [50, "Normal"], [75, "Nightmare"], [100, "Nightmare"], [125, "Hell"]];
+  const targets = Object.fromEntries(["Normal", "Nightmare", "Hell"].map((d) => [d, typicalTarget(planner.monsters, d)]));
+  const damageIn = (b, id, difficulty) => {
+    const c = computeCharacter(b, { engine, catalog, planner });
+    const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, charStats: c.charStats }, character: c });
+    const vs = d && againstTarget(d, c, targets[difficulty], difficulty);
+    return vs?.all?.[1] ?? vs?.total?.[1] ?? 0;
+  };
+  // The skills a stage is built around: the preset's own when they can be learned at that
+  // level; otherwise the strongest damage skill that can (from the main skill's tree first),
+  // to level with until the main skill unlocks.
+  function stageDef(def, level) {
+    const at = (id) => id && engine.requiredCharLevel(id, { cls: def.cls, points: {} }) <= level;
+    if (at(def.main)) return { ...def, right: at(def.right) ? def.right : undefined, extra: (def.extra || []).filter(at) };
+    const tree = engine.skill(def.main).tabName;
+    const probe = (id) => {
+      const b = { cls: def.cls, level, points: {}, quests: {}, attrs: {}, signets: 0, difficulty: "Normal", gear: {}, swap: false, inventory: [], buffs: [], leftSkill: id, rightSkill: null, skillBar: [] };
+      b.points[id] = Math.max(1, Math.min(engine.maxLevel(b, id), level));
+      try { return damage(b, id).vs; } catch { return 0; }
+    };
+    const candidates = engine.tabs(def.cls).flatMap((t) => engine.treeNodes(def.cls, t).map((n) => n.id))
+      .filter((id) => at(id) && !engine.skill(id).tags.some((t) => ["Passive", "Upgrade"].includes(t)))
+      .map((id) => ({ id, vs: probe(id), same: engine.skill(id).tabName === tree }))
+      .filter((x) => x.vs > 0)
+      .sort((x, y) => (y.same - x.same) || (y.vs - x.vs));
+    if (!candidates.length) return null;
+    return { ...def, main: candidates[0].id, right: undefined, extra: [], buffs: [], summoner: false, levelling: true };
+  }
+  async function levellingGuide(def, endgame) {
+    const guide = [];
+    for (const [level, difficulty] of STAGES) {
+      const sdef = stageDef(def, level), notes = [];
+      if (!sdef) { guide.push({ level, difficulty, notes: ["No damage skill the planner can work out is learnable yet."] }); continue; }
+      try {
+        const { p, scope } = await buildAt(sdef, level, difficulty, false, notes);
+        const b = JSON.parse(JSON.stringify(p.build.value));
+        const c = computeCharacter(b, { engine, catalog, planner });
+        scope.stop();
+        guide.push({
+          level, difficulty,
+          main: sdef.main, right: sdef.right || null, levelling: !!sdef.levelling,
+          mainName: engine.skillName(sdef.main),
+          unlocksAt: sdef.levelling ? engine.requiredCharLevel(def.main, { cls: def.cls, points: {} }) : null,
+          vs: Math.round(damageIn(b, sdef.main, difficulty)),
+          points: Object.entries(b.points).filter(([, n]) => n > 0).sort((x, y) => y[1] - x[1]).map(([id, n]) => [engine.skillName(id), n]),
+          attrs: b.attrs,
+          gear: Object.entries(b.gear).filter(([slot]) => !slot.endsWith("2")).map(([slot, st]) => [slot, catalog.resolve(st, b.level)?.def.name]).filter(([, n]) => n),
+          life: Math.round(c.life.total), mana: Math.round(c.mana.total),
+          notes: [...new Set(notes)].slice(0, 4),
+          build: b,
+        });
+        console.log(`   stage ${level} (${difficulty}): ${engine.skillName(sdef.main)}${sdef.levelling ? " (levelling)" : ""}, ${Object.keys(b.gear).length} items`);
+      } catch (e) {
+        guide.push({ level, difficulty, notes: [`Couldn't build this stage: ${e.message}`] });
+        console.log(`   stage ${level}: failed: ${e.message}`);
+      }
+    }
+    // The endgame build is the last stage.
+    guide.push({ level: endgame.level, difficulty: "Hell", main: def.main, right: def.right || null, levelling: false, final: true });
+    return guide;
+  }
+  const { plan, skipped, noScaling } = planTrees({ engine, catalog, planner, computeCharacter, damage, refsOf, recommend: recommendWeapon, handPicked: PRESETS });
+  const only = (process.env.ONLY || "").split(",").filter(Boolean);
+  if (noScaling.length) console.log(`Not used as a main or right skill (damage doesn't rise with its points in the planner): ${noScaling.join("; ")}`);
+  console.log(`${plan.length} trees planned; not built (nothing the planner can build around yet): ${skipped.join("; ") || "none"}`);
+  // One preset built at a level and difficulty: the endgame preset (final, level 150, Hell),
+  // or a stage of its levelling guide. Problems go to `sink`.
+  async function buildAt(def, level, difficulty, final, sink) {
     memory.clear();
     const scope = effectScope();
     const p = scope.run(() => createPlanner(engine, catalog, planner));
     p.setClass(def.cls);
-    p.setLevel(LEVEL);
-    p.build.value.quests['justicar_signet.hell'] = true;
-    p.setSignets(computeCharacter(p.build.value, { engine, catalog, planner }).statPoints.signetCap);
+    p.setLevel(level);
+    p.setDifficulty(difficulty);
+    if (difficulty === "Hell") p.build.value.quests['justicar_signet.hell'] = true;
+    if (final) p.setSignets(computeCharacter(p.build.value, { engine, catalog, planner }).statPoints.signetCap);
     p.state.autoLevel = false;
     const missing = [def.main, def.right, ...(def.extra || [])].filter((id) => id && !engine.node(p.build.value, id));
     if (missing.length) throw new Error(`${def.name}: not ${def.cls} skills: ${missing.join(", ")}`);
@@ -155,8 +250,13 @@ try {
     };
     learn(def.main);
     const synergies = refsOf(def.main).filter((r) => engine.node(p.build.value, r));
-    if (def.right) learn(def.right);
-    for (const id of def.extra || []) learn(id);
+    // A right-hand skill that can't be learned alongside the rest is dropped (with a note)
+    // rather than stopping the whole run.
+    if (def.right) {
+      try { learn(def.right); }
+      catch (e) { console.log(`   dropping the right-hand skill: ${e.message}`); def.right = undefined; }
+    }
+    for (const id of def.extra || []) learn(id, !final);
     for (const id of [...synergies, ...(def.right ? refsOf(def.right).filter((r) => engine.node(p.build.value, r)) : [])])
       if ((p.build.value.points[id] || 0) < engine.maxLevel(p.build.value, id)) learn(id, true);
     for (const id of def.buffs || []) p.toggleBuff(id);
@@ -181,7 +281,7 @@ try {
       const funded = count && wearableBothSets(p.build.value, env) ? p.build.value.attrs : fundLoadout(p.build.value, {}, env);
       await Promise.resolve();
       if ((!count || !funded) && again) return null;
-      if (!count || !funded) problems.push(`${def.name}: Suggest gear failed (${count} items, funded ${!!funded}): ${p.state.message}`);
+      if (!count || !funded) sink.push(`${def.name}: Suggest gear failed (${count} items, funded ${!!funded}): ${p.state.message}`);
       else {
         p.build.value.attrs = funded;
         p.build.value.attrs = releaseUnusedRequirements(p.build.value, {}, env);
@@ -195,8 +295,15 @@ try {
     // and recovery. Neutral choices favour the main tree and passives, one point at a
     // time so newly unlocked upgrades can compete before filling an optional skill.
     const profile = buildProfile(p.build.value, engine);
+    // A summoner's damage isn't estimated: its summons' own numbers (life, damage, count, which
+    // points and synergies raise) stand in for it.
+    const summonPower = (b) => [def.main, def.right].filter(Boolean).reduce((n, id) => {
+      const c = computeCharacter(b, { engine, catalog, planner });
+      const v = engine.skillValues({ ...b, soft: c.soft, charStats: c.charStats }, id);
+      return n + Object.values(v).flat().filter((x) => typeof x === "number" && x > 0).reduce((a, x) => a + x, 0);
+    }, 0);
     const score = (b) => {
-      const hit = [def.main, def.right].filter(Boolean).reduce((n, id) => n + damage(b, id).vs, 0);
+      const hit = def.summoner ? summonPower(b) : [def.main, def.right].filter(Boolean).reduce((n, id) => n + damage(b, id).vs, 0);
       const combat = combatScore(b, computeCharacter(b, { engine, catalog, planner }), engine, profile);
       return 60 * Math.log1p(hit / 100) + combat.defenseScore + combat.sustainScore;
     };
@@ -214,21 +321,63 @@ try {
           added++;
         }
         if (!added) continue;
+        // A skill that raises other skills' caps (Specialization: +1 to active skills per 2
+        // points) is worth what the raised skills then add: refill those already at their cap.
+        const own = added, refill = [];
+        for (const other of Object.keys(b.points)) {
+          if (other === id) continue;
+          const before = engine.maxLevel(b, other), after = engine.maxLevel(trial, other);
+          if (!(after > before) || (b.points[other] || 0) < before) continue;
+          let n = 0;
+          while (n < after - before && engine.canAdd(trial, other, { autoLevel: false }).ok) { trial.points[other]++; n++; }
+          if (n) { refill.push([other, n]); added += n; }
+        }
         const gain = (score(trial) - now) / added;
         const node = engine.node(b, id);
         const priority = (id === def.main || id === def.right ? 4 : 0)
           + (node.tabName === engine.node(b, def.main).tabName ? 2 : 0)
           + (node.tags?.includes('Passive') ? 1 : 0);
         if (!best || gain > best.gain + 1e-8 || Math.abs(gain - best.gain) <= 1e-8 && priority > best.priority)
-          best = { id, added: gain > 1e-8 ? added : 1, gain, priority };
+          best = { id, added: gain > 1e-8 ? own : 1, refill: gain > 1e-8 ? refill : [], gain, priority };
       }
       if (!best) break;
       p.add(best.id, best.added);
+      for (const [other, n] of best.refill) p.add(other, n);
+    }
+    // The skill bar: the build's other usable skills with points, up to 8: buffs, stances
+    // and morphs first (switched on, unless they clash with an active stance or morph), then
+    // damage skills with more than one point (strongest first; a lone prerequisite point
+    // isn't a skill the build uses), then movement (Warp) and summons, then any other active
+    // skill with points (Discharge on the Storm Amazon: the planner doesn't work out its damage,
+    // but the build uses it). Before the last gear suggestion, so the gear accounts for the buffs.
+    {
+      const b = p.build.value;
+      const slotted = new Set([def.main, def.right].filter(Boolean));
+      const usable = Object.keys(b.points).filter((id) => b.points[id] > 0 && !slotted.has(id) && engine.node(b, id)
+        && !engine.skill(id).tags.some((t) => ["Passive", "Upgrade"].includes(t)) && engine.skill(id).tags.length);
+      const tags = (id) => engine.skill(id).tags;
+      const buffs = usable.filter((id) => isToggleSkill(engine.skill(id)));
+      const hitters = usable.filter((id) => !buffs.includes(id) && b.points[id] > 1)
+        .map((id) => ({ id, d: damage(b, id) })).filter((x) => x.d.raw > 0).sort((x, y) => y.d.vs - x.d.vs).map((x) => x.id);
+      const moves = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => t === "Warp" || t === "Warp Strike"));
+      const summons = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => /Summon/.test(t)));
+      const others = usable.filter((id) => b.points[id] > 1 && ![...buffs, ...hitters, ...moves, ...summons].includes(id)).sort((x, y) => b.points[y] - b.points[x]);
+      const bar = [...buffs, ...hitters, ...moves, ...summons, ...others].slice(0, 8);
+      for (const id of buffs.filter((id) => bar.includes(id))) {
+        const exclusive = tags(id).find((t) => t === "Stance" || t === "Morph");
+        const clash = exclusive && b.buffs.some((x) => x !== id && engine.skill(x)?.tags.includes(exclusive));
+        if (!clash && !b.buffs.includes(id)) p.toggleBuff(id);
+      }
+      for (const id of bar) p.addToBar(id);
     }
     // A published preset must have a successful suggestion for its final skills.
     if (!(count = await suggestGear(true))) {
-      problems.push(`${def.name}: final equipment suggestion failed`);
+      sink.push(`${def.name}: final equipment suggestion failed`);
     }
+    return { p, scope, count, t0 };
+  }
+  for (const def of plan.filter((d) => !only.length || only.includes(d.id))) {
+    const { p, scope, count, t0 } = await buildAt(def, LEVEL, "Hell", true, problems);
     const b = JSON.parse(JSON.stringify(p.build.value));
     const c = computeCharacter(b, { engine, catalog, planner });
     if (engine.spent(b) !== engine.available(b)) problems.push(`${def.name}: ${engine.available(b) - engine.spent(b)} skill points remain unspent`);
@@ -239,7 +388,19 @@ try {
     console.log(`   gear: ${Object.entries(b.gear).map(([s, st]) => `${s} ${catalog.resolve(st, b.level)?.def.name}`).join(", ")}`);
     for (const pr of p.problems.value) problems.push(`${def.name}: ${pr}`);
     for (const i of c.issues || []) problems.push(`${def.name}: ${i.text || i.message || JSON.stringify(i)}`);
-    for (const id of [def.main, def.right].filter(Boolean)) check(def, b, id);
+    // Every damage skill the preset supplies must respond to the player's choices: the left
+    // and right skills and the damage skills on the bar.
+    if (def.summoner) for (const id of [def.main, def.right].filter(Boolean)) {
+      // Summons: their numbers must respond to points in them.
+      const c0 = computeCharacter(b, { engine, catalog, planner });
+      const at = (n) => JSON.stringify(engine.skillValues({ ...b, points: { ...b.points, [id]: n }, soft: c0.soft, charStats: c0.charStats }, id));
+      if (b.points[id] > 1 && at(b.points[id]) === at(b.points[id] - 1)) problems.push(`${def.name}: ${engine.skillName(id)}'s values don't change with points`);
+    }
+    // The right-hand skill is checked like the bar's: it must respond to something the player
+    // chooses, but a skill that grows by less than a point per level (Frigid Domain) may not
+    // show it over a few points.
+    else for (const id of [def.main, def.right].filter(Boolean)) check(def, b, id, id === def.right);
+    for (const id of b.skillBar.filter((x) => damage(b, x).raw > 0)) check(def, b, id, true);
     // What the Builds page shows without loading the planner: each slotted skill's damage
     // (every hit or cast it repeats, against the typical Hell monster), the gear and points.
     const summary = {
@@ -249,16 +410,45 @@ try {
       }),
       gear: Object.entries(b.gear).filter(([slot]) => !slot.endsWith("2")).map(([, st]) => catalog.resolve(st, b.level)?.def.name).filter(Boolean),
       unspent: engine.available(b) - engine.spent(b),
+      bar: b.skillBar.map((id) => engine.skillName(id)),
+      // The card's skill icons and what their hover shows (the Builds page has no skill data).
+      icons: [[def.main, "Left skill"], [def.right, "Right skill"], ...b.skillBar.map((id) => [id, "Skill bar"])].filter(([id]) => id).map(([id, slot]) => {
+        const sb = { ...b, soft: c.soft, charStats: c.charStats }, sk = engine.skill(id), d = damage(b, id);
+        const lines = engine.describe(sb, id, b.points[id] || 0).effect.filter((l) => l.status !== "unknown" && l.text && !l.heading).map((l) => l.text).slice(0, 6);
+        return { id, slot, name: sk.name, image: sk.image, points: b.points[id] || 0, soft: c.soft[id] || 0,
+          ...(b.buffs.includes(id) ? { active: true } : {}), description: sk.description?.[0] || "", lines,
+          ...(d.vs > 0 ? { vs: Math.round(d.vs), per: d.d.count ? "each" : d.d.kind === "attack" ? "per hit" : "per cast" } : {}) };
+      }),
+      buffs: b.buffs.map((id) => engine.skillName(id)),
       life: Math.round(c.life.total), mana: Math.round(c.mana.total),
     };
-    out.push({ id: def.id, name: def.name, cls: def.cls, level: b.level, blurb: def.blurb, summary, build: b });
+    out.push({ id: def.id, name: def.name, cls: def.cls, tree: def.tree, level: b.level, blurb: def.blurb,
+      skills: [def.main, def.right, ...b.skillBar].filter(Boolean).map((id) => engine.skillName(id)), summary, build: b });
     scope.stop();
+    if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, b);
   }
-  await publishPresets("src/data/preset-builds.json", {
-    note: "Generated by scripts/build-presets.mjs with the planner's own rules and Suggest gear; not tested in game.",
-    patch: planner.game?.patch, presets: out,
-  }, problems);
-  console.log(`\n${out.length} presets written to src/data/preset-builds.json`);
+  if (only.length) {
+    console.log(`\nONLY=${only.join(",")}: ${out.length} built, presets not published`);
+    // Their levelling guides are merged into the guides file (one build's guide can be redone alone).
+    if (!process.env.NO_STAGES && Object.keys(stages).length) {
+      const file = "src/data/preset-stages.json";
+      const prev = JSON.parse(await readFile(file, "utf8").catch(() => '{"stages":{}}'));
+      await writeFile(file, JSON.stringify({ patch: planner.game?.patch, stages: { ...prev.stages, ...stages } }));
+      console.log(`levelling guides merged into ${file}: ${Object.keys(stages).join(", ")}`);
+    }
+  }
+  else {
+    // The guides first: a preset check that blocks publishing shouldn't cost hours of guides.
+    if (!process.env.NO_STAGES) {
+      await writeFile("src/data/preset-stages.json", JSON.stringify({ patch: planner.game?.patch, stages }));
+      console.log(`levelling guides for ${Object.keys(stages).length} presets written to src/data/preset-stages.json`);
+    }
+    await publishPresets("src/data/preset-builds.json", {
+      note: "Generated by scripts/build-presets.mjs with the planner's own rules and Suggest gear; not tested in game.",
+      patch: planner.game?.patch, skipped, presets: out,
+    }, problems);
+    console.log(`\n${out.length} presets written to src/data/preset-builds.json`);
+  }
 } finally {
   await vite.close();
 }
