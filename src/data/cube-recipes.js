@@ -1,0 +1,127 @@
+export const CUBE_INTENTS = [
+  { title: "Break items down", text: "Disenchant uniques into Arcane resources, or sacred uniques and sets into Signets of Learning." },
+  { title: "Fix item quality", text: "Make superior, honorific, rare, unique, or uptiered items before socketing and upgrading them." },
+  { title: "Add one-off bonuses", text: "Use socket punch, luck, conjuration, lottery, shrine blessing, or trophy recipes when the base item is worth keeping." },
+  { title: "Store materials", text: "Clusters, vessels, containers, and crates collect the materials you keep running out of stash room for." },
+];
+
+export const CUBE_GROUPS = [
+  {
+    id: "reagents",
+    title: "Reagents",
+    summary: "Where the important cube materials come from.",
+    recipes: [
+      { name: "Catalyst of Disenchantment", input: "Kill Andariel on Normal", output: "Catalyst used to turn unique items into Arcane Shards" },
+      { name: "Catalyst of Learning", input: "Kill the Summoner on Nightmare", output: "Catalyst used to turn sacred uniques or sets into Signets of Learning" },
+      { name: "Mark of Infusion", input: "Kill Shenk on any difficulty", output: "Used to turn magic or rare gear into honorific gear" },
+      { name: "Arcane Crystal", input: "Arcane Shards x5", output: "Arcane Crystal" },
+      { name: "Arcane Cluster", input: "Arcane Crystal + Oil of Craft", output: "Arcane Cluster" },
+      { name: "Corrupted Crystal", input: "Corrupted Shards x5", output: "Corrupted Crystal" },
+      { name: "Corrupted Cluster", input: "Corrupted Crystal + Oil of Craft", output: "Corrupted Cluster" },
+      { name: "Shrines", input: "Late Nightmare and Hell drops", output: "Used for shrine crafting, blessing, and vessels" },
+    ],
+  },
+  {
+    id: "disenchanting",
+    title: "Disenchanting",
+    summary: "Turn spare drops into permanent stats or crafting currency.",
+    recipes: [
+      { name: "Arcane Shards", input: "Any unique item + Catalyst of Disenchantment", output: "Arcane Shards + Catalyst of Disenchantment", note: "The catalyst is returned." },
+      { name: "Signet of Learning", input: "Any sacred unique or set item + Catalyst of Learning", output: "Signet of Learning + Catalyst of Learning", note: "Each signet gives 1 permanent attribute point. Current docs list a 400 signet cap." },
+      { name: "Container of Knowledge", input: "Greater Signet of Learning + Oil of Craft", output: "Container of Knowledge", note: "Right-click to collect matching Greater Signets; cube the container to remove one." },
+    ],
+  },
+  {
+    id: "quality",
+    title: "Item Quality",
+    summary: "Change what an item is before investing rarer materials into it.",
+    recipes: [
+      { name: "Superior item", input: "Any quality weapon or armor + Oil of Renewal", output: "Reroll item as superior", note: "Also rerolls sockets to maximum or zero. Already superior items cannot use this." },
+      { name: "Honorific item", input: "Magic or rare weapon/armor + Mark of Infusion", output: "Honorific item", note: "Honorific items have max sockets and double Mystic Orb bonuses." },
+      { name: "Tiered unique", input: "Any non-sacred item + Oil of Enhancement + Arcane Crystal x2", output: "Reroll item as unique" },
+      { name: "Rare item", input: "Magic weapon/armor + Oil of Augmentation", output: "Rare item" },
+      { name: "Next tier", input: "Non-sacred weapon/armor + Arcane Crystal", output: "Reroll as next higher tier", note: "Works for tiered items of all qualities. Cannot create sacred items." },
+    ],
+  },
+  {
+    id: "affixes",
+    title: "Sockets & Extra Bonuses",
+    summary: "One-use upgrades that make a keeper item better.",
+    recipes: [
+      { name: "Socket punch", input: "Non-socketed item + jewel x1-6", output: "Item with 1-6 sockets", note: "Cannot exceed the item's natural max sockets. Excess jewels are wasted." },
+      { name: "Lucky bonus", input: "Eligible item + Oil of Luck or Oil of Greater Luck", output: "Same item, chance to add a small bonus", note: "20% with Oil of Luck; 40% with Greater Luck. Marks item as already upgraded." },
+      { name: "Conjuration bonus", input: "Any weapon + Oil of Conjuration", output: "Same weapon, 40% chance for +10% Spell Damage", note: "Marks item as already upgraded." },
+      { name: "Lottery bonus", input: "Unique/set item + matching trophy reagent", output: "Same item, 3% chance to add a rare bonus", note: "Different item slots use different reagents." },
+      { name: "Unsocket", input: "Socketed magic/rare/set/unique/crafted/honorific item + Oil of Disjunction", output: "Item and socket fillers separated" },
+      { name: "R.I.P.", input: "Any item + Oil of Renewal + Arcane Crystal", output: "Item with Slain Monsters Rest in Peace", note: "Do not omit the Arcane Crystal." },
+    ],
+  },
+  {
+    id: "shrines",
+    title: "Shrines & Crafting",
+    summary: "Craft sacred items, bless keepers, and store shrine charges.",
+    recipes: [
+      { name: "Shrine vessel", input: "Full Shrine (10) + Oil of Craft", output: "Shrine Vessel" },
+      { name: "Remove shrine from vessel", input: "Shrine Vessel", output: "Shrine Vessel (-1) + Shrine" },
+      { name: "Shrine craft", input: "Rare or crafted sacred item + Shrine", output: "Crafted item + Shrine (-1 charge)", note: "Crafted items always have maximum sockets." },
+      { name: "Shrine blessing", input: "Crafted or honorific sacred item + Shrine + Arcane Crystal x2", output: "Adds shrine bonuses + Shrine (-1 charge)", note: "Can only be used once per item." },
+      { name: "Catalyst of Transference", input: "Positronic Brains x5", output: "Catalyst used to reroll shrine type" },
+      { name: "Reroll shrine", input: "Catalyst of Transference + full Shrine", output: "Shrine rerolled as the catalyst's output shrine" },
+    ],
+  },
+  {
+    id: "jewelcrafting",
+    title: "Jewelcrafting",
+    summary: "Charge the catalyst, choose a preset modifier, then craft jewels with gold.",
+    recipes: [
+      { name: "Initial charge", input: "Catalyst of Jewelcrafting (0) + Arcane Crystal", output: "Catalyst of Jewelcrafting (5 charges)" },
+      { name: "Add shard charges", input: "Catalyst of Jewelcrafting + Arcane Shards x1-5", output: "Catalyst gains 1-5 charges" },
+      { name: "Change preset modifier", input: "Catalyst of Jewelcrafting", output: "Catalyst with changed modifier" },
+      { name: "Craft jewel", input: "Jewel + Catalyst of Jewelcrafting + gold", output: "Crafted Jewel + Catalyst (-1 charge)" },
+    ],
+  },
+  {
+    id: "endgame",
+    title: "Charms, Amulets & Soulforge",
+    summary: "Late-game recipes for earned trophies and rare item tuning.",
+    recipes: [
+      { name: "Trophy bonus", input: "Charm + its Trophy", output: "Charm with added bonus", note: "This recipe is for Dimensional Labyrinth trophies; other charm trophies use their challenge method." },
+      { name: "Crafted amulet", input: "Set or crafted amulet + Oil of Alchemy", output: "Crafted Amulet", note: "Always gains +1 All Skills and one random bonus." },
+      { name: "Soulforge", input: "Heavenly Soul + Oil of Enhancement", output: "Soulforge" },
+      { name: "Enhance rare item", input: "Oils + Heavenly Souls + Gem + sacred/angelic rare item", output: "Enhanced rare item", note: "Rare affix limits still apply: max 3 prefixes/suffixes, no duplicate affix, no duplicate affix group." },
+    ],
+  },
+  {
+    id: "misc",
+    title: "Gems, Runes & Misc",
+    summary: "Storage, upgrades, portals, and other utility cube recipes.",
+    recipes: [
+      { name: "Gem upgrade", input: "Same gem x2", output: "Next higher gem quality" },
+      { name: "Gem cluster", input: "Gem + Oil of Craft", output: "Gem Cluster of that type" },
+      { name: "Rune upgrade", input: "Same rune x2", output: "Rune one level higher" },
+      { name: "Rune upgrade +2", input: "Same rune x4", output: "Rune two levels higher" },
+      { name: "Rune downgrade", input: "Rune", output: "Rune one level lower", note: "Normal runes only, El through Zod." },
+      { name: "Rune cluster", input: "Rune + Oil of Craft", output: "Rune Cluster of that type" },
+      { name: "Cow portal", input: "Wirt's Leg in Hell town", output: "Cow Level portal" },
+      { name: "Basic containers", input: "Apple, Belladonna, or Full Rejuvenation Potion + Oil of Craft", output: "Matching container" },
+    ],
+  },
+];
+
+export const JEWEL_PRESETS = [
+  ["5,000", "(2 to 3)% Magic Find"],
+  ["5,000", "Requirements -(4 to 6)%"],
+  ["5,000", "+(4 to 6)% to Summon Life"],
+  ["10,000", "Elemental Resists +(3 to 5)%"],
+  ["10,000", "+(4 to 6) Life or Mana after each Kill"],
+  ["10,000", "+(2 to 4)% to Summon Elemental Resistances"],
+  ["15,000", "+(4 to 6) to all Attributes"],
+  ["15,000", "+(5 to 10) Life or +(4 to 6) Mana on Melee Attack"],
+  ["15,000", "+(2 to 3)% to Summon Damage"],
+  ["25,000", "+(1 to 2)% to Spell Damage"],
+  ["25,000", "(2 to 3)% Life stolen per Hit"],
+  ["25,000", "+(2 to 4) to Maximum Damage"],
+  ["50,000", "+(5 to 10) Spell Focus"],
+  ["50,000", "+(1 to 2)% to Experience Gained"],
+  ["50,000", "Activation Frequency (1 to 2)%"],
+];
