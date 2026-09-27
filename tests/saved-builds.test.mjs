@@ -8,6 +8,7 @@ import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { publishPresets } from '../scripts/lib/publish-presets.mjs';
+import { SUPPORT_TABS } from '../scripts/lib/preset-plan.mjs';
 import { runInNewContext } from 'node:vm';
 
 test('browser backups include snapshots and older backups preserve existing snapshots', async () => {
@@ -80,7 +81,8 @@ test('named snapshots preserve builds, handle storage failures and render in the
     const html = await renderToString(createSSRApp(Library));
     assert.match(html, /My Assassin/);
     assert.match(html, /#planner\?b=/);
-    assert.match(html, /Open starter build/);
+    assert.match(html, /starter-card/);
+    assert.match(html, /name=Blood%3A%20Magic%20Missiles/);
     assert.equal(store.remove(first.entry.id), true);
     memory.set('mxlrw2:saved-builds', JSON.stringify([first.entry, first.entry, { bad: true }]));
     storageListener({ key: 'mxlrw2:saved-builds' });
@@ -96,15 +98,22 @@ test('published starter builds cover every class at level 150 and can equip thei
   const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
   try {
     const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
-    const presets = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8')).presets;
+    const { presets, skipped } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
     const data = await vite.ssrLoadModule('/src/data/index.js');
     const { createEngine } = await vite.ssrLoadModule('/src/planner/engine.js');
     const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
     const { computeCharacter } = await vite.ssrLoadModule('/src/planner/character.js');
     const { wearableBothSets } = await vite.ssrLoadModule('/src/planner/attributeAllocation.js');
     const engine = createEngine(planner), catalog = createCatalog(data, planner);
-    assert.equal(presets.length, 14);
-    for (const cls of engine.classNames) assert.equal(presets.filter(p => p.cls === cls).length, 2, cls);
+    assert.equal(presets.length, 58);
+    assert.equal(new Set(presets.map(p => p.id)).size, presets.length);
+    for (const cls of engine.classNames) {
+      assert.ok(presets.filter(p => p.cls === cls).length >= 2, cls);
+      for (const tree of engine.tabs(cls).filter(t => !SUPPORT_TABS.has(t))) {
+        assert.ok(presets.some(p => p.cls === cls && p.tree === tree)
+          || skipped.some(reason => reason.startsWith(`${cls} ${tree}:`)), `${cls} ${tree} must be covered or explicitly reported`);
+      }
+    }
     for (const preset of presets) {
       const b = preset.build, env = { engine, catalog, planner };
       assert.equal(b.level, 150, preset.name);
@@ -116,7 +125,8 @@ test('published starter builds cover every class at level 150 and can equip thei
       assert.equal(c.statPoints.signets, c.statPoints.signetCap, preset.name);
       assert.equal(c.statPoints.spent, c.statPoints.available, preset.name);
       assert.deepEqual(c.issues, [], preset.name);
-      assert.ok(preset.summary.skills.every(s => Number.isFinite(s.vs) && s.vs > 0), preset.name);
+      assert.ok(preset.summary.skills.every(s => Number.isFinite(s.vs)
+        && (s.kind === 'summon' ? s.vs === 0 && b.points[s.id] > 0 : s.vs > 0)), preset.name);
       assert.equal(preset.summary.unspent, engine.available(b) - engine.spent(b), preset.name);
     }
   } finally { await vite.close(); }

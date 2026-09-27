@@ -17,6 +17,7 @@ const paths = {
   crown: "M3 8l4 4 5-7 5 7 4-4-2 11H5Z M5 19h14",
   link: "M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1 M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1",
   gem: "M6 3h12l4 6-10 12L2 9Z M2 9h20 M9 3 7.5 9 12 21 16.5 9 15 3",
+  cube: "M12 3 21 8v8l-9 5-9-5V8Z M12 3v8 M21 8l-9 5-9-5 M12 13v8",
   shield: "M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z",
   pin: "M9 3h6l-1 6 3 3H7l3-3Z M12 12v9",
   unpin: "M9 3h6l-1 6 3 3H7l3-3Z M12 12v9 M4 4l16 16",
@@ -25,6 +26,13 @@ const paths = {
   builds: "M4 7h13v13H4Z M7 4h13v13 M8 11h5 M8 15h5",
   trash: "M4 7h16 M9 7V4h6v3 M6 7l1 14h10l1-14 M10 11v6 M14 11v6",
   pencil: "M4 20h4L19 9l-4-4L4 16Z M13 7l4 4",
+  bug: "M9 7a3 3 0 0 1 6 0 M7 9h10v5a5 5 0 0 1-10 0Z M12 9v10 M4 12h3 M17 12h3 M5 7l2 2 M19 7l-2 2 M5 19l2-2 M19 19l-2-2",
+  idea: "M9 18h6 M10 21h4 M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3",
+  camera: "M4 8h3l2-3h6l2 3h3v11H4Z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7",
+  docs: "M3 5h6a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2H3Z M21 5h-6a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2H21Z",
+  // A panel with its left column (the sidebar), and which way it's going.
+  collapse: "M4 4h16v16H4Z M9 4v16 M15 9l-3 3 3 3",
+  expand: "M4 4h16v16H4Z M9 4v16 M13 9l3 3-3 3",
   tree:"M12 3v5 M12 8H6v4 M12 8h6v4 M6 12v4 M18 12v4 M4 16h4v4H4Z M16 16h4v4h-4Z M10 3h4",
 };
 </script>

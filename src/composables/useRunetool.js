@@ -49,8 +49,10 @@ export const PAGES = [
   ["sets", "Sets", "link", "Sacred sets, their items and set bonuses.", DOCS + "sets"],
   ["socketables", "Gems & Runes", "gem", "What every gem and rune adds to each slot.", DOCS + "socketables"],
   ["base-items", "Base Items", "shield", "Every base item, from Tier 1 to Sacred.", DOCS + "baseitems"],
+  ["cube", "Cube Recipes", "cube", "Put items in the Horadric Cube and see what the game makes of them, from its own recipe table.", DOCS + "cube"],
   ["planner", "Character Planner", "tree", "Attributes, skills, equipment and stats in one build.", "https://github.com/azadix/medianxl-db"],
-  ["builds", "Builds", "book", "Your saved snapshots and starter builds for every class.", "https://github.com/azadix/medianxl-db"],
+  ["builds", "Builds", "builds", "Your saved snapshots and starter builds for every class.", "https://github.com/azadix/medianxl-db"],
+  ["filters", "Loot Filters", "filter", "Community loot filters, and your own.", "https://www.median-xl.com/filters/index.php"],
   ["confirm", "Help confirm values", "check", "Send in-game skill screenshots so the planner's numbers can be checked against the game.", "https://github.com/azadix/medianxl-db", true],
 ];
 // Bug reports and confirmation screenshots go to this repository's GitHub issues.
@@ -76,9 +78,8 @@ const put = (k, v) => {
 };
 const defaults = () => ({
   q: "",
-  base: "",
+  bases: [],
   cls: "",
-  generic: true,
   lvl: MAX_ITEM_LEVEL,
   sockets: [],
   tags: [],
@@ -89,27 +90,45 @@ const defaults = () => ({
   sort: "level",
 });
 
-// Colour themes, as [value, label, group]. The Diablo II ones are dark themes named after
-// places in the game.
+// Colour themes, as [value, label, group, preview colours [background, panel, accent, text]]
+// (the preview is drawn by the theme picker; auto follows the system: light or Classic).
+// The Diablo II ones are named after places in the game.
 export const THEMES = [
-  ["auto", "Auto theme", "Standard"],
-  ["light", "Light theme", "Standard"],
-  ["dark", "Dark theme", "Standard"],
-  ["hc", "High contrast", "Standard"],
-  ["hell", "Hell", "Diablo II"],
-  ["arreat", "Arreat Summit", "Diablo II"],
-  ["horadric", "Horadric", "Diablo II"],
-  ["kurast", "Kurast", "Diablo II"],
+  ["auto", "Auto", "Standard", null],
+  ["light", "Light", "Standard", ["#e7e3dc", "#fbfaf7", "#795815", "#2c2922"]],
+  ["dark", "Classic", "Standard", ["#0e0e0e", "#1a1a1a", "#c7b377", "#d9d2bf"]],
+  ["hc", "High contrast", "Standard", ["#000", "#000", "#ffe34d", "#fff"]],
+  ["hell", "Hell", "Diablo II", ["#140a09", "#1e0f0d", "#f59050", "#f0e1d9"]],
+  ["arreat", "Arreat Summit", "Diablo II", ["#0d1217", "#121a21", "#9fd6f2", "#e2eaf0"]],
+  ["horadric", "Horadric", "Diablo II", ["#17130d", "#1f1a12", "#63d6c6", "#ede3cd"]],
+  ["kurast", "Kurast", "Diablo II", ["#0c130e", "#111b14", "#cbdc6e", "#e0eadf"]],
+  ["tristram", "Tristram", "Diablo II", ["#16120f", "#1e1814", "#ffa94d", "#ece2d6"]],
+  ["worldstone", "Worldstone", "Diablo II", ["#0f0d18", "#17142a", "#c7a6ff", "#e7e3f5"]],
+  ["parchment", "Parchment (light)", "Diablo II", ["#e9dfc9", "#f7efdd", "#7a1f1f", "#2b2016"]],
+  ["heavens", "Heavens (light)", "Diablo II", ["#e8edf3", "#fbfcfe", "#6f5410", "#1d2533"]],
 ];
-const knownTheme = (v) => (THEMES.some(([t]) => t === v) ? v : "dark");
+// "classic" was its own theme before it became the default dark one.
+const knownTheme = (v) => (v === "classic" ? "dark" : THEMES.some(([t]) => t === v) ? v : "dark");
 
 export function createRunetool() {
-  const st = reactive({ ...defaults(), ...get("state", {}) });
+  const saved = get("state", {});
+  // Item types used to be a single choice (base: "Swords" or "@weapon").
+  if (typeof saved.base === "string") saved.bases = saved.base ? [saved.base] : [];
+  delete saved.base;
+  delete saved.generic;
+  if (!Array.isArray(saved.bases)) delete saved.bases;
+  const st = reactive({ ...defaults(), ...saved });
   const owned = ref(get("owned", {})),
     stars = ref(get("stars", [])),
     theme = ref(knownTheme(get("theme", "dark")));
   const page = ref(pageFromHash()),
-    panel = ref(false),
+    // The filters slide out like My Runes; on wide screens they can instead be docked beside
+    // the results (remembered, as is leaving the docked panel open).
+    wideQuery = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(min-width: 1280px)") : null,
+    wide = ref(!!wideQuery?.matches),
+    dockFilters = ref(get("dockFilters", false) === true),
+    filtersDocked = computed(() => wide.value && dockFilters.value),
+    panel = ref(filtersDocked.value && get("filtersOpen", false) === true),
     drawer = ref(false),
     expanded = ref([]),
     tuQuery = ref(""),
@@ -227,7 +246,7 @@ export function createRunetool() {
     Object.values(owned.value).reduce((a, b) => a + b, 0),
   );
   const filterCount = computed(
-    () => st.tags.length + st.elems.length + st.sockets.length,
+    () => st.bases.length + st.tags.length + st.elems.length + st.sockets.length,
   );
   function missing(rw) {
     const need = {};
@@ -260,34 +279,24 @@ export function createRunetool() {
     });
     return { v: hit === null ? null : best, i: hit };
   }
+  function fitsBase(r, base) {
+    if (base === "@weapon") return r.slot === "weapon";
+    if (base === "@armor") return r.slot === "armor";
+    // A specific base: the game's own allowed categories when extracted (runeword-bases.json).
+    if (r.allowed) return r.allowed.includes(base);
+    return (
+      r.bases.includes(base) ||
+      (!ARMOR.has(base) && r.bases.includes("Weapons") && !r.except.includes(base))
+    );
+  }
   const results = computed(() => {
     const words = st.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
     return RW.filter((r) => {
       if (!words.every((w) => r.text.includes(w))) return false;
-      if (
-        (st.base === "@weapon" && r.slot !== "weapon") ||
-        (st.base === "@armor" && r.slot !== "armor")
-      )
-        return false;
-      // A specific base: the game's own allowed categories when extracted (runeword-bases.json).
-      if (st.base && !st.base.startsWith("@") && r.allowed) {
-        if (!r.allowed.includes(st.base)) return false;
-      } else if (
-        st.base &&
-        !st.base.startsWith("@") &&
-        !r.bases.includes(st.base) &&
-        !(
-          !ARMOR.has(st.base) &&
-          r.bases.includes("Weapons") &&
-          !r.except.includes(st.base)
-        )
-      )
-        return false;
-      if (st.cls) {
-        if (r.cls && r.cls !== st.cls) return false;
-        if (!st.generic && r.cls !== st.cls && r.skillCls !== st.cls)
-          return false;
-      }
+      // Item types: it fits any one of those chosen.
+      if (st.bases.length && !st.bases.some((b) => fitsBase(r, b))) return false;
+      // A class: its own runewords and those any class can use.
+      if (st.cls && r.cls && r.cls !== st.cls) return false;
       return (
         r.lvl <= st.lvl &&
         (!st.sockets.length || st.sockets.includes(r.runes.length)) &&
@@ -312,16 +321,8 @@ export function createRunetool() {
     let a = [];
     if (st.q.trim()) a.push({ label: st.q, key: "q" });
     if (st.cls) a.push({ label: st.cls, key: "cls" });
-    if (st.base)
-      a.push({
-        label:
-          st.base === "@weapon"
-            ? "Any weapon"
-            : st.base === "@armor"
-              ? "Any armor"
-              : st.base,
-        key: "base",
-      });
+    for (const b of st.bases)
+      a.push({ label: b === "@weapon" ? "All weapons" : b === "@armor" ? "All armor" : b, key: "bases", value: b });
     if (st.lvl < MAX_ITEM_LEVEL) a.push({ label: "Level ≤ " + st.lvl, key: "lvl" });
     for (const key of ["tags", "elems", "sockets"])
       st[key].forEach((v) =>
@@ -341,7 +342,7 @@ export function createRunetool() {
       : [...st[key], v];
   }
   function remove(p) {
-    if (["tags", "elems", "sockets"].includes(p.key)) toggle(p.key, p.value);
+    if (["tags", "elems", "sockets", "bases"].includes(p.key)) toggle(p.key, p.value);
     else st[p.key] = defaults()[p.key];
   }
   function reset() {
@@ -425,6 +426,9 @@ export function createRunetool() {
   );
   watch(owned, () => put("owned", owned.value), { deep: true });
   watch(stars, () => put("stars", stars.value), { deep: true });
+  wideQuery?.addEventListener?.("change", (e) => (wide.value = e.matches));
+  watch(panel, (open) => filtersDocked.value && put("filtersOpen", open));
+  watch(dockFilters, (v) => put("dockFilters", v));
   watch(drawer, async (open) => {
     await nextTick();
     if (!dialog.value) return;
@@ -457,6 +461,9 @@ export function createRunetool() {
     theme,
     page,
     panel,
+    wide,
+    dockFilters,
+    filtersDocked,
     drawer,
     expanded,
     tuQuery,

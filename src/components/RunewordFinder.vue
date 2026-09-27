@@ -1,13 +1,19 @@
 <script setup>
 import Icon from "./AppIcon.vue";
 import { useRunetool } from "../composables/useRunetool.js";
-const { st, results, reset, stats, RW, label, SORTS } = useRunetool();
+const { st, results, reset, stats, RW, label, SORTS, panel, filtersDocked } = useRunetool();
+import FilterPanel from "./FilterPanel.vue";
 import FiltersToolbar from "./FiltersToolbar.vue";
 import RunewordCard from "./RunewordCard.vue";
 </script>
 <template>
   <section aria-label="Runeword finder">
     <FiltersToolbar />
+    <div class="finder-body" :class="{ docked: panel && filtersDocked }">
+    <aside v-if="panel && filtersDocked" id="filter-dock" class="filter-dock" aria-labelledby="filter-dock-heading">
+      <FilterPanel docked @close="panel = false" />
+    </aside>
+    <div class="finder-results">
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
         <strong>{{ results.length }}</strong> runewords
@@ -29,6 +35,8 @@ import RunewordCard from "./RunewordCard.vue";
       <h2>Nothing matches.</h2>
       <p>Remove a filter above or clear all filters.</p>
       <button class="btn gold" @click="reset">Clear Filters</button>
+    </div>
+    </div>
     </div>
   </section>
 </template>

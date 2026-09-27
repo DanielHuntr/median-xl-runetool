@@ -1,6 +1,8 @@
 <script setup>
 import ClassPicker from "./ClassPicker.vue";
 import Icon from "./AppIcon.vue";
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
+import FilterPanel from "./FilterPanel.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 const {
   st,
@@ -10,8 +12,6 @@ const {
   expanded,
   dialog,
   runeTrigger,
-  weaponBases,
-  armorBases,
   totalOwned,
   filterCount,
   pills,
@@ -24,12 +24,33 @@ const {
   RW,
   label,
   CLASSES,
-  TAGS,
-  ELEMS,
+  filtersDocked,
 } = useRunetool();
+// Wide screens dock the filters beside the results (RunewordFinder.vue); narrower ones slide
+// them out from the right like My Runes (a modal <dialog>).
+const filterDialog = ref(null), filterTrigger = ref(null), root = ref(null);
+watch([panel, filtersDocked], async () => {
+  await nextTick();
+  const d = filterDialog.value;
+  if (!d) return;
+  const show = panel.value && !filtersDocked.value;
+  if (show && !d.open) d.showModal();
+  else if (!show && d.open) d.close();
+});
+function closeFilters() {
+  panel.value = false;
+  filterTrigger.value?.focus();
+}
+// The docked panel sticks just under this (sticky) toolbar.
+let ro;
+onMounted(() => {
+  ro = new ResizeObserver(() => document.documentElement.style.setProperty("--toolbar-h", `${root.value?.offsetHeight || 0}px`));
+  if (root.value) ro.observe(root.value);
+});
+onBeforeUnmount(() => ro?.disconnect());
 </script>
 <template>
-  <div class="toolbar">
+  <div ref="root" class="toolbar">
     <div class="primary-controls">
       <label class="search"
         ><Icon name="search" /><input
@@ -37,16 +58,17 @@ const {
           type="search"
           placeholder="Search runewords, runes or stats"
           aria-label="Search runewords" /></label
-      ><ClassPicker v-model="st.cls" :classes="CLASSES" any-label="Any class" /><select v-model="st.base" aria-label="Item type">
-        <option value="">Any item</option>
-        <option value="@weapon">Any weapon</option>
-        <option value="@armor">Any armor</option>
-        <optgroup label="Weapons">
-          <option v-for="b in weaponBases">{{ b }}</option>
-        </optgroup>
-        <optgroup label="Armor">
-          <option v-for="b in armorBases">{{ b }}</option>
-        </optgroup></select
+      ><ClassPicker v-model="st.cls" :classes="CLASSES" any-label="Any class" /><button
+        ref="filterTrigger"
+        class="btn filters-btn"
+        :class="{ active: panel }"
+        @click="panel = filtersDocked ? !panel : true"
+        :aria-expanded="panel"
+        :aria-haspopup="filtersDocked ? null : 'dialog'"
+        :aria-controls="filtersDocked ? 'filter-dock' : null"
+      >
+        <Icon name="filter" />Filters
+        <b v-if="filterCount" class="badge">{{ filterCount }}</b></button
       ><label class="level"
         >Max lvl
         <input
@@ -61,15 +83,6 @@ const {
     </div>
     <div class="secondary-controls">
       <button
-        class="btn"
-        :class="{ active: panel }"
-        @click="panel = !panel"
-        :aria-expanded="panel"
-        aria-controls="advanced"
-      >
-        <Icon name="filter" />Filters
-        <b v-if="filterCount" class="badge">{{ filterCount }}</b></button
-      ><button
         ref="runeTrigger"
         class="btn"
         @click="drawer = true"
@@ -97,47 +110,15 @@ const {
         {{ p.label }} <Icon name="close" /></button
       ><button class="text-btn" @click="reset">Clear all</button>
     </div>
-    <div v-if="panel" class="advanced" id="advanced">
-      <div>
-        <h3>Must have these stats</h3>
-        <div class="chips">
-          <button
-            v-for="[t] in TAGS"
-            :aria-pressed="st.tags.includes(t)"
-            @click="toggle('tags', t)"
-          >
-            {{ t }}
-          </button>
-        </div>
-      </div>
-      <div>
-        <h3>Damage type</h3>
-        <div class="chips">
-          <button
-            v-for="[t] in ELEMS"
-            :aria-pressed="st.elems.includes(t)"
-            @click="toggle('elems', t)"
-          >
-            {{ t }}
-          </button>
-        </div>
-        <h3>Number of runes</h3>
-        <div class="chips">
-          <button
-            v-for="n in 6"
-            :aria-pressed="st.sockets.includes(n)"
-            @click="toggle('sockets', n)"
-          >
-            {{ n }}
-          </button>
-        </div>
-      </div>
-      <div class="advanced-bottom">
-        <label class="switch"
-          ><input type="checkbox" v-model="st.generic" />Also show runewords any
-          class can use</label
-        ><button class="btn gold" @click="panel = false">Done</button>
-      </div>
-    </div>
+    <dialog
+      ref="filterDialog"
+      class="rune-drawer filter-drawer"
+      aria-labelledby="filter-heading"
+      @cancel.prevent="closeFilters"
+      @close="() => { if (!filtersDocked) panel = false; }"
+      @click="(e) => { if (e.target === filterDialog) closeFilters(); }"
+    >
+      <FilterPanel v-if="!filtersDocked" @close="closeFilters" />
+    </dialog>
   </div>
 </template>

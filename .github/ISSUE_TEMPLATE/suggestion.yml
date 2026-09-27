@@ -1,0 +1,25 @@
+name: Suggestion
+description: An idea or a feature you'd like to see (not something that's broken).
+labels: [suggestion]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What would you like the runetool or planner to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it would help
+      description: What are you trying to do that's hard today? A screenshot or an example helps.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Which page it's about, if any.
+  - type: input
+    id: version
+    attributes:
+      label: App version

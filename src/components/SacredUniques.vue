@@ -1,5 +1,6 @@
 <script setup>
 import ItemArt from "./ItemArt.vue";
+import CubeLink from "./CubeLink.vue";
 import Icon from "./AppIcon.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
@@ -59,6 +60,7 @@ const f = browse.sacred;
             <h2>{{ u.name }}</h2>
             <p class="base">{{ u.base }}</p>
           </div>
+          <div class="card-head-side"><CubeLink kind="unique" :name="u.name" compact /></div>
         </div>
         <div class="unique-meta spaced">
           <span v-if="u.req !== null"

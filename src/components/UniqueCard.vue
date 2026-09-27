@@ -1,6 +1,7 @@
 <script setup>
 import Icon from "./AppIcon.vue";
 import ItemArt from "./ItemArt.vue";
+import CubeLink from "./CubeLink.vue";
 import { useRunetool } from "../composables/useRunetool.js";
 const { st, compare, tiers, stats, tierIndex, tier, nextTier, label } =
   useRunetool();
@@ -15,7 +16,7 @@ defineProps({ u: { type: Object, required: true } });
         <h2>{{ u.name }}</h2>
         <p class="base">{{ u.base }}</p>
       </div>
-    </div>
+      <div class="card-head-side">
     <div
       v-if="u.t.length > 1"
       class="tier-tabs"
@@ -26,11 +27,15 @@ defineProps({ u: { type: Object, required: true } });
         v-for="(t, i) in u.t"
         :class="{ selected: tierIndex(u) === i, over: t.req > st.lvl }"
         :aria-pressed="tierIndex(u) === i"
-        :title="'Required level ' + t.req"
+        :data-tip="`Tier ${i + 1}${t.req ? ` · required level ${t.req}` : ''}`"
+        :aria-label="`Tier ${i + 1}`"
         @click="tiers[u.key] = i"
       >
-        Tier {{ i + 1 }}
+        {{ ["I", "II", "III", "IV", "V"][i] }}
       </button>
+    </div>
+        <CubeLink kind="unique" :name="u.name" :tier="tierIndex(u) + 1" compact />
+      </div>
     </div>
     <div class="unique-meta">
       <span

@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import Icon from "./AppIcon.vue";
+import CubeLink from "./CubeLink.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 const {
@@ -70,6 +71,7 @@ const grouped = computed(() =>
               <h2>{{ s.name }}</h2>
               <div class="item-kind">Level {{ s.lvl }}</div>
             </div>
+            <CubeLink kind="item" :name="s.name" compact class="sock-cube" />
           </div>
           <dl class="sock-slots">
             <template v-for="(slot, i) in SOCK_SLOTS"

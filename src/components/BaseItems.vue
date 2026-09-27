@@ -3,6 +3,7 @@ import ItemArt from "./ItemArt.vue";
 import Icon from "./AppIcon.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
+import { superiorVariantsForCat, superiorLabel } from "../planner/superior.js";
 const {
   st,
   browse,
@@ -25,7 +26,7 @@ const f = browse.bases;
         Every base item has <strong>four tiers</strong> and a
         <strong>Sacred</strong> version. Higher tiers have better stats and
         higher requirements.<span
-          >Tiered and sacred items roll 0 to max sockets. Uniques, sets, crafted
+          >Tiered and sacred items roll 0 to max sockets. A Superior base also rolls one of the bonuses listed under it. Uniques, sets, crafted
           and honorific items always have max sockets.</span
         >
       </p>
@@ -76,10 +77,11 @@ const f = browse.bases;
             v-for="(t, i) in b.t"
             :class="{ selected: tierIndex(b) === i, over: t.req > st.lvl }"
             :aria-pressed="tierIndex(b) === i"
-            :title="t.label + (t.req ? ', required level ' + t.req : '')"
+            :data-tip="t.label + (t.req ? ' · required level ' + t.req : '')"
+            :aria-label="t.label"
             @click="tiers[b.key] = i"
           >
-            {{ t.label.replace("Tier ", "T") }}
+            {{ { "Tier 1": "I", "Tier 2": "II", "Tier 3": "III", "Tier 4": "IV", Sacred: "S" }[t.label] || t.label }}
           </button>
         </div>
         <div class="unique-meta">
@@ -99,6 +101,10 @@ const f = browse.bases;
         </p>
         <ul class="stats">
           <li v-for="l in tier(b).lines">{{ l }}</li>
+        </ul>
+        <!-- What a Superior version adds (game files), on top of the lines above. -->
+        <ul v-if="superiorVariantsForCat(b.cat).length" class="stats superior-lines" aria-label="Superior versions">
+          <li v-for="v in superiorVariantsForCat(b.cat)" :key="v.id">{{ superiorLabel(v) }}</li>
         </ul>
       </article>
     </div>

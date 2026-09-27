@@ -84,8 +84,17 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     state.st.tags = ["All Skills"];
     assert(state.results.value.every((r) => r.tags.includes("All Skills")));
     state.reset();
-    state.st.base = "@armor";
+    state.st.bases = ["@armor"];
     assert(state.results.value.every((r) => r.slot === "armor"));
+    // Several item types: anything that fits one of them.
+    state.st.bases = ["Bows", "Crossbows"];
+    const both = state.results.value.length;
+    state.st.bases = ["Bows"];
+    const bows = state.results.value.length;
+    state.st.bases = ["Crossbows"];
+    assert(both > bows && both > state.results.value.length, "multiple item types widen the results");
+    state.remove({ key: "bases", value: "Crossbows" });
+    assert.deepEqual([...state.st.bases], []);
     state.reset();
     state.tuQuery.value = "Grim Fang";
     assert.equal(state.uniques.value.length, 1);
@@ -110,7 +119,7 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     for (const [v] of THEMES.filter(([v]) => v !== "auto" && v !== "dark"))
       assert(themeCss.includes(`:root[data-theme="${v}"]`), `styles for the ${v} theme`);
     // A stored theme that no longer exists falls back to dark.
-    memory.set("mxlrw2:theme", JSON.stringify("tristram"));
+    memory.set("mxlrw2:theme", JSON.stringify("not-a-theme"));
     assert.equal(scope.run(() => createRunetool()).theme.value, "dark");
     state.theme.value = "hc";
     await nextTick();

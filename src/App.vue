@@ -15,6 +15,8 @@ import RuneDrawer from "./components/RuneDrawer.vue";
 const CharacterPlanner = defineAsyncComponent(() => import("./components/planner/CharacterPlanner.vue"));
 const ConfirmValues = defineAsyncComponent(() => import("./components/ConfirmValues.vue"));
 const BuildsBrowser = defineAsyncComponent(() => import("./components/BuildsBrowser.vue"));
+const LootFilters = defineAsyncComponent(() => import("./components/LootFilters.vue"));
+const CubeRecipes = defineAsyncComponent(() => import("./components/CubeRecipes.vue"));
 const state = createRunetool();
 provide(RunetoolKey, state);
 const { page } = state;
@@ -30,8 +32,10 @@ const { page } = state;
       <SetsBrowser v-else-if="page === 'sets'" />
       <SocketablesList v-else-if="page === 'socketables'" />
       <BaseItems v-else-if="page === 'base-items'" />
+      <CubeRecipes v-else-if="page === 'cube'" />
       <ConfirmValues v-else-if="page === 'confirm'" />
       <BuildsBrowser v-else-if="page === 'builds'" />
+      <LootFilters v-else-if="page === 'filters'" />
       <CharacterPlanner v-else />
       <AppFooter />
     </main>
