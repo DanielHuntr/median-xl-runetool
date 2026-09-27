@@ -26,7 +26,7 @@ const fmt = (n) => Math.round(n).toLocaleString();
           ><SkillIcon :image="r.node?.image" /><span
             ><b>{{ r.node?.name }}</b
             ><small v-if="r.d?.total" class="skill-bar-est" :title="r.d.formula"
-              >{{ fmt(((r.d.vs || r.d).all || (r.d.vs || r.d).total)[0]) }}–{{ fmt(((r.d.vs || r.d).all || (r.d.vs || r.d).total)[1]) }} {{ r.d.count ? `total (${r.d.count.n} × ${fmt((r.d.vs || r.d).total[0])}–${fmt((r.d.vs || r.d).total[1])})` : "per hit" }}<template v-if="r.d.vs"> vs {{ r.d.vs.target.name }}</template> <em class="est">est.</em></small
+              >{{ fmt((r.d.vs || r.d).total[0]) }}–{{ fmt((r.d.vs || r.d).total[1]) }} {{ r.d.count ? `each (up to ${fmt(((r.d.vs || r.d).all || (r.d.vs || r.d).total)[1])} if all ${r.d.count.n} hit)` : r.d.kind === "attack" ? "per hit" : "per cast" }}<template v-if="r.d.vs"> vs {{ r.d.vs.target.name }}</template> <em class="est">est.</em></small
             ><small v-else-if="r.d" class="muted">{{ r.d.lines[0] }}</small
             ><small v-if="!r.points" class="warning">no points</small></span
           ></span

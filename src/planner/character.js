@@ -240,6 +240,16 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   if (statPoints.spent > statPoints.available)
     warn(`${statPoints.spent} stat points spent but only ${statPoints.available} available.`);
   const STR = attributes.strength.total, DEX = attributes.dexterity.total;
+  // Gear that takes an attribute below zero ("-75 to Vitality"): say which, and offer the points.
+  for (const a of ATTRIBUTES) {
+    if (attributes[a].total >= 0) continue;
+    const name = a[0].toUpperCase() + a.slice(1);
+    const re = new RegExp(`^-\\d+ to (${name}|all Attributes)$`, "i");
+    const from = Object.values(equipped).filter((r) => r.lines.some((l) => re.test(l))).map((r) => r.def.name);
+    warn(`${name} is ${attributes[a].total}${from.length ? `: ${from.join(" and ")} take${from.length === 1 ? "s" : ""} away more than you have` : ""}.`, {
+      kind: "attr", attr: a, amount: pointsFor(attributes[a], 0),
+    });
+  }
 
   for (const r of Object.values(equipped)) {
     if (r.head.reqLevel > b.level)
@@ -285,7 +295,9 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   for (const [slot, r] of Object.entries(equipped)) {
     if (r.head.defense == null) continue;
     const ed = localEdDef.get(r) || 0;
-    const v = Math.floor(r.head.defense * (1 + ed / 100));
+    // An item with its own Enhanced Defense starts from its maximum defense + 1 (a D2 rule; a
+    // Superior Greaves (4) at +47% shows 1,206 in game: (820 + 1) × 1.47, not 820 × 1.47).
+    const v = Math.floor((r.head.defense + (ed > 0 ? 1 : 0)) * (1 + ed / 100));
     armor += v;
     defenseParts.push({ source: r.def.name, value: v });
   }

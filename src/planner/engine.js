@@ -352,6 +352,8 @@ export function createEngine(data) {
     bonus_cold_damage_to_weapons: ["bonuscolddamagetoattack"],
     bonus_fire_damage_to_weapons: ["firedamagetoweapon"],
     bonus_physical_damage: ["bonusphysicaldamage"],
+    // Fervor's "% to Summon Damage" (MedianDB's formula uses min where the game's ln12 grows).
+    summoned_minion_damage: ["tosummondamage"],
     vitality: ["vitalityandenergy"],
     energy: ["vitalityandenergy"],
     regenerate_life: ["regeneratelife"],
@@ -1141,6 +1143,20 @@ export function createEngine(data) {
       if (row.variant || (row.minLevel && b.level < row.minLevel)) continue;
       const result = lineValue(b, id, row.key, row.occ, blvl);
       if (result?.values) out[row.key + (row.occ ? `#${row.occ}` : "")] = result.values.map(v => v.value);
+    }
+    // Elemental damage an attack's game tooltip shows but MedianDB has no value for (Mana
+    // Pulse's " bonus cold damage to attack", Primordial Strike's "(Current Value: …)",
+    // Twisted Claw's cold damage). Evaluated from that tooltip line, so its conditions hold
+    // (Fortress: only with points in the skill it reads). Attacks add it to the hit (damage.js).
+    const g = skills[id]?.game, type = g?.elem?.type;
+    if (type && game && out.weapon_damage && !(`${type}_damage` in out) && !(`bonus_${type}_damage` in out) && !(`bonus_${type}_damage_to_weapons` in out)
+      && !(skills[id].tags || []).some((t) => t === "Passive")) {
+      const line = (g.lines || []).find((l) => (l.block === "level" || l.block === "extra") && /\bedm[nx]\b/.test(`${l.calcA?.text || ""} ${l.calcB?.text || ""}`));
+      if (line?.calcA) {
+        const e = gameEval(b, id, blvl);
+        const lo = e.calc(line.calcA), hi = line.calcB ? e.calc(line.calcB) : lo;
+        if (lo.ok && hi.ok && hi.value > 0) out[`${type}_damage`] = [Math.floor(lo.value), Math.floor(hi.value)];
+      }
     }
     return out;
   }

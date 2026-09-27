@@ -5,6 +5,7 @@ import ItemIcon from "./ItemIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
 import { pointsFor } from "../../planner/character.js";
+import { superiorVariants, superiorLabel, superiorNames } from "../../planner/superior.js";
 
 const props = defineProps({ slot: { type: String, required: true } });
 const { catalog, build, character, updateItem, unequip, state, openPicker, applyFix, emptySockets, fillEmptySockets, fillSockets, clearSockets, enhance, canAddOrb, addOrb } =
@@ -53,6 +54,15 @@ function setRoll(i, v) {
 }
 const allRolls = (t) => updateItem(props.slot, { rolls: r.value.ranges.map(() => t) });
 
+// Superior quality (game files): bases and runewords only, with the variants for its type.
+const qualities = computed(() => (r.value?.canBeSuperior ? superiorVariants(r.value.def.slotType) : []));
+const setQuality = (v) => {
+  // The item's own rolls come first; a superior variant's ranges follow them, so switching
+  // quality drops only the old variant's rolls.
+  const own = r.value.ranges.length - (r.value.superior ? r.value.ranges.filter((x) => r.value.superior.lines.includes(x.line)).length : 0);
+  updateItem(props.slot, { superior: v === "" ? undefined : Number(v), rolls: (item.value.rolls || []).slice(0, own) });
+};
+const names = computed(() => superiorNames(r.value));
 const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.kind));
 const setSocketCount = (n) => updateItem(props.slot, { socketCount: Number(n) });
 // Empty sockets left on this item, for "Fill empty" on a filled socket.
@@ -97,9 +107,9 @@ const reqs = computed(() => {
       <ItemIcon :icon="r.def.icon" />
       <div>
         <div class="item-kind">{{ slotLabel }} · {{ r.def.kindLabel }}</div>
-        <h2 :class="'q-' + r.def.kind">{{ r.def.name }}</h2>
+        <h2 :class="'q-' + r.def.kind">{{ names.name }}</h2>
         <p class="base">
-          {{ r.def.base && r.def.base !== r.def.name ? r.def.base : r.def.cat }}<template v-if="r.label"> · {{ r.label }}</template>
+          {{ names.base || r.def.cat }}<template v-if="r.label"> · {{ r.label }}</template>
         </p>
       </div>
     </div>
@@ -110,6 +120,13 @@ const reqs = computed(() => {
         >{{ r.def.kind === "runeword" ? "Base tier" : "Tier" }}
         <select :value="currentVariant" @change="setVariant($event.target.value)">
           <option v-for="v in variants" :value="v.i" :disabled="!v.ok">{{ v.label }}{{ v.ok ? "" : " (too few sockets)" }}</option>
+        </select></label
+      >
+      <label v-if="qualities.length" class="field-inline"
+        >Quality
+        <select :value="r.superior ? r.superior.id : ''" @change="setQuality($event.target.value)">
+          <option value="">Normal</option>
+          <option v-for="q in qualities" :key="q.id" :value="q.id">{{ superiorLabel(q) }}</option>
         </select></label
       >
       <label v-if="canPickSockets && r.maxSockets" class="field-inline"

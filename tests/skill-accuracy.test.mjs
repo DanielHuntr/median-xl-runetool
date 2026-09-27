@@ -134,6 +134,23 @@ test("weapon poison sources: rates add, item durations average, skill durations 
   assert.equal(items.status, "inferred");
 });
 
+test("+skills raise skill-level values: Prismatic Cloak matches the game at 6 points, level 22; Fervor grows", () => {
+  // In game (screenshot): 6 hard points, skill level 22 → reduced by 65 (68 next level),
+  // Max Life +5% (per base level, so +skills don't change it), Block Speed 52%.
+  const cloak = (hard, soft) => engine.skillValues({ cls: "Assassin", level: 150, points: { prismatic_cloak: hard }, soft: { prismatic_cloak: soft }, quests: {} }, "prismatic_cloak");
+  assert.equal(cloak(6, 16).elemental_magic_damage_reduced_flat[0], 65);
+  assert.equal(cloak(6, 17).elemental_magic_damage_reduced_flat[0], 68);
+  assert.equal(cloak(6, 16).maximum_life[0], 5);
+  assert.equal(cloak(6, 16).block_speed[0], 52);
+  assert.equal(cloak(6, 30).maximum_life[0], 5, "Max Life is per base level");
+  // Fervor's summon damage is the game's ln12: 10 + 3 per level after the first. MedianDB's
+  // formula (min instead of max) would keep it at 10.
+  const fervor = (hard, soft = 0) => engine.skillValues({ cls: "Paladin", level: 150, points: { fervor: hard }, soft: { fervor: soft }, quests: {} }, "fervor").summoned_minion_damage[0];
+  assert.equal(fervor(1), 10);
+  assert.equal(fervor(5), 22);
+  assert.equal(fervor(5, 20), 82);
+});
+
 test("hard-point cap and required level come from the game files, checked at the edges", () => {
   const g = data.skills[WOTS].game;
   const b = (level, pts) => ({ cls: "Assassin", level, points: pts ? { [WOTS]: pts } : {}, quests: {} });

@@ -1,4 +1,4 @@
-// Dev check: node scripts/dev/time-recommend.mjs — how long gear suggestions take per slot,
+// Dev check: node scripts/dev/time-recommend.mjs (ENH=1 weapon enhancements, SUP=1 superior bases) — how long gear suggestions take per slot,
 // and how many candidate item states each one scores.
 import { createServer } from "vite";
 import { readFile } from "node:fs/promises";
@@ -20,7 +20,7 @@ try {
   const ch = orig(build, env);
   console.log(`one character computation: ${(performance.now() - t0).toFixed(1)} ms`);
   const profile = rec.buildProfile(build, engine), want = rec.wantedStats(profile, ch);
-  const opts = { build, engine, catalog, planner, character: ch, profile, want, weaponEnhancements: process.env.ENH === "1" };
+  const opts = { build, engine, catalog, planner, character: ch, profile, want, weaponEnhancements: process.env.ENH === "1", superior: process.env.SUP === "1" };
   let total = 0;
   for (const slot of character.activeSlots(build)) {
     const t = performance.now();

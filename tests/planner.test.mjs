@@ -241,6 +241,33 @@ test("skill damage estimates: attacks, elemental weapons, spells, summons", asyn
     assert.ok(hg.notes.some((n) => n.includes("skill's own")));
   }
   assert.ok(est(sin(20), "hades_gate").total[1] > est(sin(0), "hades_gate").total[1], "Way of the Phoenix adds to Hades Gate");
+  // Twisted Claw and Mana Pulse add their own cold damage to the attack ("bonus cold damage
+  // to attack", MedianDB's bonus_cold_damage_to_weapons); Twisted Claw's grows with points.
+  const claw = catalog.all().find((d) => d.kind === "base" && d.slotType === "weapon" && /Claw/.test(d.cat || ""))
+    || catalog.all().find((d) => d.kind === "base" && d.slotType === "weapon");
+  const druid = (id, n) => build("Druid", { level: 120, attrs: { strength: 400, dexterity: 200, vitality: 0, energy: 0 }, points: { [id]: n }, gear: { weapon: { ref: claw.key } } });
+  const cold = (id, n) => est(druid(id, n), id).parts.find((p) => p.element === "cold")?.range[1] || 0;
+  assert.ok(cold("twisted_claw", 10) > 0, "Twisted Claw's cold damage counts");
+  assert.ok(cold("twisted_claw", 20) > cold("twisted_claw", 10), "and grows with points");
+  assert.ok(cold("mana_pulse", 10) > 0, "Mana Pulse's cold damage counts");
+  // Damage the game's tooltip shows but MedianDB has no value for: Fusillade's "(Current
+  // Value: +…)" = points × 3% of Dexterity as magic damage.
+  const sorcVals = (n) => engine.skillValues({ cls: "Sorceress", level: 150, points: { fusillade: n }, quests: {}, charStats: { dexterity: 500 } }, "fusillade");
+  assert.deepEqual(sorcVals(10).magic_damage, [150, 150]);
+  assert.deepEqual(sorcVals(11).magic_damage, [165, 165]);
+  // Damage as a share of an attribute: Maelstrom's "% of Dexterity gained as extra magic
+  // damage", Retaliate's "% bonus fire damage" of Strength or Dexterity (the higher).
+  const weapon = { ref: catalog.all().find((d) => d.kind === "base" && d.slotType === "weapon").key };
+  const withAttrs = (cls, id, n) => build(cls, { level: 150, attrs: { strength: 300, dexterity: 600, vitality: 0, energy: 0 }, points: { [id]: n }, gear: { weapon } });
+  const part = (d, el) => d.parts.find((p) => p.element === el)?.range[1] || 0;
+  const mael = (n) => est(withAttrs("Assassin", "apf-20_maelstrom_mkv", n), "apf-20_maelstrom_mkv");
+  assert.ok(part(mael(25), "magic") > part(mael(20), "magic"), "Maelstrom's magic damage grows with points");
+  assert.ok(mael(25).notes.some((n) => /% of Dexterity/.test(n)));
+  const ret = (n) => est(withAttrs("Paladin", "retaliate", n), "retaliate");
+  assert.ok(part(ret(25), "fire") > part(ret(15), "fire"), "Retaliate's fire damage grows with points");
+  // Overkill's axes count as repeated hits, like bolts.
+  const ok = est(withAttrs("Barbarian", "overkill", 20), "overkill");
+  assert.ok(ok.count && ok.count.n > 1 && ok.all[1] > ok.total[1], "Overkill's axes are counted");
   const spell = est(build("Sorceress", { level: 90, points: { molten_core: 1, flamefront: 10 } }), "flamefront");
   assert.equal(spell.kind, "spell");
   assert.ok(spell.total || spell.notes[0].includes("can't be worked out yet"));
@@ -1427,6 +1454,61 @@ test('Maximum Life +% raises base life only: not +Life or Vitality from items (I
   assert.ok(at([item('Maximum Life +50%')], { strength: 0, dexterity: 0, vitality: 90, energy: 0 }).total > both.total - 100);
 });
 
+test('Superior quality from the game files: bases and runewords gain its lines, uniques do not', async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load('/src/planner/character.js');
+  const { SUPERIOR_VARIANTS, superiorVariantsForCat } = await load('/src/planner/superior.js');
+  // qualityitems.bin in 2.14.4: two weapon and two armour variants.
+  assert.deepEqual(SUPERIOR_VARIANTS.map((v) => [v.appliesTo, v.lines]), [
+    ['weapon', ['+(35 to 60)% Enhanced Damage']],
+    ['weapon', ['(50 to 100)% Bonus to Attack Rating', '+(35 to 50)% Enhanced Damage']],
+    ['armor', ['+(35 to 60)% Enhanced Defense']],
+    ['armor', ['+(35 to 50)% Enhanced Defense', '+1% Physical Resist']],
+  ]);
+  assert.equal(superiorVariantsForCat('Boots').length, 2);
+  assert.equal(superiorVariantsForCat('Rings').length, 0);
+  // A superior Greaves (4) at +47%, like the one seen in game: 820 × 1.47 ≈ 1,206 defense.
+  // Its own range (Movement Speed) comes first, then the superior roll.
+  const greaves = catalog.all().find((d) => d.kind === 'base' && d.name === 'Greaves');
+  const t4 = greaves.variants.findIndex((v) => v.label === 'Tier 4');
+  const r = catalog.resolve({ ref: greaves.key, variant: t4, superior: 2, rolls: [1, (47 - 35) / 25] }, 120);
+  assert.ok(r.lines.includes('+47% Enhanced Defense'), r.lines.join(' | '));
+  const def = (gear) => computeCharacter(build('Barbarian', { level: 120, attrs: { strength: 500, dexterity: 0, vitality: 0, energy: 0 }, gear }), { engine, catalog, planner }).defense;
+  const plain = def({ boots: { ref: greaves.key, variant: t4 } }), sup = def({ boots: { ref: greaves.key, variant: t4, superior: 2, rolls: [1, (47 - 35) / 25] } });
+  assert.equal(plain.items, 820);
+  assert.equal(sup.items, 1206, 'as in game: (820 + 1) × 1.47');
+  // Armour variants don't fit a weapon, and uniques can't be superior.
+  assert.equal(catalog.resolve({ ref: greaves.key, variant: t4, superior: 0 }, 120).superior, null);
+  const unique = catalog.all().find((d) => d.kind === 'unique' && d.slotType === 'boots');
+  assert.equal(catalog.resolve({ ref: unique.key, superior: 2 }, 120).superior, null);
+  // A runeword in a superior weapon base: its Enhanced Damage is local to the weapon.
+  const rw = catalog.all().find((d) => d.kind === 'runeword' && d.slotType === 'weapon' && catalog.runewordBases(d).length);
+  const base = catalog.runewordBases(rw)[0];
+  const weaponEd = (superior) => computeCharacter(build('Barbarian', { level: 150, attrs: { strength: 2000, dexterity: 2000, vitality: 0, energy: 0 },
+    gear: { weapon: { ref: rw.key, base: base.key, ...(superior != null ? { superior } : {}) } } }), { engine, catalog, planner }).damage.localEd;
+  assert.equal(weaponEd(0) - weaponEd(), 60);
+  // Suggest gear puts runewords in superior bases when the option is on, and says so.
+  const { recommendForSlot, buildProfile, wantedStats } = await load('/src/planner/recommend.js');
+  const wb = build('Barbarian', { level: 150, attrs: { strength: 800, dexterity: 400, vitality: 200, energy: 0 }, points: { whirlwind: 20 } });
+  const wc = computeCharacter(wb, { engine, catalog, planner });
+  const profile = buildProfile(wb, engine);
+  const recs = (superior) => recommendForSlot('weapon', { build: wb, engine, catalog, planner, character: wc, profile, want: wantedStats(profile, wc), superior }, 40)
+    .filter((x) => x.def.kind === 'runeword');
+  const on = recs(true), off = recs(false);
+  assert.ok(on.some((x) => x.state.superior != null && x.reasons[0].startsWith('In a Superior base')), 'superior runeword bases suggested');
+  assert.ok(off.every((x) => x.state.superior == null), 'not when the option is off');
+  // Saved and shared builds keep it.
+  const { createPlanner } = await load('/src/planner/usePlanner.js');
+  stubBrowser();
+  const scope = effectScope();
+  try {
+    const p = scope.run(() => createPlanner(engine, catalog, planner));
+    p.setClass('Barbarian');
+    p.equip('boots', { ref: greaves.key, variant: t4, superior: 2 });
+    assert.equal(p.build.value.gear.boots.superior, 2);
+  } finally { scope.stop(); }
+});
+
 test('runewords can be made in the bases the game allows, including class armour that inherits a generic type', async () => {
   const { catalog } = await env();
   const data = await load('/src/data/index.js');
@@ -1502,4 +1584,20 @@ test('open questions come from where the sources disagree, and only for caps tha
   // ItemStatCost (stat 76, op 11) and no longer asked.
   for (const x of q.filter((x) => x.id.startsWith('cap:'))) assert.match(x.detail, /The game confirms the rule \("[^"]*\d[^"]*"\)/, x.id);
   assert.ok(ids.includes('cap:warmth') && !ids.includes('rule:max-life-percent'));
+});
+
+test("gear that takes an attribute below zero is flagged, and never suggested", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const { attributesSafe } = await load("/src/planner/requirements.js");
+  const rebel = { ref: "rw:135", base: "base:141", baseVariant: 1, superior: 3 };
+  const bare = build("Assassin", { level: 100, attrs: { strength: 57, dexterity: 458, vitality: 0, energy: 0 } });
+  const withRebel = { ...bare, gear: { body: rebel } };
+  const before = computeCharacter(bare, { engine, catalog, planner });
+  const after = computeCharacter(withRebel, { engine, catalog, planner });
+  assert.ok(after.attributes.vitality.total < 0, "Rebel's -75 Vitality goes below zero with no points in it");
+  const issue = after.issues.find((i) => /^Vitality is -\d+: Rebel/.test(i.text));
+  assert.ok(issue, after.issues.map((i) => i.text).join(" / "));
+  assert.equal(issue.fix.attr, "vitality");
+  assert.equal(attributesSafe(before, after), false, "Suggest gear won't put it on");
 });

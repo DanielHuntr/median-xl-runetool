@@ -21,6 +21,19 @@
   --life: #b3312b;
   --mana: #2c4fb0;
 }
+/* Light Diablo II themes (parchment, heavens): darker still, for their darker backgrounds. */
+:root[data-theme="parchment"],
+:root[data-theme="heavens"] {
+  --fire: #9c3b1b;
+  --cold: #295b9b;
+  --lightning: #6c5a00;
+  --poison: #306824;
+  --magic: #7d3fa8;
+  --q-set: #276a2a;
+  --q-charm: #8a4a0d;
+  --life: #ac2f29;
+  --mana: #2c4fb0;
+}
 :root[data-theme="hc"] {
   --fire: #ff9a7a;
   --cold: #9cd0ff;
@@ -1303,18 +1316,33 @@
   color: var(--gold);
 }
 .suggest-options {
-  display: grid;
-  gap: 12px;
-  margin: 20px 0;
-  padding: 16px;
+  margin: 12px 0;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--field);
 }
-.suggest-options .muted {
-  margin: 0;
-  font-size: 0.8125rem;
-  line-height: 1.6;
+.suggest-options > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+.suggest-options > summary .muted { font-weight: 400; font-size: 0.8125rem; }
+/* Switch then its one-line help, two columns wide on wider screens. */
+.suggest-option-grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 4px 14px;
+  align-items: center;
+  padding: 0 14px 12px;
+}
+.suggest-option-grid .muted { margin: 0; font-size: 0.75rem; line-height: 1.4; }
+@media (max-width: 560px) {
+  .suggest-option-grid { grid-template-columns: minmax(0, 1fr); }
+  .suggest-option-grid .muted { margin-bottom: 6px; }
 }
 .suggest-options .switch,
 .orb-editor .switch {
@@ -1322,7 +1350,7 @@
 }
 .suggest-options .option-disabled { opacity: 0.5; cursor: default; }
 .suggest-options input:disabled { cursor: default; }
-.suggest-actions { margin: 20px 0 28px; }
+.suggest-actions { margin: 12px 0 8px; }
 .suggest-actions .btn { white-space: normal; }
 .orb-editor { display: grid; gap: 14px; margin: 24px 0; }
 .orb-editor h3 { margin: 0; flex-wrap: wrap; row-gap: 10px; }
@@ -1988,3 +2016,28 @@
 .skill-slot-toggle[aria-expanded="true"] svg { transform: rotate(-90deg); }
 .skill-slot-toggle:hover { color: var(--text); border-color: var(--gold); }
 .skill-slot-details { display: grid; gap: 8px; }
+.suggest-note { margin-bottom: 20px; }
+/* Suggested gear: the item worn now, tagged on its row (SuggestGear.vue). */
+.picker-list.recs .rec-current > div {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 6px 8px; border-radius: 4px; color: var(--text);
+}
+.picker-list.recs .rec-current > div > span { flex: 1; min-width: 0; display: grid; }
+.picker-list.recs .rec-current > button,
+.picker-list.recs .rec-current > div { background: var(--gold-bg); border: 1px solid var(--border); }
+.rec-tag {
+  font-style: normal; font-size: 0.75rem; white-space: nowrap;
+  color: var(--good); border: 1px solid currentColor; border-radius: 4px; padding: 2px 8px;
+}
+/* Superior quality: a tag on the paper doll, and a note on the lines it adds (tooltip). */
+.doll-superior {
+  position: absolute; top: 3px; left: 3px; z-index: 1;
+  font-size: 0.5625rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--stats); background: var(--field); border: 1px solid var(--border);
+  border-radius: 3px; padding: 0 4px; line-height: 1.5; pointer-events: none;
+}
+.superior-note { color: var(--muted); font-size: 0.75em; }
+/* Stats panel: what the skill damage figures are measured against. */
+.stat-note { margin: 0 0 8px; font-size: 0.75rem; line-height: 1.4; }
+/* Filter pills (item picker, target picker): hover like the other controls. */
+.picker-filters button:hover:not([aria-pressed="true"]) { color: var(--text); border-color: var(--gold); background: var(--raised); }

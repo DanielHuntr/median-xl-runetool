@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { orbMultiplier } from '../../planner/orbs.js';
+import { superiorNames, superiorLineTexts } from '../../planner/superior.js';
 
 // The in-game style item sheet shown when hovering an item.
 const props = defineProps({ item: { type: Object, required: true } });
@@ -38,12 +39,14 @@ const set = computed(() => {
 const cls = (p) =>
   ({ stats: "counted", skill: "counted", oskill: "counted", unknown: "unknown" })[p.kind] || "effect";
 const fmt = (n) => Math.floor(n).toLocaleString();
+const names = computed(() => superiorNames(r.value));
+const fromSuperior = computed(() => superiorLineTexts(r.value));
 </script>
 <template>
   <div v-if="r" class="sheet item-sheet">
-    <p class="sheet-name" :class="'q-' + r.def.kind">{{ r.def.name }}</p>
-    <p v-if="r.def.base && r.def.base !== r.def.name" class="sheet-base">
-      {{ r.def.base }}<template v-if="r.label"> ({{ r.label }})</template>
+    <p class="sheet-name" :class="'q-' + r.def.kind">{{ names.name }}</p>
+    <p v-if="names.base" class="sheet-base">
+      {{ names.base }}<template v-if="r.label"> ({{ r.label }})</template>
     </p>
     <p v-if="r.def.kind === 'runeword'" class="sheet-runes">'{{ r.def.runes.join("") }}'</p>
     <p v-if="r.head.damage">
@@ -54,7 +57,7 @@ const fmt = (n) => Math.floor(n).toLocaleString();
     <p v-for="q in reqs" :class="{ unmet: !q.ok }">{{ q.t }}</p>
     <ul class="sheet-lines">
       <li v-for="p in lines" :class="cls(p)">
-        {{ p.text }}<small v-if="p.kind === 'unknown'"> (not counted)</small>
+        {{ p.text }}<small v-if="p.kind === 'unknown'"> (not counted)</small><small v-else-if="fromSuperior.has(p.text)" class="superior-note"> (Superior)</small>
       </li>
       <li v-if="r.socketCount" class="counted">Socketed ({{ r.socketCount }})</li>
     </ul>

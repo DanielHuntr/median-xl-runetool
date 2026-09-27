@@ -26,7 +26,8 @@ const TOOLTIP_DAMAGE = /^(fire|cold|lightning|magic|poison|physical)_damage$/;
 // Skills that deal their damage several times: a count in the tooltip, as a value
 // ("6 bolts", Mind Flay's "Beams: 3", which MedianDB keys as "minions") or as text
 // (Slayer's "Casts 25 times"). The damage lines are for one of them.
-const COUNT_KEYS = new Set(["bolts", "missiles", "projectiles", "charged_bolts", "releases_bolts", "shoots_times", "total_bolts", "minions"]);
+// Overkill throws several axes ("axes: 7 + points/2" in its tooltip).
+const COUNT_KEYS = new Set(["bolts", "missiles", "projectiles", "charged_bolts", "releases_bolts", "shoots_times", "total_bolts", "minions", "axes"]);
 const COUNT_TEXT = /^(?:Casts|Shoots|Fires|Releases|Strikes|Hits) (\d+)(?:[-–](\d+))? times?(?: per (?:attack|cast|target))?$/i;
 export function damageCount(effect) {
   const make = (min, max, text) => max > 1 && Number.isInteger(min) && Number.isInteger(max) && min > 0 && max >= min ? { n: max, ...(min !== max ? { min } : {}), text } : null;
@@ -257,6 +258,31 @@ function attack({ id, name, pct, values }, c, describe = null) {
   // spell damage bonuses (whether those apply to an attack's own damage isn't confirmed).
   const own = [];
   for (const [key, v] of Object.entries(values)) {
+    // Also the skill's own "bonus cold damage to attack" (Mana Pulse, Twisted Claw), which
+    // MedianDB names bonus_<element>_damage_to_weapons. A single value is min and max.
+    const toWeapons = /^bonus_(fire|cold|lightning|magic|poison)_damage_to_weapons$/.exec(key);
+    if (toWeapons && typeof v?.[0] === "number") {
+      const hi = typeof v[1] === "number" ? v[1] : v[0];
+      add(toWeapons[1], v[0], hi);
+      own.push(`${v[0]}-${hi} ${toWeapons[1]}`);
+      continue;
+    }
+    // Damage as a share of an attribute, when the game's own value for it isn't already here:
+    // Maelstrom's "X% of Dexterity gained as extra magic damage", Retaliate's "X% Bonus Fire
+    // Damage (of Strength or Dexterity, whichever is higher)". The game's tables match these
+    // (Maelstrom: magic = (6 + 4 per level) % of Dexterity).
+    const fromAttr = /^percent_(dex|str|ene|vit)_gained_as_extra_(fire|cold|lightning|magic|poison)_damage$/.exec(key)
+      || /^bonus_(fire|cold|lightning|magic|poison)_damage_based_on_(str_or_dex)$/.exec(key);
+    if (fromAttr && typeof v?.[0] === "number") {
+      const [el, attr] = key.startsWith("percent_") ? [fromAttr[2], fromAttr[1]] : [fromAttr[1], fromAttr[2]];
+      if (typeof values[`${el}_damage`]?.[0] === "number") continue;
+      const A = c.attributes;
+      const base = attr === "str_or_dex" ? Math.max(A.strength.total, A.dexterity.total)
+        : { dex: A.dexterity, str: A.strength, ene: A.energy, vit: A.vitality }[attr].total;
+      const dmg = Math.floor((v[0] * base) / 100);
+      if (dmg > 0) { add(el, dmg, dmg); own.push(`${dmg} ${el} (${v[0]}% of ${attr === "str_or_dex" ? "Strength or Dexterity" : { dex: "Dexterity", str: "Strength", ene: "Energy", vit: "Vitality" }[attr]})`); }
+      continue;
+    }
     if (!TOOLTIP_DAMAGE.test(key) || typeof v?.[0] !== "number" || typeof v?.[1] !== "number") continue;
     const el = key.split("_")[0];
     if (el === "physical") {

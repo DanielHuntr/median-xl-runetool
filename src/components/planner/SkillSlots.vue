@@ -16,6 +16,11 @@ const slots = computed(() =>
   ].map(([side, label, id]) => ({ side, label, id, d: id ? damageOf(id) : null, node: id && id !== BASIC_ATTACK ? engine.skill(id) : null })),
 );
 const fmt = (n) => Math.round(n).toLocaleString();
+const range = (r) => `${fmt(r[0])}–${fmt(r[1])}`;
+// The headline is one hit or cast, as the game's tooltip shows it. For skills that repeat
+// (Slayer's 25 casts, Mind Flay's beams) the combined figure is only an upper bound:
+// spread, range and timing decide how many actually land on one monster.
+const per = (d) => (d.count ? "each" : d.kind === "attack" ? "per hit" : "per cast");
 const open = (side) => (state.skillChooser = { target: side });
 // Each card's breakdown opens and closes on its own; closed by default to save space. The
 // choice is remembered in this browser only (a convenience, so storage errors are ignored).
@@ -46,9 +51,10 @@ const hasDetails = (s) => !!s.d?.total;
           <b class="skill-slot-name">{{ s.d ? s.d.name : "Choose a skill" }}</b>
           <span v-if="s.d?.total" class="skill-slot-total"
             :title="s.d.vs ? `Against ${s.d.vs.target.name}` : s.d.formula"
-            >{{ fmt(((s.d.vs || s.d).all || (s.d.vs || s.d).total)[0]) }}–{{ fmt(((s.d.vs || s.d).all || (s.d.vs || s.d).total)[1]) }}</span
+            >{{ range((s.d.vs || s.d).total) }}</span
           >
-          <small v-if="s.d?.total" class="muted">{{ s.d.vs ? `vs ${s.d.vs.target.name}` : "before enemy resistance" }}</small>
+          <small v-if="s.d?.total" class="muted">{{ per(s.d) }}, {{ s.d.vs ? `vs ${s.d.vs.target.name}` : "before enemy resistance" }}</small>
+          <small v-if="s.d?.count && (s.d.vs || s.d).all" class="muted skill-slot-upto">Up to {{ range((s.d.vs || s.d).all) }} if all {{ s.d.count.n }} hit</small>
         </div>
         <button
           v-if="hasDetails(s)"
@@ -61,14 +67,14 @@ const hasDetails = (s) => !!s.d?.total;
         </button>
       </div>
       <div v-if="hasDetails(s)" v-show="details[s.side]" :id="`skill-slot-${s.side}-details`" class="skill-slot-details">
-      <!-- Against the chosen target; several hits (Slayer's 25 casts, 3 beams) are totalled. -->
+      <!-- One hit or cast against the chosen target, by element. -->
       <dl v-if="s.d?.total" class="skill-slot-stats">
         <div v-if="s.d.count" class="skill-slot-stat">
           <dt>{{ s.d.count.text }}</dt>
-          <dd>{{ fmt((s.d.vs || s.d).total[0]) }}–{{ fmt((s.d.vs || s.d).total[1]) }}</dd>
-          <dd class="res">each</dd>
+          <dd>{{ range((s.d.vs || s.d).all || (s.d.vs || s.d).total) }}</dd>
+          <dd class="res">if all hit</dd>
         </div>
-        <div v-for="p in (s.d.vs ? s.d.vs.allParts || s.d.vs.parts : s.d.allParts || s.d.parts)" :key="p.element" class="skill-slot-stat">
+        <div v-for="p in (s.d.vs ? s.d.vs.parts : s.d.parts)" :key="p.element" class="skill-slot-stat">
           <dt :class="'el-' + p.element">{{ p.element[0].toUpperCase() + p.element.slice(1) }}</dt>
           <dd :class="'el-' + p.element">
             <template v-if="p.immune">immune</template>
@@ -78,11 +84,11 @@ const hasDetails = (s) => !!s.d?.total;
         </div>
         <div v-if="s.d.vs" class="skill-slot-stat">
           <dt>Before resistance</dt>
-          <dd>{{ fmt((s.d.all || s.d.total)[0]) }}–{{ fmt((s.d.all || s.d.total)[1]) }}</dd>
+          <dd>{{ range(s.d.total) }}</dd>
           <dd class="res"></dd>
         </div>
       </dl>
-      <p v-if="s.d?.count" class="skill-slot-note">Combined potential if the listed hits land. Spread, range and timing affect actual damage; poison is not stacked per hit.</p>
+      <p v-if="s.d?.count" class="skill-slot-note">Damage is for one; the "if all hit" figure is an upper bound. Spread, range and timing decide how many land on one monster, and poison doesn't stack per hit.</p>
       <p v-if="s.d?.kind === 'spell'" class="skill-slot-note">Includes spell bonuses.</p>
       </div>
       <small v-for="l in s.d?.total ? [] : (s.d?.lines || []).slice(0, 2)" class="skill-slot-line">{{ l }}</small>

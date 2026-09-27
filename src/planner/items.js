@@ -2,6 +2,7 @@
 // own item data plus the planner data (charms, relics, icons). Also resolves an
 // equipped item (tier, rolls, sockets, runeword base) into rolled stat lines.
 import { applyRolls, parseLine, parseSpan } from "./statparse.js";
+import { superiorOf } from "./superior.js";
 import { cleanOrbs, orbById, orbFits, orbMultiplier } from './orbs.js';
 
 // Equipment slots, laid out like the in-game inventory screen.
@@ -275,6 +276,12 @@ export function createCatalog(app, planner) {
       lines = v.lines;
     }
 
+    // Superior quality (superior.js) for bases and runewords, and custom items on a base. Its
+    // lines follow the item's own, so earlier rolls keep their sliders.
+    const canBeSuperior = def.kind === "base" || def.kind === "runeword" || (def.kind === "custom" && !!baseDef);
+    const superior = canBeSuperior ? superiorOf(state, def.slotType) : null;
+    if (superior) lines = [...lines, ...superior.lines];
+
     // Rolls: one slider per "(a to b)" range, in line order.
     const rolled = [];
     const ranges = [];
@@ -284,7 +291,7 @@ export function createCatalog(app, planner) {
       rolled.push(r.text);
     }
     // Head values that depend on the item's own ED roll ("(29 - 31) to (33 - 35)").
-    const edIndex = ranges.findIndex((r) => /Enhanced (Damage|Defense)$/.test(r.line));
+    const edIndex = ranges.findIndex((r) => /Enhanced (Damage|Defense)$/.test(r.line) && !superior?.lines.includes(r.line));
     const edRoll = edIndex >= 0 ? state.rolls?.[edIndex] ?? 1 : 1;
     const head = { damage: null, defense: null, block: null, blockClass: false, reqLevel: 0, reqStr: 0, reqDex: 0, reqPct: 0, strPer: 0, dexPer: 0, innate: [], speedMod: null };
     // "+10 Required Level" lines (on the item or a socket filler) add after the fillers' own levels, like orbs.
@@ -353,7 +360,7 @@ export function createCatalog(app, planner) {
     }
     head.reqLevel += reqAdd;
     head.reqLevel += orbs.reduce((n, o) => n + o.def.reqLevel, 0);
-    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded: isTwoHanded(lines), cls: lineClass(lines) };
+    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded: isTwoHanded(lines), cls: lineClass(lines), superior, canBeSuperior };
   }
 
   const setById = (id) => app.SETD.find((s) => s.id === id);

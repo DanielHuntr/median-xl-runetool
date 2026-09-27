@@ -5,8 +5,9 @@
 //  3. Compare complete candidate characters for damage, survival and recovery;
 //     retain small stat-based weights for unmodeled effects and socket/orb choices.
 import { SLOTS } from "./items.js";
+import { superiorVariants, superiorLabel } from "./superior.js";
 import { ORBS, orbById, orbFits, orbGroup, orbMultiplier } from './orbs.js';
-import { computeCharacter, activeSlots } from './character.js';
+import { computeCharacter, activeSlots, ATTRIBUTES } from './character.js';
 import { attributesSafe } from './requirements.js';
 import { fundRequirements } from './attributeAllocation.js';
 import { combatScore, combatReasons, relativeSpeed } from './combatScore.js';
@@ -210,7 +211,7 @@ export function wantedStats(profile, character) {
 /**
  * Scores items for one slot. Returns [{ def, state, score, reasons, warnings }], best first.
  */
-export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false }, limit = 30) {
+export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false }, limit = 30) {
   const mainSlot = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
   if (mainSlot && build.gear[mainSlot] && catalog.resolve(build.gear[mainSlot], build.level)?.twoHanded) return [];
   const slotDef = SLOTS.find((s) => s.id === slot);
@@ -230,6 +231,23 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
   const env = { engine, catalog, planner };
   const baseline = combatScore(build, character, engine, profile);
   const strippedCache = new Map();
+  // Points spent meeting an item's Strength or Dexterity requirement can't go where the build
+  // would otherwise put them (Energy for a caster, Vitality for most), so each is charged at
+  // the average worth of a free point: the best gain from putting all of them into one
+  // attribute, divided by their number. (The first few points are worth more than the rest, so
+  // pricing by them would overcharge.) Without this, requirements looked free and casters
+  // ended up with 600+ Strength.
+  let pointValue = null;
+  const valueOfPoint = () => {
+    if (pointValue != null) return pointValue;
+    const free = character.statPoints.available - character.statPoints.spent;
+    if (free <= 0) return (pointValue = 0);
+    const gains = ATTRIBUTES.map((a) => {
+      const next = { ...build, attrs: { ...build.attrs, [a]: (build.attrs[a] || 0) + free } };
+      return combatScore(next, computeCharacter(next, env), engine, profile).score - baseline.score;
+    });
+    return (pointValue = Math.max(0, ...gains) / free);
+  };
   const fitsAttributes = (state, r) => {
     // Mirror equip(): changing handedness may also remove the other hand.
     const gear = { ...build.gear };
@@ -253,7 +271,8 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     const after = computeCharacter(next, env);
     if (!attributesSafe(character, after, [slot])) return null;
     const outcome = combatScore(next, after, engine, profile);
-    return { ...outcome, attrs };
+    const extra = ATTRIBUTES.reduce((n, a) => n + Math.max(0, (attrs[a] || 0) - (build.attrs[a] || 0)), 0);
+    return { ...outcome, score: outcome.score - (extra ? extra * valueOfPoint() : 0), attrs };
   };
   for (const def of catalog.forSlot(slot, build.cls)) {
     if (def.kind === "base") continue;
@@ -282,6 +301,18 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
       }
     }
     if (!r) continue;
+    // A runeword in a Superior base (superior.js), at the variant's best roll: tried on the best
+    // base found, and kept if it scores higher. Assumes Median XL allows runewords in superior
+    // bases, as D2 does (the option can be turned off).
+    if (superior && def.kind === "runeword")
+      for (const v of superiorVariants(r.def.slotType)) {
+        const candidate = { ...state, superior: v.id };
+        const resolved = catalog.resolve(candidate, build.level);
+        const evaluated = resolved && resolved.head.reqLevel <= build.level && fitsAttributes(candidate, resolved);
+        if (!evaluated) continue;
+        if (isWeapon && weaponEnhancements) viable.push({ state: candidate, outcome: evaluated });
+        if (evaluated.score > outcome.score) { state = candidate; r = resolved; outcome = evaluated; }
+      }
     if (viable.length) weaponCandidates.set(def.key, viable);
 
     let score = 0;
@@ -322,7 +353,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     const comparisons = combatReasons(baseline, outcome);
     // r.def carries the runeword's base (name and icon).
     out.push({ def: r.def, state, attrs: outcome.attrs, score, improvement: outcome.score - baseline.score,
-      reasons: [...comparisons.slice(0, 2), ...parts.slice(0, 2)].map(x => x.text), warnings });
+      reasons: [...(r.superior ? [{ text: `In a ${superiorLabel(r.superior).replace(/^Superior:/, "Superior base:")}` }] : []), ...comparisons.slice(0, 2), ...parts.slice(0, 2)].map(x => x.text), warnings });
   }
   out.sort((x, y) => y.score - x.score);
   if (isWeapon && weaponEnhancements) {

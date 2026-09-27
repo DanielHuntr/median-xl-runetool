@@ -34,7 +34,9 @@ const groups = computed(() => {
 function summary(id) {
   const d = damageOf(id);
   if (!d) return "";
-  if (d.total) return `${d.total[0].toLocaleString()}–${d.total[1].toLocaleString()} per hit`;
+  // Same basis as the skill slots: one hit or cast, against the chosen monster.
+  const t = (d.vs || d).total;
+  if (d.total) return `${t[0].toLocaleString()}–${t[1].toLocaleString()} ${d.count ? "each" : d.kind === "attack" ? "per hit" : "per cast"}${d.vs ? ` vs ${d.vs.target.name}` : ""}`;
   return d.lines[0] || "";
 }
 </script>

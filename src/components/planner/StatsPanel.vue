@@ -286,6 +286,8 @@ function onKey(e) {
     <div class="stats-panel-body">
       <section v-if="skillsInUse.length" class="stat-section">
         <h3>Skill damage<em class="est">estimates</em></h3>
+        <!-- Same basis as the skill slots: one hit or cast against the chosen monster. -->
+        <p v-if="skillsInUse.some((d) => d.vs)" class="muted stat-note">Per hit or cast, vs {{ skillsInUse.find((d) => d.vs).vs.target.name }}. Select a skill for the damage before resistance.</p>
         <dl class="stat-rows">
           <template v-for="d in skillsInUse" :key="d.id">
             <div class="stat-row" :class="{ selected: selected === 'skill:' + d.id }">
@@ -296,11 +298,12 @@ function onKey(e) {
                   ><small v-if="build.rightSkill === d.id" class="slot-tag">R</small>
                 </button>
               </dt>
-              <dd>{{ d.total ? `${fmt(d.total[0])}–${fmt(d.total[1])}` : d.kind === "spell" ? "spell" : "—" }}</dd>
+              <dd>{{ d.total ? `${fmt((d.vs || d).total[0])}–${fmt((d.vs || d).total[1])}` : d.kind === "spell" ? "spell" : "—" }}</dd>
             </div>
             <div v-if="selected === 'skill:' + d.id" class="stat-sources">
               <p v-if="d.formula" class="muted">{{ d.formula }}</p>
               <ul v-if="d.parts.length" class="source-list">
+                <li v-if="d.vs"><span>Before resistance</span><b>{{ fmt(d.total[0]) }}–{{ fmt(d.total[1]) }}</b></li>
                 <li v-for="p in d.parts"><span :class="'el-' + p.element">{{ p.element }}</span><b>{{ fmt(p.range[0]) }}–{{ fmt(p.range[1]) }}</b></li>
                 <li v-if="d.ar"><span>Attack rating</span><b>{{ fmt(d.ar) }}</b></li>
               </ul>

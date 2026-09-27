@@ -5,6 +5,7 @@ import ItemIcon from "./ItemIcon.vue";
 import SuggestGear from "./SuggestGear.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
+import { superiorNames } from "../../planner/superior.js";
 
 const { catalog, state, build, character, swapWeapons, removeInventory, openPicker, openEditor, unequip, clearEquipment, say, tipOn } = usePlanner();
 function suggestGear() {
@@ -62,13 +63,14 @@ const inventory = computed(() =>
         <button
           class="doll-slot"
           :class="[d.area, { filled: build.gear[d.slot], selected: state.slot === d.slot }]"
-          :aria-label="build.gear[d.slot] ? `${label(d.slot)}: ${resolved(d.slot)?.def.name}` : `${label(d.slot)}: empty, choose an item`"
+          :aria-label="build.gear[d.slot] ? `${label(d.slot)}: ${resolved(d.slot)?.superior && resolved(d.slot).def.kind !== 'base' ? 'Superior ' : ''}${superiorNames(resolved(d.slot)).name}` : `${label(d.slot)}: empty, choose an item`"
           v-on="build.gear[d.slot] ? tipOn({ kind: 'item', item: build.gear[d.slot] }) : {}"
           @click="openSlot(d.slot)"
         >
           <template v-if="build.gear[d.slot] && resolved(d.slot)">
             <ItemIcon :icon="resolved(d.slot).def.icon" />
-            <span class="doll-name" :class="'q-' + resolved(d.slot).def.kind">{{ resolved(d.slot).def.name }}</span>
+            <span v-if="resolved(d.slot).superior" class="doll-superior" aria-hidden="true">Superior</span>
+            <span class="doll-name" :class="'q-' + resolved(d.slot).def.kind">{{ superiorNames(resolved(d.slot)).name }}</span>
             <span v-if="resolved(d.slot).socketCount" class="doll-sockets" aria-hidden="true"
               ><i
                 v-for="n in resolved(d.slot).socketCount"

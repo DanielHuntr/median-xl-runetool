@@ -69,6 +69,8 @@ function cleanItem(st, catalog) {
     out.sockets = st.sockets.slice(0, 6).map((r) => (typeof r === "string" && catalog.get(r) ? r : null));
   out.orbs = cleanOrbs(st.orbs);
   if (st.ethereal === true) out.ethereal = true;
+  // Superior quality: a variant id from superior-items.json (items.js ignores one that doesn't fit).
+  if (Number.isInteger(st.superior) && st.superior >= 0 && st.superior < 16) out.superior = st.superior;
   return out;
 }
 
@@ -121,6 +123,8 @@ export function createPlanner(engine, catalog, planner) {
     allowAttributeRespec: false,
     includeUniqueOrbs: false,
     suggestEnhancements: saved.suggestEnhancements ?? true,
+    // Suggest runewords in Superior bases (superior.js); on by default.
+    suggestSuperior: saved.suggestSuperior ?? true,
     // Monster that skill damage is measured against: "typical" or a monster id (target.js).
     target: saved.target ?? "typical",
     targetDifficulty: ['Normal', 'Nightmare', 'Hell'].includes(saved.targetDifficulty) ? saved.targetDifficulty : null,
@@ -151,12 +155,12 @@ export function createPlanner(engine, catalog, planner) {
   const wanted = computed(() => wantedStats(profile.value, character.value));
   const recommendationOptions = computed(() => ({
     build: build.value, engine, catalog, planner, character: character.value, profile: profile.value, want: wanted.value,
-    weaponEnhancements: state.suggestEnhancements, includeUnique: state.includeUniqueOrbs,
+    weaponEnhancements: state.suggestEnhancements, includeUnique: state.includeUniqueOrbs, superior: state.suggestSuperior,
   }));
   // Each slot's full ranking is kept until the build or the suggestion options change, so
   // the suggestions dialog and the item picker share the work (weapons take the longest).
   const recCache = new Map();
-  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs]);
+  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior]);
   function rankedFor(slot) {
     const fp = recFingerprint();
     const hit = recCache.get(slot);
@@ -362,7 +366,7 @@ export function createPlanner(engine, catalog, planner) {
     if (state.picker?.mode !== 'inventory') state.picker = null;
     say('Cleared equipment from both weapon sets.', 'info');
   }
-  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs]);
+  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior]);
   function applyGearPreview(preview) {
     if (!preview || preview.fingerprint !== suggestionFingerprint()) {
       say('Your build or options changed. Generate a new preview before applying.', 'info');
@@ -403,7 +407,7 @@ export function createPlanner(engine, catalog, planner) {
         const current = computeCharacter(next, { engine, catalog, planner });
         const currentProfile = buildProfile(next, engine);
         const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
-          profile: currentProfile, want: wantedStats(currentProfile, current), allocateAttributes: state.suggestAttributes }, 30)
+          profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, allocateAttributes: state.suggestAttributes }, 30)
           .find(() => !slot.startsWith('offhand') || !current.weapon?.twoHanded);
         if (!rec) continue;
         next.gear[slot] = rec.state;
@@ -418,7 +422,7 @@ export function createPlanner(engine, catalog, planner) {
       const current = computeCharacter(next, { engine, catalog, planner });
       const currentProfile = buildProfile(next, engine);
       const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
-        profile: currentProfile, want: wantedStats(currentProfile, current), allocateAttributes: state.suggestAttributes }, 1)[0];
+        profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, allocateAttributes: state.suggestAttributes }, 1)[0];
       if (!rec || rec.improvement <= 0.25) continue;
       next.gear[slot] = rec.state;
       if (state.suggestAttributes) next.attrs = rec.attrs;
@@ -436,7 +440,7 @@ export function createPlanner(engine, catalog, planner) {
       const current = computeCharacter(next, { engine, catalog, planner });
       const currentProfile = buildProfile(next, engine);
       const rec = recommendForSlot(weaponSlot, { build: next, engine, catalog, planner, character: current,
-        profile: currentProfile, want: wantedStats(currentProfile, current), weaponEnhancements: true,
+        profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, weaponEnhancements: true,
         includeUnique: state.includeUniqueOrbs }, 1)[0];
       if (rec && rec.improvement > 0.25) {
         next.gear[weaponSlot] = rec.state;
@@ -684,6 +688,7 @@ export function createPlanner(engine, catalog, planner) {
       statsOpen: state.statsOpen,
       statsPinned: state.statsPinned,
       suggestEnhancements: state.suggestEnhancements,
+      suggestSuperior: state.suggestSuperior,
       suggestAttributes: state.suggestAttributes,
       target: state.target,
       targetDifficulty: state.targetDifficulty,
