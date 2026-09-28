@@ -674,6 +674,16 @@ export function createCube(data) {
         contents[0] = makeItem(code);
         return { recipe: reroll, contents, base: items.get(code).name };
       }
+      // By chance: a recipe making a random unique of its base (Amulet or Ring + 2 Arcane
+      // Crystals + Oil of Enhancement); which unique comes out is by rarity.
+      for (const id of ids) {
+        const code = data.uniques[id]?.[1];
+        const r = recipes.find((x) => !blocks(x) && !x.inputs.some((i) => i.flags & IN.SPECIFIC && i.quality === 7)
+          && x.outputs.some((o) => o.type === T.ITEM && !(o.flags & OUT.SPECIFIC) && o.quality === 7 && o.key === code));
+        // One unique on the base (a tier upgrade): that unique for certain.
+        const several = (data.uniquesByBase?.[code] || []).filter(([, rarity]) => rarity > 0).length > 1;
+        if (r) return { recipe: r, contents: load(r), ...(several ? { chance: items.get(code)?.name || "item" } : {}) };
+      }
       return null;
     }
     if (item) {

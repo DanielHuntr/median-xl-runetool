@@ -39,7 +39,9 @@ function applyLink() {
   editing.value = null;
   result.value = null;
   fresh.value = [];
-  linkNote.value = m.base
+  linkNote.value = m.chance
+    ? `Loaded: this recipe makes a random unique ${m.chance}, weighted by rarity; ${target} is one of them. Press Transmute to try it.`
+    : m.base
     ? `Loaded: a ${m.base} rerolled as a unique becomes ${target}. Press Transmute to try it.`
     : `Loaded the recipe that makes ${target}. Press Transmute to try it.`;
   nextTick(() => document.getElementById("cube-bench")?.scrollIntoView({ block: "start" }));

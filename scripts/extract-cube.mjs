@@ -292,7 +292,9 @@ writeFileSync(file, JSON.stringify(out));
 // A small index for the other pages ("Made in the Horadric Cube" on uniques, gems and runes):
 // src/data/cube-made.json. A unique is made by a recipe that names it, or by rerolling its
 // tiered base as a unique (Tiered item + 2 Arcane Crystals + Oil of Enhancement); an item by
-// a recipe whose result it is (not one that hands it back). Unique names are only counted
+// a recipe whose result it is (not one that hands it back), or by chance: a recipe that makes
+// a random unique of its base (Amulet or Ring + 2 Arcane Crystals + Oil of Enhancement), for each
+// of that base's uniques that can drop (rarity above 0). Unique names are only counted
 // for the recipes that create them, not ones that reroll a unique already put in.
 const typeOfCode = new Map(items.map((it) => [it.code, new Set(it.types.map(typeCode))]));
 const nameOf = new Map(items.map((it) => [it.code, it.name]));
@@ -305,6 +307,12 @@ for (const [, , , , , inputs, outputs] of recipes) {
       const n = out.uniques[id]?.[0];
       if (inputs.some(([f, , inId, q]) => f & 0x40 && q === 7 && out.uniques[inId]?.[0] === n)) continue;
       if (n) made.uniques[n] = "recipe";
+    } else if (type === 0xfc && !(flags & OUT_SPECIFIC) && quality === 7 && uniquesByBase[key]
+      // Not a recipe that uses up a named unique (the Seven Deadly Sins sigil takes Ring of Pride).
+      && !inputs.some(([f, , , q]) => f & 0x40 && q === 7)) {
+      // A base with one unique that can drop makes that one (a tier upgrade); several: one by chance.
+      const droppable = uniquesByBase[key].filter(([, rarity]) => rarity > 0);
+      for (const [uid] of droppable) { const n = out.uniques[uid]?.[0]; if (n && !made.uniques[n]) made.uniques[n] = droppable.length > 1 ? "chance" : "recipe"; }
     } else if (type === 0xfc && !(flags & OUT_SPECIFIC) && !inKeys.has(key) && nameOf.get(key)) made.items[nameOf.get(key)] = 1;
     else if (type === 0xff && quality === 7 && inputs[0]?.[0] & 2 && inputs[0][1] === "tier")
       for (const [code, list] of Object.entries(uniquesByBase))

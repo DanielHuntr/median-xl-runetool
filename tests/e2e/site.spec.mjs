@@ -142,3 +142,12 @@ test("the mercenary's gear: suggest, then edit an item's sockets", async ({ page
     await expect(editor.getByRole("button", { name: /^Change$/ }).first()).toBeVisible();
   }
 });
+
+test("a unique amulet's Show recipe loads the random-unique recipe", async ({ page }) => {
+  await page.goto("/#uniques");
+  const card = page.locator(".unique-card", { hasText: "Fren Slairea" }).first();
+  await card.locator(".cube-link-square").click();
+  await expect(page).toHaveURL(/#cube/);
+  await expect(page.locator(".cube-link-note")).toContainText("random unique Amulet");
+  await expect(page.locator(".cube-slot")).toHaveCount(4);
+});

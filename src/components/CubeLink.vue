@@ -9,7 +9,9 @@ import MADE from "../data/cube-made.json";
 // compact: a square icon button (card corners), with the words in its tooltip.
 const props = defineProps({ kind: { type: String, required: true }, name: { type: String, required: true }, tier: { type: Number, default: 0 }, compact: Boolean });
 const how = computed(() => (props.kind === "unique" ? MADE.uniques[props.name] : MADE.items[props.name] || MADE.items[`${props.name} Rune`] ? "recipe" : null));
-const tip = computed(() => (how.value === "reroll" ? "Show recipe: made in the Horadric Cube by rerolling its base" : "Show recipe: made in the Horadric Cube"));
+const tip = computed(() => (how.value === "reroll" ? "Show recipe: made in the Horadric Cube by rerolling its base"
+  : how.value === "chance" ? "Show recipe: the Horadric Cube makes a random unique of this base; this is one of them"
+  : "Show recipe: made in the Horadric Cube"));
 const href = computed(() => `#cube?make=${props.kind}:${encodeURIComponent(props.name)}${props.tier ? `&tier=${props.tier}` : ""}`);
 </script>
 <template>
