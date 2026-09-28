@@ -288,13 +288,20 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     }
     let state, r, outcome;
     const viable = [];
+    // States run from the highest tier down (per base, for runewords). Once a tier fits without
+    // extra attribute points, the lower tiers of that item or base can't beat it (they have the
+    // same lines, lower), so they aren't scored.
+    const settled = new Set();
     for (const candidate of states) {
+      const tierKey = candidate.base || candidate.ref;
+      if (settled.has(tierKey)) continue;
       const resolved = catalog.resolve(candidate, build.level);
       if (!resolved || resolved.head.reqLevel > build.level) continue;
       if (need && resolved.def.slotType === 'weapon' && !need.fits(resolved.def.cat)) continue;
       if (wantsQuiver && !(resolved.def.slotType === 'quiver' && quiverFits(resolved.def.cat))) continue;
       const evaluated = fitsAttributes(candidate, resolved);
       if (!evaluated) continue;
+      if (evaluated.attrs === build.attrs) settled.add(tierKey);
       if (isWeapon && weaponEnhancements) viable.push({ state: candidate, outcome: evaluated });
       if (!outcome || evaluated.score > outcome.score) {
         state = candidate; r = resolved; outcome = evaluated;

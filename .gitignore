@@ -10,3 +10,4 @@ test-results/
 playwright-report/
 .preset-progress.json
 .preset-stages-progress.json
+.preset-shard-*

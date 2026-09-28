@@ -7,6 +7,8 @@
 //   ONLY=id1,id2 node scripts/build-presets.mjs   builds just those, without publishing.
 //   STAGES_ONLY=1 node scripts/build-presets.mjs  remakes only the levelling stages, keeping the
 //     published endgame builds (after a change that affects levelling but not level 150).
+//   SHARD=k/N (with PROGRESS_FILE)              builds only every Nth preset (k-th of them) into
+//     its own progress file and stops; scripts/build-presets-parallel.mjs runs N at once.
 //   RESUME=1 node scripts/build-presets.mjs       carries on a full run that stopped: each
 //     finished preset is saved to .preset-progress.json as it's built (deleted once published).
 // Each preset names a class, a main skill and optionally a second skill. The rest is
@@ -382,13 +384,15 @@ try {
   }
   // A full run takes hours: each finished preset is saved, and RESUME=1 skips those done.
   const STAGES_ONLY = !!process.env.STAGES_ONLY;
-  const PROGRESS = STAGES_ONLY ? ".preset-stages-progress.json" : ".preset-progress.json";
+  const PROGRESS = process.env.PROGRESS_FILE || (STAGES_ONLY ? ".preset-stages-progress.json" : ".preset-progress.json");
+  const [shardK, shardN] = (process.env.SHARD || "").split("/").map(Number);
+  const inShard = (i) => !shardN || i % shardN === shardK;
   const published = STAGES_ONLY ? JSON.parse(await readFile("src/data/preset-builds.json", "utf8")).presets : [];
-  const progress = !only.length && process.env.RESUME ? JSON.parse(await readFile(PROGRESS, "utf8").catch(() => "{}")) : {};
+  const progress = !only.length && (process.env.RESUME || shardN) ? JSON.parse(await readFile(PROGRESS, "utf8").catch(() => "{}")) : {};
   if (progress.patch && progress.patch !== planner.game?.patch) throw new Error(`${PROGRESS} is from patch ${progress.patch}; delete it to start again`);
   const done = progress.done || {};
   if (Object.keys(done).length) console.log(`Resuming: ${Object.keys(done).length} presets already built (${PROGRESS})`);
-  for (const def of plan.filter((d) => !only.length || only.includes(d.id))) {
+  for (const def of plan.filter((d, i) => (!only.length || only.includes(d.id)) && inShard(i))) {
     if (done[def.id]) {
       out.push(done[def.id].preset);
       if (done[def.id].stages) stages[def.id] = done[def.id].stages;
@@ -461,7 +465,11 @@ ${def.name}: levelling stages`);
       await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
     }
   }
-  if (STAGES_ONLY) {
+  if (shardN) {
+    console.log(`
+shard ${shardK}/${shardN}: ${out.length} presets saved to ${PROGRESS}`);
+  }
+  else if (STAGES_ONLY) {
     await writeFile("src/data/preset-stages.json", JSON.stringify({ patch: planner.game?.patch, stages }));
     console.log(`levelling guides for ${Object.keys(stages).length} presets written to src/data/preset-stages.json (endgame builds kept)`);
     await rm(PROGRESS, { force: true });
