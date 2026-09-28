@@ -169,11 +169,12 @@ test('every starter build stage follows the planner rules for its level and diff
   } finally { await vite.close(); }
 });
 
-test('starter build stages progress like a player: no tier or gem downgrades, orbs within budget', async () => {
+test('starter build stages progress like a player: no tier or gem downgrades, orbs within budget, no swapping back', async () => {
   const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
   try {
     const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
     const { stages } = JSON.parse(await readFile(new URL('../src/data/preset-stages.json', import.meta.url), 'utf8'));
+    const { presets } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
     const data = await vite.ssrLoadModule('/src/data/index.js');
     const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
     const catalog = createCatalog(data, planner);
@@ -199,6 +200,18 @@ test('starter build stages progress like a player: no tier or gem downgrades, or
           for (const ref of it.sockets || []) { const d = ref && catalog.get(ref); if (d?.kind === 'socketable' && d.kindLabel === 'Gems') gems = Math.max(gems, d.lvl || 0); }
         }
       }
+      // An item worn at a stage and in the finished build isn't swapped out in between.
+      const end = presets.find((p) => p.id === id)?.build;
+      if (!end) continue;
+      const worn = (gear, slot) => (slot === 'rings' ? ['ring1', 'ring2'].map((s) => gear[s]?.ref).filter(Boolean) : [gear[slot]?.ref].filter(Boolean));
+      const built = list.filter((st) => !st.final && st.build);
+      for (const slot of ['rings', 'amulet', 'weapon', 'offhand', 'helm', 'body', 'gloves', 'belt', 'boots'])
+        for (const ref of worn(end.gear, slot))
+          built.forEach((st, i) => {
+            if (!worn(st.build.gear, slot).includes(ref)) return;
+            for (const later of built.slice(i + 1))
+              assert.ok(worn(later.build.gear, slot).includes(ref), `${id}: ${catalog.get(ref)?.name} (${slot}) worn at level ${st.level} and in the finished build, but not at level ${later.level}`);
+          });
     }
   } finally { await vite.close(); }
 });

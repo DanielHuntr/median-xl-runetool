@@ -136,6 +136,9 @@ export function createPlanner(engine, catalog, planner) {
     maxOrbsPerItem: null,
     minTiers: null,
     minGemLevel: null,
+    // Also the generator's: items a stage keeps as they are ({ slot: item }), because the
+    // previous stage and the finished build both wear them (no swapping away and back).
+    keepGear: null,
     suggestEnhancements: saved.suggestEnhancements ?? true,
     // Suggest runewords in Superior bases (superior.js); on by default.
     suggestSuperior: saved.suggestSuperior ?? true,
@@ -236,7 +239,7 @@ export function createPlanner(engine, catalog, planner) {
   // Each slot's full ranking is kept until the build or the suggestion options change, so
   // the suggestions dialog and the item picker share the work (weapons take the longest).
   const recCache = new Map();
-  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel]);
+  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear]);
   function rankedFor(slot) {
     const fp = recFingerprint();
     const hit = recCache.get(slot);
@@ -442,7 +445,7 @@ export function createPlanner(engine, catalog, planner) {
     if (state.picker?.mode !== 'inventory') state.picker = null;
     say('Cleared equipment from both weapon sets.', 'info');
   }
-  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel]);
+  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear]);
   function applyGearPreview(preview) {
     if (!preview || preview.fingerprint !== suggestionFingerprint()) {
       say('Your build or options changed. Generate a new preview before applying.', 'info');
@@ -474,6 +477,8 @@ export function createPlanner(engine, catalog, planner) {
     }
     const slots = activeSlots(next);
     for (const slot of slots) delete next.gear[slot];
+    const kept = state.keepGear || {};
+    for (const slot of slots) if (kept[slot]) next.gear[slot] = JSON.parse(JSON.stringify(kept[slot]));
     const priority = ['amulet', 'ring1', 'ring2', next.swap ? 'weapon2' : 'weapon', 'helm', 'body', 'gloves', 'belt', 'boots', next.swap ? 'offhand2' : 'offhand'];
     let count = 0;
     for (let pass = 0; pass < slots.length; pass++) {
@@ -496,6 +501,7 @@ export function createPlanner(engine, catalog, planner) {
     // Revisit early picks with the full loadout present, allowing complementary gear
     // (such as life on hit alongside attack speed) to beat an isolated stat choice.
     for (const slot of priority) {
+      if (kept[slot]) continue;
       const current = computeCharacter(next, { engine, catalog, planner });
       const currentProfile = buildProfile(next, engine);
       const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
@@ -520,7 +526,7 @@ export function createPlanner(engine, catalog, planner) {
       const rec = recommendForSlot(weaponSlot, { build: next, engine, catalog, planner, character: current,
         profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, weaponEnhancements: true,
         includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel }, 1)[0];
-      if (rec && rec.improvement > 0.25) {
+      if (rec && rec.improvement > 0.25 && !kept[weaponSlot]) {
         next.gear[weaponSlot] = rec.state;
         if (catalog.resolve(rec.state, next.level)?.twoHanded) delete next.gear[next.swap ? 'offhand2' : 'offhand'];
       }

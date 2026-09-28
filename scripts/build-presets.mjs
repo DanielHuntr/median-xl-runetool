@@ -193,11 +193,25 @@ try {
     const minTiers = {};
     // Nor back to lower gems: normal 12, flawless 15, perfect 18 (socketables' levels).
     let minGemLevel = 0;
+    // Nor does a player swap an item away and back: what the previous stage wears and the
+    // finished build wears in the same slot (either ring slot for rings) stays on.
+    let prev = null;
+    const keepFrom = (gear) => {
+      if (!gear) return null;
+      const end = endgame.gear || {}, keep = {};
+      const endRings = ["ring1", "ring2"].map((s) => end[s]?.ref).filter(Boolean);
+      for (const [slot, st] of Object.entries(gear)) {
+        if (!st?.ref) continue;
+        if (slot === "ring1" || slot === "ring2") { const i = endRings.indexOf(st.ref); if (i >= 0) { endRings.splice(i, 1); keep[slot] = st; } }
+        else if (end[slot]?.ref === st.ref) keep[slot] = st;
+      }
+      return Object.keys(keep).length ? keep : null;
+    };
     for (const [level, difficulty] of STAGES) {
       const sdef = stageDef(def, level), notes = [];
       if (!sdef) { guide.push({ level, difficulty, notes: ["No damage skill the planner can work out is learnable yet."] }); continue; }
       try {
-        const { p, scope } = await buildAt(sdef, level, difficulty, false, notes, { minTiers, minGemLevel });
+        const { p, scope } = await buildAt(sdef, level, difficulty, false, notes, { minTiers, minGemLevel, keepGear: keepFrom(prev) });
         for (const st of Object.values(p.build.value.gear)) {
           const key = st.base || st.ref, tier = st.base ? st.baseVariant : st.variant;
           if (key && Number.isInteger(tier)) minTiers[key] = Math.max(minTiers[key] ?? -1, tier);
@@ -207,6 +221,7 @@ try {
           }
         }
         const b = JSON.parse(JSON.stringify(p.build.value));
+        prev = b.gear;
         const c = computeCharacter(b, { engine, catalog, planner });
         scope.stop();
         guide.push({
@@ -241,7 +256,7 @@ try {
   // Orbs a levelling stage may put on one item (a levelling player doesn't stack dozens); the
   // endgame build has no budget.
   const ORB_BUDGET = { Normal: 2, Nightmare: 5, Hell: 10 };
-  async function buildAt(def, level, difficulty, final, sink, { minTiers = null, minGemLevel = 0 } = {}) {
+  async function buildAt(def, level, difficulty, final, sink, { minTiers = null, minGemLevel = 0, keepGear = null } = {}) {
     memory.clear();
     const scope = effectScope();
     const p = scope.run(() => createPlanner(engine, catalog, planner));
@@ -296,6 +311,7 @@ try {
     p.state.maxOrbsPerItem = final ? null : ORB_BUDGET[difficulty] ?? null;
     p.state.minTiers = minTiers && Object.keys(minTiers).length ? { ...minTiers } : null;
     p.state.minGemLevel = minGemLevel || null;
+    p.state.keepGear = keepGear;
     const t0 = Date.now();
     const suggestGear = async (again = false) => {
     p.state.suggestAttributes = true;
@@ -449,11 +465,21 @@ try {
         const req = (st) => { const r = catalog.resolve(st, b.level); return (r?.head.reqStr || 0) + (r?.head.reqDex || 0); };
         const original = { ...b.gear }, changes = [];
         b.gear = {};
-        for (const slot of Object.keys(original).sort((x, y) => req(original[x]) - req(original[y]))) {
-          const fits = (st) => wearableBothSets({ ...b, gear: { ...b.gear, [slot]: st } }, env);
-          if (fits(original[slot])) { b.gear[slot] = original[slot]; continue; }
+        // Items the stage keeps from the one before (keepGear) go on first, so they stay if
+        // they can.
+        const kept = (slot) => (keepGear?.[slot]?.ref === original[slot]?.ref ? 0 : 1);
+        for (const slot of Object.keys(original).sort((x, y) => kept(x) - kept(y) || req(original[x]) - req(original[y]))) {
+          // Whether the character's attribute points can be spent so it all goes on, not just
+          // whether what's spent now covers it.
+          const fits = (st) => {
+            const trial = { ...b, gear: { ...b.gear, [slot]: st } };
+            if (wearableBothSets(trial, env)) return true;
+            const attrs = fundLoadout(trial, {}, env);
+            return !!attrs && wearableBothSets({ ...trial, attrs }, env);
+          };
+          if (fits(original[slot])) { b.gear[slot] = original[slot]; b.attrs = fundLoadout(b, {}, env) || b.attrs; continue; }
           const pick = p.recommend(slot, 30).find((x) => fits(x.state));
-          if (pick) b.gear[slot] = pick.state;
+          if (pick) { b.gear[slot] = pick.state; b.attrs = fundLoadout(b, {}, env) || b.attrs; }
           const was = nameOf(original[slot]);
           changes.push(!pick ? `took off ${was}` : pick.def.name === was ? `${was}: a lower tier` : `${was} → ${pick.def.name}`);
         }
@@ -555,7 +581,9 @@ ${def.name}: levelling stages`);
 shard ${shardK}/${shardN}: ${out.length} presets saved to ${PROGRESS}`);
   }
   else if (STAGES_ONLY) {
-    await writeFile("src/data/preset-stages.json", JSON.stringify({ patch: planner.game?.patch, stages }));
+    // With ONLY, just those builds' guides are replaced; the others stay.
+    const prev = only.length ? JSON.parse(await readFile("src/data/preset-stages.json", "utf8").catch(() => '{"stages":{}}')).stages : {};
+    await writeFile("src/data/preset-stages.json", JSON.stringify({ patch: planner.game?.patch, stages: { ...prev, ...stages } }));
     console.log(`levelling guides for ${Object.keys(stages).length} presets written to src/data/preset-stages.json (endgame builds kept)`);
     await rm(PROGRESS, { force: true });
   }
