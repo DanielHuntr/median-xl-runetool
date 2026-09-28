@@ -715,6 +715,8 @@ input::placeholder {
   margin-bottom: 4px;
   min-height: 24px;
 }
+.card-actions { display: flex; align-items: center; gap: 2px; margin: -5px -7px 0 0; }
+.card-actions .star { margin: 0; }
 .item-kind {
   font-size: 0.625rem;
   letter-spacing: 0.12em;

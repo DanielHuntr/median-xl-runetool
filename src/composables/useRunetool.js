@@ -436,14 +436,19 @@ export function createRunetool() {
       if (!shows(list)) st.lvl = MAX_ITEM_LEVEL;
     } else return;
     nav(to);
-    nextTick(() => {
+    let tries = 0;
+    const find = () => {
       const card = [...document.querySelectorAll("main article h2")].find((h) => h.textContent.trim() === name)?.closest("article");
-      if (!card) return;
-      card.scrollIntoView({ block: "center" });
+      if (!card) return void (++tries < 20 && requestAnimationFrame(find));
+      // A card taller than the window (a set) shows from its top, below the sticky search bar.
+      const tall = card.offsetHeight > window.innerHeight * 0.7;
+      card.style.scrollMarginTop = tall ? "140px" : "";
+      card.scrollIntoView({ block: tall ? "start" : "center" });
       card.classList.remove("found");
       void card.offsetWidth; // restart the highlight
       card.classList.add("found");
-    });
+    };
+    nextTick(find);
   }
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   function applyTheme() {
@@ -483,10 +488,25 @@ export function createRunetool() {
     st.lvl = Math.min(MAX_ITEM_LEVEL, Math.max(1, parseInt(st.lvl) || MAX_ITEM_LEVEL));
     Object.keys(tiers).forEach((k) => delete tiers[k]);
   }
-  const hashchange = () => (page.value = pageFromHash());
+  // A link to one card (CopyLink.vue): #uniques?name=Grim%20Fang&tier=3 opens the page
+  // searched for it, at that tier, and highlights it.
+  function applyLink() {
+    const [p, qs] = window.location.hash.slice(1).split("?");
+    const name = qs && new URLSearchParams(qs).get("name");
+    if (!name || !["runewords", "uniques", "sacred-uniques", "sets", "socketables", "base-items"].includes(p)) return;
+    const tier = +new URLSearchParams(qs).get("tier");
+    const u = p === "uniques" && tier ? TUD.find((x) => x.name === name) : null;
+    if (u && tier <= u.t.length) tiers[u.key] = tier - 1;
+    reveal(p, name);
+  }
+  const hashchange = () => {
+    page.value = pageFromHash();
+    applyLink();
+  };
   if (getCurrentInstance()) {
     onMounted(() => {
       window.addEventListener("hashchange", hashchange);
+      applyLink();
       loadLiveCatalog();
     });
   }

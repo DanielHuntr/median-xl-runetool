@@ -2,6 +2,7 @@
 // One recipe as pictures: ingredients + … → results, each named underneath, then what the
 // results get. Ingredients the cube is missing are faded. A recipe with random results
 // lists each with its chance; the footer (tags and buttons) is the caller's.
+import CopyLink from "./CopyLink.vue";
 import { computed, ref } from "vue";
 import CubeIcon from "./CubeIcon.vue";
 const props = defineProps({ entry: { type: Object, required: true }, ready: Boolean });
@@ -62,12 +63,14 @@ const pct = (x) => (x === undefined ? "" : x >= 0.1 ? `${Math.round(x * 100)}%` 
       <span v-for="c in conditions" :key="c" class="cube-tag">{{ c }}</span>
       <span v-if="entry.similar" class="cube-similar">+{{ entry.similar.toLocaleString() }} like it for other bases</span>
       <slot />
+      <CopyLink class="cube-recipe-link" :hash="`cube?recipe=${entry.recipe.row}`" label="this recipe" />
     </div>
   </article>
 </template>
 <style scoped>
 .cube-recipe { display: grid; gap: 10px; align-content: space-between; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
 .cube-recipe.ready { border-color: var(--gold); }
+.cube-recipe-link { margin-left: auto; }
 .cube-recipe-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; }
 .cube-recipe-item { display: grid; justify-items: center; gap: 4px; width: 84px; margin: 0; }
 .cube-recipe-item figcaption { font-size: 0.6875rem; line-height: 1.25; text-align: center; color: var(--text); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }

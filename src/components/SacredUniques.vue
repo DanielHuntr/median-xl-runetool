@@ -1,4 +1,5 @@
 <script setup>
+import CopyLink from "./CopyLink.vue";
 import ItemArt from "./ItemArt.vue";
 import CubeLink from "./CubeLink.vue";
 import Icon from "./AppIcon.vue";
@@ -66,7 +67,7 @@ const sections = computed(() => [
             <h2>{{ u.name }}</h2>
             <p class="base">{{ u.base }}</p>
           </div>
-          <div class="card-head-side"><CubeLink kind="unique" :name="u.name" compact /></div>
+          <div class="card-head-side"><CubeLink kind="unique" :name="u.name" compact /><CopyLink :hash="`sacred-uniques?name=${encodeURIComponent(u.name)}`" :label="u.name" /></div>
         </div>
         <div class="unique-meta spaced">
           <span v-if="u.req !== null"

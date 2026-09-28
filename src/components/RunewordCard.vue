@@ -1,4 +1,5 @@
 <script setup>
+import CopyLink from "./CopyLink.vue";
 import Icon from "./AppIcon.vue";
 import { useRunetool } from "../composables/useRunetool.js";
 const {
@@ -32,7 +33,7 @@ const alsoFits = computed(() =>
       <span class="item-kind"
         >{{ r.slot === "armor" ? "ARMOR" : "WEAPON" }} · {{ r.runes.length }}
         {{ r.runes.length === 1 ? "RUNE" : "RUNES" }}</span
-      ><button
+      ><span class="card-actions"><CopyLink :hash="`runewords?name=${encodeURIComponent(r.name)}`" :label="r.name" /><button
         class="star"
         :class="{ saved: stars.includes(r.name) }"
         :aria-pressed="stars.includes(r.name)"
@@ -40,7 +41,7 @@ const alsoFits = computed(() =>
         @click="star(r.name)"
       >
         <Icon name="star" />
-      </button>
+      </button></span>
     </div>
     <h2>{{ r.name }}</h2>
     <p v-if="r.subtitle" class="rw-subtitle">{{ r.subtitle }}</p>

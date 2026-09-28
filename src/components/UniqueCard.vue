@@ -1,4 +1,5 @@
 <script setup>
+import CopyLink from "./CopyLink.vue";
 import Icon from "./AppIcon.vue";
 import ItemArt from "./ItemArt.vue";
 import CubeLink from "./CubeLink.vue";
@@ -35,6 +36,7 @@ defineProps({ u: { type: Object, required: true } });
       </button>
     </div>
         <CubeLink kind="unique" :name="u.name" :tier="tierIndex(u) + 1" compact />
+        <CopyLink :hash="`uniques?name=${encodeURIComponent(u.name)}${u.t.length > 1 ? `&tier=${tierIndex(u) + 1}` : ''}`" :label="u.t.length > 1 ? `${u.name}, tier ${tierIndex(u) + 1}` : u.name" />
       </div>
     </div>
     <div class="unique-meta">

@@ -29,6 +29,20 @@ const linkNote = ref("");
 function applyLink() {
   const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
   const make = params.get("make");
+  const row = params.get("recipe");
+  if (row && cube.value) {
+    history.replaceState(null, "", "#cube");
+    const recipe = cube.value.recipes.find((r) => String(r.row) === row);
+    if (!recipe) { linkNote.value = "That recipe isn't in this version of the game."; return; }
+    contents.value = cube.value.load(recipe);
+    editing.value = null;
+    result.value = null;
+    fresh.value = [];
+    const d = cube.value.describe(recipe);
+    linkNote.value = `Loaded: ${d.inputs.join(" + ")} → ${d.outputs.map((o) => o.name).filter((n) => n !== "A special effect").join(", ")}. Press Transmute to try it.`;
+    nextTick(() => document.getElementById("cube-bench")?.scrollIntoView({ block: "start" }));
+    return;
+  }
   if (!make || !cube.value) return;
   const [kind, ...rest] = make.split(":");
   const target = rest.join(":");

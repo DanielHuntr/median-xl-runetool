@@ -83,12 +83,23 @@ test("a mercenary hired in Hell says why its level can't be set yet", async ({ p
   await expect(page.locator(".merc-hint")).toContainText("starts at level 90");
 });
 
-test("a starter build's stage link opens on that stage", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().getByRole("link", { name: "Nightmare" }).click();
-  const stages = page.getByRole("group", { name: "Levelling stage" });
-  await expect(stages.getByRole("button", { name: "Nightmare" })).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".planner-toolbar").getByLabel("Character level")).toHaveValue("100");
+test("links open one card: a runeword, a unique at a tier, a sacred unique, a set", async ({ page }) => {
+  await page.goto("/#uniques?name=Grim%20Fang&tier=3");
+  const fang = page.locator("article.found", { hasText: "Grim Fang" });
+  await expect(fang).toBeVisible();
+  await expect(fang.getByRole("button", { name: "Tier 3", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(fang.getByRole("button", { name: "Copy a link to Grim Fang, tier 3" })).toBeVisible();
+  for (const [hash, name] of [["runewords?name=Tailwind", "Tailwind"], ["sacred-uniques?name=The%20Xiphos", "The Xiphos"], ["sets?name=Pantheon", "Pantheon"]]) {
+    await page.goto(`/#${hash}`);
+    await expect(page.locator("article.found h2", { hasText: name })).toBeVisible();
+  }
+});
+
+test("a cube recipe link loads that recipe, ready to transmute", async ({ page }) => {
+  await page.goto("/#cube?recipe=4792");
+  await expect(page.getByText("Loaded: Book of Cain: Item Design + Oil of Craft → Book of Cain: Cube Reagent.", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Transmute" }).click();
+  await expect(page.getByText("Nothing happens")).toHaveCount(0);
 });
 
 test("the character planner loads", async ({ page }) => {

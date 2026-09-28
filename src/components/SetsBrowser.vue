@@ -1,4 +1,5 @@
 <script setup>
+import CopyLink from "./CopyLink.vue";
 import ClassPicker from "./ClassPicker.vue";
 import ItemArt from "./ItemArt.vue";
 import Icon from "./AppIcon.vue";
@@ -50,8 +51,9 @@ const sections = [{ key: "tags", title: "Stats", note: "Must have all chosen (it
     </div>
     <div class="unique-grid">
       <article v-for="s in sets" :key="s.id" class="unique-card set-card">
-        <div class="item-kind">
-          {{ s.cls || "Any class" }} · {{ s.items.length }} items
+        <div class="card-top">
+          <span class="item-kind">{{ s.cls || "Any class" }} · {{ s.items.length }} items</span>
+          <CopyLink :hash="`sets?name=${encodeURIComponent(s.name)}`" :label="s.name" />
         </div>
         <h2>{{ s.name }}</h2>
         <p class="base">{{ s.sub }}</p>        <div class="unique-meta spaced">

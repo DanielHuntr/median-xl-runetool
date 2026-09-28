@@ -95,10 +95,6 @@ function deleteBuild(id) {
         <p v-if="b.summary?.unspent" class="muted">{{ b.summary.unspent }} skill points left to customise.</p>
         <p v-else-if="b.summary" class="muted">All skill points allocated · {{ b.build.signets }} Signets of Learning</p>
       </a>
-      <div class="starter-stages" role="group" :aria-label="`Open ${b.name} at a stage`">
-        <span class="muted">Open at</span>
-        <a v-for="n in ['Normal', 'Nightmare', 'Hell']" :key="n" :href="`${href(b, true)}&stage=${n}`">{{ n }}</a>
-      </div>
       </div>
     </div>
     </section>
@@ -106,10 +102,6 @@ function deleteBuild(id) {
 </template>
 <style scoped>
 .build-library { padding: 0 24px 32px; }
-.starter-stages { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: .8125rem; }
-.starter-stages .muted { margin-right: 2px; }
-.starter-stages a { padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; color: var(--gold); text-decoration: none; }
-.starter-stages a:hover, .starter-stages a:focus-visible { background: var(--gold-bg); border-color: var(--gold); }
 .starter-class { margin: 28px 0 0; font-family: var(--serif); color: var(--gold); font-size: 1.25rem; }
 .starter-class .muted { font-family: inherit; font-size: .875rem; margin-left: 6px; }
 .field { display:flex; flex-direction:column; gap:8px; color:var(--muted); font-size:.8125rem; margin:0; }
@@ -133,8 +125,8 @@ function deleteBuild(id) {
 /* The class art fills the card's right side. It sits in its own
    clipped layer so the skill tooltips can still reach past the card's edge. */
 .build-card { position:relative; padding:24px calc(40% + 8px) 24px 24px; border:1px solid var(--border); border-radius:8px; background:var(--panel); overflow:visible; }
-.starter-wrap { position:relative; display:flex; flex-direction:column; }
-.starter-wrap .starter-card { flex:1; }
+.starter-wrap { position:relative; }
+.starter-wrap .starter-card { height:100%; }
 .starter-card { display:block; color:inherit; text-decoration:none; transition:border-color .15s, box-shadow .15s; }
 .starter-card:hover,
 .starter-card:focus-visible { border-color:var(--gold); box-shadow:0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent) inset, 0 0 18px color-mix(in srgb, var(--gold) 16%, transparent); outline:none; }
