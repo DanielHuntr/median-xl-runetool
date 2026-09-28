@@ -90,6 +90,10 @@ const openOnes = `${ISSUES_REPO}/issues?q=is%3Aissue+label%3Aconfirmation`;
               <SkillIcon v-if="q.skill" :image="image(q.skill.id)" />
               <div>
                 <h3>{{ q.question }}</h3>
+                <p v-if="q.skill" class="confirm-skill-of">
+                  {{ q.skill.tab === "Mastery" ? "Any class" : q.skill.cls }} · {{ q.skill.tab }} tree ·
+                  <a :href="`#planner?skill=${q.skill.id}`">Open in the planner</a>
+                </p>
                 <p class="muted">{{ q.detail }}</p>
               </div>
               <a class="btn" :href="questionUrl(q)" target="_blank" rel="noopener">Send an answer</a>
