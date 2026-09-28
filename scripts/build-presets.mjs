@@ -183,11 +183,24 @@ try {
   }
   async function levellingGuide(def, endgame) {
     const guide = [];
+    // A player doesn't go back a tier: each stage may only use an item (or runeword base) at
+    // the highest tier an earlier stage used, or better.
+    const minTiers = {};
+    // Nor back to lower gems: normal 12, flawless 15, perfect 18 (socketables' levels).
+    let minGemLevel = 0;
     for (const [level, difficulty] of STAGES) {
       const sdef = stageDef(def, level), notes = [];
       if (!sdef) { guide.push({ level, difficulty, notes: ["No damage skill the planner can work out is learnable yet."] }); continue; }
       try {
-        const { p, scope } = await buildAt(sdef, level, difficulty, false, notes);
+        const { p, scope } = await buildAt(sdef, level, difficulty, false, notes, { minTiers, minGemLevel });
+        for (const st of Object.values(p.build.value.gear)) {
+          const key = st.base || st.ref, tier = st.base ? st.baseVariant : st.variant;
+          if (key && Number.isInteger(tier)) minTiers[key] = Math.max(minTiers[key] ?? -1, tier);
+          for (const ref of st.sockets || []) {
+            const d = ref && catalog.get(ref);
+            if (d?.kind === "socketable" && d.kindLabel === "Gems") minGemLevel = Math.max(minGemLevel, d.lvl || 0);
+          }
+        }
         const b = JSON.parse(JSON.stringify(p.build.value));
         const c = computeCharacter(b, { engine, catalog, planner });
         scope.stop();
@@ -220,7 +233,10 @@ try {
   console.log(`${plan.length} trees planned; not built (nothing the planner can build around yet): ${skipped.join("; ") || "none"}`);
   // One preset built at a level and difficulty: the endgame preset (final, level 150, Hell),
   // or a stage of its levelling guide. Problems go to `sink`.
-  async function buildAt(def, level, difficulty, final, sink) {
+  // Orbs a levelling stage may put on one item (a levelling player doesn't stack dozens); the
+  // endgame build has no budget.
+  const ORB_BUDGET = { Normal: 2, Nightmare: 5, Hell: 10 };
+  async function buildAt(def, level, difficulty, final, sink, { minTiers = null, minGemLevel = 0 } = {}) {
     memory.clear();
     const scope = effectScope();
     const p = scope.run(() => createPlanner(engine, catalog, planner));
@@ -272,6 +288,9 @@ try {
     p.state.suggestAttributes = true;
     p.state.allowAttributeRespec = true;
     p.state.suggestEnhancements = true;
+    p.state.maxOrbsPerItem = final ? null : ORB_BUDGET[difficulty] ?? null;
+    p.state.minTiers = minTiers && Object.keys(minTiers).length ? { ...minTiers } : null;
+    p.state.minGemLevel = minGemLevel || null;
     const t0 = Date.now();
     const suggestGear = async (again = false) => {
     p.state.suggestAttributes = true;

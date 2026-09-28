@@ -211,7 +211,10 @@ export function wantedStats(profile, character) {
 /**
  * Scores items for one slot. Returns [{ def, state, score, reasons, warnings }], best first.
  */
-export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false }, limit = 30) {
+// maxOrbs: at most that many mystic orbs per item (starter builds' levelling stages).
+// minTiers: { item or runeword base key: lowest tier (variant) allowed }, so a levelling build
+// never goes back to a lower tier of something it already had.
+export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null }, limit = 30) {
   const mainSlot = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
   if (mainSlot && build.gear[mainSlot] && catalog.resolve(build.gear[mainSlot], build.level)?.twoHanded) return [];
   const slotDef = SLOTS.find((s) => s.id === slot);
@@ -295,6 +298,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     for (const candidate of states) {
       const tierKey = candidate.base || candidate.ref;
       if (settled.has(tierKey)) continue;
+      if (minTiers && (minTiers[tierKey] ?? -1) > (candidate.base ? candidate.baseVariant : candidate.variant)) continue;
       const resolved = catalog.resolve(candidate, build.level);
       if (!resolved || resolved.head.reqLevel > build.level) continue;
       if (need && resolved.def.slotType === 'weapon' && !need.fits(resolved.def.cat)) continue;
@@ -380,7 +384,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
         const gear = { ...build.gear, [slot]: candidate };
         if (catalog.resolve(candidate, build.level)?.twoHanded) delete gear[slot === 'weapon' ? 'offhand' : 'offhand2'];
         const plan = suggestEnhancements({ build: { ...build, gear }, ...env, computeCharacter, activeSlots,
-          profile, only: slot, includeUnique });
+          profile, only: slot, includeUnique, maxOrbs, minGemLevel });
         const state = plan.gear[slot], resolved = catalog.resolve(state, build.level);
         if (!resolved || resolved.head.reqLevel > build.level) continue;
         const outcome = fitsAttributes(state, resolved);
@@ -467,7 +471,9 @@ function socketValue(parsed, want, character, profile, build) {
  * @returns {{ gear: object, picks: { slot, index, ref, name, reasons }[] }} the gear with
  *   sockets filled (a copy) and what went where.
  */
-export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null }) {
+// minGemLevel: no gem below this level (normal 12, flawless 15, perfect 18): a levelling build
+// that has socketed flawless gems doesn't go back to normal ones. Runes and jewels aren't graded.
+export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null, minGemLevel = null }) {
   // A plain copy (the store's gear is a reactive proxy, which structuredClone can't copy).
   const gear = JSON.parse(JSON.stringify(build.gear));
   const reqLevel = (d) => {
@@ -475,7 +481,8 @@ export function suggestSockets({ build, engine, catalog, planner, computeCharact
     const l = d.variants?.at(-1)?.lines.find((x) => /^Required Level: /.test(x));
     return l ? parseInt(l.split(": ")[1], 10) || 0 : 0;
   };
-  const candidates = [...catalog.socketables(), ...catalog.jewels()].filter((d) => reqLevel(d) <= build.level);
+  const candidates = [...catalog.socketables(), ...catalog.jewels()].filter((d) => reqLevel(d) <= build.level
+    && !(minGemLevel && d.kind === "socketable" && d.kindLabel === "Gems" && (d.lvl || 0) < minGemLevel));
   // Jewels are all unique items: each is suggested at most once (already socketed ones
   // count), so rare finds aren't stacked. Gems and runes can repeat.
   const usedJewels = new Set(
@@ -524,7 +531,7 @@ const orbMayStrandGear = (p) =>
   (p.kind === 'stats' && p.effects.some(([k, v]) => v < 0 && /^(percent_)?(strength|dexterity)$/.test(k)));
 
 export function suggestEnhancements(options) {
-  const { build, catalog, engine, planner, computeCharacter, activeSlots, profile, only, includeUnique = false } = options;
+  const { build, catalog, engine, planner, computeCharacter, activeSlots, profile, only, includeUnique = false, maxOrbs = null } = options;
   const slots = activeSlots(build).filter(s => !only || (Array.isArray(only) ? only.includes(s) : s === only));
   const original = computeCharacter(build, { engine, catalog, planner });
   const want = wantedStats(profile, original);
@@ -542,6 +549,7 @@ export function suggestEnhancements(options) {
         if (!r || r.head.reqLevel > build.level) continue;
         for (const o of ORBS) {
           if (o.unique && !includeUnique || o.minLevel > build.level || !orbFits(o, r.def, r.lines, st)) continue;
+          if (maxOrbs != null && (st.orbs || []).length >= maxOrbs) continue;
           if ((st.orbs || []).filter(id => orbGroup(orbById(id) || { id }) === orbGroup(o)).length >= o.limit) continue;
           // An orb adds its level cost after everything else (catalog.resolve), so the
           // requirement and the orb's effect are known without resolving the whole item.
