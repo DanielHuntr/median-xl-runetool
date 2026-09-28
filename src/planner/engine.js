@@ -58,7 +58,9 @@ const MAX_LEVEL_RULES = [
   { source: "soulchain", target: ["fireheart_totem", "stormeye_totem", "frostclaw_totem", "dark_gathering"],
     bonus: (src) => src,
     note: "+1 to the soulchained totems' and Dark Gathering's maximum level per point" },
-  perLevel("aptitude", 5, { start: 115 }),
+  // 5 at level 150 in game (MedianDB's count from 115 gave 7): it counts from 125. Where
+  // between 120 (its required level) and 150 the steps fall is still to be checked.
+  perLevel("aptitude", 5, { start: 125, confirmed: { at: { 150: 5 }, issue: null } }),
   perLevel("void_gazer", 5, { start: 95, confirmed: { at: { 100: 1, 104: 1, 150: 11 }, issue: 14 } }),
   // 38 at level 150 in game, one more than MedianDB's 37: it starts from the game file's
   // base of 1 (skills2.bin), not 0.

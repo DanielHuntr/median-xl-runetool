@@ -1656,13 +1656,13 @@ test('open questions come from where the sources disagree, and only for caps tha
   // Each cap question quotes the game's own rule; the max-life question is settled by
   // ItemStatCost (stat 76, op 11) and no longer asked.
   for (const x of q.filter((x) => x.id.startsWith('cap:'))) assert.match(x.detail, /The game confirms the rule \("[^"]*\d[^"]*"\)/, x.id);
-  // Caps read in game (issues #14-#20) are answered, not asked; Aptitude is still open.
-  assert.ok(!ids.includes('cap:warmth') && ids.includes('cap:aptitude') && !ids.includes('rule:max-life-percent'));
+  // Caps read in game (issues #14-#20, Aptitude in chat) are answered, not asked.
+  assert.ok(!ids.includes('cap:warmth') && !ids.includes('cap:aptitude') && !ids.includes('rule:max-life-percent'));
 });
 
 test("level-built caps match what the game showed (issues #14-#20)", async () => {
   const { engine } = await env();
-  const seen = { void_gazer: "Assassin", warmth: "Sorceress", consecration: "Paladin", sanctity: "Paladin", holy_fire: "Paladin", barkskin: "Druid", spiritual_alignment: "Druid" };
+  const seen = { aptitude: "Barbarian", void_gazer: "Assassin", warmth: "Sorceress", consecration: "Paladin", sanctity: "Paladin", holy_fire: "Paladin", barkskin: "Druid", spiritual_alignment: "Druid" };
   for (const [id, cls] of Object.entries(seen)) {
     const c = engine.capConfirmed(id);
     assert.ok(c, `${id} has its in-game answer recorded`);
