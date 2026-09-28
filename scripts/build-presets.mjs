@@ -294,6 +294,19 @@ try {
         p.build.value.attrs = releaseUnusedRequirements(p.build.value, {}, env);
         p.build.value.attrs = spendRemaining(p.build.value, env, buildProfile(p.build.value, engine));
       }
+    } else {
+      // A suggestion can need attributes only its own items give (Lionheart's strength for the
+      // boots): check it can be put on one item at a time, and fund it that way if not. At
+      // level 150 there's always room; lower stages sometimes need it.
+      const env = { engine, catalog, planner };
+      if (!wearableBothSets(p.build.value, env)) {
+        const funded = fundLoadout(p.build.value, {}, env);
+        if (funded) {
+          p.build.value.attrs = funded;
+          p.build.value.attrs = releaseUnusedRequirements(p.build.value, {}, env);
+          p.build.value.attrs = spendRemaining(p.build.value, env, buildProfile(p.build.value, engine));
+        } else sink.push(`${def.name} (level ${level}): its gear can't be put on one item at a time`);
+      }
     }
     return count;
     };
