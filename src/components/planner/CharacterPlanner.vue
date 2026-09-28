@@ -169,6 +169,17 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
               aria-label="Mercenary level (at most yours)"
               @change="planner.setMercLevel($event.target.value)"
           /></label>
+          <label class="level"
+            >Hired at
+            <input
+              type="number"
+              min="1"
+              :max="planner.character.value.merc?.level"
+              :value="planner.character.value.merc?.hiredAt"
+              aria-label="Level the mercenary was hired at (its skills grow from here)"
+              title="Its skills grow from the level it was hired at; the earliest possible by default"
+              @change="planner.setMercHiredAt($event.target.value)"
+          /></label>
           <label class="field-inline"
             >Hired in
             <select :value="planner.build.value.merc.difficulty || planner.build.value.difficulty" @change="planner.setMercDifficulty($event.target.value)">

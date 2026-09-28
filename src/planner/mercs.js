@@ -4,9 +4,13 @@
 //    with D2 1.13c's HirelingTxt growth: strength, dexterity and damage per level in 1/8,
 //    resistances in 1/4, from the latest row at or below its level. An in-game Act 2
 //    Shapeshifter at level 44 shows life 1,590 = 1,525 + 65 × (44 − 43) (the level-43 row).
-//  - Skill levels: base + (level − the difficulty's first row's level) × per-level / 32. The
-//    same mercenary shows Claw Tornado, Pounce and Thorn Field at 17 = 1 + (44 − 12) × 16 / 32,
-//    and every skill from hire (the docs' "Lvl" column isn't when they're learned).
+//  - Skill levels: base + (level − the level it was hired at) × per-level / 32, rounded down,
+//    + All Skills from its gear; every skill from hire (the docs' "Lvl" column isn't when
+//    they're learned). In game (GitHub issues #9-#11): a level 44 Shapeshifter with no +skills
+//    has Bloodlust 8 and Pounce 15 (hired at 15-16); a level 43 Ranger hired in Nightmare has
+//    Dark Power 4 (hired at 36-37); a level 42 Bloodmage has Firedance 7 (hired at 15-18).
+//    The stats follow the table rows instead (that Shapeshifter's life 1,590 is the level-43
+//    row's). The hiring level defaults to the earliest possible, the difficulty's first row.
 //  - Class items each act can wear and the fixed bonuses: the docs
 //    (docs.median-xl.com/doc/class/hirelings), as written there.
 //  - Buffs: the skills' own game formulas (aura stats), at the mercenary's skill level.
@@ -66,7 +70,8 @@ export function cleanMerc(raw, data, cleanItem) {
   if (!raw || typeof raw !== "object") return null;
   const spec = mercSpecs(data).find((x) => x.spec === raw.spec);
   if (!spec) return null;
-  const m = { spec: spec.spec, level: null, difficulty: null, gear: {}, off: [] };
+  const m = { spec: spec.spec, level: null, difficulty: null, hiredAt: null, gear: {}, off: [] };
+  if (Number.isInteger(raw.hiredAt) && raw.hiredAt >= 1 && raw.hiredAt <= 150) m.hiredAt = raw.hiredAt;
   if (["Normal", "Nightmare", "Hell"].includes(raw.difficulty)) m.difficulty = raw.difficulty;
   if (Number.isInteger(raw.level) && raw.level >= 1 && raw.level <= 150) m.level = raw.level;
   for (const { id } of MERC_SLOTS) {
@@ -160,8 +165,10 @@ export function computeMerc(b, { catalog, data }) {
   // Skills: base level + levels gained since the row's level + All Skills from its gear
   // (the docs: "+X to All Skills" reaches mercenaries; "+X to [Skill]" and class skills don't).
   const allSkills = s("all_skills");
+  // The level it was hired at: at least the difficulty's first row, at most its level now.
+  const hiredAt = Math.min(L, Math.max(type.rows[0].level, m.hiredAt ?? type.rows[0].level));
   const skills = type.skills.map((sk) => {
-    const level = sk.level + Math.floor((Math.max(0, L - type.rows[0].level) * sk.perLevel) / 32) + allSkills;
+    const level = sk.level + Math.floor((Math.max(0, L - hiredAt) * sk.perLevel) / 32) + allSkills;
     const buff = PARTY_BUFFS.has(sk.name);
     const on = buff && !m.off?.includes(sk.name);
     const out = { name: sk.name, docsName: docsSkillName(sk.name), level, learned: true, buff, on, effects: [], uncounted: [], tooltip: [] };
@@ -173,7 +180,7 @@ export function computeMerc(b, { catalog, data }) {
       // applies (Dark Power's tooltip attack speed uses 220 × …, its aura stat 200 × …).
       const value = (c) => { if (!c) return null; const r = e.calc(c); return r.ok ? r.value : undefined; };
       for (const line of rec.lines || []) {
-        if (line.block !== "level" || !(line.textA || "").trim()) continue;
+        if (!["level", "extra"].includes(line.block) || !(line.textA || "").trim() || /item granted skill/i.test(line.textA)) continue;
         const a = value(line.calcA), b = value(line.calcB);
         if (a === undefined || b === undefined) continue;
         const text = formatLine(line, a, b).text;
@@ -193,7 +200,7 @@ export function computeMerc(b, { catalog, data }) {
     return out;
   });
   const buffs = skills.filter((x) => x.on).flatMap((x) => x.effects.map(([k, v]) => [k, v, `Mercenary's ${x.docsName} (level ${x.level})`, "game-inferred"]));
-  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, row: row.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
+  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, hiredAt, row: row.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
 }
 
 /** The specializations with a party buff (the ones worth hiring for your own stats). */

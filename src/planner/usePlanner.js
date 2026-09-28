@@ -613,12 +613,17 @@ export function createPlanner(engine, catalog, planner) {
     if (!act) return;
     // Items stay if the new type can wear them (same act).
     const keep = prev && mercSpecs(planner).find((x) => x.spec === prev.spec)?.act === act;
-    build.value.merc = { spec, level: prev?.level ?? null, difficulty: prev?.difficulty ?? null, gear: keep ? prev.gear : {}, off: prev?.off || [] };
+    build.value.merc = { spec, level: prev?.level ?? null, difficulty: prev?.difficulty ?? null, hiredAt: keep ? prev.hiredAt ?? null : null, gear: keep ? prev.gear : {}, off: prev?.off || [] };
   }
   function setMercLevel(v) {
     if (!build.value.merc) return;
     const n = parseInt(v, 10);
     build.value.merc.level = Number.isInteger(n) && n >= 1 ? Math.min(n, build.value.level) : null;
+  }
+  function setMercHiredAt(v) {
+    if (!build.value.merc) return;
+    const n = parseInt(v, 10);
+    build.value.merc.hiredAt = Number.isInteger(n) && n >= 1 ? Math.min(n, 150) : null;
   }
   function setMercDifficulty(d) {
     if (build.value.merc && DIFFICULTIES.includes(d)) build.value.merc.difficulty = d;
@@ -821,7 +826,7 @@ export function createPlanner(engine, catalog, planner) {
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages,
-    mercSlotCats, setMerc, setMercLevel, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
+    mercSlotCats, setMerc, setMercLevel, setMercHiredAt, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };

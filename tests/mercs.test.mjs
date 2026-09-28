@@ -51,14 +51,30 @@ test("stored mercenaries are checked", () => {
   assert.deepEqual(m.off, ["Firedance"]);
 });
 
-test("an in-game Act 2 Shapeshifter at level 44 (hired in Normal)", () => {
-  // From the mercenary screen: life 1,590; Claw Tornado, Pounce and Thorn Field level 17.
-  // (Werebear 5 and Bloodlust 10 there are above the base 3 and 9: its gear isn't known.)
-  const m = merc("Shapeshifter", 44, "Normal");
-  assert.equal(m.life, 1590);
-  const lvl = (n) => m.skills.find((s) => s.name === n).level;
-  assert.deepEqual([lvl("Sandstorm"), lvl("Pounce"), lvl("Thorn Field")], [17, 17, 17]);
-  assert.equal(m.resist.physical, 25 + Math.floor(44 / 5), "Grit: 25%, +1% per 5 levels (the screen shows 34%, gear unknown)");
+test("in-game mercenaries (GitHub issues #9-#11): life by table row, skills from the hiring level", () => {
+  // Gulzar, a level 44 Shapeshifter: life 1,590 (the level-43 row); with no +skills Bloodlust 8,
+  // Pounce and Thorn Field 15, so hired at 15-16; its gear's +2 skills show 10 and 17.
+  const g = merc("Shapeshifter", 44, "Normal", { hiredAt: 16 });
+  assert.equal(g.life, 1590);
+  const lvl = (m, n) => m.skills.find((s) => s.name === n).level;
+  assert.deepEqual([lvl(g, "Bloodlust"), lvl(g, "Pounce"), lvl(g, "Thorn Field"), lvl(g, "Werebear Morph")], [8, 15, 15, 3]);
+  // A level 43 Ranger hired in Nightmare (at 36): Dark Power 4.
+  assert.equal(lvl(merc("Ranger", 43, "Nightmare", { hiredAt: 36 }), "Dark Power"), 4);
+  // A level 42 Bloodmage (hired in Normal, at 15): Firedance 7.
+  assert.equal(lvl(merc("Bloodmage", 42, "Normal", { hiredAt: 15 }), "Firedance"), 7);
+  // Unset, it's hired as early as the difficulty allows.
+  assert.equal(merc("Ranger", 43, "Nightmare").hiredAt, 36);
+});
+
+test("buff tooltips at those levels match the game (issues #9-#11)", () => {
+  const tip = (spec, L, diff, hiredAt, name) => merc(spec, L, diff, { hiredAt }).skills.find((s) => s.name === name).tooltip;
+  const same = (a, b) => assert.deepEqual([...a].sort(), [...b].sort());
+  same(tip("Ranger", 43, "Nightmare", 36, "Dark Power"),
+    ["Duration: 23 seconds", "Attack Speed: 16%", "Magic Damage to Party Weapons: 5-7", "Physical Damage: 14%", "Chance of Crushing Blow: 10%"]);
+  same(tip("Shapeshifter", 44, "Normal", 16, "Bloodlust"),
+    ["Duration: 127 seconds", "Physical/Magic Spell Damage: 10%", "Elemental Spell Damage: 10%", "Physical Damage: 24%"]);
+  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Elemental Spell Damage: 29%"));
+  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Physical Damage: 51%"));
 });
 
 test("the buff mercenaries, and their expected tooltip lines from the game's own formulas", () => {
