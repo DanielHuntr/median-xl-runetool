@@ -1,5 +1,6 @@
 // Rates starter builds (src/planner/rating.js) and stores it on each: summary.rating =
-// { tier, rank, of, dps, skill, perAction, rate, hit, ehp, life, resist } or { unrated, ... }.
+// { tier, rank, of, bossTier, clearTier, surviveTier, boss, clear, ehp, … } or { unrated, … },
+// and found.rating for the found-gear version.
 // Used by build-presets.mjs when it publishes and by rate-presets.mjs on its own.
 export function ratePresets(presets, env) {
   const { buildMetrics, assignTiers } = env.rating;
@@ -8,6 +9,13 @@ export function ratePresets(presets, env) {
   for (const p of presets) {
     const m = list.find((x) => x.id === p.id).metrics;
     p.summary = { ...p.summary, rating: { ...(tiers.get(p.id) || {}), ...m } };
+  }
+  // Found-gear versions: rated the same way, ranked among themselves.
+  const found = presets.filter((p) => p.found?.build).map((p) => ({ id: p.id, metrics: buildMetrics(p.found.build, env) }));
+  const foundTiers = assignTiers(found);
+  for (const p of presets) {
+    const m = found.find((x) => x.id === p.id)?.metrics;
+    if (m) p.found = { ...p.found, rating: { ...(foundTiers.get(p.id) || {}), ...m } };
   }
   return presets;
 }
