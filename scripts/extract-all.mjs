@@ -15,6 +15,7 @@ const STEPS = [
   // The game extract in data/game/<patch>/ that the planner data is built from.
   ["extract-game-data.mjs", dir],
   ["extract-monsters.mjs", dir],
+  ["extract-mercs.mjs", dir],
   ["extract-item-art.mjs", dir],
   ["build-item-atlas.mjs"],
   ["import-skills.mjs"],

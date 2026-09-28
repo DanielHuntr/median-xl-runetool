@@ -9,6 +9,7 @@ import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
 import { againstTarget, typicalTarget } from "./target.js";
 import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
+import { cleanMerc, mercCats, mercSpecs } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 
 export const PlannerKey = Symbol("Planner");
@@ -44,6 +45,8 @@ const emptyBuild = (cls) => ({
   leftSkill: BASIC_ATTACK,
   rightSkill: null,
   skillBar: [],
+  // The hired mercenary (mercs.js): { spec, level, gear, off } or null.
+  merc: null,
 });
 const MAX_BAR = 8;
 
@@ -79,7 +82,7 @@ function cleanItem(st, catalog) {
   return out;
 }
 
-function cleanBuild(raw, cls, engine, catalog) {
+function cleanBuild(raw, cls, engine, catalog, planner = null) {
   const b = emptyBuild(cls);
   if (!raw || typeof raw !== "object") return b;
   b.level = engine.clampLevel(raw.level ?? 1);
@@ -106,6 +109,7 @@ function cleanBuild(raw, cls, engine, catalog) {
   if (raw.leftSkill === null || usable(raw.leftSkill)) b.leftSkill = raw.leftSkill ?? BASIC_ATTACK;
   if (usable(raw.rightSkill)) b.rightSkill = raw.rightSkill;
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
+  b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
   return b;
 }
 
@@ -147,19 +151,21 @@ export function createPlanner(engine, catalog, planner) {
     tone: "warn",
     // Name of the build last opened from the Builds page, per class (suggested when saving).
     openedName: {},
+    // The planner's tab: your character or your mercenary.
+    view: saved.view === "merc" ? "merc" : "character",
     // Per class: the stage being edited, and the other stages' builds.
     stage: {},
     stages: {},
   });
   for (const cls of engine.classNames) {
-    state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog);
+    state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog, planner);
     state.stage[cls] = STAGES.includes(saved.stage?.[cls]) ? saved.stage[cls] : "Endgame";
     state.stages[cls] = cleanStages(saved.stages?.[cls], cls, state.stage[cls]);
   }
   // Stored or shared stages: well-formed builds of this class, never the active stage's slot.
   function cleanStages(raw, cls, active) {
     const out = {};
-    for (const name of STAGES) if (name !== active && raw?.[name] && typeof raw[name] === "object") out[name] = cleanBuild({ ...raw[name], cls }, cls, engine, catalog);
+    for (const name of STAGES) if (name !== active && raw?.[name] && typeof raw[name] === "object") out[name] = cleanBuild({ ...raw[name], cls }, cls, engine, catalog, planner);
     return out;
   }
   const stageStart = (cls, name) => {
@@ -191,7 +197,7 @@ export function createPlanner(engine, catalog, planner) {
   function fillStages(cls, builds) {
     for (const [name, b] of Object.entries(builds)) {
       if (name === state.stage[cls] || state.stages[cls][name] || !b) continue;
-      state.stages[cls] = { ...state.stages[cls], [name]: cleanBuild({ ...b, cls }, cls, engine, catalog) };
+      state.stages[cls] = { ...state.stages[cls], [name]: cleanBuild({ ...b, cls }, cls, engine, catalog, planner) };
     }
   }
 
@@ -591,6 +597,31 @@ export function createPlanner(engine, catalog, planner) {
     hideTip();
     state.picker = null;
   }
+  // ---------- The mercenary (mercs.js): part of the build, so each stage has its own.
+  const mercAct = () => mercSpecs(planner).find((x) => x.spec === build.value.merc?.spec)?.act ?? null;
+  const mercSlotCats = (slot) => mercCats(mercAct(), slot);
+  function setMerc(spec) {
+    if (!spec) return (build.value.merc = null);
+    const prev = build.value.merc;
+    const act = mercSpecs(planner).find((x) => x.spec === spec)?.act;
+    if (!act) return;
+    // Items stay if the new type can wear them (same act).
+    const keep = prev && mercSpecs(planner).find((x) => x.spec === prev.spec)?.act === act;
+    build.value.merc = { spec, level: prev?.level ?? null, difficulty: prev?.difficulty ?? null, gear: keep ? prev.gear : {}, off: prev?.off || [] };
+  }
+  function setMercLevel(v) {
+    if (!build.value.merc) return;
+    const n = parseInt(v, 10);
+    build.value.merc.level = Number.isInteger(n) && n >= 1 ? Math.min(n, build.value.level) : null;
+  }
+  function setMercDifficulty(d) {
+    if (build.value.merc && DIFFICULTIES.includes(d)) build.value.merc.difficulty = d;
+  }
+  const removeMercItem = (slot) => build.value.merc && delete build.value.merc.gear[slot];
+  function toggleMercBuff(name) {
+    const m = build.value.merc;
+    if (m) m.off = m.off.includes(name) ? m.off.filter((x) => x !== name) : [...m.off, name];
+  }
   // Applies a choice from the item picker to whatever opened it.
   function pick(item) {
     hideTip();
@@ -610,6 +641,9 @@ export function createPlanner(engine, catalog, planner) {
         if (item.fillAll) fillEmptySockets(p.slot, item.ref);
         rememberSocket(item.ref);
       }
+    } else if (p.mode === "merc") {
+      const it = cleanItem(item, catalog);
+      if (it && build.value.merc) build.value.merc.gear[p.slot] = it;
     } else addInventory(item.ref);
     state.picker = null;
   }
@@ -729,7 +763,7 @@ export function createPlanner(engine, catalog, planner) {
       // Version 1 links came from the skill-only planner.
       const src = raw.v === 1 ? engine.decode(m[1]) : raw;
       if (![1, 2].includes(raw.v) || !engine.classNames.includes(src.cls)) throw new Error("bad build");
-      const b = cleanBuild(src, src.cls, engine, catalog);
+      const b = cleanBuild(src, src.cls, engine, catalog, planner);
       state.builds[b.cls] = b;
       state.stage[b.cls] = STAGES.includes(raw.stage) ? raw.stage : "Endgame";
       state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
@@ -766,6 +800,7 @@ export function createPlanner(engine, catalog, planner) {
       builds: state.builds,
       stage: state.stage,
       stages: state.stages,
+      view: state.view,
     }),
     (v) => {
       try {
@@ -779,7 +814,8 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages, say, openPicker, closePicker, pick,
+    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages,
+    mercSlotCats, setMerc, setMercLevel, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };

@@ -107,3 +107,17 @@ test("catalogue filters: uniques with cast speed, then a pill removes it", async
   await page.getByRole("button", { name: "Remove Cast speed" }).click();
   await expect(count).toHaveText(String(all));
 });
+
+
+test("the Mercenary tab: hire one, see its stats and its buff", async ({ page }) => {
+  await page.goto("/#planner");
+  await page.getByRole("tab", { name: /Mercenary/ }).click();
+  const bar = page.locator(".merc-toolbar");
+  await bar.locator("select").first().selectOption("Bloodmage");
+  const view = page.locator(".merc-view");
+  await expect(view).toContainText("Firedance");
+  await expect(view.getByRole("button", { name: /Mercenary's body armor/ })).toBeVisible();
+  await expect(view.getByRole("button", { name: /Mercenary's amulet/ })).toBeVisible();
+  await page.getByRole("tab", { name: /Amazon|Assassin|Barbarian|Druid|Necromancer|Paladin|Sorceress/ }).click();
+  await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();
+});

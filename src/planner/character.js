@@ -9,6 +9,7 @@ import {
 } from "./rules.js";
 import { SLOTS } from "./items.js";
 import { activeSkillIds } from './skillEffects.js';
+import { computeMerc } from './mercs.js';
 
 export const ATTRIBUTES = ["strength", "dexterity", "vitality", "energy"];
 
@@ -179,6 +180,9 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   // Rebuild skill effects from the item baseline, never accumulate another pass.
   // This lets attribute/skill-level providers feed dependent passives and buffs,
   // independent of the order in which points were allocated.
+  // The mercenary's party buffs count like gear: they don't depend on the character's skills.
+  const merc = computeMerc(b, { catalog, data: planner });
+  for (const [key, value, source, trust] of merc?.buffs || []) add(key, value, source, trust);
   const itemStats = Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, { total: value.total, sources: [...value.sources] }]));
   const contextStats = () => {
     const values = { ...skillFlags, ...Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, value.total])) };
@@ -355,7 +359,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   return {
     charStats,
     stats, s, equipped, inventory, weapon, offhand, sets, soft, allSkills, classSkills, skillBonus,
-    attributes, statPoints, life, mana, resist, defense, block, ar, damage, spellFocus, avoid,
+    attributes, statPoints, life, mana, resist, defense, block, ar, damage, spellFocus, avoid, merc,
     difficulty: diff, issues, warnings: issues.map((i) => i.text), ...lists,
   };
 }

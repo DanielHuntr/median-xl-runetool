@@ -6,15 +6,19 @@ import HoverCard from "./HoverCard.vue";
 import CustomItemBuilder from "./CustomItemBuilder.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
+import { MERC_SLOTS } from "../../planner/mercs.js";
 
 // mode "slot": gear for props.slot · "socket": gems, runes, jewels · "inventory": charms and relics
+// · "merc": the mercenary's props.slot, limited to the item types its act can wear (mercs.js)
 const props = defineProps({
   mode: { type: String, default: "slot" },
   slot: { type: String, default: "" },
   slotType: { type: String, default: "" },
 });
 const emit = defineEmits(["pick", "close"]);
-const { catalog, engine, state, build, profileSummary, recommendLater, tipOn, emptySockets } = usePlanner();
+const { catalog, engine, state, build, profileSummary, recommendLater, tipOn, emptySockets, mercSlotCats } = usePlanner();
+const merc = props.mode === "merc";
+const mercCatsFor = computed(() => (merc ? mercSlotCats(props.slot) || [] : []));
 const RIMG = catalog.images;
 
 const dialog = ref(null);
@@ -26,7 +30,7 @@ const usable = ref(true);
 const limit = ref(80);
 const runeword = ref(null);
 
-const slotDef = computed(() => SLOTS.find((s) => s.id === props.slot));
+const slotDef = computed(() => (merc ? MERC_SLOTS : SLOTS).find((s) => s.id === props.slot));
 // Socket mode: recently used socketables, and filling every empty socket at once.
 const recent = computed(() =>
   props.mode === "socket" ? state.recentSockets.map((r) => catalog.get(r)).filter((d) => d && !(usable.value && reqOf(d) > build.value.level)) : [],
@@ -36,14 +40,16 @@ const otherEmpty = computed(() =>
 );
 const fillAll = ref(false);
 const title = computed(() =>
-  props.mode === "socket" ? "Fill socket" : props.mode === "inventory" ? "Add a charm or relic" : `Choose ${slotDef.value?.label.toLowerCase()}`,
+  props.mode === "socket" ? "Fill socket" : props.mode === "inventory" ? "Add a charm or relic" : merc ? `Mercenary's ${slotDef.value?.label.toLowerCase()}` : `Choose ${slotDef.value?.label.toLowerCase()}`,
 );
 const KINDS = computed(() =>
   props.mode === "socket"
     ? [["", "All"], ["Gems", "Gems"], ["runes", "Runes"], ["jewel", "Jewels"]]
     : props.mode === "inventory"
       ? [["", "All"], ["charm", "Charms"], ["relic", "Relics"]]
-      : [...(profileSummary.value.empty ? [] : [["best", "Best for build"]]), ["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"], ["custom", "Custom"]],
+      : merc
+        ? [["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"]]
+        : [...(profileSummary.value.empty ? [] : [["best", "Best for build"]]), ["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"], ["custom", "Custom"]],
 );
 const reqOf = (d) => {
   const lines = d.variants ? d.variants[0].lines : [];
@@ -53,6 +59,11 @@ const reqOf = (d) => {
 const pool = computed(() => {
   if (props.mode === "socket") return [...catalog.socketables(), ...catalog.jewels()];
   if (props.mode === "inventory") return catalog.all().filter((d) => d.kind === "charm" || d.kind === "relic");
+  if (merc) {
+    const cats = mercCatsFor.value;
+    return catalog.all().filter((d) =>
+      d.kind === "runeword" ? catalog.runewordBases(d).some((b) => cats.includes(b.cat)) : ["base", "unique", "sacred", "set"].includes(d.kind) && cats.includes(d.cat));
+  }
   return catalog.forSlot(props.slot, state.cls);
 });
 const list = computed(() => {
@@ -66,7 +77,7 @@ const list = computed(() => {
 });
 const bases = computed(() =>
   runeword.value && slotDef.value
-    ? catalog.runewordBases(runeword.value).filter((b) => catalog.fitsSlot(b, props.slot, state.cls))
+    ? catalog.runewordBases(runeword.value).filter((b) => (merc ? mercCatsFor.value.includes(b.cat) : catalog.fitsSlot(b, props.slot, state.cls)))
     : [],
 );
 

@@ -13,6 +13,9 @@ import StatsPanel from "./StatsPanel.vue";
 import HoverCard from "./HoverCard.vue";
 import SkillChooser from "./SkillChooser.vue";
 import SaveBuildDialog from "./SaveBuildDialog.vue";
+import MercPanel from "./MercPanel.vue";
+import { MERC_ACTS, mercSpecs } from "../../planner/mercs.js";
+import { tabKeys } from "../../tabKeys.js";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
 import { createCatalog } from "../../planner/items.js";
 import { createPlanner, PlannerKey, STAGES, STAGE_START } from "../../planner/usePlanner.js";
@@ -52,6 +55,11 @@ async function fillPresetStages(hash = window.location.hash) {
   planner.value.fillStages(cls, { Normal: at(50), Nightmare: at(100), Hell: at(125) });
 }
 
+// The Mercenary tab's choices, grouped by act.
+const mercActs = computed(() => {
+  const specs = planner.value ? mercSpecs(planner.value.planner) : [];
+  return Object.entries(MERC_ACTS).map(([act, a]) => ({ act: +act, name: a.name, specs: specs.filter((x) => x.act === +act) })).filter((a) => a.specs.length);
+});
 // Levelling stages: which exist, and for the one being edited where to level and the
 // runewords new since the stage before (src/levelling.js; areas from levels.bin).
 const areas = shallowRef(null);
@@ -127,7 +135,49 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
       <p v-else role="status">Loading planner data…</p>
     </div>
     <template v-else>
-      <div class="toolbar planner-toolbar">
+      <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
+        <button
+          v-for="[v, label] in [['character', planner.state.cls], ['merc', 'Mercenary']]"
+          :key="v"
+          type="button"
+          role="tab"
+          :aria-selected="planner.state.view === v"
+          :tabindex="planner.state.view === v ? 0 : -1"
+          @click="planner.state.view = v"
+        >
+          {{ label }}<small v-if="v === 'merc' && planner.build.value.merc">{{ planner.build.value.merc.spec }}</small>
+        </button>
+      </div>
+      <div v-if="planner.state.view === 'merc'" class="toolbar planner-toolbar merc-toolbar">
+        <label class="field-inline"
+          >Mercenary
+          <select :value="planner.build.value.merc?.spec || ''" @change="planner.setMerc($event.target.value)">
+            <option value="">None hired</option>
+            <optgroup v-for="a in mercActs" :key="a.act" :label="`Act ${a.act}: ${a.name}`">
+              <option v-for="x in a.specs" :key="x.spec" :value="x.spec">{{ x.spec }}</option>
+            </optgroup>
+          </select></label
+        >
+        <template v-if="planner.build.value.merc">
+          <label class="level"
+            >Level
+            <input
+              type="number"
+              min="1"
+              :max="planner.build.value.level"
+              :value="planner.character.value.merc?.level"
+              aria-label="Mercenary level (at most yours)"
+              @change="planner.setMercLevel($event.target.value)"
+          /></label>
+          <label class="field-inline"
+            >Hired in
+            <select :value="planner.build.value.merc.difficulty || planner.build.value.difficulty" @change="planner.setMercDifficulty($event.target.value)">
+              <option v-for="d in DIFFICULTIES">{{ d }}</option>
+            </select></label
+          >
+        </template>
+      </div>
+      <div v-else class="toolbar planner-toolbar">
         <ClassPicker :model-value="planner.state.cls" :classes="planner.engine.classNames" label="Class" @update:model-value="planner.setClass" /><label class="level"
           >Level
           <input
@@ -225,6 +275,8 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             </div>
           </div>
 
+          <MercPanel v-if="planner.state.view === 'merc'" />
+          <template v-else>
           <div class="planner-columns">
             <AttributesPanel />
             <EquipmentPanel />
@@ -302,6 +354,7 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
               <button class="text-btn" @click="planner.resetQuests()">Go back to level-based quests</button>
             </details>
           </div>
+          </template>
 
           <p class="coverage">
             Skill data for Median XL {{ planner.gameVersion }} from

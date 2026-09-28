@@ -1638,3 +1638,26 @@ test("levelling stages: each is its own build, carried by save codes and share l
   assert.equal(p.stageFilled("Normal"), false, "reset clears every stage");
   scope.stop();
 });
+
+test("a hired mercenary's party buff counts in the character's stats and travels with the build", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Amazon");
+  p.reset();
+  p.setLevel(150);
+  const before = p.character.value.s("attack_speed");
+  p.setMerc("Ranger");
+  const withMerc = p.character.value.s("attack_speed");
+  assert.ok(withMerc > before, "Dark Power's attack speed is added");
+  assert.ok(p.character.value.stats.attack_speed.sources.some((x) => /Mercenary's Dark Power/.test(x.source)));
+  p.toggleMercBuff("Dark Power");
+  assert.equal(p.character.value.s("attack_speed"), before, "switched off");
+  const q = scope.run(() => createPlanner(engine, catalog, planner));
+  q.importFromHash(`#planner?b=${p.buildCode()}`);
+  assert.equal(q.build.value.merc.spec, "Ranger");
+  assert.deepEqual(q.build.value.merc.off, ["Dark Power"]);
+  scope.stop();
+});

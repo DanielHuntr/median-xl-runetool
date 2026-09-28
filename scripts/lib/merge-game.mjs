@@ -22,7 +22,7 @@ export function findExtract(datasetVersion) {
   if (!patches.length) return null;
   const patch = patches.sort(byPatch).at(-1);
   const read = (n) => existsSync(new URL(`${patch}/${n}`, GAME_DIR)) ? JSON.parse(readFileSync(new URL(`${patch}/${n}`, GAME_DIR), "utf8")) : null;
-  return { extract: read("skills.json"), fixtures: read("fixtures.json"), itemArt: read("item-art.json"), monsters: read("monsters.json") };
+  return { extract: read("skills.json"), fixtures: read("fixtures.json"), itemArt: read("item-art.json"), monsters: read("monsters.json"), mercs: read("mercs.json") };
 }
 
 /**

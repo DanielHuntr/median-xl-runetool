@@ -239,6 +239,11 @@ try {
       data.monsters = found.monsters.monsters;
       console.log(`import-skills: ${data.monsters.length} monsters from the game files`);
     }
+    // Mercenaries (scripts/extract-mercs.mjs), same patch only.
+    if (found.mercs?.patch === found.extract.patch) {
+      data.mercs = { types: found.mercs.types, skills: found.mercs.skills };
+      console.log(`import-skills: ${data.mercs.types.length} mercenary types from the game files`);
+    }
     if (found.itemArt) {
       const a = mergeItemArt(data, found.itemArt);
       console.log(`import-skills: item art ${found.itemArt.patch}: ${a.uniques} uniques, ${a.sets} set items, ${a.bases} bases`);

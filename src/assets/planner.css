@@ -2139,3 +2139,49 @@
   .stage-switch button { flex: 1 1 auto; padding: 0 8px; }
   .stage-label { flex-basis: 100%; }
 }
+
+/* Planner tabs: your character or your mercenary. */
+.planner-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.planner-tabs button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  margin-bottom: -1px;
+  flex: 0 0 auto;
+  width: auto;
+}
+.planner-tabs button:hover { color: var(--text); }
+.planner-tabs button[aria-selected="true"] {
+  color: var(--gold);
+  background: var(--panel);
+  border-color: var(--border);
+  border-bottom: 1px solid var(--panel);
+}
+.planner-tabs small { font-family: Inter, sans-serif; font-size: 0.75rem; color: var(--muted); }
+/* The mercenary's paper doll: the character's, without rings. */
+.merc-doll { grid-template-areas:
+    "weapon . helm . offhand"
+    "weapon . helm . offhand"
+    "weapon . helm amulet offhand"
+    "weapon . helm amulet offhand"
+    "weapon . body . offhand"
+    "weapon . body . offhand"
+    "weapon . body . offhand"
+    "weapon . body . offhand"
+    "gloves . body . boots"
+    "gloves . body . boots"
+    "gloves . belt . boots"
+    "gloves . belt . boots"; }
