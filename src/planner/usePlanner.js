@@ -801,14 +801,18 @@ export function createPlanner(engine, catalog, planner) {
   }
 
   // ---------- Sharing: base64url JSON, versioned, cleaned on import
-  // The code carries every stage: the one being edited, and the others under "stages".
+  // The code carries every stage: the one being edited, and the others under "stages". It
+  // opens on the stage being edited (a Normal build shared from Normal opens on Normal).
   const buildCode = () => {
-    const others = state.stages[state.cls];
-    return encodeBuild(Object.keys(others).length ? { ...build.value, stage: state.stage[state.cls], stages: others } : build.value);
+    const others = state.stages[state.cls], stage = state.stage[state.cls];
+    return encodeBuild(Object.keys(others).length || stage !== "Endgame" ? { ...build.value, stage, stages: others } : build.value);
   };
+  // "&stage=Normal" is also written out, readable in the link, and works on its own (a
+  // starter build's link to one of its stages).
   function shareUrl() {
     const url = new URL(window.location.href);
-    url.hash = plannerHash(buildCode());
+    const stage = state.stage[state.cls];
+    url.hash = plannerHash(buildCode()) + (stage !== "Endgame" ? `&stage=${stage}` : "");
     return url.toString();
   }
   function importFromHash(hash = window.location.hash) {
@@ -851,6 +855,10 @@ export function createPlanner(engine, catalog, planner) {
         .tabs(b.cls)
         .reduce((a, t) => (engine.tabPoints(b, t) > engine.tabPoints(b, a) ? t : a), engine.tabs(b.cls)[0]);
       state.openedName[b.cls] = title;
+      // "&stage=Nightmare": open on that stage (a starter build's is filled in afterwards).
+      const want = /[?&]stage=([A-Za-z]+)/.exec(hash)?.[1];
+      const stage = STAGES.find((n) => n.toLowerCase() === want?.toLowerCase());
+      if (stage && stage !== state.stage[b.cls]) setStage(stage);
       say(`${title ? `Opened "${title}"` : `Opened a shared ${b.cls} build`}.${state.kept[b.cls] ? ` Your own ${b.cls} build is kept.` : ""}`, "info");
       return true;
     } catch {

@@ -253,7 +253,7 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             <Icon name="panel" />Stats
           </button>
           <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
-          <button class="btn" @click="share">
+          <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
             <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
           </button>
           <button class="btn" @click="confirmReset"><Icon name="close" />Reset</button>

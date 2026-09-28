@@ -83,6 +83,14 @@ test("a mercenary hired in Hell says why its level can't be set yet", async ({ p
   await expect(page.locator(".merc-hint")).toContainText("starts at level 90");
 });
 
+test("a starter build's stage link opens on that stage", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().getByRole("link", { name: "Nightmare" }).click();
+  const stages = page.getByRole("group", { name: "Levelling stage" });
+  await expect(stages.getByRole("button", { name: "Nightmare" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".planner-toolbar").getByLabel("Character level")).toHaveValue("100");
+});
+
 test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();

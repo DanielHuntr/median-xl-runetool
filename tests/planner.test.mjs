@@ -317,6 +317,35 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   scope.stop();
 });
 
+test("a shared link opens on the stage it was shared from", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Sorceress");
+  // Only the Normal stage made: the link still opens on Normal.
+  p.setStage("Normal");
+  p.setLevel(45);
+  const normal = new URL(p.shareUrl()).hash;
+  assert.match(normal, /&stage=Normal$/);
+  p.reset();
+  assert.ok(p.importFromHash(normal));
+  assert.equal(p.state.stage.Sorceress, "Normal");
+  assert.equal(p.build.value.level, 45);
+  // The code alone carries it too, and &stage= picks another stage of the same build.
+  assert.ok(p.importFromHash(normal.replace(/&stage=\w+$/, "")));
+  assert.equal(p.state.stage.Sorceress, "Normal");
+  assert.ok(p.importFromHash(normal.replace(/&stage=\w+$/, "&stage=hell")));
+  assert.equal(p.state.stage.Sorceress, "Hell");
+  assert.equal(p.build.value.level, 125, "an empty stage starts at its level");
+  assert.ok(p.stageFilled("Normal"));
+  // From Endgame, no stage is added.
+  p.setStage("Endgame");
+  assert.doesNotMatch(p.shareUrl(), /&stage=/);
+  scope.stop();
+});
+
 test("opening a build keeps the player's own aside, to go back to or let go", async () => {
   const memory = stubBrowser();
   const { engine, catalog } = await env();
