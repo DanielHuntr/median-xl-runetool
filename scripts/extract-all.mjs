@@ -23,6 +23,7 @@ const STEPS = [
   ["extract-filter-data.mjs", dir],
   ["extract-runeword-bases.mjs", dir],
   ["extract-superior.mjs", dir],
+  ["extract-speed.mjs", dir],
   ["extract-cube.mjs", dir],
   ["check-patch.mjs"],
 ];

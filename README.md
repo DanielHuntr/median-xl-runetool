@@ -137,6 +137,8 @@ Builds are saved per class in the browser and can be shared as a link.
   - the spell focus formula;
   - stat points (5 per level, Lam Esen's Tome, 400 signets + 50).
 - **Estimates** (labelled "est." in the app) use our own calculations of classic Diablo II formulas, which the docs say Median XL mostly keeps: weapon damage, attack rating and defense. The "Combat Speeds" affix is applied to attack, cast, block and hit-recovery speed. The base 75% maximum resistance is the D2 default.
+- **Speed breakpoints** (Stats → Speed → Attack frames / Cast frames) use the formulas of the official [Median XL speed calculator](https://dev.median-xl.com/speedcalc/), with animation frames from the game's `animdata.d2` and each weapon's class and speed modifier from `weapons.bin` (`scripts/extract-speed.mjs`). Wereforms, throwing and dual wielding aren't covered.
+- **Chance to hit** on attack skills (est.) uses the classic D2 formula against the chosen monster's defense, which comes from the game (`monstats.bin` percentage of `monlvl.bin`). Median XL doesn't document the formula.
 - **Not calculated**: most spell base damage (the game formulas use variables not yet decoded), and values that depend on unmodelled character stats inside skill formulas.
 - **Skill data** comes from azadix/medianxl-db, checked and completed from the game files. See below.
 

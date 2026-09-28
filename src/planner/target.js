@@ -1,7 +1,7 @@
 // Damage against a chosen monster: its resistances (monstats.bin, per difficulty; see
-// scripts/extract-monsters.mjs) less your pierce, and deadly strike on attacks. No attack or
-// cast speed and no chance to hit: Median XL doesn't document its speed rules, and monster
-// defense isn't verified yet, so this is damage per hit or cast, not per second.
+// scripts/extract-monsters.mjs) less your pierce, deadly strike on attacks, and an attack's
+// chance to hit (classic D2 formula, with the game's monster defense). Damage is per hit or
+// cast; speed in frames is src/planner/speed.js.
 
 import { repeatedParts } from './damage.js';
 export const DIFFICULTY_INDEX = { Normal: 0, Nightmare: 1, Hell: 2 };
@@ -44,8 +44,15 @@ export const TARGET_RULES = [
   "Resistances are the monster's own for this difficulty (game files).",
   "Inferred (classic D2): 100% or more is immunity, which −enemy resistance doesn't break; otherwise −enemy resistance lowers it in full, down to −100%.",
   "Inferred (classic D2): deadly strike doubles physical damage on attacks, weighted by its chance.",
-  "Not included: attack or cast speed, chance to hit, crushing blow and curses.",
+  "Inferred (classic D2): chance to hit on attacks = 100 × AR / (AR + defense) × 2 × your level / (your level + monster level), between 5% and 95%. Monster defense is the game's (monstats.bin % of monlvl.bin); Median XL doesn't document the formula.",
+  "Not included: crushing blow and curses. Speed is under Speed in the stats.",
 ];
+
+/** Chance to hit with an attack (%, classic D2 formula; 5–95). */
+export function hitChance(ar, defense, level, monsterLevel) {
+  const p = 100 * (ar / Math.max(1, ar + defense)) * ((2 * level) / Math.max(1, level + monsterLevel));
+  return Math.max(5, Math.min(95, Math.floor(p)));
+}
 
 /** The resistance that applies, after pierce. */
 export function effectiveResist(res, pierce) {
@@ -62,15 +69,17 @@ export function typicalTarget(monsters, difficulty) {
     return s.length ? s[Math.floor(s.length / 2)] : 0;
   };
   const res = Object.fromEntries(ELEMENTS.map((e) => [e, [0, 1, 2].map((k) => (k === d ? median(pool.map((m) => m.res[e][d])) : 0))]));
-  return { id: "typical", name: `Typical ${difficulty} monster`, typical: true, count: pool.length, levels: [0, 0, 0].map((_, k) => (k === d ? median(pool.map((m) => m.levels[d])) : 0)), res };
+  const third = (f) => [0, 1, 2].map((k) => (k === d ? median(pool.map(f)) : 0));
+  return { id: "typical", name: `Typical ${difficulty} monster`, typical: true, count: pool.length, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}) };
 }
 
 /**
  * @param d  a skillDamage result (parts are for one hit or cast; `all` covers several)
- * @param c  the character (for pierce and deadly strike)
- * @returns {{ parts, total, all?, immune: string[], target, difficulty }} or null without damage
+ * @param c  the character (for pierce, deadly strike and attack rating)
+ * @param level  the character's level (chance to hit)
+ * @returns {{ parts, total, all?, immune: string[], target, difficulty, hit? }} or null without damage
  */
-export function againstTarget(d, c, target, difficulty) {
+export function againstTarget(d, c, target, difficulty, level = 0) {
   if (!d?.parts?.length || !target) return null;
   const k = DIFFICULTY_INDEX[difficulty] ?? 2;
   const ds = d.kind === "attack" ? Math.min(100, Math.max(0, c.s("deadly_strike") + (d.deadlyStrike || 0))) / 100 : 0;
@@ -87,8 +96,11 @@ export function againstTarget(d, c, target, difficulty) {
   });
   const total = [parts.reduce((n, p) => n + p.range[0], 0), parts.reduce((n, p) => n + p.range[1], 0)];
   const allParts = d.count ? repeatedParts(parts, d.count) : null;
+  // Attacks can miss; spells and traps always hit.
+  const hit = d.kind === "attack" && target.def && level > 0 ? hitChance(d.ar ?? c.ar?.total ?? 0, target.def[k] ?? 0, level, target.levels[k] || 1) : null;
   return {
     parts, total, target, difficulty,
+    ...(hit !== null ? { hit } : {}),
     ...(allParts ? { allParts, all: [0, 1].map(i => allParts.reduce((n, p) => n + p.range[i], 0)) } : {}),
     immune: parts.filter((p) => p.immune).map((p) => p.element),
   };

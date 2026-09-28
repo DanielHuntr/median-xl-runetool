@@ -5,6 +5,8 @@ import { usePlanner } from "../../planner/usePlanner.js";
 import { capTone } from "../../planner/character.js";
 import { SOURCES, BASE_MAX_RESIST } from "../../planner/rules.js";
 import { isConfirmed } from "../../planner/provenance.js";
+import { speedProfile } from "../../planner/speed.js";
+import SPEED from "../../data/speed.json";
 
 const { state, build, character, setDifficulty, toggleStats, togglePin, skillsInUse } = usePlanner();
 const selected = ref(null);
@@ -29,6 +31,25 @@ function derived(id, label, value, sources, extra = {}) {
   return (c) => ({ id, label, value: value(c), sources: sources ? sources(c) : [], ...extra, tone: extra.tone?.(c) ?? null });
 }
 const EL = ["fire", "cold", "lightning", "poison"];
+// Frames per attack or cast and the breakpoints (src/planner/speed.js).
+const speed = computed(() => speedProfile(SPEED, build.value.cls, character.value.weapon?.def.base ?? null, { ias: character.value.s("attack_speed"), fcr: character.value.s("cast_speed") }));
+function framesRow(id, label, kind, word) {
+  return derived(id, label, () => {
+    const p = speed.value?.[kind];
+    return p ? `${p.frames} frames · ${fmt(Math.round(p.perSecond * 100) / 100)}/s` : "—";
+  }, () => (speed.value?.[kind]?.table || []).map((b) => ({
+    source: `${b.speed}% ${word} speed${b.frames === speed.value[kind].frames ? " (you)" : ""}`,
+    value: `${b.frames} frames`,
+  })), {
+    note: (() => {
+      const sp = speed.value, p = sp?.[kind];
+      if (!p) return "No animation for this.";
+      const w = sp.weapon.base ? `${sp.weapon.base} (${sp.weapon.wclass}${kind === "attack" ? `, speed modifier ${sp.weapon.wsm}` : ""})` : sp.weapon.known ? "bare hands" : "this weapon (not in the game data; bare-hand animation used)";
+      const next = p.next ? `Next: ${p.next.speed}% ${word} speed for ${p.next.frames} frames (+${p.next.speed - p.speed}%).` : "No faster breakpoint: the 75% cap is reached.";
+      return `${next} With ${w}. The official Median XL speed calculator's formula, with the game's animation data. Not covered: wereforms, throwing, dual wielding, and skill speed that skips the diminishing curve.`;
+    })(),
+  });
+}
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
 const sections = computed(() => {
@@ -150,7 +171,9 @@ const sections = computed(() => {
       title: "Speed",
       rows: rows([
         stat("Attack", "attack_speed"),
+        framesRow("fpa", "Attack frames", "attack", "attack"),
         stat("Cast", "cast_speed"),
+        framesRow("fpc", "Cast frames", "cast", "cast"),
         stat("Block", "block_speed"),
         stat("Hit recovery", "hit_recovery"),
         stat("Movement", "movement_speed"),
@@ -306,6 +329,7 @@ function onKey(e) {
                 <li v-if="d.vs"><span>Before resistance</span><b>{{ fmt(d.total[0]) }}–{{ fmt(d.total[1]) }}</b></li>
                 <li v-for="p in d.parts"><span :class="'el-' + p.element">{{ p.element }}</span><b>{{ fmt(p.range[0]) }}–{{ fmt(p.range[1]) }}</b></li>
                 <li v-if="d.ar"><span>Attack rating</span><b>{{ fmt(d.ar) }}</b></li>
+                <li v-if="d.vs?.hit != null"><span>Chance to hit <em class="est">est.</em></span><b>{{ d.vs.hit }}%</b></li>
               </ul>
               <p v-for="l in d.lines" class="skill-dmg-line">{{ l }}</p>
               <p v-for="n in d.notes" class="muted">{{ n }}</p>

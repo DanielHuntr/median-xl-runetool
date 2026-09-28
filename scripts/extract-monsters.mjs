@@ -8,7 +8,7 @@
 //   25 enabled), 0x4C alignment (0 enemy, 1 ally such as the player's summons, 2 neutral), 0xAA level ×3 difficulties, 0x144 resistances ×6 × 3 difficulties in the
 //   order physical (ResDm), magic, fire, lightning, cold, poison.
 // Only enabled, killable, named, non-NPC, non-allied monsters are kept; records identical in name,
-// levels and resistances are merged. Output: data/game/<patch>/monsters.json.
+// levels and resistances are merged. Defense: monstats 0xBC ×3 (% of monlvl.bin's). Output: data/game/<patch>/monsters.json.
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -23,6 +23,13 @@ const tbl = (n) => readTbl(mpq.read(`data/local/lng/eng/${n}`));
 const str = stringIndex({ base: tbl("string.tbl"), patch: tbl("patchstring.tbl"), expansion: tbl("expansionstring.tbl") });
 const ms = readBin(mpq.read("data/global/excel/monstats.bin"));
 if (ms.size !== 424) throw new Error(`monstats.bin records are ${ms.size} bytes, expected 424 (D2 1.13c)`);
+
+// Defense: monstats.bin 0xBC ×3 is a percentage of monlvl.bin's defense for the monster's
+// level (120-byte rows, one per level; int32 defense for Normal, Nightmare and Hell first,
+// as D2 1.13c MonLvl.txt).
+const ml = readBin(mpq.read("data/global/excel/monlvl.bin"));
+if (ml.size !== 120) throw new Error(`monlvl.bin records are ${ml.size} bytes, expected 120 (D2 1.13c)`);
+const levelDefense = (level, k) => (level > 0 && level < ml.count ? ml.record(level).readInt32LE(k * 4) : 0);
 
 const RES = ["physical", "magic", "fire", "lightning", "cold", "poison"];
 const bit = (f, n) => ((f >>> n) & 1) === 1;
@@ -43,8 +50,10 @@ for (let id = 0; id < ms.count; id++) {
   const key = JSON.stringify([name, levels, res]);
   if (seen.has(key)) continue;
   seen.add(key);
+  const acPct = three(r, 0xbc);
+  const def = levels.map((l, k) => Math.floor((acPct[k] * levelDefense(l, k)) / 100));
   out.push({
-    id, name, levels, res,
+    id, name, levels, res, def,
     ...(bit(flags, 6) ? { boss: true } : {}),
     ...(bit(flags, 13) ? { demon: true } : {}),
     ...(bit(flags, 11) || bit(flags, 12) ? { undead: true } : {}),
@@ -52,5 +61,5 @@ for (let id = 0; id < ms.count; id++) {
 }
 const file = fileURLToPath(new URL(`../data/game/${patch}/monsters.json`, import.meta.url));
 mkdirSync(fileURLToPath(new URL(`../data/game/${patch}/`, import.meta.url)), { recursive: true });
-writeFileSync(file, JSON.stringify({ patch, source: "monstats.bin (medianxl-YmludGJsdHh0.mpq); layout from D2MOO", monsters: out }));
+writeFileSync(file, JSON.stringify({ patch, source: "monstats.bin and monlvl.bin (medianxl-YmludGJsdHh0.mpq); layout from D2MOO", monsters: out }));
 console.log(`extract-monsters: Median XL ${patch}, ${out.length} monsters (${out.filter((m) => m.boss).length} bosses) → data/game/${patch}/monsters.json`);

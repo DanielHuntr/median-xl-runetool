@@ -279,7 +279,7 @@ export function createPlanner(engine, catalog, planner) {
   const damageOf = (id) => {
     if (!id) return null;
     const d = skillDamage(id, { engine, build: build.value, skillBuild: skillBuild.value, character: character.value });
-    return d && { ...d, vs: againstTarget(d, character.value, target.value, targetDifficulty.value) };
+    return d && { ...d, vs: againstTarget(d, character.value, target.value, targetDifficulty.value, build.value.level) };
   };
   const skillsInUse = computed(() => {
     const b = build.value;
