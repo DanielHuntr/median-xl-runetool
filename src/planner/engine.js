@@ -24,6 +24,7 @@ export const SKILL_QUESTS = [
   ["inquisitor_of_the_triune", "Inquisitor of the Triune", { hell: [2, 115] }],
 ];
 
+const DIFFICULTY_ORDER = ["Normal", "Nightmare", "Hell"];
 const clampLevel = (l) => Math.max(MIN_LEVEL, Math.min(MAX_LEVEL, Math.floor(Number(l) || MIN_LEVEL)));
 
 // ---------- Max level modifiers (skill-calculations.js MAX_LEVEL_MODIFIERS)
@@ -192,11 +193,27 @@ export function createEngine(data) {
       else if (type === "tree_points" && tabPoints(b, target) < n)
         out.push(`Requires ${n} points in the ${target} tree`);
     }
+    // An unlockable skill needs its deed, and the deed its difficulty.
+    const need = unlockDifficulty(id);
+    if (need && DIFFICULTY_ORDER.indexOf(b.difficulty || "Hell") < DIFFICULTY_ORDER.indexOf(need))
+      out.push(`Unlocked by "${unlockOf(id)}", which needs ${need} difficulty`);
     return out;
   }
   // Mastery skills the game unlocks by a deed, not a level: their tooltip reads "Defeat
   // Bartuc in the Chamber of Blood / Unlockable Skill" and skills.bin's reqlevel is 1.
   // MedianDB gives five of them a level (100-125), which the game files don't have.
+  // The difficulty an unlock deed needs: named in it ("on Hell difficulty", "in Nightmare
+  // Difficulty"), or where its area has monsters only in Hell (levels.bin, via the planner
+  // data's hellOnlyAreas: Bremmtown, Chapel of Vanity, Chamber of Blood, Bramwell…).
+  // Unknown (null) for deeds that are items (Paragon's Hammer, the Sunstone) or whose area
+  // isn't one place ("the Pit": several areas have that name).
+  function unlockDifficulty(id) {
+    const text = unlockOf(id);
+    if (!text) return null;
+    const named = /\b(Normal|Nightmare|Hell) difficulty\b/i.exec(text)?.[1];
+    if (named) return named[0].toUpperCase() + named.slice(1).toLowerCase();
+    return (data.hellOnlyAreas || []).some((a) => text.includes(a)) ? "Hell" : null;
+  }
   function unlockOf(id) {
     const line = skills[id]?.game?.lines?.find((l) => /Unlockable Skill/i.test(l.textA || ""));
     return line ? line.textA.split("\n").filter((t) => !/Unlockable Skill/i.test(t)).join(" ").trim() || null : null;
@@ -1249,6 +1266,7 @@ export function createEngine(data) {
     requiredCharLevel,
     requiredLevelSource,
     unlockOf,
+    unlockDifficulty,
     capSource,
     levels,
     weaponPoison,

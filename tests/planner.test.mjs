@@ -1666,3 +1666,15 @@ test("a hired mercenary's party buff counts in the character's stats and travels
   assert.deepEqual(q.build.value.merc.off, ["Dark Power"]);
   scope.stop();
 });
+
+test("unlockable skills need their deed's difficulty (Specialization: Baal on Hell)", async () => {
+  const { engine } = await env();
+  assert.equal(engine.unlockDifficulty("specialization"), "Hell");
+  assert.equal(engine.unlockDifficulty("spellbind"), "Nightmare");
+  assert.equal(engine.unlockDifficulty("endurance"), "Hell", "the Chamber of Blood has monsters only in Hell (levels.bin)");
+  assert.equal(engine.unlockDifficulty("tenacity"), null, "several areas are called Pit, so it can't be placed");
+  const b = (difficulty) => ({ cls: "Amazon", level: 100, points: {}, quests: {}, difficulty });
+  assert.equal(engine.canAdd(b("Nightmare"), "specialization").ok, false);
+  assert.match(engine.canAdd(b("Nightmare"), "specialization").reason, /needs Hell difficulty/);
+  assert.equal(engine.canAdd(b("Hell"), "specialization").ok, true);
+});

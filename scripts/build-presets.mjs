@@ -5,6 +5,8 @@
 // One preset per skill tree (scripts/lib/preset-plan.mjs): the hand-picked presets below keep
 // their trees, and every other tree gets its main skill from the data.
 //   ONLY=id1,id2 node scripts/build-presets.mjs   builds just those, without publishing.
+//   STAGES_ONLY=1 node scripts/build-presets.mjs  remakes only the levelling stages, keeping the
+//     published endgame builds (after a change that affects levelling but not level 150).
 //   RESUME=1 node scripts/build-presets.mjs       carries on a full run that stopped: each
 //     finished preset is saved to .preset-progress.json as it's built (deleted once published).
 // Each preset names a class, a main skill and optionally a second skill. The rest is
@@ -379,7 +381,9 @@ try {
     return { p, scope, count, t0 };
   }
   // A full run takes hours: each finished preset is saved, and RESUME=1 skips those done.
-  const PROGRESS = ".preset-progress.json";
+  const STAGES_ONLY = !!process.env.STAGES_ONLY;
+  const PROGRESS = STAGES_ONLY ? ".preset-stages-progress.json" : ".preset-progress.json";
+  const published = STAGES_ONLY ? JSON.parse(await readFile("src/data/preset-builds.json", "utf8")).presets : [];
   const progress = !only.length && process.env.RESUME ? JSON.parse(await readFile(PROGRESS, "utf8").catch(() => "{}")) : {};
   if (progress.patch && progress.patch !== planner.game?.patch) throw new Error(`${PROGRESS} is from patch ${progress.patch}; delete it to start again`);
   const done = progress.done || {};
@@ -392,6 +396,17 @@ try {
       continue;
     }
     const before = problems.length;
+    if (STAGES_ONLY) {
+      const pub = published.find((x) => x.id === def.id);
+      if (!pub) { problems.push(`${def.name}: not published, so no stages to remake`); continue; }
+      console.log(`
+${def.name}: levelling stages`);
+      out.push(pub);
+      if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, pub.build);
+      done[def.id] = { preset: pub, stages: stages[def.id] || null, problems: problems.slice(before) };
+      await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
+      continue;
+    }
     const { p, scope, count, t0 } = await buildAt(def, LEVEL, "Hell", true, problems);
     const b = JSON.parse(JSON.stringify(p.build.value));
     const c = computeCharacter(b, { engine, catalog, planner });
@@ -446,7 +461,12 @@ try {
       await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
     }
   }
-  if (only.length) {
+  if (STAGES_ONLY) {
+    await writeFile("src/data/preset-stages.json", JSON.stringify({ patch: planner.game?.patch, stages }));
+    console.log(`levelling guides for ${Object.keys(stages).length} presets written to src/data/preset-stages.json (endgame builds kept)`);
+    await rm(PROGRESS, { force: true });
+  }
+  else if (only.length) {
     console.log(`\nONLY=${only.join(",")}: ${out.length} built, presets not published`);
     // Their levelling guides are merged into the guides file (one build's guide can be redone alone).
     if (!process.env.NO_STAGES && Object.keys(stages).length) {

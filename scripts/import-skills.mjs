@@ -8,6 +8,7 @@
 // The repo is pinned to one commit per import, so skills, trees and icons always
 // come from the same snapshot. Nothing is written unless validate() passes.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { findExtract, mergeGameData, mergeItemArt, alignTreesWithGame, mergeClassStats } from "./lib/merge-game.mjs";
 import { normalizeSkillTags } from '../src/planner/skillEffects.js';
 
@@ -239,6 +240,13 @@ try {
       data.monsters = found.monsters.monsters;
       console.log(`import-skills: ${data.monsters.length} monsters from the game files`);
     }
+    // Areas with monsters only in Hell (levels.bin, scripts/extract-areas.mjs): where an
+    // unlockable skill's deed happens tells the planner which difficulty it needs.
+    try {
+      const areas = JSON.parse(readFileSync(new URL("../src/data/areas.json", import.meta.url), "utf8"));
+      if (areas.patch === found.extract.patch)
+        data.hellOnlyAreas = [...new Set(areas.areas.filter((x) => !x.mlvl[0] && !x.mlvl[1] && x.mlvl[2]).map((x) => x.name))];
+    } catch {}
     // Mercenaries (scripts/extract-mercs.mjs), same patch only.
     if (found.mercs?.patch === found.extract.patch) {
       data.mercs = { types: found.mercs.types, skills: found.mercs.skills };
