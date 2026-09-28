@@ -229,3 +229,18 @@ test("a link from a card showing a tier loads that tier's base", () => {
   assert.equal(cube.itemName(four.contents[0]), "Short Sword (4)");
   assert.equal(cube.itemName(cube.recipeToMake({ unique: "Grim Fang" }).contents[0]), "Short Sword (1)");
 });
+
+test("every recipe shown, loaded into the cube, transmutes (upgrade steps, corrupted items)", () => {
+  const book = cube.recipeToMake({ unique: "Book of Cain: Cube Reagent" });
+  assert.equal(cube.transmute(book.contents, {}).matched, true, "the Item Design comes with its 6 upgrade steps");
+  const failing = [];
+  for (const r of cube.recipes) {
+    if (cube.describe(r).blocked || r.unrolled) continue;
+    const c = cube.load(r);
+    // Ingredients no item in the game can be (a type without items) can't be loaded.
+    if (c.length !== r.inputs.reduce((n, i) => n + i.qty, 0)) continue;
+    const ctx = { level: r.op?.[0] === 4 ? r.op[2] : 150, difficulty: 2, cls: r.cls ?? undefined };
+    if (!cube.transmute(c, ctx, () => 0.5).matched) failing.push(`${r.row}: ${cube.describe(r).inputs.join(" + ")}`);
+  }
+  assert.deepEqual(failing, []);
+});

@@ -635,7 +635,20 @@ export function createCube(data) {
     if (!code || !items.has(code)) return null;
     return makeItem(code, { quality: inp.quality || 2, special: inp.flags & IN.SPECIFIC ? inp.id : 0, sockets: inp.flags & IN.SOCKETED ? 1 : 0 });
   }
-  const load = (recipe) => recipe.inputs.flatMap((inp) => Array.from({ length: inp.qty }, () => exampleFor(inp))).filter(Boolean);
+  // A recipe that checks a count on its first ingredient ("After 6 upgrade steps on this
+  // item", a vessel's quantity) loads it with that count, so it transmutes as shown. One that
+  // reads a hidden roll (a corrupted item's outcome, revealed with Oil of Craft) loads the item
+  // with a roll that gives this outcome.
+  function load(recipe) {
+    const out = recipe.inputs.flatMap((inp) => Array.from({ length: inp.qty }, () => exampleFor(inp))).filter(Boolean);
+    const [op, stat, value] = recipe.op || [];
+    const first = out[0];
+    if (first && ITEM_OPS[op] && !hidden.picks[stat] && !recipe.unrolled) {
+      const v = first.stats[stat] ?? 0;
+      if (!ITEM_OPS[op](v, value) || (hidden.rolls[stat] && !v)) first.stats = { ...first.stats, [stat]: op === 17 ? value - 1 : value };
+    }
+    return out;
+  }
 
   // For a recipe that rerolls the first ingredient as a unique: which uniques that item can
   // become (null when the recipe doesn't, or the item isn't in the cube yet).
