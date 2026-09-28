@@ -102,6 +102,18 @@ test("a cube recipe link loads that recipe, ready to transmute", async ({ page }
   await expect(page.getByText("Nothing happens")).toHaveCount(0);
 });
 
+test("starter builds show tiers, and the tier filter narrows them", async ({ page }) => {
+  await page.goto("/#builds");
+  await expect(page.locator(".starter-card .tier-badge").first()).toBeVisible();
+  await page.getByLabel("Starter tier").selectOption("S");
+  const cards = page.locator(".starter-card");
+  await expect(cards.first()).toBeVisible();
+  const n = await cards.count();
+  for (let i = 0; i < n; i++) await expect(cards.nth(i).locator(".tier-badge")).toHaveText("S");
+  await page.getByLabel("Starter tier").selectOption("unrated");
+  await expect(cards.first().locator(".tier-unrated")).toBeVisible();
+});
+
 test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();

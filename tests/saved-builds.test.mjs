@@ -215,3 +215,20 @@ test('starter build stages progress like a player: no tier or gem downgrades, or
     }
   } finally { await vite.close(); }
 });
+
+test('starter builds have tiers: every non-summon build rated S to F, best score first', async () => {
+  const { presets } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
+  const rated = presets.filter((p) => p.summary?.rating?.tier);
+  const unrated = presets.filter((p) => p.summary?.rating?.unrated);
+  assert.equal(rated.length + unrated.length, presets.length, 'every build has a tier or says why not');
+  assert.ok(rated.length >= 50, `${rated.length} rated`);
+  for (const p of unrated) assert.match(p.summary.rating.unrated, /Summon|damage/, p.name);
+  const byRank = [...rated].sort((a, b) => a.summary.rating.rank - b.summary.rating.rank);
+  const order = ['S', 'A', 'B', 'C', 'D', 'F'];
+  for (let i = 1; i < byRank.length; i++) {
+    const [x, y] = [byRank[i - 1].summary.rating, byRank[i].summary.rating];
+    assert.ok(x.score >= y.score && order.indexOf(x.tier) <= order.indexOf(y.tier), `${byRank[i - 1].name} before ${byRank[i].name}`);
+  }
+  for (const t of order) assert.ok(rated.some((p) => p.summary.rating.tier === t), `some build is tier ${t}`);
+  for (const p of rated) assert.ok(p.summary.rating.dps > 0 && p.summary.rating.ehp > 0, p.name);
+});

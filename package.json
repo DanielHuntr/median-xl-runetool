@@ -19,7 +19,8 @@
     "extract": "node scripts/extract-all.mjs",
     "check-patch": "node scripts/check-patch.mjs",
     "presets": "node scripts/build-presets-parallel.mjs",
-    "sync-fixtures": "node scripts/sync-fixtures.mjs"
+    "sync-fixtures": "node scripts/sync-fixtures.mjs",
+    "rate-presets": "node scripts/rate-presets.mjs"
   },
   "dependencies": {
     "vue": "^3.5.0"

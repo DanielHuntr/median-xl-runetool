@@ -8,13 +8,21 @@ import SkillIcon from './planner/SkillIcon.vue';
 import Icon from './AppIcon.vue';
 const { builds, rename, remove } = useSavedBuilds();
 const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Paladin', 'Sorceress'];
-const cls = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
+const cls = ref(''), tier = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
 const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} ${b.tree || ''} ${(b.skills || []).join(' ')}`.toLowerCase().includes(query.value.trim().toLowerCase());
 const saved = computed(() => builds.value.filter(matches));
-const starters = computed(() => presets.presets.filter(matches));
+// Tiers (src/planner/rating.js): S best to F, against the other starter builds; summon
+// builds aren't rated.
+const TIER_ORDER = ['S', 'A', 'B', 'C', 'D', 'F'];
+const tierOf = (b) => b.summary?.rating?.tier || '';
+const tierRank = (b) => (tierOf(b) ? TIER_ORDER.indexOf(tierOf(b)) : TIER_ORDER.length);
+const starters = computed(() => presets.presets.filter((b) => matches(b) && (!tier.value || (tier.value === 'unrated' ? !tierOf(b) : tierOf(b) === tier.value))));
+const tierNote = (r) => r?.tier
+  ? `#${r.rank} of ${r.of} · ~${fmt(r.dps)} damage/s (${r.skills?.join(' + ') || r.skill}) · ${fmt(r.ehp)} effective life`
+  : r?.unrated || '';
 // Starter builds grouped by class (in the class list's order), each class's by tree.
 const starterGroups = computed(() => classes.map((c) => ({ cls: c, builds: starters.value.filter((b) => b.cls === c)
-  .sort((a, b) => (a.tree || "").localeCompare(b.tree || "") || a.name.localeCompare(b.name)) })).filter((g) => g.builds.length));
+  .sort((a, b) => tierRank(a) - tierRank(b) || (a.summary?.rating?.rank ?? 0) - (b.summary?.rating?.rank ?? 0) || a.name.localeCompare(b.name)) })).filter((g) => g.builds.length));
 // Each class's card art (public/builds/<class>.webp).
 const art = (cls) => `${import.meta.env.BASE_URL}builds/${cls.toLowerCase()}.webp`;
 const fmt = (n) => Math.round(n).toLocaleString();
@@ -36,6 +44,11 @@ function deleteBuild(id) {
     <div class="build-filters">
       <ClassPicker v-model="cls" :classes="classes" any-label="All classes" />
       <label class="field">Search builds<input v-model="query" type="search" placeholder="Name or skill" /></label>
+      <label class="field tier-field">Starter tier<select v-model="tier">
+        <option value="">Any tier</option>
+        <option v-for="t in TIER_ORDER" :key="t" :value="t">Tier {{ t }}</option>
+        <option value="unrated">Unrated (summons)</option>
+      </select></label>
     </div>
     <p v-if="error" role="alert">{{ error }}</p>
     <!-- The player's own builds: set apart from the starter builds below. -->
@@ -66,7 +79,8 @@ function deleteBuild(id) {
     </div>
     </section>
     <h2 class="starter-title">Starter builds</h2>
-    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game. Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
+    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game.
+      Tiers, from S (best) to F, compare them with each other: estimated damage per second to a typical Hell monster (with attack and cast speed, hit chance and cooldowns; one target at a time), weighted three to one with survivability. Summon builds aren't rated yet. Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
     <p v-if="!starters.length" class="muted">No starter builds match these filters.</p>
     <section v-for="g in starterGroups" :key="g.cls" class="starter-group" :aria-label="`${g.cls} starter builds`">
     <h3 class="starter-class">{{ g.cls }} <span class="muted">{{ g.builds.length }}</span></h3>
@@ -74,7 +88,8 @@ function deleteBuild(id) {
       <div v-for="b in g.builds" :key="b.id" class="starter-wrap">
       <a class="build-card starter-card" :href="href(b, true)">
         <div class="build-art" aria-hidden="true"><img :src="art(b.cls)" alt="" loading="lazy" /></div>
-        <h3>{{ b.name }}</h3><p>{{ b.cls }} · Level {{ b.build.level }}<template v-if="b.tree"> · {{ b.tree }} tree</template></p>
+        <h3><span v-if="b.summary?.rating?.tier" class="tier-badge" :class="`tier-${b.summary.rating.tier}`" :aria-label="`Tier ${b.summary.rating.tier}`">{{ b.summary.rating.tier }}</span>{{ b.name }}<span v-if="b.summary?.rating?.unrated" class="tier-unrated" :title="b.summary.rating.unrated">Unrated</span></h3><p>{{ b.cls }} · Level {{ b.build.level }}<template v-if="b.tree"> · {{ b.tree }} tree</template></p>
+        <p v-if="b.summary?.rating?.tier" class="tier-note">{{ tierNote(b.summary.rating) }}</p>
         <p class="muted">{{ b.blurb }}</p>
         <!-- Left and right skill, then the skill bar; each shows its tooltip on hover or focus. -->
         <ul v-if="b.summary?.icons?.length" class="build-skills" aria-label="Skills">
@@ -140,6 +155,22 @@ function deleteBuild(id) {
 .build-card.mine:focus-within .build-art img { filter:grayscale(0); opacity:.65; }
 @media (max-width: 520px) { .build-card { padding-right:24px; } .build-art { width:55%; } .build-art img { opacity:.28; } }
 .build-card h3 { margin:0 0 12px; }
+.tier-field select { padding:10px 12px; font:inherit; font-size:.875rem; color:var(--text); }
+.tier-field { flex:0 0 auto !important; min-width:160px !important; }
+/* Tier badges: S to F, gold to grey. */
+.tier-badge { display:inline-grid; place-items:center; width:1.6em; height:1.6em; margin-right:.5em; border-radius:4px; font-family:var(--serif); font-size:.95em; line-height:1; vertical-align:.08em; border:1px solid currentColor; }
+.tier-S { color:#ffb454; background:color-mix(in srgb, #ffb454 16%, transparent); }
+.tier-A { color:var(--gold); background:color-mix(in srgb, var(--gold) 14%, transparent); }
+.tier-B { color:#7ec27e; background:color-mix(in srgb, #7ec27e 12%, transparent); }
+.tier-C { color:#7fa8d8; background:color-mix(in srgb, #7fa8d8 12%, transparent); }
+.tier-D { color:#b59ad6; background:color-mix(in srgb, #b59ad6 12%, transparent); }
+.tier-F { color:var(--muted); background:color-mix(in srgb, var(--muted) 12%, transparent); }
+:global(:root[data-theme="light"]) .tier-S { color:#a35300; }
+:global(:root[data-theme="light"]) .tier-B { color:#2f7a2f; }
+:global(:root[data-theme="light"]) .tier-C { color:#2d5f9a; }
+:global(:root[data-theme="light"]) .tier-D { color:#6b479a; }
+.tier-unrated { margin-left:.6em; padding:1px 6px; border:1px solid var(--border); border-radius:4px; font:500 .6875rem/1.4 Inter, sans-serif; color:var(--muted); vertical-align:.2em; }
+.tier-note { font-size:.75rem; color:var(--muted); margin:-6px 0 8px; }
 .build-card p { line-height:1.6; }
 .build-actions { margin-top:20px; }
 .build-skills { list-style:none; display:flex; flex-wrap:wrap; gap:6px; padding:0; margin:12px 0 4px; }
