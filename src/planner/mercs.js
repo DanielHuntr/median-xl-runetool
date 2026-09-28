@@ -48,7 +48,9 @@ export const MERC_CLASS_ITEMS = { 1: "Amazon class helms and bows", 2: "Paladin 
 const DOCS_NAME = { Lionheart: "Dragon Heart", Heartseeker: "Homing Nova Shot", Timefield: "Chronofield", "Short Duration Superbeast": "Superbeast", "Frigid Nova": "Frigid Sphere", "Werebear Morph": "Werebear", Sandstorm: "Claw Tornado" };
 // Buffs the docs say reach the party ("buff nearby allies", "all damage of the party",
 // "spell damage of party members"); the others hit enemies or the mercenary itself.
-const PARTY_BUFFS = new Set(["Dark Power", "Bloodlust", "Firedance"]);
+// Vindicate (Priestess): life regeneration and enhanced damage, the Hireling Handbook's pick
+// for most builds. (Force Blast and Miasma are curses on monsters, not party buffs.)
+const PARTY_BUFFS = new Set(["Dark Power", "Bloodlust", "Firedance", "Vindicate"]);
 // Aura stats that aren't in the planner's passive table (ItemStatCost ids).
 const AURA_STATS = {
   329: ["fire_spell_damage"], 330: ["lightning_spell_damage"], 331: ["cold_spell_damage"], 332: ["poison_spell_damage"],
@@ -200,8 +202,14 @@ export function computeMerc(b, { catalog, data }) {
     return out;
   });
   const buffs = skills.filter((x) => x.on).flatMap((x) => x.effects.map(([k, v]) => [k, v, `Mercenary's ${x.docsName} (level ${x.level})`, "game-inferred"]));
+  // Vindicate heals the party by a share of each one's own life ("Regenerates 100% Life in
+  // 49.2 seconds", "(Max 15 000 life)"): the character applies it once its life is known.
+  const vin = skills.find((x) => x.on && x.name === "Vindicate");
+  const secs = vin && Number(vin.tooltip.map((t) => /Regenerates 100% Life in ([\d.]+) seconds/.exec(t)?.[1]).find(Boolean));
+  const capLife = vin && Number((vin.tooltip.map((t) => /\(Max ([\d ]+) life\)/.exec(t)?.[1]).find(Boolean) || "").replace(/ /g, ""));
+  const healing = secs > 0 ? { seconds: secs, cap: capLife || Infinity, source: `Mercenary's Vindicate (level ${vin.level})` } : null;
   // The lowest level it can be hired at in that difficulty, and the character's level (its cap).
-  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, hiredAt, row: row.level, minLevel: type.rows[0].level, cap: b.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
+  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, hiredAt, row: row.level, minLevel: type.rows[0].level, cap: b.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, healing, items, notes };
 }
 
 /** The specializations with a party buff (the ones worth hiring for your own stats). */

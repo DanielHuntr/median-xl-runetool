@@ -275,6 +275,8 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   const life = { base: lifePool.base, fromAttribute: lifePool.bonus, pct: s("maximum_life"), flat: s("life"), total: lifePool.total };
   const manaPool = pool(cls, b.level, MANA, attributes.energy.base, attributes.energy.total, s("maximum_mana"), s("mana"));
   const mana = { base: manaPool.base, fromAttribute: manaPool.bonus, pct: s("maximum_mana"), flat: s("mana"), total: manaPool.total };
+  // The mercenary's Vindicate: its share of this life, per second (mercs.js).
+  if (merc?.healing) add("life_regenerated_per_second", Math.floor(Math.min(life.total, merc.healing.cap) / merc.healing.seconds), merc.healing.source, "game-inferred");
 
   // ---------- Resistances
   const diff = b.difficulty || "Hell";

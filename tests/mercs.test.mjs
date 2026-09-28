@@ -78,9 +78,15 @@ test("buff tooltips at those levels match the game (issues #9-#11)", () => {
 });
 
 test("the buff mercenaries, and their expected tooltip lines from the game's own formulas", () => {
-  assert.deepEqual(buffSpecs(data).map((x) => x.spec), ["Ranger", "Shapeshifter", "Bloodmage"]);
+  assert.deepEqual(buffSpecs(data).map((x) => x.spec), ["Ranger", "Priestess", "Shapeshifter", "Bloodmage"]);
   const dp = merc("Ranger").skills.find((s) => s.name === "Dark Power");
   // The tooltip's attack speed (220 × …) and the stat it applies (200 × …) differ in the game files.
   assert.ok(dp.tooltip.some((l) => /^Attack Speed: \d+%$/.test(l)));
   assert.ok(dp.tooltip.includes("Duration: 50 seconds"));
+});
+
+test("the Priestess's Vindicate heals the character by a share of its own life", async () => {
+  const m = computeMerc({ cls: "Amazon", level: 150, difficulty: "Hell", merc: { spec: "Priestess", level: null, difficulty: "Hell", gear: {}, off: [] } }, { catalog: null, data });
+  assert.ok(m.healing?.seconds > 0, "its tooltip's seconds");
+  assert.equal(m.healing.cap, 15000);
 });
