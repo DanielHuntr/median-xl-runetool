@@ -411,6 +411,34 @@ try {
     if (!(count = await suggestGear(true))) {
       sink.push(`${def.name}: final equipment suggestion failed`);
     }
+    // Whatever happened above, the build must be able to put its gear on. If it can't (no
+    // funding of its attributes fits the loadout), the loadout is put back together from
+    // nothing: its items one at a time, the lowest requirement first, each kept if the whole
+    // can still be worn, else swapped for the best the character can wear in that slot (the
+    // planner's own suggestion with its current attributes), else left off. The stage says
+    // what changed.
+    {
+      const env = { engine, catalog, planner };
+      const b = p.build.value;
+      if (!wearableBothSets(b, env)) {
+        const nameOf = (st) => catalog.resolve(st, b.level)?.def.name || "item";
+        const req = (st) => { const r = catalog.resolve(st, b.level); return (r?.head.reqStr || 0) + (r?.head.reqDex || 0); };
+        const original = { ...b.gear }, changes = [];
+        b.gear = {};
+        for (const slot of Object.keys(original).sort((x, y) => req(original[x]) - req(original[y]))) {
+          const fits = (st) => wearableBothSets({ ...b, gear: { ...b.gear, [slot]: st } }, env);
+          if (fits(original[slot])) { b.gear[slot] = original[slot]; continue; }
+          const pick = p.recommend(slot, 30).find((x) => fits(x.state));
+          if (pick) b.gear[slot] = pick.state;
+          const was = nameOf(original[slot]);
+          changes.push(!pick ? `took off ${was}` : pick.def.name === was ? `${was}: a lower tier` : `${was} → ${pick.def.name}`);
+        }
+        const funded = fundLoadout(b, {}, env);
+        if (funded) b.attrs = funded;
+        if (!wearableBothSets(b, env)) sink.push(`${def.name} (level ${level}): gear still can't be put on one item at a time`);
+        if (changes.length) sink.push(`${def.name} (level ${level}): ${changes.join("; ")} (needed more attributes than it has)`);
+      }
+    }
     return { p, scope, count, t0 };
   }
   // A full run takes hours: each finished preset is saved, and RESUME=1 skips those done.

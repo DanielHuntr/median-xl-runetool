@@ -131,3 +131,39 @@ test('published starter builds cover every class at level 150 and can equip thei
     }
   } finally { await vite.close(); }
 });
+
+test('every starter build stage follows the planner rules for its level and difficulty', async () => {
+  const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
+  try {
+    const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
+    const { stages } = JSON.parse(await readFile(new URL('../src/data/preset-stages.json', import.meta.url), 'utf8'));
+    const data = await vite.ssrLoadModule('/src/data/index.js');
+    const { createEngine } = await vite.ssrLoadModule('/src/planner/engine.js');
+    const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
+    const { computeCharacter } = await vite.ssrLoadModule('/src/planner/character.js');
+    const { wearableBothSets } = await vite.ssrLoadModule('/src/planner/attributeAllocation.js');
+    const { cleanMerc } = await vite.ssrLoadModule('/src/planner/mercs.js');
+    const engine = createEngine(planner), catalog = createCatalog(data, planner);
+    const ORDER = ['Normal', 'Nightmare', 'Hell'];
+    let checked = 0;
+    for (const [id, list] of Object.entries(stages)) {
+      for (const st of list) {
+        if (st.final || !st.build) continue;
+        const b = st.build, env = { engine, catalog, planner }, name = `${id} level ${st.level}`;
+        assert.equal(b.level, st.level, name);
+        assert.equal(b.difficulty, st.difficulty, name);
+        assert.deepEqual(engine.buildProblems(b), [], name);
+        assert.ok(engine.spent(b) <= engine.available(b), name);
+        for (const [skill, n] of Object.entries(b.points)) {
+          const need = engine.unlockDifficulty(skill);
+          assert.ok(!(n > 0 && need && ORDER.indexOf(b.difficulty) < ORDER.indexOf(need)), `${name}: ${skill} needs ${need}`);
+        }
+        assert.ok(wearableBothSets(b, env), `${name}: gear it can wear`);
+        assert.deepEqual(computeCharacter(b, env).issues.map((i) => i.text), [], name);
+        if (b.merc) assert.equal(cleanMerc(b.merc, planner, (x) => x)?.spec, b.merc.spec, `${name}: a real mercenary`);
+        checked++;
+      }
+    }
+    assert.ok(checked >= 280, `${checked} stages checked`);
+  } finally { await vite.close(); }
+});
