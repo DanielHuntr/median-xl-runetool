@@ -88,6 +88,7 @@ const RES = [["fire", "Fire"], ["cold", "Cold"], ["lightning", "Lightning"], ["p
               <label class="switch"><input type="checkbox" :checked="s.on" @change="toggleMercBuff(s.name)" />{{ s.docsName }} (level {{ s.level }})</label>
               <p v-if="s.effects.length" class="merc-effects">{{ s.effects.map(effectText).join(" · ") }}</p>
               <p v-for="u in s.uncounted" :key="u" class="muted merc-note">Not counted: {{ u }}</p>
+              <p v-if="s.tooltip.length" class="muted merc-note">In game, its tooltip should read: {{ s.tooltip.join(" · ") }}. A screenshot of it confirms these values.</p>
             </div>
           </div>
           <p class="muted merc-note">

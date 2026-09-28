@@ -90,6 +90,7 @@ function deleteBuild(id) {
           </li>
         </ul>
         <p v-if="b.summary?.bar?.length" class="muted">Skill bar: {{ b.summary.bar.join(' · ') }}</p>
+        <p v-if="b.summary?.merc" class="muted">Mercenary: {{ b.summary.merc }}</p>
         <p v-if="b.summary" class="muted">{{ b.summary.life.toLocaleString() }} life · {{ b.summary.mana.toLocaleString() }} mana</p>
         <p v-if="b.summary?.unspent" class="muted">{{ b.summary.unspent }} skill points left to customise.</p>
         <p v-else-if="b.summary" class="muted">All skill points allocated · {{ b.build.signets }} Signets of Learning</p>

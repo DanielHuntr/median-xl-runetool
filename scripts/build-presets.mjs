@@ -67,6 +67,7 @@ try {
   const { isToggleSkill } = await load("/src/planner/skillEffects.js");
   const { fundLoadout, spendRemaining, releaseUnusedRequirements, wearableBothSets } = await load("/src/planner/attributeAllocation.js");
   const { buildProfile, recommendForSlot, wantedStats } = await load("/src/planner/recommend.js");
+  const { buffSpecs, suggestMercGear } = await load("/src/planner/mercs.js");
   const { combatScore } = await load("/src/planner/combatScore.js");
   const planner = JSON.parse(await readFile("public/planner/data.json", "utf8"));
   const engine = createEngine(planner);
@@ -376,6 +377,23 @@ try {
       }
       for (const id of bar) p.addToBar(id);
     }
+    // The mercenary (mercs.js): none, or the party-buff one that makes the build score highest
+    // (its buff counts in the character's stats), with gear for a stronger buff and its survival.
+    // Hired in this stage's difficulty; its level follows the character's. Before the last gear
+    // suggestion, so the character's gear accounts for the buff.
+    {
+      const b = p.build.value;
+      let best = { s: score(b), merc: null };
+      for (const { spec } of buffSpecs(planner)) {
+        const trial = JSON.parse(JSON.stringify(b));
+        trial.merc = { spec, level: null, difficulty, gear: {}, off: [] };
+        trial.merc.gear = suggestMercGear(trial, { catalog, data: planner });
+        const s = score(trial);
+        if (s > best.s + 1e-6) best = { s, merc: trial.merc };
+      }
+      if (best.merc) p.build.value.merc = best.merc;
+      if (final || best.merc) console.log(`   mercenary (level ${level}, ${difficulty}): ${best.merc ? `${best.merc.spec}, ${Object.keys(best.merc.gear).length} items` : "none helps"}`);
+    }
     // A published preset must have a successful suggestion for its final skills.
     if (!(count = await suggestGear(true))) {
       sink.push(`${def.name}: final equipment suggestion failed`);
@@ -454,6 +472,8 @@ ${def.name}: levelling stages`);
           ...(d.vs > 0 ? { vs: Math.round(d.vs), per: d.d.count ? "each" : d.d.kind === "attack" ? "per hit" : "per cast" } : {}) };
       }),
       buffs: b.buffs.map((id) => engine.skillName(id)),
+      // The hired mercenary, for the card (its buff is already in the numbers above).
+      ...(b.merc ? { merc: b.merc.spec } : {}),
       life: Math.round(c.life.total), mana: Math.round(c.mana.total),
     };
     out.push({ id: def.id, name: def.name, cls: def.cls, tree: def.tree, level: b.level, blurb: def.blurb,

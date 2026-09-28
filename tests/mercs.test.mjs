@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { computeMerc, cleanMerc, mercSpecs, mercCats } from "../src/planner/mercs.js";
+import { computeMerc, cleanMerc, mercSpecs, mercCats, buffSpecs } from "../src/planner/mercs.js";
 
 const data = JSON.parse(readFileSync(new URL("../public/planner/data.json", import.meta.url), "utf8"));
 const merc = (spec, level = 150, difficulty = "Hell", extra = {}) =>
@@ -59,4 +59,12 @@ test("an in-game Act 2 Shapeshifter at level 44 (hired in Normal)", () => {
   const lvl = (n) => m.skills.find((s) => s.name === n).level;
   assert.deepEqual([lvl("Sandstorm"), lvl("Pounce"), lvl("Thorn Field")], [17, 17, 17]);
   assert.equal(m.resist.physical, 25 + Math.floor(44 / 5), "Grit: 25%, +1% per 5 levels (the screen shows 34%, gear unknown)");
+});
+
+test("the buff mercenaries, and their expected tooltip lines from the game's own formulas", () => {
+  assert.deepEqual(buffSpecs(data).map((x) => x.spec), ["Ranger", "Shapeshifter", "Bloodmage"]);
+  const dp = merc("Ranger").skills.find((s) => s.name === "Dark Power");
+  // The tooltip's attack speed (220 × …) and the stat it applies (200 × …) differ in the game files.
+  assert.ok(dp.tooltip.some((l) => /^Attack Speed: \d+%$/.test(l)));
+  assert.ok(dp.tooltip.includes("Duration: 50 seconds"));
 });

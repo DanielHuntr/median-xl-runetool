@@ -12,6 +12,7 @@
 //  - Buffs: the skills' own game formulas (aura stats), at the mercenary's skill level.
 import { createGameEval } from "./gamecalc.js";
 import { PASSIVE_STATS } from "./skillEffects.js";
+import { formatLine } from "./desclines.js";
 
 // The in-game mercenary screen: every slot but the rings.
 export const MERC_SLOTS = [
@@ -163,10 +164,21 @@ export function computeMerc(b, { catalog, data }) {
     const level = sk.level + Math.floor((Math.max(0, L - type.rows[0].level) * sk.perLevel) / 32) + allSkills;
     const buff = PARTY_BUFFS.has(sk.name);
     const on = buff && !m.off?.includes(sk.name);
-    const out = { name: sk.name, docsName: docsSkillName(sk.name), level, learned: true, buff, on, effects: [], uncounted: [] };
+    const out = { name: sk.name, docsName: docsSkillName(sk.name), level, learned: true, buff, on, effects: [], uncounted: [], tooltip: [] };
     const rec = data.mercs.skills?.[sk.gameId];
     if (buff && out.learned && rec && data.game?.variables) {
       const e = createGameEval(rec, data.game.variables, { blvl: level, lvl: level, ulvl: L });
+      // What its in-game tooltip should read at this level: the game's own tooltip formulas
+      // (skilldesc lines), to check against a screenshot. They can differ from the stats it
+      // applies (Dark Power's tooltip attack speed uses 220 × …, its aura stat 200 × …).
+      const value = (c) => { if (!c) return null; const r = e.calc(c); return r.ok ? r.value : undefined; };
+      for (const line of rec.lines || []) {
+        if (line.block !== "level" || !(line.textA || "").trim()) continue;
+        const a = value(line.calcA), b = value(line.calcB);
+        if (a === undefined || b === undefined) continue;
+        const text = formatLine(line, a, b).text;
+        if (text) out.tooltip.push(text);
+      }
       for (const [slot, stat] of Object.entries(rec.astStats || {})) {
         const map = AURA_STATS[stat] || PASSIVE_STATS[stat];
         let r;
@@ -182,4 +194,55 @@ export function computeMerc(b, { catalog, data }) {
   });
   const buffs = skills.filter((x) => x.on).flatMap((x) => x.effects.map(([k, v]) => [k, v, `Mercenary's ${x.docsName} (level ${x.level})`, "game-inferred"]));
   return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, row: row.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
+}
+
+/** The specializations with a party buff (the ones worth hiring for your own stats). */
+export const buffSpecs = (data) => mercSpecs(data).filter((x) => (data.mercs.types.find((t) => t.spec === x.spec)?.skills || []).some((s) => PARTY_BUFFS.has(s.name)));
+
+// Its gear, for the starter builds: +All Skills first (a stronger buff), then staying alive
+// (life, resistances, defense). Only items it can wear, is high enough level for, and has
+// the strength and dexterity for; each item's highest such tier.
+const RES = ["fire_resistance", "cold_resistance", "lightning_resistance", "poison_resistance"];
+function mercItemScore(r) {
+  let s = 0;
+  const add = (k, v) => {
+    if (k === "all_skills") s += 1000 * v;
+    else if (k === "life") s += v;
+    else if (k === "maximum_life") s += 20 * v;
+    else if (RES.includes(k)) s += 5 * v;
+    else if (k === "physical_resistance") s += 15 * v;
+  };
+  for (const p of r.parsed || []) if (p.kind === "stats") for (const [k, v] of p.effects) add(k, v);
+  for (const x of [...(r.sockets || []), ...(r.orbs || [])]) for (const p of x?.parsed || []) if (p.kind === "stats") for (const [k, v] of p.effects) add(k, v);
+  return s + (r.head.defense || 0) / 10;
+}
+export function suggestMercGear(b, { catalog, data }) {
+  const m = computeMerc(b, { catalog, data });
+  if (!m) return {};
+  const gear = {};
+  for (const { id } of MERC_SLOTS) {
+    const cats = mercCats(m.act, id);
+    if (!cats) continue;
+    let best = null;
+    for (const d of catalog.all()) {
+      let states;
+      if (d.kind === "runeword") {
+        const bases = catalog.runewordBases(d).filter((x) => cats.includes(x.cat));
+        // Only base tiers with enough sockets for its runes (as the character's gear suggestion).
+        const sockets = (v) => Number(/^Socketed \((\d+)\)/.exec(v.lines.find((l) => /^Socketed/.test(l)) || "")?.[1] || 0);
+        states = bases.flatMap((base) => base.variants.flatMap((v, i) => (sockets(v) >= d.runes.length ? [{ ref: d.key, base: base.key, baseVariant: i }] : [])).reverse());
+      } else if (["unique", "sacred", "set"].includes(d.kind) && cats.includes(d.cat)) {
+        states = d.variants.map((_, variant) => ({ ref: d.key, variant })).reverse();
+      } else continue;
+      for (const st of states) {
+        const r = catalog.resolve(st, m.level);
+        if (!r || r.head.reqLevel > m.level || r.head.reqStr > m.strength || r.head.reqDex > m.dexterity) continue;
+        const score = mercItemScore(r);
+        if (!best || score > best.score) best = { state: st, score };
+        if (d.kind !== "runeword") break;
+      }
+    }
+    if (best) gear[id] = best.state;
+  }
+  return gear;
 }
