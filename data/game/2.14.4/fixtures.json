@@ -1185,6 +1185,51 @@
    "independentChecks": []
   },
   {
+   "id": "warmth-level-38",
+   "skill": "warmth",
+   "source": "In-game Warmth tooltip screenshot (38/38, Current Skill Level 38 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 38,
+     "how": "shown: Current Skill Level 38"
+    },
+    "blvl": {
+     "value": 38,
+     "how": "shown: 38/38 in the skill tree"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: character level 150 (issue #15: its maximum there is 38)"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged (as the other fixtures)"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cold Resistance: 95%",
+    "Mana Regeneration Rate: 190%"
+   ],
+   "nextLines": [
+    "Cold Resistance: 95%",
+    "Mana Regeneration Rate: 193%"
+   ],
+   "synergyText": [
+    "Mana Regeneration rate: +2% per Base Level",
+    "+2% Cold Resistance per Base Level",
+    "Max Level Increases Every 4 Character Levels"
+   ],
+   "independentChecks": []
+  },
+  {
    "id": "mind-flay-first-level-char-16",
    "skill": "mind_flay",
    "source": "In-game Mind Flay tooltip screenshot (First Level, 37 Energy) supplied by the project owner in GitHub issue #13, 2026-09-28 (Median XL 2.14.4)",
