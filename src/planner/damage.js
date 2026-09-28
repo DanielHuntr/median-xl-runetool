@@ -130,6 +130,32 @@ export function skillDamage(id, { engine, build, skillBuild, character }) {
 
   const tags = s.tags || [];
   const describe = engine.describe(skillBuild, id, build.points[id] || 0);
+  // "Deals 150% of your vessel skill damage per hit" (Absolution, Sentence): that share of the
+  // stronger Vessel the build has points in (its spell damage already applied), split by the
+  // skill's "Converts 50% Physical Damage to Magic".
+  const vesselLine = describe.effect.find((l) => /^Deals (\d+)% of your vessel skill damage per hit/i.test(l.text || ""));
+  if (vesselLine) {
+    const pct = Number(/(\d+)%/.exec(vesselLine.text)[1]);
+    const vessels = engine.skillIds().filter((v) => v !== id && engine.skill(v).class === s.class && /^Vessel of /.test(engine.skill(v).name) && (build.points[v] || 0) > 0)
+      .map((v) => skillDamage(v, { engine, build, skillBuild, character }))
+      .filter((d) => d?.total)
+      .sort((a, b) => b.total[1] - a.total[1]);
+    const from = vessels[0];
+    if (!from) return { id, name: s.name, kind: "spell", parts: [], lines: [vesselLine.text, "Needs points in a Vessel skill"], notes: [], formula: "" };
+    const conv = Math.min(100, num(values.converts_phys_to_magic?.[0]) || 0) / 100;
+    const parts = from.parts.flatMap((p) => {
+      const r = [p.range[0] * pct / 100, p.range[1] * pct / 100];
+      if (p.element !== "physical" || !conv) return [{ element: p.element, range: pair(r[0], r[1]) }];
+      return [{ element: "physical", range: pair(r[0] * (1 - conv), r[1] * (1 - conv)) }, { element: "magic", range: pair(r[0] * conv, r[1] * conv) }];
+    });
+    const total = pair(parts.reduce((n, p) => n + p.range[0], 0), parts.reduce((n, p) => n + p.range[1], 0));
+    return {
+      id, name: s.name, kind: "spell", parts, total,
+      lines: [vesselLine.text, `${pct}% of ${from.name} (${from.total[0]}-${from.total[1]})${conv ? `, ${conv * 100}% as magic` : ""}`],
+      notes: [`Per hit: ${pct}% of your vessel's damage, as the tooltip says; the vessel's own spell damage bonuses are already in it.`],
+      formula: "",
+    };
+  }
   const firstLines = describe.effect.filter((l) => l.status !== "unknown").slice(0, 2).map((l) => l.text);
   // Damage lines on the skill's own tooltip (game formulas, e.g. Incineration Trap's
   // "Fire Damage: 81-88 per second"), with their synergies already applied.
