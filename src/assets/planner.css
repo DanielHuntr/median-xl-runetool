@@ -1953,15 +1953,22 @@
 .custom-stat-values input { width: 76px; padding: 4px 8px; }
 .custom-stat-values small { color: var(--muted); }
 .custom-builder-selection { gap: 10px; }
-/* Equipment slots: game art scales up to fill the slot (keeping its shape), as items
-   fill their cells in the in-game inventory. The name sits underneath. */
+/* Equipment slots: every item at one scale (its inventory size × 1.25), so a staff is as
+   much bigger than a helm as in the game; it only shrinks where the slot is too small. The
+   name sits underneath, except in the small slots (rings, amulet, belt), where it's in the
+   tooltip and the slot's label instead. */
 .doll-slot svg.item-icon {
-  flex: 1 1 0;
+  flex: 0 1 auto;
   min-height: 0;
-  width: 100%;
+  width: calc(var(--w) * 1.25px);
+  height: calc(var(--h) * 1.25px);
   max-width: 100%;
-  max-height: none;
+  max-height: 100%;
 }
+.doll-slot:is(.ring1, .ring2, .amulet, .belt) :is(.doll-name, .doll-superior) { display: none; }
+/* The name keeps its lines; the art gives way. */
+.doll-slot .doll-name { flex-shrink: 0; }
+.doll-slot:is(.ring1, .ring2, .amulet, .belt) .item-icon { max-height: 100%; }
 
 /* Tooltip text in the game's colours (skill.game.lines[].colour): section headings such as
    Mind Flay's orange "Shock" and gold "Synergies", and coloured lines. Scoped so they win

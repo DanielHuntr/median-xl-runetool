@@ -5,6 +5,8 @@ import atlas from "../data/item-atlas.json";
 // The SVG keeps the graphic's own size and shape, so it sizes like the <img> it replaces,
 // and each sheet is a single cached request however many items a page shows. The clip
 // keeps neighbouring graphics out when the box is a different shape from the graphic.
+// --w and --h are its size in the game's inventory (28px a cell), for places that draw
+// every item at one scale (the equipment doll).
 const props = defineProps({ name: { type: String, required: true } });
 const clip = `sprite-${useId()}`;
 const sprite = computed(() => {
@@ -20,7 +22,7 @@ const sprite = computed(() => {
     :viewBox="`${sprite.x} ${sprite.y} ${sprite.w} ${sprite.h}`"
     :width="sprite.w"
     :height="sprite.h"
-    :style="{ aspectRatio: `${sprite.w} / ${sprite.h}` }"
+    :style="{ aspectRatio: `${sprite.w} / ${sprite.h}`, '--w': sprite.w, '--h': sprite.h }"
     aria-hidden="true"
     focusable="false"
   >
