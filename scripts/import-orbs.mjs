@@ -26,6 +26,8 @@ const ordinary = formats.map((format, i) => {
   const group = ({45:'Weapon',50:'Armor',255:'Item',256:'Ring/Amulet/Quiver'})[r.readUInt32LE(35)];
   if (!group || r[32] !== 4 || r.readUInt16LE(43) !== 5) throw new Error(`Unexpected ordinary orb ${i}`);
   const value = r.readInt32LE(53) / (i === 41 ? 10 : 1);
+  // minLevel 0: ordinary orbs can be applied from Normal (confirmed in game by the project
+  // owner, 28 Sept 2026); unique orbs are only suggested when the player allows them.
   return { id: `mo-${i}`, name, group, lines: [format.replace('N', value)], reqLevel: 4, minLevel: 0, limit: 5, unique: false };
 });
 const response = await fetch(UMO_URL);
