@@ -2079,11 +2079,11 @@
     },
     "ulvl": {
      "value": 150,
-     "how": "assumed: the Barbarian's level isn't stated; stun and mana don't depend on it"
+     "how": "stated by the project owner: the Barbarian is level 150"
     },
     "conditions": {
      "value": {},
-     "how": "no + skills"
+     "how": "stated: no + skills; no points in Snake Stance or Gladiator's Dominance; wielding a Large Axe (1), which doesn't change the skill's own poison"
     }
    },
    "nextLevel": {
@@ -2095,15 +2095,29 @@
     "current": {}
    },
    "otherLines": [
+    "Poison Damage: 58706",
     "Damage Multiplier: 120%",
     "Stun Length: 2.1 seconds",
     "Mana Cost: 70"
    ],
    "nextLines": [
+    "Poison Damage: 59691",
     "Stun Length: 2.2 seconds",
     "Mana Cost: 73"
    ],
-   "independentChecks": "Also shown: Poison Damage 58706 over 1.8 seconds (next 59691), which depends on the thrown axe and the character's gear, not stated, so not checked."
+   "independentChecks": "Poison: 954 (the table at level 20) × (100 + 2088)% synergy × 2^4 ÷ 256 × 45 frames = 58706.8, rounded down once; 45 frames because Gladiator's Dominance, not learned, adds 0.",
+   "knownDifferences": [
+    {
+     "game": "Poison Damage: 58706",
+     "planner": "Poison Damage: 58706 over 1.8 seconds",
+     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line."
+    },
+    {
+     "game": "Poison Damage: 59691",
+     "planner": "Poison Damage: 59691 over 1.8 seconds",
+     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line."
+    }
+   ]
   },
   {
    "id": "sacrifices-level-1",

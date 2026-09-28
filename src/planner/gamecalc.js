@@ -73,7 +73,8 @@ export function createGameEval(skill, names, inputs) {
   // skill's damage synergy, then HitShift into 1/256 units (D2 1.13c).
   // Physical damage (pdmn/pdmx) works the same way with the physical table, the
   // physical damage synergy and the same HitShift (D2 1.13c layout).
-  function elemental(which, table = skill.elem, label = "elemental") {
+  // exact: per frame without rounding (a poison's total is rounded once, over its frames).
+  function elemental(which, table = skill.elem, label = "elemental", exact = false) {
     const e = table;
     if (!e) throw new Error(`skill has no ${label} damage table`);
     const hitShift = skill.elem?.hitShift ?? 8;
@@ -85,6 +86,7 @@ export function createGameEval(skill, names, inputs) {
       if (!s.ok) throw new Error(`damage synergy: ${s.reason}`);
       synergy = s.value;
     }
+    if (exact) return (sum * (100 + synergy) * 2 ** hitShift) / 25600;
     const withSynergy = Math.trunc((sum * (100 + synergy)) / 100);
     return i32(Math.trunc((withSynergy * 2 ** hitShift) / 256));
   }
@@ -259,6 +261,7 @@ export function createGameEval(skill, names, inputs) {
     return 0;
   }
   return {
+    elementalExact: (which) => elemental(which, skill.elem, "elemental", true),
     calc,
     variable,
     /** Result of a passive stat's formula, by stat id. */

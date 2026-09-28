@@ -474,6 +474,10 @@ export function createEngine(data) {
         const ob = other ? pts(b, other) : 0;
         const ol = ob > 0 ? ob + (b.soft?.[other] || 0) : 0;
         const who = other ? skillName(other) : `helper skill ${ref}`;
+        // A skill the character hasn't learned reads 0, as in Diablo II: Snake Bite's poison
+        // lasts 45 frames in game with no points in Gladiator's Dominance, whose clc3 would
+        // add 18 at level 0. (Helper skills, never learned, still read their values.)
+        if (other && !ob && name !== "blvl" && name !== "lvl") return { value: 0, label: `${who} ${name}: 0 (not learned)` };
         // A variable the planner can't work out fails the whole formula (shown as
         // missing) rather than silently counting as 0.
         let e, v;
@@ -580,11 +584,17 @@ export function createEngine(data) {
         };
       }
       if (key === "poison_dot" && g.elem?.type === "poison") {
-        const [mn, mx, len] = ["edmn", "edmx", "edln"].map((v) => e.variable(v));
+        // Total = table × (100 + synergy)% × 2^HitShift ÷ 256 × frames, rounded down once:
+        // Snake Bite in game (58706 over 1.8 seconds at level 20, 59691 at 21).
+        const len = e.variable("edln");
+        const [mn, mx] = ["min", "max"].map((w) => Math.trunc(e.elementalExact(w) * len));
+        // One number when min and max are equal ("Poison Damage: 58706", Snake Bite).
+        const secs = String(Math.trunc((len * 10) / 25) / 10);
         return {
-          values: [poisonTotal(mn, len), poisonTotal(mx, len), seconds(len)],
-          source: gameSource(e, inputs, [...elemText(), "shown: per-frame × frames ÷ 256, over frames ÷ 25 seconds"],
-            ["The skill's own poison, shown with the display rule confirmed for Way of the Spider; not checked for this skill"]),
+          values: [mn, mx, seconds(len)],
+          text: mn === mx ? `Poison Damage: ${mn} over ${secs} seconds` : undefined,
+          source: gameSource(e, inputs, [...elemText(), "shown: per-frame × frames, rounded once, over frames ÷ 25 seconds"],
+            ["The skill's own poison: its total confirmed in game for Snake Bite"]),
         };
       }
       if (ELEMENT_KEYS[key] && g.elem?.type === ELEMENT_KEYS[key]) {
