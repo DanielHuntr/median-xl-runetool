@@ -5,6 +5,8 @@
 // One preset per skill tree (scripts/lib/preset-plan.mjs): the hand-picked presets below keep
 // their trees, and every other tree gets its main skill from the data.
 //   ONLY=id1,id2 node scripts/build-presets.mjs   builds just those, without publishing.
+//   RESUME=1 node scripts/build-presets.mjs       carries on a full run that stopped: each
+//     finished preset is saved to .preset-progress.json as it's built (deleted once published).
 // Each preset names a class, a main skill and optionally a second skill. The rest is
 // the planner's own work, the same as a player would do it in the app:
 //   1. points: the main skill to its maximum, then every skill the main skill's formulas read
@@ -17,7 +19,7 @@
 // against the target with −enemy resistance. Problems are printed and the script exits with
 // an error, so a preset never ships with a skill whose damage ignores the player's choices.
 import { createServer } from "vite";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, rm } from "node:fs/promises";
 import { publishPresets } from "./lib/publish-presets.mjs";
 import { planTrees } from "./lib/preset-plan.mjs";
 import { probePointScaling } from "./lib/point-scaling.mjs";
@@ -376,7 +378,20 @@ try {
     }
     return { p, scope, count, t0 };
   }
+  // A full run takes hours: each finished preset is saved, and RESUME=1 skips those done.
+  const PROGRESS = ".preset-progress.json";
+  const progress = !only.length && process.env.RESUME ? JSON.parse(await readFile(PROGRESS, "utf8").catch(() => "{}")) : {};
+  if (progress.patch && progress.patch !== planner.game?.patch) throw new Error(`${PROGRESS} is from patch ${progress.patch}; delete it to start again`);
+  const done = progress.done || {};
+  if (Object.keys(done).length) console.log(`Resuming: ${Object.keys(done).length} presets already built (${PROGRESS})`);
   for (const def of plan.filter((d) => !only.length || only.includes(d.id))) {
+    if (done[def.id]) {
+      out.push(done[def.id].preset);
+      if (done[def.id].stages) stages[def.id] = done[def.id].stages;
+      problems.push(...done[def.id].problems);
+      continue;
+    }
+    const before = problems.length;
     const { p, scope, count, t0 } = await buildAt(def, LEVEL, "Hell", true, problems);
     const b = JSON.parse(JSON.stringify(p.build.value));
     const c = computeCharacter(b, { engine, catalog, planner });
@@ -426,6 +441,10 @@ try {
       skills: [def.main, def.right, ...b.skillBar].filter(Boolean).map((id) => engine.skillName(id)), summary, build: b });
     scope.stop();
     if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, b);
+    if (!only.length) {
+      done[def.id] = { preset: out.at(-1), stages: stages[def.id] || null, problems: problems.slice(before) };
+      await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
+    }
   }
   if (only.length) {
     console.log(`\nONLY=${only.join(",")}: ${out.length} built, presets not published`);
@@ -448,6 +467,7 @@ try {
       patch: planner.game?.patch, skipped, presets: out,
     }, problems);
     console.log(`\n${out.length} presets written to src/data/preset-builds.json`);
+    await rm(PROGRESS, { force: true });
   }
 } finally {
   await vite.close();
