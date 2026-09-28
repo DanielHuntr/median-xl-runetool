@@ -8,27 +8,33 @@ import SkillIcon from './planner/SkillIcon.vue';
 import Icon from './AppIcon.vue';
 const { builds, rename, remove } = useSavedBuilds();
 const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Paladin', 'Sorceress'];
-const cls = ref(''), tier = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
+const cls = ref(''), tier = ref(''), gearMode = ref('best'), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
 const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} ${b.tree || ''} ${(b.skills || []).join(' ')}`.toLowerCase().includes(query.value.trim().toLowerCase());
 const saved = computed(() => builds.value.filter(matches));
 // Tiers (src/planner/rating.js): S best to F, against the other starter builds; summon
 // builds aren't rated.
 const TIER_ORDER = ['S', 'A', 'B', 'C', 'D', 'F'];
-const tierOf = (b) => b.summary?.rating?.tier || '';
+// Best in slot, or the same build on found gear only (availability.js): its own build and rating.
+const ratingOf = (b) => (gearMode.value === 'found' ? b.found?.rating : b.summary?.rating) || null;
+const buildOf = (b) => (gearMode.value === 'found' ? b.found?.build : b.build) || b.build;
+const tierOf = (b) => ratingOf(b)?.tier || '';
 const tierRank = (b) => (tierOf(b) ? TIER_ORDER.indexOf(tierOf(b)) : TIER_ORDER.length);
 const starters = computed(() => presets.presets.filter((b) => matches(b) && (!tier.value || (tier.value === 'unrated' ? !tierOf(b) : tierOf(b) === tier.value))));
+// The numbers behind a tier: bossing (one monster at a time), clearing (packs, estimated from
+// each skill's reach), effective life, and how much of its casting it can pay for in mana.
 const tierNote = (r) => r?.tier
-  ? `#${r.rank} of ${r.of} · ~${fmt(r.dps)} damage/s (${r.skills?.join(' + ') || r.skill}) · ${fmt(r.ehp)} effective life`
+  ? `#${r.rank} of ${r.of} · ~${fmt(r.boss ?? r.dps)} bossing, ~${fmt(r.clear ?? r.dps)} clearing damage/s · ${fmt(r.ehp)} effective life${r.sustain != null && r.sustain < 100 ? ` · mana for ${r.sustain}% of its casting` : ''}`
   : r?.unrated || '';
+const CRITERIA = [['bossTier', 'Bossing'], ['clearTier', 'Clearing'], ['surviveTier', 'Survival']];
 // Starter builds grouped by class (in the class list's order), each class's by tree.
 const starterGroups = computed(() => classes.map((c) => ({ cls: c, builds: starters.value.filter((b) => b.cls === c)
-  .sort((a, b) => tierRank(a) - tierRank(b) || (a.summary?.rating?.rank ?? 0) - (b.summary?.rating?.rank ?? 0) || a.name.localeCompare(b.name)) })).filter((g) => g.builds.length));
+  .sort((a, b) => tierRank(a) - tierRank(b) || (ratingOf(a)?.rank ?? 0) - (ratingOf(b)?.rank ?? 0) || a.name.localeCompare(b.name)) })).filter((g) => g.builds.length));
 // Each class's card art (public/builds/<class>.webp).
 const art = (cls) => `${import.meta.env.BASE_URL}builds/${cls.toLowerCase()}.webp`;
 const fmt = (n) => Math.round(n).toLocaleString();
 const SLOT_BADGE = { 'Left skill': 'L', 'Right skill': 'R' };
 // A starter build also brings its levelling stages (&preset=, CharacterPlanner.vue).
-const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(b.build) : b.code)}&name=${encodeURIComponent(b.name)}${preset ? `&preset=${b.id}` : ""}`;
+const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(buildOf(b)) : b.code)}&name=${encodeURIComponent(preset && gearMode.value === 'found' ? `${b.name} (found gear)` : b.name)}${preset ? `&preset=${b.id}` : ""}`;
 function commitRename(id) {
   const result = rename(id, name.value);
   error.value = result.ok ? '' : result.reason;
@@ -44,6 +50,10 @@ function deleteBuild(id) {
     <div class="build-filters">
       <ClassPicker v-model="cls" :classes="classes" any-label="All classes" />
       <label class="field">Search builds<input v-model="query" type="search" placeholder="Name or skill" /></label>
+      <label class="field tier-field">Starter gear<select v-model="gearMode">
+        <option value="best">Best in slot</option>
+        <option value="found">Found gear</option>
+      </select></label>
       <label class="field tier-field">Starter tier<select v-model="tier">
         <option value="">Any tier</option>
         <option v-for="t in TIER_ORDER" :key="t" :value="t">Tier {{ t }}</option>
@@ -80,7 +90,7 @@ function deleteBuild(id) {
     </section>
     <h2 class="starter-title">Starter builds</h2>
     <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game.
-      Tiers, from S (best) to F, compare them with each other: estimated damage per second to a typical Hell monster (with attack and cast speed, hit chance and cooldowns; one target at a time), weighted three to one with survivability. Summon builds aren't rated yet. Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
+      Tiers, from S (best) to F, compare them with each other on what the community's tier lists weigh: bossing (damage per second to a typical Hell monster, one at a time), clearing (the same on packs, from each skill's reach) and survival (effective life through resistances, avoid and block), with attack and cast speed breakpoints, hit chance, cooldowns and whether it can pay for its casting in mana. Summon builds aren't rated yet. <b>Found gear</b> shows each build on items a player can find without trading for the rarest drops: no sacred uniques, high runes, late sets or uber charms; its levelling stages use found gear too. Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
     <p v-if="!starters.length" class="muted">No starter builds match these filters.</p>
     <section v-for="g in starterGroups" :key="g.cls" class="starter-group" :aria-label="`${g.cls} starter builds`">
     <h3 class="starter-class">{{ g.cls }} <span class="muted">{{ g.builds.length }}</span></h3>
@@ -88,8 +98,10 @@ function deleteBuild(id) {
       <div v-for="b in g.builds" :key="b.id" class="starter-wrap">
       <a class="build-card starter-card" :href="href(b, true)">
         <div class="build-art" aria-hidden="true"><img :src="art(b.cls)" alt="" loading="lazy" /></div>
-        <h3><span v-if="b.summary?.rating?.tier" class="tier-badge" :class="`tier-${b.summary.rating.tier}`" :aria-label="`Tier ${b.summary.rating.tier}`">{{ b.summary.rating.tier }}</span>{{ b.name }}<span v-if="b.summary?.rating?.unrated" class="tier-unrated" :title="b.summary.rating.unrated">Unrated</span></h3><p>{{ b.cls }} · Level {{ b.build.level }}<template v-if="b.tree"> · {{ b.tree }} tree</template></p>
-        <p v-if="b.summary?.rating?.tier" class="tier-note">{{ tierNote(b.summary.rating) }}</p>
+        <h3><span v-if="ratingOf(b)?.tier" class="tier-badge" :class="`tier-${ratingOf(b).tier}`" :aria-label="`Tier ${ratingOf(b).tier}`">{{ ratingOf(b).tier }}</span>{{ b.name }}<span v-if="ratingOf(b)?.unrated" class="tier-unrated" :title="ratingOf(b).unrated">Unrated</span></h3><p>{{ b.cls }} · Level {{ b.build.level }}<template v-if="b.tree"> · {{ b.tree }} tree</template></p>
+        <p v-if="ratingOf(b)?.bossTier" class="tier-criteria"><span v-for="[k, label] in CRITERIA" :key="k" :class="`tier-chip tier-${ratingOf(b)[k]}`">{{ label }} {{ ratingOf(b)[k] }}</span></p>
+        <p v-if="ratingOf(b)?.tier" class="tier-note">{{ tierNote(ratingOf(b)) }}</p>
+        <p v-if="gearMode === 'found' && b.found?.gear" class="muted found-gear">Found gear: {{ b.found.gear.join(' · ') }}</p>
         <p class="muted">{{ b.blurb }}</p>
         <!-- Left and right skill, then the skill bar; each shows its tooltip on hover or focus. -->
         <ul v-if="b.summary?.icons?.length" class="build-skills" aria-label="Skills">
@@ -105,8 +117,9 @@ function deleteBuild(id) {
           </li>
         </ul>
         <p v-if="b.summary?.bar?.length" class="muted">Skill bar: {{ b.summary.bar.join(' · ') }}</p>
-        <p v-if="b.summary?.merc" class="muted">Mercenary: {{ b.summary.merc }}</p>
-        <p v-if="b.summary" class="muted">{{ b.summary.life.toLocaleString() }} life · {{ b.summary.mana.toLocaleString() }} mana</p>
+        <!-- The version shown (best in slot or found gear): its own mercenary, life and mana. -->
+        <p v-if="buildOf(b).merc?.spec" class="muted">Mercenary: {{ buildOf(b).merc.spec }}</p>
+        <p v-if="b.summary" class="muted">{{ (ratingOf(b)?.life ?? b.summary.life).toLocaleString() }} life · {{ (ratingOf(b)?.mana ?? b.summary.mana).toLocaleString() }} mana</p>
         <p v-if="b.summary?.unspent" class="muted">{{ b.summary.unspent }} skill points left to customise.</p>
         <p v-else-if="b.summary" class="muted">All skill points allocated · {{ b.build.signets }} Signets of Learning</p>
       </a>
@@ -170,6 +183,9 @@ function deleteBuild(id) {
 :global(:root[data-theme="light"]) .tier-C { color:#2d5f9a; }
 :global(:root[data-theme="light"]) .tier-D { color:#6b479a; }
 .tier-unrated { margin-left:.6em; padding:1px 6px; border:1px solid var(--border); border-radius:4px; font:500 .6875rem/1.4 Inter, sans-serif; color:var(--muted); vertical-align:.2em; }
+.tier-criteria { display:flex; flex-wrap:wrap; gap:4px; margin:-4px 0 6px; }
+.tier-chip { padding:0 6px; border:1px solid currentColor; border-radius:3px; font:500 .6875rem/1.5 Inter, sans-serif; background:transparent !important; }
+.found-gear { font-size:.75rem; }
 .tier-note { font-size:.75rem; color:var(--muted); margin:-6px 0 8px; }
 .build-card p { line-height:1.6; }
 .build-actions { margin-top:20px; }
