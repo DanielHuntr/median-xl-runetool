@@ -161,11 +161,20 @@ export function createPlanner(engine, catalog, planner) {
     // Per class: the stage being edited, and the other stages' builds.
     stage: {},
     stages: {},
+    // Per class: the player's own build, set aside while they look at one they opened (a
+    // starter build, a shared link, a saved build): { name, build, stage, stages }.
+    kept: {},
   });
   for (const cls of engine.classNames) {
     state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog, planner);
     state.stage[cls] = STAGES.includes(saved.stage?.[cls]) ? saved.stage[cls] : "Endgame";
     state.stages[cls] = cleanStages(saved.stages?.[cls], cls, state.stage[cls]);
+    const k = saved.kept?.[cls];
+    if (k && typeof k === "object" && k.build) {
+      const stage = STAGES.includes(k.stage) ? k.stage : "Endgame";
+      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", stage,
+        build: cleanBuild(k.build, cls, engine, catalog, planner), stages: cleanStages(k.stages, cls, stage) };
+    }
   }
   // Stored or shared stages: well-formed builds of this class, never the active stage's slot.
   function cleanStages(raw, cls, active) {
@@ -764,10 +773,29 @@ export function createPlanner(engine, catalog, planner) {
     state.stage[state.cls] = "Endgame";
     state.stages[state.cls] = {};
     state.openedName[state.cls] = "";
+    delete state.kept[state.cls];
     state.selected = null;
     state.slot = null;
     state.editing = null;
     say(`${state.cls} character cleared.`, "info");
+  }
+
+  /** Back to the player's own build, leaving the one they opened. */
+  function restoreKept() {
+    const cls = state.cls, k = state.kept[cls];
+    if (!k) return;
+    state.builds[cls] = k.build;
+    state.stage[cls] = k.stage;
+    state.stages[cls] = k.stages;
+    state.openedName[cls] = k.name;
+    delete state.kept[cls];
+    state.selected = state.slot = state.editing = null;
+    say(`Back to your own ${cls} build.`, "info");
+  }
+  /** Keep the opened build as the player's own; the one set aside is let go. */
+  function dropKept() {
+    delete state.kept[state.cls];
+    say(`This is now your ${state.cls} build.`, "info");
   }
 
   // ---------- Sharing: base64url JSON, versioned, cleaned on import
@@ -802,6 +830,17 @@ export function createPlanner(engine, catalog, planner) {
       const src = raw.v === 1 ? engine.decode(m[1]) : raw;
       if (![1, 2].includes(raw.v) || !engine.classNames.includes(src.cls)) throw new Error("bad build");
       const b = cleanBuild(src, src.cls, engine, catalog, planner);
+      // Builds opened from the Builds page carry their name (&name=…).
+      const named = /[?&]name=([^&]*)/.exec(hash);
+      let title = "";
+      try { title = named ? decodeURIComponent(named[1]).slice(0, 80) : ""; } catch {}
+      // The player's own build for this class is set aside, not lost: opening a build is for
+      // looking at it. Only the first one opened is kept aside (opening another replaces the
+      // one being looked at), and an empty build isn't worth keeping.
+      const own = { name: state.openedName[b.cls] || "", build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls] };
+      const made = (x) => x && (!emptyStage(x) || Object.values(x.attrs || {}).some((v) => v > 0) || x.inventory?.length || x.merc);
+      const blank = !STAGES.some((n) => made(n === own.stage ? own.build : own.stages[n]));
+      if (!state.kept[b.cls] && !blank && JSON.stringify(own.build) !== JSON.stringify(b)) state.kept[b.cls] = own;
       state.builds[b.cls] = b;
       state.stage[b.cls] = STAGES.includes(raw.stage) ? raw.stage : "Endgame";
       state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
@@ -809,12 +848,8 @@ export function createPlanner(engine, catalog, planner) {
       state.tab[b.cls] = engine
         .tabs(b.cls)
         .reduce((a, t) => (engine.tabPoints(b, t) > engine.tabPoints(b, a) ? t : a), engine.tabs(b.cls)[0]);
-      // Builds opened from the Builds page carry their name (&name=…).
-      const named = /[?&]name=([^&]*)/.exec(hash);
-      let title = "";
-      try { title = named ? decodeURIComponent(named[1]).slice(0, 80) : ""; } catch {}
       state.openedName[b.cls] = title;
-      say(`${title ? `Opened "${title}"` : `Loaded a shared ${b.cls} build`}. It replaced the ${b.cls} build that was in the planner.`, "info");
+      say(`${title ? `Opened "${title}"` : `Opened a shared ${b.cls} build`}.${state.kept[b.cls] ? ` Your own ${b.cls} build is kept.` : ""}`, "info");
       return true;
     } catch {
       say("That share link isn't a valid build.");
@@ -838,6 +873,7 @@ export function createPlanner(engine, catalog, planner) {
       builds: state.builds,
       stage: state.stage,
       stages: state.stages,
+      kept: state.kept,
       view: state.view,
     }),
     (v) => {
@@ -852,7 +888,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages,
+    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,

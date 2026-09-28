@@ -135,6 +135,14 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
       <p v-else role="status">Loading planner data…</p>
     </div>
     <template v-else>
+      <div v-if="planner.state.kept[planner.state.cls]" class="viewing-bar" role="region" aria-label="Opened build">
+        <p>
+          Viewing <b>{{ planner.state.openedName[planner.state.cls] || `a shared ${planner.state.cls} build` }}</b>.
+          Your own {{ planner.state.cls }} build is kept aside<template v-if="planner.state.kept[planner.state.cls].name"> ({{ planner.state.kept[planner.state.cls].name }})</template>.
+        </p>
+        <button type="button" class="btn" @click="planner.restoreKept()">Back to my build</button>
+        <button type="button" class="text-btn" @click="planner.dropKept()">Keep this one instead</button>
+      </div>
       <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
         <button
           v-for="[v, label] in [['character', planner.state.cls], ['merc', 'Mercenary']]"

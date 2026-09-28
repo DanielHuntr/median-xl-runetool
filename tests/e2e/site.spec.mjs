@@ -55,6 +55,23 @@ test("a starter build opens with its levelling stages", async ({ page }) => {
   await expect(page.locator(".stage-hint")).toContainText("Level in:");
 });
 
+test("opening a starter build keeps your own build to go back to", async ({ page }) => {
+  await page.goto("/#planner");
+  await page.getByRole("button", { name: "Amazon" }).first().click();
+  const level = page.locator(".planner-toolbar").getByLabel("Character level");
+  await level.fill("77");
+  await level.press("Enter");
+  await page.getByRole("button", { name: /^Add a point to Strength/ }).click();
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  const bar = page.getByRole("region", { name: "Opened build" });
+  await expect(bar).toContainText("Stormcall");
+  await expect(level).toHaveValue("150");
+  await bar.getByRole("button", { name: "Back to my build" }).click();
+  await expect(level).toHaveValue("77");
+  await expect(bar).toHaveCount(0);
+});
+
 test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();

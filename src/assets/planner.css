@@ -2140,6 +2140,20 @@
   .stage-label { flex-basis: 100%; }
 }
 
+/* A build opened to look at, with the player's own set aside (usePlanner.js importFromHash). */
+.viewing-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: var(--gold-bg);
+}
+.viewing-bar p { flex: 1 1 280px; margin: 0; font-size: 0.875rem; }
+
 /* Planner tabs: your character or your mercenary. */
 .planner-tabs {
   display: flex;

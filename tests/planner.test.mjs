@@ -317,6 +317,50 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   scope.stop();
 });
 
+test("opening a build keeps the player's own aside, to go back to or let go", async () => {
+  const memory = stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Amazon");
+  p.setLevel(40);
+  p.add("trinity_arrow");
+  const starter = new URL(p.shareUrl()).hash;
+  p.reset();
+  // An empty build isn't set aside.
+  assert.ok(p.importFromHash(`${starter}&name=Starter`));
+  assert.equal(p.state.kept.Amazon, undefined);
+  p.reset();
+  p.setLevel(70);
+  p.addAttr("dexterity", 30);
+  p.setStage("Normal");
+  p.setLevel(55);
+  p.setStage("Endgame");
+  assert.ok(p.importFromHash(`${starter}&name=Starter`));
+  assert.equal(p.build.value.level, 40);
+  assert.equal(p.state.kept.Amazon.build.level, 70);
+  await Promise.resolve();
+  assert.match(p.state.message, /Your own Amazon build is kept/);
+  // Opening another doesn't replace what was kept aside, and it's stored with the planner.
+  assert.ok(p.importFromHash(`${starter}&name=Another`));
+  assert.equal(p.state.kept.Amazon.build.level, 70);
+  await Promise.resolve();
+  assert.equal(JSON.parse(memory.get("mxlrw2:planner")).kept.Amazon.build.level, 70);
+  const again = scope.run(() => createPlanner(engine, catalog, planner));
+  assert.equal(again.state.kept.Amazon.build.attrs.dexterity, 30);
+  p.restoreKept();
+  assert.equal(p.build.value.level, 70);
+  assert.equal(p.build.value.attrs.dexterity, 30);
+  assert.ok(p.stageFilled("Normal"));
+  assert.equal(p.state.kept.Amazon, undefined);
+  assert.ok(p.importFromHash(`${starter}&name=Starter`));
+  p.dropKept();
+  assert.equal(p.state.kept.Amazon, undefined);
+  assert.equal(p.build.value.level, 40);
+  scope.stop();
+});
+
 test("planner renders attributes, equipment and skills together, with the stats panel", async () => {
   for (const view of ["closed", "open"]) {
     const memory = stubBrowser();

@@ -41,7 +41,7 @@ function deleteBuild(id) {
     <!-- The player's own builds: set apart from the starter builds below. -->
     <section class="mine-section" aria-labelledby="mine-title">
     <h2 id="mine-title" class="mine-title">Your saved builds <span class="mine-count">{{ builds.length }}</span></h2>
-    <p class="muted">Saved in this browser with Save build in the planner. Opening one replaces that class's current planner build.</p>
+    <p class="muted">Saved in this browser with Save build in the planner. Opening one keeps your current build for that class aside, to go back to.</p>
     <p v-if="!saved.length" class="mine-empty">{{ builds.length ? 'None of your saved builds match these filters.' : "You haven’t saved a build yet. Use Save build in the Character Planner and it will appear here." }}</p>
     <div class="build-grid">
       <article v-for="b in saved" :key="b.id" class="build-card mine">
@@ -66,7 +66,7 @@ function deleteBuild(id) {
     </div>
     </section>
     <h2 class="starter-title">Starter builds</h2>
-    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game. Opening one replaces that class's current planner build; save your current build first if you want to keep it. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
+    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game. Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
     <p v-if="!starters.length" class="muted">No starter builds match these filters.</p>
     <section v-for="g in starterGroups" :key="g.cls" class="starter-group" :aria-label="`${g.cls} starter builds`">
     <h3 class="starter-class">{{ g.cls }} <span class="muted">{{ g.builds.length }}</span></h3>
