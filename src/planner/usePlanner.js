@@ -11,6 +11,7 @@ import { againstTarget, typicalTarget } from "./target.js";
 import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
 import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
+import { createAvailability } from "./availability.js";
 
 export const PlannerKey = Symbol("Planner");
 // A build's levelling stages: each is its own version of the character (skills, gear,
@@ -77,6 +78,7 @@ function cleanItem(st, catalog) {
     out.sockets = st.sockets.slice(0, 6).map((r) => (typeof r === "string" && catalog.get(r) ? r : null));
   out.orbs = cleanOrbs(st.orbs);
   if (st.ethereal === true) out.ethereal = true;
+  if (st.honorific === true && catalog.get(st.ref)?.kind === "base") out.honorific = true;
   // Superior quality: a variant id from superior-items.json (items.js ignores one that doesn't fit).
   if (Number.isInteger(st.superior) && st.superior >= 0 && st.superior < 16) out.superior = st.superior;
   return out;
@@ -139,6 +141,8 @@ export function createPlanner(engine, catalog, planner) {
     // Also the generator's: items a stage keeps as they are ({ slot: item }), because the
     // previous stage and the finished build both wear them (no swapping away and back).
     keepGear: null,
+    // Also the generator's: only found gear (availability.js), for a build's found-gear version.
+    foundGear: false,
     suggestEnhancements: saved.suggestEnhancements ?? true,
     // Suggest runewords in Superior bases (superior.js); on by default.
     suggestSuperior: saved.suggestSuperior ?? true,
@@ -232,14 +236,17 @@ export function createPlanner(engine, catalog, planner) {
   const profile = computed(() => buildProfile(build.value, engine));
   const profileSummary = computed(() => describeProfile(profile.value));
   const wanted = computed(() => wantedStats(profile.value, character.value));
+  // Found gear only (state.foundGear): the items availability.js counts as findable.
+  const availability = createAvailability(catalog, catalog.all().filter((d) => d.kind === "socketable").map((d) => [d.name, d.kindLabel, d.lvl]));
+  const itemAllow = () => (state.foundGear ? availability.found : null);
   const recommendationOptions = computed(() => ({
     build: build.value, engine, catalog, planner, character: character.value, profile: profile.value, want: wanted.value,
-    weaponEnhancements: state.suggestEnhancements, includeUnique: state.includeUniqueOrbs, superior: state.suggestSuperior, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel,
+    weaponEnhancements: state.suggestEnhancements, includeUnique: state.includeUniqueOrbs, superior: state.suggestSuperior, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow(),
   }));
   // Each slot's full ranking is kept until the build or the suggestion options change, so
   // the suggestions dialog and the item picker share the work (weapons take the longest).
   const recCache = new Map();
-  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear]);
+  const recFingerprint = () => JSON.stringify([build.value, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear, state.foundGear]);
   function rankedFor(slot) {
     const fp = recFingerprint();
     const hit = recCache.get(slot);
@@ -445,7 +452,7 @@ export function createPlanner(engine, catalog, planner) {
     if (state.picker?.mode !== 'inventory') state.picker = null;
     say('Cleared equipment from both weapon sets.', 'info');
   }
-  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear]);
+  const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear, state.foundGear]);
   function applyGearPreview(preview) {
     if (!preview || preview.fingerprint !== suggestionFingerprint()) {
       say('Your build or options changed. Generate a new preview before applying.', 'info');
@@ -489,7 +496,7 @@ export function createPlanner(engine, catalog, planner) {
         const currentProfile = buildProfile(next, engine);
         const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
           profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, allocateAttributes: state.suggestAttributes,
-          maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel }, 30)
+          maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow() }, 30)
           .find(() => !slot.startsWith('offhand') || !current.weapon?.twoHanded);
         if (!rec) continue;
         next.gear[slot] = rec.state;
@@ -506,7 +513,7 @@ export function createPlanner(engine, catalog, planner) {
       const currentProfile = buildProfile(next, engine);
       const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
         profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, allocateAttributes: state.suggestAttributes,
-          maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel }, 1)[0];
+          maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow() }, 1)[0];
       if (!rec || rec.improvement <= 0.25) continue;
       next.gear[slot] = rec.state;
       if (state.suggestAttributes) next.attrs = rec.attrs;
@@ -515,7 +522,7 @@ export function createPlanner(engine, catalog, planner) {
     }
     count = slots.filter(slot => next.gear[slot]).length;
     const result = state.suggestEnhancements ? suggestEnhancements({ build: next, engine, catalog, planner,
-      computeCharacter, activeSlots, profile: buildProfile(next, engine), includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minGemLevel: state.minGemLevel }) : null;
+      computeCharacter, activeSlots, profile: buildProfile(next, engine), includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minGemLevel: state.minGemLevel, allow: itemAllow() }) : null;
     if (result) {
       next.gear = result.gear;
       // Armor enhancements can unlock a stronger weapon tier. Recompare weapons
@@ -525,7 +532,7 @@ export function createPlanner(engine, catalog, planner) {
       const currentProfile = buildProfile(next, engine);
       const rec = recommendForSlot(weaponSlot, { build: next, engine, catalog, planner, character: current,
         profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, weaponEnhancements: true,
-        includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel }, 1)[0];
+        includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow() }, 1)[0];
       if (rec && rec.improvement > 0.25 && !kept[weaponSlot]) {
         next.gear[weaponSlot] = rec.state;
         if (catalog.resolve(rec.state, next.level)?.twoHanded) delete next.gear[next.swap ? 'offhand2' : 'offhand'];
@@ -727,7 +734,7 @@ export function createPlanner(engine, catalog, planner) {
   // the build: damage it scales with, and resistances up to the cap (recommend.js).
   function fillSockets(slot = null, { quiet = false } = {}) {
     const { gear, picks } = suggestSockets({
-      build: build.value, engine, catalog, planner, computeCharacter, activeSlots, profile: profile.value, only: slot, minGemLevel: state.minGemLevel,
+      build: build.value, engine, catalog, planner, computeCharacter, activeSlots, profile: profile.value, only: slot, minGemLevel: state.minGemLevel, allow: itemAllow(),
     });
     for (const p of picks) updateItem(p.slot, { sockets: gear[p.slot].sockets });
     for (const p of picks) rememberSocket(p.ref);
@@ -736,7 +743,7 @@ export function createPlanner(engine, catalog, planner) {
   }
   function enhance(slot = null, { quiet = false } = {}) {
     const result = suggestEnhancements({ build: build.value, engine, catalog, planner, computeCharacter, activeSlots,
-      profile: profile.value, only: slot, includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minGemLevel: state.minGemLevel });
+      profile: profile.value, only: slot, includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minGemLevel: state.minGemLevel, allow: itemAllow() });
     for (const s of new Set([...result.picks, ...result.orbPicks].map(p => p.slot)))
       updateItem(s, { sockets: result.gear[s].sockets || [], orbs: result.gear[s].orbs || [] });
     if (!quiet) say(`Added ${result.orbPicks.length} mystic orbs and filled ${result.picks.length} sockets within level ${build.value.level}.`, 'info');

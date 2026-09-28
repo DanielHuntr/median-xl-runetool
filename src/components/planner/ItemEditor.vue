@@ -152,6 +152,9 @@ const cubeLink = computed(() => {
           <option v-for="q in qualities" :key="q.id" :value="q.id">{{ superiorLabel(q) }}</option>
         </select></label
       >
+      <label v-if="r.def.kind === 'base'" class="field-inline" title="A magic item cubed with a Mark of Infusion (Shenk, Act 5): mystic orbs count double. Its random magic affixes aren't counted."
+        ><input type="checkbox" :checked="!!r.state.honorific" @change="updateItem(props.slot, { honorific: $event.target.checked || undefined })" /> Honorific</label
+      >
       <label v-if="canPickSockets && r.maxSockets" class="field-inline"
         >Sockets
         <select :value="r.socketCount" @change="setSocketCount($event.target.value)">

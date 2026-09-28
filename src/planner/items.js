@@ -147,6 +147,28 @@ export function createCatalog(app, planner) {
   const get = (key) => items.get(key);
   const all = () => [...items.values()];
 
+  // Skill bonuses for another class: "+2 to Sorceress Skill Levels", "+2 to Fire Spells
+  // (Sorceress Only)", "+25 to Arcane Torrent" (a Sorceress skill). A character can wear such an
+  // item, but that part of it does nothing for them; Suggest gear and the starter builds leave
+  // these items to their own class. Skills no class owns (a relic's Summon Frostwalker) are fine.
+  const CLASS_NAMES = ["Amazon", "Assassin", "Barbarian", "Druid", "Necromancer", "Paladin", "Sorceress"];
+  const skillClassOf = (name) => planner.skills?.[skillByName.get(name.toLowerCase())]?.class || null;
+  function otherClassSkills(def, cls) {
+    const lines = def.lines || def.variants?.at(-1)?.lines || [];
+    const out = [];
+    for (const l of lines) {
+      let m;
+      if ((m = /to (Amazon|Assassin|Barbarian|Druid|Necromancer|Paladin|Sorceress) Skill/i.exec(l))) { if (m[1] !== cls) out.push(l); continue; }
+      if ((m = /\((\w+) Only\)/.exec(l)) && CLASS_NAMES.includes(m[1])) { if (m[1] !== cls) out.push(l); continue; }
+      if ((m = /^\+(?:\d+|\(\d+ to \d+\)) to (.+?)$/.exec(l))) {
+        const c = skillClassOf(m[1].trim());
+        if (c && CLASS_NAMES.includes(c) && c !== cls) out.push(l);
+      }
+    }
+    return out;
+  }
+  const forClass = (def, cls) => !cls || !def || otherClassSkills(def, cls).length === 0;
+
   // Items that fit a slot for a class (class-restricted items for other classes are left out).
   // Whether a gear item (or runeword base) can go in a slot for a class.
   function fitsSlot(d, slot, cls) {
@@ -320,7 +342,10 @@ export function createCatalog(app, planner) {
     }
     if (def.kind === "runeword") head.reqLevel = Math.max(head.reqLevel, def.lvl || 0);
 
-    const multiplier = orbMultiplier(rolled);
+    // Honorific (a magic base item + a Mark of Infusion, from Shenk): mystic orbs count double
+    // (the New Player Guide: "Honorific items receive DOUBLE bonus from mystic orbs").
+    const honorific = !!state.honorific && def.kind === "base";
+    const multiplier = orbMultiplier(rolled) * (honorific ? 2 : 1);
     const orbs = cleanOrbs(state.orbs).map(orbById).filter(o => orbFits(o, def, rolled, state)).map(o => {
       const parsed = orbParsed(o, multiplier, level);
       for (const l of o.lines) {
@@ -360,7 +385,7 @@ export function createCatalog(app, planner) {
     }
     head.reqLevel += reqAdd;
     head.reqLevel += orbs.reduce((n, o) => n + o.def.reqLevel, 0);
-    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded: isTwoHanded(lines), cls: lineClass(lines), superior, canBeSuperior };
+    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded: isTwoHanded(lines), cls: lineClass(lines), superior, canBeSuperior, honorific };
   }
 
   const setById = (id) => app.SETD.find((s) => s.id === id);
@@ -372,7 +397,7 @@ export function createCatalog(app, planner) {
       def.icon = runewordBases(def)[0]?.icon ?? "";
     }
 
-  return { get, all, forSlot, fitsSlot, runewordBases, socketables, jewels, resolve, clearResolved, orbParsed, socketFill, skillByName, setById, parseLines, images: app.RIMG };
+  return { get, all, otherClassSkills, forClass, forSlot, fitsSlot, runewordBases, socketables, jewels, resolve, clearResolved, orbParsed, socketFill, skillByName, setById, parseLines, images: app.RIMG };
 }
 
 const maxNum = (s) => Math.max(...String(s).match(/-?\d+(\.\d+)?/g)?.map(Number) || [0]);

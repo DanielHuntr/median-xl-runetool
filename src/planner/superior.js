@@ -38,7 +38,7 @@ export function superiorNames(r) {
   const sup = !!r?.superior;
   const base = r?.def.base && r.def.base !== r.def.name ? r.def.base : null;
   return {
-    name: sup && r.def.kind === "base" ? `Superior ${r.def.name}` : r?.def.name,
+    name: r?.honorific ? `Honorific ${r.def.name}` : sup && r.def.kind === "base" ? `Superior ${r.def.name}` : r?.def.name,
     base: base && sup ? `Superior ${base}` : base,
   };
 }

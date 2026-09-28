@@ -214,7 +214,7 @@ export function wantedStats(profile, character) {
 // maxOrbs: at most that many mystic orbs per item (starter builds' levelling stages).
 // minTiers: { item or runeword base key: lowest tier (variant) allowed }, so a levelling build
 // never goes back to a lower tier of something it already had.
-export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null }, limit = 30) {
+export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null, allow = null }, limit = 30) {
   const mainSlot = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
   if (mainSlot && build.gear[mainSlot] && catalog.resolve(build.gear[mainSlot], build.level)?.twoHanded) return [];
   const slotDef = SLOTS.find((s) => s.id === slot);
@@ -279,6 +279,10 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
   };
   for (const def of catalog.forSlot(slot, build.cls)) {
     if (def.kind === "base") continue;
+    // Only items the caller allows (a starter build's found-gear version, availability.js).
+    if (allow && !allow(def)) continue;
+    // Not items whose skill bonuses are another class's (items.js otherClassSkills).
+    if (catalog.forClass && !catalog.forClass(def, build.cls)) continue;
     let states;
     if (def.kind === "runeword") {
       const bases = catalog.runewordBases(def).filter((b) => catalog.fitsSlot(b, slot, build.cls) && (!need || need.fits(b.cat)));
@@ -384,7 +388,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
         const gear = { ...build.gear, [slot]: candidate };
         if (catalog.resolve(candidate, build.level)?.twoHanded) delete gear[slot === 'weapon' ? 'offhand' : 'offhand2'];
         const plan = suggestEnhancements({ build: { ...build, gear }, ...env, computeCharacter, activeSlots,
-          profile, only: slot, includeUnique, maxOrbs, minGemLevel });
+          profile, only: slot, includeUnique, maxOrbs, minGemLevel, allow });
         const state = plan.gear[slot], resolved = catalog.resolve(state, build.level);
         if (!resolved || resolved.head.reqLevel > build.level) continue;
         const outcome = fitsAttributes(state, resolved);
@@ -473,7 +477,7 @@ function socketValue(parsed, want, character, profile, build) {
  */
 // minGemLevel: no gem below this level (normal 12, flawless 15, perfect 18): a levelling build
 // that has socketed flawless gems doesn't go back to normal ones. Runes and jewels aren't graded.
-export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null, minGemLevel = null }) {
+export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null, minGemLevel = null, allow = null }) {
   // A plain copy (the store's gear is a reactive proxy, which structuredClone can't copy).
   const gear = JSON.parse(JSON.stringify(build.gear));
   const reqLevel = (d) => {
@@ -481,7 +485,7 @@ export function suggestSockets({ build, engine, catalog, planner, computeCharact
     const l = d.variants?.at(-1)?.lines.find((x) => /^Required Level: /.test(x));
     return l ? parseInt(l.split(": ")[1], 10) || 0 : 0;
   };
-  const candidates = [...catalog.socketables(), ...catalog.jewels()].filter((d) => reqLevel(d) <= build.level
+  const candidates = [...catalog.socketables(), ...catalog.jewels()].filter((d) => (!allow || allow(d)) && (!catalog.forClass || catalog.forClass(d, build.cls)) && reqLevel(d) <= build.level
     && !(minGemLevel && d.kind === "socketable" && d.kindLabel === "Gems" && (d.lvl || 0) < minGemLevel));
   // Jewels are all unique items: each is suggested at most once (already socketed ones
   // count), so rare finds aren't stacked. Gems and runes can repeat.
