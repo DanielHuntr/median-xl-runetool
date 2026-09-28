@@ -133,12 +133,20 @@ export function skillDamage(id, { engine, build, skillBuild, character }) {
   const firstLines = describe.effect.filter((l) => l.status !== "unknown").slice(0, 2).map((l) => l.text);
   // Damage lines on the skill's own tooltip (game formulas, e.g. Incineration Trap's
   // "Fire Damage: 81-88 per second"), with their synergies already applied.
+  // Also a poison spell's "Poison Damage: 17-17 over 1.6 seconds" (poison_dot: the total over
+  // its duration, Arachnomancy, Lorenado), and a damage spell's flat "Physical Damage: +76"
+  // (the Nephalem vessels); on a buff, that flat damage is added to attacks instead.
+  const spellFlat = tags.includes("Spell") && !tags.includes("Buff");
   const tooltipDamage = describe.effect.flatMap((l) =>
     l.status === "unknown"
       ? []
       : (l.parts || [])
-          .filter((p) => TOOLTIP_DAMAGE.test(p.key) && typeof p.values?.[0] === "number" && typeof p.values?.[1] === "number")
-          .map((p) => ({ element: p.key.split("_")[0], range: pair(p.values[0], p.values[1]), text: l.text, source: p.source })),
+          .filter((p) => typeof p.values?.[0] === "number" && (typeof p.values?.[1] === "number" || p.key === "bonus_physical_damage"))
+          .filter((p) => TOOLTIP_DAMAGE.test(p.key) || p.key === "poison_dot" || (spellFlat && p.key === "bonus_physical_damage"))
+          .map((p) => ({
+            element: p.key === "poison_dot" ? "poison" : p.key === "bonus_physical_damage" ? "physical" : p.key.split("_")[0],
+            range: pair(p.values[0], p.values[1] ?? p.values[0]), text: l.text, source: p.source,
+          })),
   );
   // A count of minions makes a summon, unless the skill deals damage of its own: MedianDB
   // also uses "minions" for Mind Flay's beams (and Lorenado's tornadoes).
