@@ -2,6 +2,7 @@
 import { provide, defineAsyncComponent } from "vue";
 import { createRunetool, RunetoolKey } from "./composables/useRunetool.js";
 import AppSidebar from "./components/AppSidebar.vue";
+import SiteSearch from "./components/SiteSearch.vue";
 import AppHeader from "./components/AppHeader.vue";
 import AppFooter from "./components/AppFooter.vue";
 import RunewordFinder from "./components/RunewordFinder.vue";
@@ -24,6 +25,7 @@ const { page } = state;
 <template>
   <div class="app-shell">
     <AppSidebar />
+    <SiteSearch />
     <main>
       <AppHeader />
       <RunewordFinder v-if="page === 'runewords'" />

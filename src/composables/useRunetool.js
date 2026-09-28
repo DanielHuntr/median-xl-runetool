@@ -405,6 +405,34 @@ export function createRunetool() {
     window.location.hash = p;
     window.scrollTo({ top: 0 });
   }
+  // Site search: open a catalogue page searched for one thing. The page's other filters
+  // (and the level limit) are only cleared when they would hide it; then its card is
+  // scrolled to and highlighted.
+  function reveal(to, name) {
+    const shows = (list) => list.value.some((x) => x.name === name);
+    const lists = { "sacred-uniques": ["sacred", sacredUniques, "cat"], sets: ["sets", sets, "cls"], socketables: ["sock", socketables, "group"], "base-items": ["bases", bases, "cat"] };
+    if (to === "runewords") {
+      st.q = name;
+      if (!shows(results)) Object.assign(st, defaults(), { q: name, sort: st.sort, full: st.full });
+    } else if (to === "uniques") {
+      tuQuery.value = name;
+      if (!shows(uniques)) tuCat.value = "";
+    } else if (lists[to]) {
+      const [key, list, filter] = lists[to];
+      browse[key].q = name;
+      if (!shows(list)) browse[key][filter] = "";
+      if (!shows(list)) st.lvl = MAX_ITEM_LEVEL;
+    } else return;
+    nav(to);
+    nextTick(() => {
+      const card = [...document.querySelectorAll("main article h2")].find((h) => h.textContent.trim() === name)?.closest("article");
+      if (!card) return;
+      card.scrollIntoView({ block: "center" });
+      card.classList.remove("found");
+      void card.offsetWidth; // restart the highlight
+      card.classList.add("found");
+    });
+  }
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   function applyTheme() {
     document.documentElement.dataset.theme =
@@ -504,6 +532,7 @@ export function createRunetool() {
     nextTier,
     cycle,
     nav,
+    reveal,
     closeDrawer,
     clampLevel,
     RW,

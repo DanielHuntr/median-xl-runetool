@@ -654,6 +654,17 @@ export function createPlanner(engine, catalog, planner) {
     return url.toString();
   }
   function importFromHash(hash = window.location.hash) {
+    // #planner?skill=<id> (site search): show that skill in its class's tree. Each class
+    // keeps its own build, so switching class loses nothing.
+    const sk = /[?&]skill=([a-z0-9_]+)/.exec(hash);
+    const skill = sk && engine.skill(sk[1]);
+    if (skill && engine.classNames.includes(skill.class)) {
+      if (typeof history !== "undefined") history.replaceState(null, "", "#planner");
+      setClass(skill.class);
+      if (engine.tabs(skill.class).includes(skill.tabName)) state.tab[skill.class] = skill.tabName;
+      state.selected = sk[1];
+      return true;
+    }
     const m = /[?&]b=([A-Za-z0-9_-]+)/.exec(hash);
     if (!m) return false;
     try {

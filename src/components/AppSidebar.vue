@@ -17,6 +17,11 @@ const BAR = [["runewords", "Runewords"], ["uniques", "Uniques"], ["cube", "Cube"
 const onBar = computed(() => BAR.some(([id]) => id === page.value));
 const sheet = ref(null);
 const backup = ref(null);
+const openSearch = () => {
+  closeMore();
+  window.dispatchEvent(new Event("site-search"));
+};
+const searchKey = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform || "") ? "⌘K" : "Ctrl K";
 function openBackup() {
   closeMore();
   backup.value?.open();
@@ -54,6 +59,9 @@ function reportHref() {
       ><span class="brand-mark"><Icon name="rune" /></span
       ><span>MEDIAN XL<small>R U N E T O O L</small></span></a
     >
+    <button type="button" class="nav-search" aria-label="Search the site" :data-tip="`Search (${searchKey})`" @click="openSearch">
+      <Icon name="search" /><span>Search</span><kbd>{{ searchKey }}</kbd>
+    </button>
     <div class="nav-label">THE ARMORY</div>
     <nav aria-label="Main navigation">
       <button
@@ -101,6 +109,7 @@ function reportHref() {
     <div class="mobile-sheet-body">
       <header>
         <b id="mobile-sheet-title">All pages</b>
+        <button type="button" class="icon-btn" aria-label="Search the site" @click="openSearch"><Icon name="search" /></button>
         <button type="button" class="icon-btn" aria-label="Close" @click="closeMore"><Icon name="close" /></button>
       </header>
       <ul>

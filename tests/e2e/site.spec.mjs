@@ -67,3 +67,24 @@ test("a backup downloads and restores", async ({ page }) => {
   await dialog.locator("input[type=file]").setInputFiles({ name: "b.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(backup)) });
   await expect(dialog.getByRole("status")).toContainText("1 loot filter added");
 });
+
+test("site search finds a unique and opens its card", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.keyboard.press("Control+k");
+  const box = page.getByRole("combobox", { name: "Search the site" });
+  await expect(box).toBeFocused();
+  await box.fill("grim fang");
+  await expect(page.getByRole("option").first()).toContainText("Grim Fang");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#uniques/);
+  await expect(page.locator("main article.found h2")).toHaveText("Grim Fang");
+});
+
+test("site search opens a skill in the planner", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.getByRole("button", { name: "Search the site" }).click();
+  await page.getByRole("combobox", { name: "Search the site" }).fill("fanged assault");
+  await page.getByRole("option", { name: /Fanged Assault/ }).click();
+  await expect(page).toHaveURL(/#planner$/);
+  await expect(page.locator(".skill-detail")).toContainText("Fanged Assault");
+});
