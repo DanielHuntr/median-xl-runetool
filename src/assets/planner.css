@@ -2078,3 +2078,64 @@
     padding: 3px;
   }
 }
+
+/* Levelling stages: one version of the build per stage (usePlanner.js). Filled stages carry
+   a small dot; the hint under them says where to level and what runewords open up. */
+.planner-stages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 12px 0 0;
+}
+.stage-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stage-label {
+  margin-right: 6px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.stage-switch button {
+  position: relative;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--field);
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+}
+.stage-switch button:hover { color: var(--text); border-color: var(--gold); }
+.stage-switch button[aria-pressed="true"] {
+  color: var(--gold);
+  background: var(--gold-bg);
+  border-color: var(--gold);
+}
+.stage-switch button.filled::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.stage-hint {
+  flex: 1 1 320px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.stage-hint small { font-size: 0.75rem; }
+.stage-hint .text-btn { margin-left: 8px; }
+@media (max-width: 600px) {
+  .stage-switch { flex-wrap: wrap; }
+  .stage-switch button { flex: 1 1 auto; padding: 0 8px; }
+  .stage-label { flex-basis: 100%; }
+}

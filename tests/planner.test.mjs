@@ -1601,3 +1601,40 @@ test("gear that takes an attribute below zero is flagged, and never suggested", 
   assert.equal(issue.fix.attr, "vitality");
   assert.equal(attributesSafe(before, after), false, "Suggest gear won't put it on");
 });
+
+test("levelling stages: each is its own build, carried by save codes and share links", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { decodeBuild } = await load("/src/planner/buildCode.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Sorceress");
+  p.reset();
+  p.setLevel(150);
+  assert.equal(p.state.stage.Sorceress, "Endgame");
+  assert.equal(p.stageFilled("Normal"), false);
+  p.setStage("Normal");
+  assert.deepEqual([p.build.value.level, p.build.value.difficulty], [50, "Normal"], "an empty stage starts at its level");
+  p.copyStage("Endgame");
+  assert.deepEqual([p.build.value.level, p.build.value.difficulty], [50, "Normal"], "a copy keeps the stage's level");
+  p.setLevel(40);
+  p.setStage("Endgame");
+  assert.equal(p.build.value.level, 150, "the endgame build is kept");
+  assert.equal(p.stageFilled("Normal"), true);
+  const code = decodeBuild(p.buildCode());
+  assert.equal(code.stage, "Endgame");
+  assert.equal(code.stages.Normal.level, 40);
+  // A share link brings every stage back.
+  const q = scope.run(() => createPlanner(engine, catalog, planner));
+  q.importFromHash(`#planner?b=${p.buildCode()}`);
+  q.setStage("Normal");
+  assert.equal(q.build.value.level, 40);
+  // A starter's stages go only where a stage is empty.
+  q.fillStages("Sorceress", { Normal: { level: 20 }, Hell: { level: 125, difficulty: "Hell" } });
+  assert.equal(q.build.value.level, 40, "the stage being edited isn't replaced");
+  assert.equal(q.stageFilled("Hell"), true);
+  p.reset();
+  assert.equal(p.stageFilled("Normal"), false, "reset clears every stage");
+  scope.stop();
+});

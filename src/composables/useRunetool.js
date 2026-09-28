@@ -35,6 +35,7 @@ import {
   SORTS,
   SHORT,
   lineValue,
+  fitsBase,
 } from "../data/index.js";
 export const RunetoolKey = Symbol("Runetool");
 const DOCS = "https://docs.median-xl.com/doc/items/";
@@ -297,16 +298,6 @@ export function createRunetool() {
     });
     return { v: hit === null ? null : best, i: hit };
   }
-  function fitsBase(r, base) {
-    if (base === "@weapon") return r.slot === "weapon";
-    if (base === "@armor") return r.slot === "armor";
-    // A specific base: the game's own allowed categories when extracted (runeword-bases.json).
-    if (r.allowed) return r.allowed.includes(base);
-    return (
-      r.bases.includes(base) ||
-      (!ARMOR.has(base) && r.bases.includes("Weapons") && !r.except.includes(base))
-    );
-  }
   const results = computed(() => {
     const words = st.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
     return RW.filter((r) => {
@@ -554,6 +545,7 @@ export function createRunetool() {
     cycle,
     nav,
     reveal,
+    fitsBase,
     closeDrawer,
     clampLevel,
     RW,

@@ -12,6 +12,11 @@ import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 
 export const PlannerKey = Symbol("Planner");
+// A build's levelling stages: each is its own version of the character (skills, gear,
+// attributes), so a player makes their own levelling guide by filling them in. An empty stage
+// starts at its level and difficulty; Endgame is the finished build.
+export const STAGES = ["Normal", "Nightmare", "Hell", "Endgame"];
+export const STAGE_START = { Normal: [50, "Normal"], Nightmare: [100, "Nightmare"], Hell: [125, "Hell"] };
 const STORAGE_KEY = "mxlrw2:planner";
 const RECENT_SOCKETS = 8;
 
@@ -142,8 +147,53 @@ export function createPlanner(engine, catalog, planner) {
     tone: "warn",
     // Name of the build last opened from the Builds page, per class (suggested when saving).
     openedName: {},
+    // Per class: the stage being edited, and the other stages' builds.
+    stage: {},
+    stages: {},
   });
-  for (const cls of engine.classNames) state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog);
+  for (const cls of engine.classNames) {
+    state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog);
+    state.stage[cls] = STAGES.includes(saved.stage?.[cls]) ? saved.stage[cls] : "Endgame";
+    state.stages[cls] = cleanStages(saved.stages?.[cls], cls, state.stage[cls]);
+  }
+  // Stored or shared stages: well-formed builds of this class, never the active stage's slot.
+  function cleanStages(raw, cls, active) {
+    const out = {};
+    for (const name of STAGES) if (name !== active && raw?.[name] && typeof raw[name] === "object") out[name] = cleanBuild({ ...raw[name], cls }, cls, engine, catalog);
+    return out;
+  }
+  const stageStart = (cls, name) => {
+    const [level, difficulty] = STAGE_START[name] || [1, "Hell"];
+    return { ...emptyBuild(cls), level, difficulty };
+  };
+  /** Edit another stage: the current one is kept, the chosen one loaded (or started empty). */
+  function setStage(name) {
+    const cls = state.cls, cur = state.stage[cls];
+    if (!STAGES.includes(name) || name === cur) return;
+    const { [name]: next, ...rest } = state.stages[cls];
+    state.stages[cls] = { ...rest, [cur]: state.builds[cls] };
+    state.builds[cls] = next || stageStart(cls, name);
+    state.stage[cls] = name;
+    state.selected = state.slot = state.editing = null;
+    state.message = "";
+  }
+  const stageFilled = (name) => name === state.stage[state.cls] || !!state.stages[state.cls][name];
+  /** Fill the stage being edited with a copy of another, at this stage's level and difficulty. */
+  function copyStage(from) {
+    const cls = state.cls, cur = state.stage[cls];
+    const src = state.stages[cls][from];
+    if (!src || from === cur) return;
+    const [level, difficulty] = STAGE_START[cur] || [src.level, src.difficulty];
+    state.builds[cls] = { ...JSON.parse(JSON.stringify(src)), level, difficulty };
+    say(`Copied the ${from} stage. Check what the planner flags at level ${level}.`, "info");
+  }
+  /** Stages worked out elsewhere (a starter build's levelling guide), put in the empty stages. */
+  function fillStages(cls, builds) {
+    for (const [name, b] of Object.entries(builds)) {
+      if (name === state.stage[cls] || state.stages[cls][name] || !b) continue;
+      state.stages[cls] = { ...state.stages[cls], [name]: cleanBuild({ ...b, cls }, cls, engine, catalog) };
+    }
+  }
 
   const build = computed(() => state.builds[state.cls]);
   const character = computed(() => computeCharacter(build.value, { engine, catalog, planner }));
@@ -639,6 +689,8 @@ export function createPlanner(engine, catalog, planner) {
 
   function reset() {
     state.builds[state.cls] = emptyBuild(state.cls);
+    state.stage[state.cls] = "Endgame";
+    state.stages[state.cls] = {};
     state.openedName[state.cls] = "";
     state.selected = null;
     state.slot = null;
@@ -647,7 +699,11 @@ export function createPlanner(engine, catalog, planner) {
   }
 
   // ---------- Sharing: base64url JSON, versioned, cleaned on import
-  const buildCode = () => encodeBuild(build.value);
+  // The code carries every stage: the one being edited, and the others under "stages".
+  const buildCode = () => {
+    const others = state.stages[state.cls];
+    return encodeBuild(Object.keys(others).length ? { ...build.value, stage: state.stage[state.cls], stages: others } : build.value);
+  };
   function shareUrl() {
     const url = new URL(window.location.href);
     url.hash = plannerHash(buildCode());
@@ -675,6 +731,8 @@ export function createPlanner(engine, catalog, planner) {
       if (![1, 2].includes(raw.v) || !engine.classNames.includes(src.cls)) throw new Error("bad build");
       const b = cleanBuild(src, src.cls, engine, catalog);
       state.builds[b.cls] = b;
+      state.stage[b.cls] = STAGES.includes(raw.stage) ? raw.stage : "Endgame";
+      state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
       setClass(b.cls);
       state.tab[b.cls] = engine
         .tabs(b.cls)
@@ -706,6 +764,8 @@ export function createPlanner(engine, catalog, planner) {
       tab: state.tab,
       recentSockets: state.recentSockets,
       builds: state.builds,
+      stage: state.stage,
+      stages: state.stages,
     }),
     (v) => {
       try {
@@ -719,7 +779,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, say, openPicker, closePicker, pick,
+    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages, say, openPicker, closePicker, pick,
     profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };

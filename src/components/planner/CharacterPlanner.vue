@@ -1,6 +1,6 @@
 <script setup>
 import ClassPicker from "../ClassPicker.vue";
-import { ref, shallowRef, provide, onMounted, onBeforeUnmount } from "vue";
+import { ref, shallowRef, provide, computed, onMounted, onBeforeUnmount } from "vue";
 import Icon from "../AppIcon.vue";
 import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
@@ -15,10 +15,11 @@ import SkillChooser from "./SkillChooser.vue";
 import SaveBuildDialog from "./SaveBuildDialog.vue";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
 import { createCatalog } from "../../planner/items.js";
-import { createPlanner, PlannerKey } from "../../planner/usePlanner.js";
+import { createPlanner, PlannerKey, STAGES, STAGE_START } from "../../planner/usePlanner.js";
+import { areasNear, gearCats, runewordsBetween } from "../../levelling.js";
 import { OTHER_QUESTS, otherQuestDone } from "../../planner/character.js";
 import { DIFFICULTIES } from "../../planner/rules.js";
-import { TUD, SUD, SETD, RW, BASED, SOCKD, RIMG } from "../../data/index.js";
+import { TUD, SUD, SETD, RW, BASED, SOCKD, RIMG, fitsBase } from "../../data/index.js";
 import "../../assets/planner.css";
 
 // The planner's skill data and icons (~2.5 MB with artwork) load only when this page opens.
@@ -38,7 +39,46 @@ function start(data) {
   proxy.game = data.game || null;
   proxy.importFromHash();
   planner.value = proxy;
+  fillPresetStages();
 }
+// A starter build opened from the Builds page (&preset=<id>) brings its levelling guide's
+// stages (scripts/build-presets.mjs): level 50 as Normal, 100 as Nightmare, 125 as Hell.
+async function fillPresetStages(hash = window.location.hash) {
+  const id = /[?&]preset=([a-z0-9-]+)/.exec(hash)?.[1];
+  if (!id || !planner.value) return;
+  const cls = planner.value.state.cls;
+  const list = (await import("../../data/preset-stages.json")).default.stages?.[id] || [];
+  const at = (level) => list.find((s) => s.level === level && s.build)?.build;
+  planner.value.fillStages(cls, { Normal: at(50), Nightmare: at(100), Hell: at(125) });
+}
+
+// Levelling stages: which exist, and for the one being edited where to level and the
+// runewords new since the stage before (src/levelling.js; areas from levels.bin).
+const areas = shallowRef(null);
+import("../../data/areas.json").then((m) => (areas.value = m.default.areas)).catch(() => {});
+const stageName = computed(() => planner.value?.state.stage[planner.value.state.cls] ?? "Endgame");
+const stageTip = (name) => {
+  const [level, diff] = STAGE_START[name] || [];
+  const filled = planner.value.stageFilled(name);
+  return name === "Endgame" ? `The finished build${filled ? "" : " (empty)"}` : `From level ${level}, ${diff}${filled ? "" : " (empty: starts at that level)"}`;
+};
+const stageHelp = computed(() => {
+  const p = planner.value;
+  if (!p) return null;
+  const b = p.build.value, name = stageName.value;
+  const copyFrom = STAGES.filter((n) => n !== name && p.stageFilled(n));
+  const empty = !Object.keys(b.points).length && !Object.keys(b.gear).length;
+  const i = STAGES.indexOf(name);
+  const prevLevel = i > 0 ? (STAGE_START[STAGES[i - 1]]?.[0] ?? 0) : 0;
+  const c = { TUD, SUD, SETD, BASED };
+  const cats = gearCats(b.gear, c);
+  return {
+    empty, copyFrom,
+    areas: areas.value ? areasNear(areas.value, b.level, b.difficulty, 4) : [],
+    runewords: runewordsBetween(RW, fitsBase, cats, name === "Endgame" ? 0 : prevLevel, b.level).slice(0, 6),
+    cats, prevLevel,
+  };
+});
 async function load() {
   error.value = "";
   try {
@@ -50,7 +90,10 @@ async function load() {
   }
 }
 if (props.data) start(props.data);
-const onHash = () => planner.value?.importFromHash();
+const onHash = () => {
+  planner.value?.importFromHash();
+  fillPresetStages();
+};
 onMounted(() => {
   if (!props.data) load();
   window.addEventListener("hashchange", onHash);
@@ -68,7 +111,7 @@ async function share() {
   }
 }
 function confirmReset() {
-  if (window.confirm(`Clear your ${planner.value.state.cls} character (skills, stats and gear)?`)) planner.value.reset();
+  if (window.confirm(`Clear your ${planner.value.state.cls} character (skills, stats and gear, every stage)?`)) planner.value.reset();
 }
 const shortDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { dateStyle: "medium" }) : "unknown date");
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
@@ -120,6 +163,32 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
         </div>
       </div>
 
+      <div class="planner-stages">
+        <div class="stage-switch" role="group" aria-label="Levelling stage">
+          <span class="stage-label">Stage</span>
+          <button
+            v-for="n in STAGES"
+            :key="n"
+            type="button"
+            :aria-pressed="stageName === n"
+            :class="{ filled: planner.stageFilled(n) }"
+            :data-tip="stageTip(n)"
+            @click="planner.setStage(n)"
+          >{{ n }}</button>
+        </div>
+        <p v-if="stageHelp?.empty && stageHelp.copyFrom.length" class="stage-hint">
+          This stage is empty.
+          <button v-for="n in stageHelp.copyFrom" :key="n" type="button" class="text-btn" @click="planner.copyStage(n)">Copy {{ n }}</button>
+        </p>
+        <p v-else-if="stageName !== 'Endgame' && stageHelp" class="stage-hint">
+          <template v-if="stageHelp.areas.length">
+            Level in: <span v-for="(a, i) in stageHelp.areas" :key="a.name">{{ i ? ", " : "" }}{{ a.name }} <small>({{ a.mlvl }})</small></span>.
+          </template>
+          <template v-if="stageHelp.runewords.length">
+            New runewords for your {{ stageHelp.cats.join(", ") }}: {{ stageHelp.runewords.map((r) => `${r.name} (${r.lvl})`).join(", ") }}.
+          </template>
+        </p>
+      </div>
       <p class="planner-message" :class="planner.state.tone" role="status">{{ planner.state.message }}</p>
 
       <div class="planner-layout" :class="{ docked: planner.state.statsOpen && planner.state.statsPinned }">

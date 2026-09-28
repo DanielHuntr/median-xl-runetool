@@ -19,7 +19,7 @@ for (const p of PAGES) {
   });
 }
 
-test("dialogs: site search, filters, backup, levelling guide", async ({ page }) => {
+test("dialogs: site search, filters, backup", async ({ page }) => {
   await page.goto("/#uniques");
   await page.keyboard.press("Control+k");
   await page.getByRole("combobox", { name: "Search the site" }).fill("fang");
@@ -31,10 +31,6 @@ test("dialogs: site search, filters, backup, levelling guide", async ({ page }) 
   await page.getByRole("button", { name: "Back up & restore" }).click();
   expect(await problems(page, ".backup")).toEqual([]);
   await page.keyboard.press("Escape");
-  await page.goto("/#builds");
-  await page.locator(".guide-btn").first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  expect(await problems(page, "dialog.guide")).toEqual([]);
 });
 
 test("tabs move with the arrow keys", async ({ page }) => {

@@ -44,11 +44,15 @@ test("the theme picker switches the theme", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("data-theme", "hell");
 });
 
-test("a starter build's levelling guide opens", async ({ page }) => {
+test("a starter build opens with its levelling stages", async ({ page }) => {
   await page.goto("/#builds");
-  await page.locator(".guide-btn").first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(page.locator("#guide-title")).not.toBeEmpty();
+  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  const stages = page.getByRole("group", { name: "Levelling stage" });
+  await expect(stages.getByRole("button", { name: "Endgame" })).toHaveAttribute("aria-pressed", "true");
+  await expect(stages.getByRole("button", { name: "Normal" })).toHaveClass(/filled/);
+  await stages.getByRole("button", { name: "Normal" }).click();
+  await expect(page.locator(".planner-toolbar").getByLabel("Character level")).toHaveValue("50");
+  await expect(page.locator(".stage-hint")).toContainText("Level in:");
 });
 
 test("the character planner loads", async ({ page }) => {

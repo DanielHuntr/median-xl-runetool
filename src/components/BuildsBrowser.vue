@@ -5,7 +5,6 @@ import { encodeBuild, plannerHash } from '../planner/buildCode.js';
 import presets from '../data/preset-builds.json';
 import ClassPicker from './ClassPicker.vue';
 import SkillIcon from './planner/SkillIcon.vue';
-import LevellingGuide from './LevellingGuide.vue';
 import Icon from './AppIcon.vue';
 const { builds, rename, remove } = useSavedBuilds();
 const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Paladin', 'Sorceress'];
@@ -18,11 +17,10 @@ const starterGroups = computed(() => classes.map((c) => ({ cls: c, builds: start
   .sort((a, b) => (a.tree || "").localeCompare(b.tree || "") || a.name.localeCompare(b.name)) })).filter((g) => g.builds.length));
 // Each class's card art (public/builds/<class>.webp).
 const art = (cls) => `${import.meta.env.BASE_URL}builds/${cls.toLowerCase()}.webp`;
-// The starter build whose levelling guide is open.
-const guideFor = ref(null);
 const fmt = (n) => Math.round(n).toLocaleString();
 const SLOT_BADGE = { 'Left skill': 'L', 'Right skill': 'R' };
-const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(b.build) : b.code)}&name=${encodeURIComponent(b.name)}`;
+// A starter build also brings its levelling stages (&preset=, CharacterPlanner.vue).
+const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(b.build) : b.code)}&name=${encodeURIComponent(b.name)}${preset ? `&preset=${b.id}` : ""}`;
 function commitRename(id) {
   const result = rename(id, name.value);
   error.value = result.ok ? '' : result.reason;
@@ -68,7 +66,7 @@ function deleteBuild(id) {
     </div>
     </section>
     <h2 class="starter-title">Starter builds</h2>
-    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game. Opening one replaces that class's current planner build; save your current build first if you want to keep it.</p>
+    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game. Opening one replaces that class's current planner build; save your current build first if you want to keep it. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
     <p v-if="!starters.length" class="muted">No starter builds match these filters.</p>
     <section v-for="g in starterGroups" :key="g.cls" class="starter-group" :aria-label="`${g.cls} starter builds`">
     <h3 class="starter-class">{{ g.cls }} <span class="muted">{{ g.builds.length }}</span></h3>
@@ -96,12 +94,9 @@ function deleteBuild(id) {
         <p v-if="b.summary?.unspent" class="muted">{{ b.summary.unspent }} skill points left to customise.</p>
         <p v-else-if="b.summary" class="muted">All skill points allocated · {{ b.build.signets }} Signets of Learning</p>
       </a>
-      <!-- Beside the card's link (a button can't go inside it), in its bottom corner. -->
-      <button type="button" class="btn guide-btn" @click="guideFor = b"><Icon name="tree" />Levelling guide</button>
       </div>
     </div>
     </section>
-    <LevellingGuide :preset="guideFor" @close="guideFor = null" />
   </section>
 </template>
 <style scoped>
@@ -130,9 +125,7 @@ function deleteBuild(id) {
    clipped layer so the skill tooltips can still reach past the card's edge. */
 .build-card { position:relative; padding:24px calc(40% + 8px) 24px 24px; border:1px solid var(--border); border-radius:8px; background:var(--panel); overflow:visible; }
 .starter-wrap { position:relative; }
-.starter-wrap .starter-card { height:100%; padding-bottom:64px; }
-.guide-btn { position:absolute; left:24px; bottom:20px; z-index:2; padding:6px 12px; font-size:.8125rem; }
-.guide-btn svg { width:15px; height:15px; }
+.starter-wrap .starter-card { height:100%; }
 .starter-card { display:block; color:inherit; text-decoration:none; transition:border-color .15s, box-shadow .15s; }
 .starter-card:hover,
 .starter-card:focus-visible { border-color:var(--gold); box-shadow:0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent) inset, 0 0 18px color-mix(in srgb, var(--gold) 16%, transparent); outline:none; }

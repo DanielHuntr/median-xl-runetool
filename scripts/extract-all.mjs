@@ -24,6 +24,7 @@ const STEPS = [
   ["extract-runeword-bases.mjs", dir],
   ["extract-superior.mjs", dir],
   ["extract-speed.mjs", dir],
+  ["extract-areas.mjs", dir],
   ["extract-cube.mjs", dir],
   ["check-patch.mjs"],
 ];

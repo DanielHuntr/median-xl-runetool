@@ -194,6 +194,18 @@ const RW = RW_ALL.filter((r) => {
   return true;
 });
 
+// Whether a runeword can be made in this base category ("@weapon" / "@armor" for any).
+function fitsBase(r, base) {
+  if (base === "@weapon") return r.slot === "weapon";
+  if (base === "@armor") return r.slot === "armor";
+  // A specific base: the game's own allowed categories when extracted (runeword-bases.json).
+  if (r.allowed) return r.allowed.includes(base);
+  return (
+    r.bases.includes(base) ||
+    (!ARMOR.has(base) && r.bases.includes("Weapons") && !r.except.includes(base))
+  );
+}
+
 const HEAD =
   /^(One-Hand|Two-Hand|Throw) Damage|^Required|^Item Level|Damage Bonus:|^Socketed/;
 const TUD = TU.map(([name, base, cat, tiers], i) => {
@@ -310,6 +322,7 @@ const { SUD, SETD, SOCKD, SOCK_GROUPS, BASED } = normalizeCatalog(BUNDLED);
 
 export {
   META,
+  fitsBase,
   BUNDLED,
   normalizeCatalog,
   TU,
