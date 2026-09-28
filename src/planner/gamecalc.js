@@ -136,15 +136,19 @@ export function createGameEval(skill, names, inputs) {
       // game 200, 300, 400 with its "+ 200") and Guardian Spirit (par5 150: 100, 250, 400).
       v = p(4) * (inputs.lvl - 1);
     } else if (name === "mnhp") {
-      // Minion life: (par3 + (lvl − 1) × par4) × (100 + par2)% × (10000 + ulvl²) / 10000 ×
-      // (100 + the skill's "% Minion Life per Base Level" × blvl)%, rounded once. Inferred
-      // from Blood Skeleton (121, 242, 363 at character level 10) and Guardian Spirit
-      // (144, 212, 228, 300 with its ×4 at character level 12-14).
-      // Life bonus %: the skill's own minion-life formula (clc1, when it reads stat 444, the
-      // minion life stat: Guardian Spirit 1 + 9 × Base Level, Blood Skeleton 0), else its
-      // "+N% Life per Base Level" line; plus 1 once the skill is learned. That extra 1 is
-      // fitted: both summons show it in game at character level 2-3 and its source isn't
-      // known (unlearned Blood Skeleton shows 120, learned 121 per level).
+      // Minion life: (par3 + (lvl − 1) × par4) × (100 + par2)% × (100 + the skill's own minion
+      // life bonus)% × (100 + half the character level)%, rounded down once.
+      // Own bonus: the skill's minion-life formula (clc1, when it reads stat 444, the minion
+      // life stat: Guardian Spirit 1 + 9 × Base Level, Protector Spirit 1 + 15 × Base Level),
+      // else its "+N% Life per Base Level" line (Blood Skeleton: none).
+      // Character level: +ulvl ÷ 2 %, a separate multiplier, not added to the own bonus.
+      // Protector Spirit at character level 150 settles both (GitHub: 728, 1996, 4428, 12124
+      // at levels 1, 5, 10, 20: added together they'd need a bonus that grows with Base
+      // Level); Blood Skeleton (120 at level 1, 121 at 3, 3576 at 99) and Guardian Spirit fit
+      // too. Its source in the game files isn't known.
+      // The game's result lands a hair above the exact product: × 1.0001 before rounding
+      // down fits every value seen (Blood Skeleton's 3755, Protector Spirit's 499 × 4 and
+      // 1107 × 4 would each be 1 short without it). Its fixed-point maths isn't known.
       const own = skill.calcs?.clc1;
       let bonus;
       if (own?.text && /stat\(stat 444\)|stat\(444\)/.test(own.text)) {
@@ -152,29 +156,26 @@ export function createGameEval(skill, names, inputs) {
         if (!r.ok) throw new Error(`minion life bonus: ${r.reason}`);
         bonus = r.value;
       } else bonus = minionBonus("life") * inputs.blvl;
-      // An extra minion life % from character level: (ulvl − 1) / 2. In game: 0 below level 3
-      // (unlearned Blood Skeleton 120), 1 at level 3 (Blood Skeleton, Guardian Spirit), 49 at
-      // level 99 (Blood Skeleton level 20: 3576; Abyss Knight level 25: 5422). Its source in
-      // the game files isn't known.
-      const extra = Math.trunc((inputs.ulvl - 1) / 2);
-      bonus += extra;
-      assumed.set("extra minion life % = (character level − 1) ÷ 2 (fits the game at levels 1-3 and 99; source unknown)", extra);
+      const extra = Math.trunc(inputs.ulvl / 2);
+      assumed.set("extra minion life % = character level ÷ 2, multiplied separately (fits the game at levels 1, 3, 99 and 150; source unknown)", extra);
       const base = p(2) + (inputs.lvl - 1) * p(3);
-      v = Math.trunc((base * (100 + p(1)) * (100 + bonus)) / 10000);
+      v = Math.trunc(((base * (100 + p(1)) * (100 + bonus) * (100 + extra)) / 1000000) * 1.0001);
     } else if (["len", "rng", "skcd", "pets"].includes(name)) v = field(skill.vars?.[name], name);
     else if (name === "mana") {
-      // Mana cost: the base and the per-level cost are each scaled by 2^ManaShift / 256 and
-      // rounded down on their own, then cost = base + per-level × (lvl − 1). Mind Flay in game
-      // (mana 16, lvlmana 18, shift 5) costs exactly 2 × level at levels 1-17 (2, 4, 8, 10, 16,
-      // 18, 32, 34; GitHub issue #13): 2 + 2 × (lvl − 1), not (16 + 18 × (lvl − 1)) / 8, which
-      // gives 11 at level 5.
+      // Mana cost, as Diablo II works it out: (mana + lvlmana × (lvl − 1)) × 2^ManaShift / 256,
+      // rounded down once. In game: Anathema (110, 22, shift 6) 27, 33, 77, 82, 132, 137 at
+      // levels 1, 2, 10, 11, 20, 21; Psionic Storm (20, 42, shift 5) 2, 7, 49, 55, 128, 133;
+      // Snake Bite (9, 29, shift 5) 70, 73 at 20, 21. Rounding each part on its own gives
+      // 32, 7 and 58 there. Mind Flay (16, 18, shift 5) is the exception: the game shows
+      // exactly 2 × level (GitHub issue #13), which this gives only at levels 1-4; its
+      // fixtures record the difference. The skill's mana modifier (Specialization's points
+      // ÷ 2, and the Paladin devotion lock) isn't applied yet.
       const m = skill.mana;
       if (!m) throw new Error("skill has no mana data");
       const base = field(m.base, "mana"), per = field(m.perLevel, "lvlmana");
-      const scaled = (x) => Math.trunc((x * 2 ** m.shift) / 256);
       // Falling per-level costs cannot grant mana. Apply the same zero floor as
       // the community-data path, including references to another skill's cost.
-      v = Math.max(0, scaled(base) + scaled(per) * (Math.max(1, inputs.lvl) - 1));
+      v = Math.max(0, Math.trunc(((base + per * (Math.max(1, inputs.lvl) - 1)) * 2 ** m.shift) / 256));
     } else if (name === "wdm") v = Math.trunc(((skill.srcDam ?? 0) * 100) / 128);
     // enma/exma: the elemental damage as the tooltip shows it (Stormcall's 4-5 makes
     // Askari Lightning's in-game 15; Lava Pit shows enma × 5 = 40, exma × 5 = 45). Equal to

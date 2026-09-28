@@ -26,10 +26,11 @@ export const LINE_TYPES = {
   },
   // "Poison Damage to Weapon" + ": a-b"
   35: { confirmed: "Way of the Spider", format: (l, a, b) => join(l.textA, `: ${n(a)}-${n(b)}`) },
-  // "over " + frames / 25 + " seconds", "Duration: " + 250 → "10 seconds"
+  // "over " + frames / 25 + " seconds", "Duration: " + 250 → "10 seconds". Tenths, rounded
+  // down, as the game's integer maths draws them: Snake Bite's 53 frames is "2.1 seconds".
   12: {
-    confirmed: "Way of the Spider, Incineration Trap; hidden at 0: Discharge",
-    format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, a == null ? "?" : fmt(a / 25), " seconds")),
+    confirmed: "Way of the Spider, Incineration Trap, Snake Bite (2.1); hidden at 0: Discharge",
+    format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, a == null ? "?" : tenths(a), " seconds")),
   },
   // printf-style text from the game: "+%d%% Total Damage per Base Level"
   66: {
@@ -59,8 +60,9 @@ export const LINE_TYPES = {
   // "Mana Cost: ", "Magic Damage: " + value
   4: { format: (l, a) => join(l.textA, n(a)) },
   5: { format: (l, a) => join(l.textA, n(a)) },
-  // "(Total Fire Damage: " + a-b + ")"
-  38: { format: (l, a, b) => join(l.textA, `${n(a)}-${n(b)}`, l.textB) },
+  // "(Total Fire Damage: " + a-b + ")"; one number when both are equal (Psionic Storm's
+  // "Magic Feedback Damage: 8% of Total Energy").
+  38: { confirmed: "Psionic Storm (equal values)", format: (l, a, b) => join(l.textA, a === b ? n(a) : `${n(a)}-${n(b)}`, l.textB) },
   // a-b + " bonus cold damage to attack" (label in the second text)
   52: { format: (l, a, b) => join(`${n(a)}-${n(b)}`, l.textB) },
   // Blank spacer line.
@@ -68,6 +70,7 @@ export const LINE_TYPES = {
 };
 
 const fmt = (v) => String(Math.round(v * 100) / 100);
+const tenths = (frames) => { const t = Math.trunc((frames * 10) / 25); return t % 10 ? `${Math.trunc(t / 10)}.${t % 10}` : String(t / 10); };
 
 /**
  * @returns {{ header?: string, hidden?: boolean, text?: string, format: "confirmed"|"inferred", confirmedBy?: string }}

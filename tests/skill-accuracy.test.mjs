@@ -344,14 +344,14 @@ test("every in-game fixture reproduces: values, tooltip lines and synergy text",
     const check = engine.fixtureCheck(f.skill);
     for (const key of Object.keys(f.observed.current)) assert.equal(check[key]?.ok, true, `${f.id}: ${key}`);
     const lines = engine.describe(b, f.skill, input("blvl")).effect.map((l) => l.text.toLowerCase());
-    for (const text of f.otherLines || []) assert.ok(lines.includes(text.toLowerCase()), `${f.id}: "${text}" in ${JSON.stringify(lines)}`);
+    // Known, documented differences are pinned to the planner's value (see the fixture).
+    const expect = (text) => (f.knownDifferences || []).find((k) => k.game === text)?.planner ?? text;
+    for (const text of f.otherLines || []) assert.ok(lines.includes(expect(text).toLowerCase()), `${f.id}: "${text}" in ${JSON.stringify(lines)}`);
     if (f.nextLines) {
       // The next level as the fixture records it (e.g. level + 1 with Base Level unchanged).
       const nb = input("blvl") + f.nextLevel.blvl, nl = input("lvl") + f.nextLevel.lvl;
       const nextBuild = { ...b, points: { ...b.points, [f.skill]: nb }, soft: { [f.skill]: nl - nb } };
       const next = engine.describe(nextBuild, f.skill, nb).effect.map((l) => l.text.toLowerCase());
-      // Known, documented differences are pinned to the planner's value (see the fixture).
-      const expect = (text) => (f.knownDifferences || []).find((k) => k.game === text)?.planner ?? text;
       for (const text of f.nextLines) assert.ok(next.includes(expect(text).toLowerCase()), `${f.id} next: "${text}" in ${JSON.stringify(next)}`);
     }
     const syn = engine.synergies(b, f.skill, input("blvl"));

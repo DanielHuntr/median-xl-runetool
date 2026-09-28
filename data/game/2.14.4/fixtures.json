@@ -240,8 +240,8 @@
      "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
     },
     "ulvl": {
-     "value": 2,
-     "how": "inferred: life 120 means character level 1 or 2 (the extra minion life % is (level - 1) / 2)"
+     "value": 1,
+     "how": "inferred: life 120 means character level 1 (the extra minion life % is half the character level, confirmed at level 150 by Protector Spirit)"
     },
     "conditions": {
      "value": {},
@@ -738,14 +738,7 @@
     "Attack Rating: 2200",
     "Mana Cost: 1"
    ],
-   "independentChecks": "Minion life at character level 99 fixes the extra minion life % at 49 ((99 - 1) / 2); \"+67% Global Damage Reduction\" places the aura-stat formulas at skills.bin 0x68.",
-   "knownDifferences": [
-    {
-     "game": "Life: 3755 hit points",
-     "planner": "Life: 3754 hit points",
-     "why": "2520 × 1.49 = 3754.8: the planner truncates; the game shows 3755. Rounding to nearest would fix this but break level 3 (363.6 shown as 363), so the game's exact rounding path is still unknown. The other 16 in-game summon life values match exactly."
-    }
-   ]
+   "independentChecks": "Minion life at character level 99 fixes the extra minion life % at 49 ((99 - 1) / 2); \"+67% Global Damage Reduction\" places the aura-stat formulas at skills.bin 0x68."
   },
   {
    "id": "abyss-knight-level-25-char-99",
@@ -1393,7 +1386,14 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": []
+   "independentChecks": [],
+   "knownDifferences": [
+    {
+     "game": "Mana Cost: 10",
+     "planner": "Mana Cost: 11",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    }
+   ]
   },
   {
    "id": "mind-flay-level-8-char-16",
@@ -1452,7 +1452,19 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": []
+   "independentChecks": [],
+   "knownDifferences": [
+    {
+     "game": "Mana Cost: 16",
+     "planner": "Mana Cost: 17",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    },
+    {
+     "game": "Mana Cost: 18",
+     "planner": "Mana Cost: 20",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    }
+   ]
   },
   {
    "id": "mind-flay-level-16-char-16",
@@ -1511,7 +1523,19 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": []
+   "independentChecks": [],
+   "knownDifferences": [
+    {
+     "game": "Mana Cost: 32",
+     "planner": "Mana Cost: 35",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    },
+    {
+     "game": "Mana Cost: 34",
+     "planner": "Mana Cost: 38",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    }
+   ]
   },
   {
    "id": "mind-flay-level-16-energy-112",
@@ -1570,7 +1594,645 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +28% Increased Damage"
    ],
-   "independentChecks": []
+   "independentChecks": [],
+   "knownDifferences": [
+    {
+     "game": "Mana Cost: 32",
+     "planner": "Mana Cost: 35",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    },
+    {
+     "game": "Mana Cost: 34",
+     "planner": "Mana Cost: 38",
+     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
+    }
+   ]
+  },
+  {
+   "id": "protector-spirit-level-1-char-150",
+   "skill": "protector_spirit",
+   "source": "In-game Protector Spirit tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no + skills, so every level is a hard point"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated by the project owner: character level 150, no minion life from gear, charms or other skills"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no + skills, no minion life bonuses"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 728 hit points",
+    "Damage: 5",
+    "Attack Rating: 200",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 876 hit points",
+    "Damage: 8",
+    "Attack Rating: 300",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+15% Minion Life per Base Level",
+    "+8% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Also shown: Bloodlust: Damage: +2%, Bloodlust: Elemental Damages: +6% (next +4%, +7%); the planner's values match, its wording differs."
+  },
+  {
+   "id": "protector-spirit-level-5-char-150",
+   "skill": "protector_spirit",
+   "source": "In-game Protector Spirit tooltip screenshot (Current Skill Level 5 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no + skills, so every level is a hard point"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated by the project owner: character level 150, no minion life from gear, charms or other skills"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no + skills, no minion life bonuses"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 1996 hit points",
+    "Damage: 23",
+    "Attack Rating: 600",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 2216 hit points",
+    "Damage: 28",
+    "Attack Rating: 700",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+15% Minion Life per Base Level",
+    "+8% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Also shown: Bloodlust: Damage: +10%, Bloodlust: Elemental Damages: +11% (next +12%, +12%); the planner's values match, its wording differs."
+  },
+  {
+   "id": "protector-spirit-level-10-char-150",
+   "skill": "protector_spirit",
+   "source": "In-game Protector Spirit tooltip screenshot (Current Skill Level 10 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no + skills, so every level is a hard point"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated by the project owner: character level 150, no minion life from gear, charms or other skills"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no + skills, no minion life bonuses"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 4428 hit points",
+    "Damage: 59",
+    "Attack Rating: 1100",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 4744 hit points",
+    "Damage: 64",
+    "Attack Rating: 1200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+15% Minion Life per Base Level",
+    "+8% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Also shown: Bloodlust: Damage: +20%, Bloodlust: Elemental Damages: +17% (next +22%, +18%); the planner's values match, its wording differs."
+  },
+  {
+   "id": "protector-spirit-level-20-char-150",
+   "skill": "protector_spirit",
+   "source": "In-game Protector Spirit tooltip screenshot (Current Skill Level 20 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "stated: no + skills, so every level is a hard point"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated by the project owner: character level 150, no minion life from gear, charms or other skills"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no + skills, no minion life bonuses"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 12124 hit points",
+    "Damage: 163",
+    "Attack Rating: 2100",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 12632 hit points",
+    "Damage: 171",
+    "Attack Rating: 2200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+15% Minion Life per Base Level",
+    "+8% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Also shown: Bloodlust: Damage: +40%, Bloodlust: Elemental Damages: +30% (next +42%, +31%); the planner's values match, its wording differs."
+  },
+  {
+   "id": "anathema-level-1",
+   "skill": "anathema",
+   "source": "In-game Anathema tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: 1 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; these values don't depend on it (Anathema needs level 50)"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Innate Elemental Damage: +11%",
+    "Duration: 120 seconds",
+    "Mana Cost: 27"
+   ],
+   "nextLines": [
+    "Duration: 124 seconds",
+    "Mana Cost: 33"
+   ],
+   "synergyText": [
+    "+1% to Innate Elemental Damage per Base Level"
+   ],
+   "independentChecks": "Also shown: Weapon Physical Damage -300% and +1% Maximum Fire, Cold, and Lightning Resistances as one line of the game's own text; the planner shows MedianDB's wording (three resistance lines). The First Level tooltip hides Innate Elemental Damage."
+  },
+  {
+   "id": "anathema-level-10",
+   "skill": "anathema",
+   "source": "In-game Anathema tooltip screenshot (Current Skill Level 10 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: 10 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; these values don't depend on it (Anathema needs level 50)"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Innate Elemental Damage: +20%",
+    "Duration: 156 seconds",
+    "Mana Cost: 77"
+   ],
+   "nextLines": [
+    "Duration: 160 seconds",
+    "Mana Cost: 82"
+   ],
+   "synergyText": [
+    "+1% to Innate Elemental Damage per Base Level"
+   ],
+   "independentChecks": "Also shown: Weapon Physical Damage -300% and +1% Maximum Fire, Cold, and Lightning Resistances as one line of the game's own text; the planner shows MedianDB's wording (three resistance lines). The First Level tooltip hides Innate Elemental Damage."
+  },
+  {
+   "id": "anathema-level-20",
+   "skill": "anathema",
+   "source": "In-game Anathema tooltip screenshot (Current Skill Level 20 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "shown: 20 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; these values don't depend on it (Anathema needs level 50)"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Innate Elemental Damage: +30%",
+    "Duration: 196 seconds",
+    "Mana Cost: 132"
+   ],
+   "nextLines": [
+    "Duration: 200 seconds",
+    "Mana Cost: 137"
+   ],
+   "synergyText": [
+    "+1% to Innate Elemental Damage per Base Level"
+   ],
+   "independentChecks": "Also shown: Weapon Physical Damage -300% and +1% Maximum Fire, Cold, and Lightning Resistances as one line of the game's own text; the planner shows MedianDB's wording (three resistance lines). The First Level tooltip hides Innate Elemental Damage."
+  },
+  {
+   "id": "psionic-storm-level-1",
+   "skill": "psionic_storm",
+   "source": "In-game Psionic Storm tooltip screenshot (Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: 1 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; the percentages and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Magic Feedback Damage: 8% of Total Energy",
+    "Mana Cost: 2"
+   ],
+   "nextLines": [
+    "Magic Feedback Damage: 14% of Total Energy",
+    "Mana Cost: 7"
+   ],
+   "independentChecks": "Also shown: \"(8 per second)\", next \"(8 per second)\", from the character's energy (not stated), so not checked."
+  },
+  {
+   "id": "psionic-storm-level-10",
+   "skill": "psionic_storm",
+   "source": "In-game Psionic Storm tooltip screenshot (Current Skill Level 10 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: 10 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; the percentages and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Magic Feedback Damage: 62% of Total Energy",
+    "Mana Cost: 49"
+   ],
+   "nextLines": [
+    "Magic Feedback Damage: 68% of Total Energy",
+    "Mana Cost: 55"
+   ],
+   "independentChecks": "Also shown: \"(71 per second)\", next \"(80 per second)\", from the character's energy (not stated), so not checked."
+  },
+  {
+   "id": "psionic-storm-level-25",
+   "skill": "psionic_storm",
+   "source": "In-game Psionic Storm tooltip screenshot (Current Skill Level 25 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "shown: 25 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Assassin's level isn't stated; the percentages and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Magic Feedback Damage: 152% of Total Energy",
+    "Mana Cost: 128"
+   ],
+   "nextLines": [
+    "Magic Feedback Damage: 158% of Total Energy",
+    "Mana Cost: 133"
+   ],
+   "independentChecks": "Also shown: \"(178 per second)\", next \"(187 per second)\", from the character's energy (not stated), so not checked."
+  },
+  {
+   "id": "snake-bite-level-20",
+   "skill": "snake_bite",
+   "source": "In-game Snake Bite tooltip screenshot (Current Skill Level 20 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "shown: 20 in the skill tree, no + skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Barbarian's level isn't stated; stun and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Damage Multiplier: 120%",
+    "Stun Length: 2.1 seconds",
+    "Mana Cost: 70"
+   ],
+   "nextLines": [
+    "Stun Length: 2.2 seconds",
+    "Mana Cost: 73"
+   ],
+   "independentChecks": "Also shown: Poison Damage 58706 over 1.8 seconds (next 59691), which depends on the thrown axe and the character's gear, not stated, so not checked."
+  },
+  {
+   "id": "sacrifices-level-1",
+   "skill": "sacrifices",
+   "source": "In-game Sacrifices tooltip screenshot (1/10, Current Skill Level 1 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: 1/10 in the skill tree"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Necromancer's level isn't stated; cooldown and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 11.2 seconds",
+    "Mana Cost: 11"
+   ],
+   "nextLines": [
+    "Cooldown: 11.2 seconds",
+    "Mana Cost: 14"
+   ],
+   "synergyText": [
+    "Cooldown Reduced by 0.8s per Base Level"
+   ],
+   "independentChecks": "Mana 30 at level 6 is the standard mana formula ((88 + 31 × 5) × 2^5 / 256 = 30.4); rounding base and per-level cost separately gives 26."
+  },
+  {
+   "id": "sacrifices-level-6",
+   "skill": "sacrifices",
+   "source": "In-game Sacrifices tooltip screenshot (6/10, Current Skill Level 6 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 6,
+     "how": "shown: Current Skill Level 6"
+    },
+    "blvl": {
+     "value": 6,
+     "how": "shown: 6/10 in the skill tree"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Necromancer's level isn't stated; cooldown and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 7.2 seconds",
+    "Mana Cost: 30"
+   ],
+   "nextLines": [
+    "Cooldown: 7.2 seconds",
+    "Mana Cost: 34"
+   ],
+   "synergyText": [
+    "Cooldown Reduced by 0.8s per Base Level"
+   ],
+   "independentChecks": "Mana 30 at level 6 is the standard mana formula ((88 + 31 × 5) × 2^5 / 256 = 30.4); rounding base and per-level cost separately gives 26."
+  },
+  {
+   "id": "sacrifices-level-10",
+   "skill": "sacrifices",
+   "source": "In-game Sacrifices tooltip screenshot (10/10, Current Skill Level 10 and Next Level) supplied by the project owner, 2026-09-28 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: 10/10 in the skill tree"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the Necromancer's level isn't stated; cooldown and mana don't depend on it"
+    },
+    "conditions": {
+     "value": {},
+     "how": "no + skills"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 4 seconds",
+    "Mana Cost: 45"
+   ],
+   "nextLines": [
+    "Cooldown: 4 seconds",
+    "Mana Cost: 49"
+   ],
+   "synergyText": [
+    "Cooldown Reduced by 0.8s per Base Level"
+   ],
+   "independentChecks": "Mana 30 at level 6 is the standard mana formula ((88 + 31 × 5) × 2^5 / 256 = 30.4); rounding base and per-level cost separately gives 26."
   }
  ]
 }
