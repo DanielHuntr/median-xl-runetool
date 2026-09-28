@@ -121,3 +121,24 @@ test("the Mercenary tab: hire one, see its stats and its buff", async ({ page })
   await page.getByRole("tab", { name: /Amazon|Assassin|Barbarian|Druid|Necromancer|Paladin|Sorceress/ }).click();
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();
 });
+
+test("the mercenary's gear: suggest, then edit an item's sockets", async ({ page }) => {
+  await page.goto("/#planner");
+  const lvl = page.locator(".planner-toolbar").getByLabel("Character level");
+  await lvl.fill("120"); await lvl.press("Enter");
+  await page.getByRole("tab", { name: /Mercenary/ }).click();
+  await page.locator(".merc-toolbar select").first().selectOption("Ranger");
+  await page.locator(".merc-view").getByRole("button", { name: /Suggest gear/ }).click();
+  const helm = page.locator(".merc-view").getByRole("button", { name: /Mercenary's helm: .+ Select to edit/ });
+  await expect(helm).toBeVisible();
+  await helm.click();
+  const editor = page.locator(".item-editor");
+  await expect(editor).toContainText("Mercenary's helm");
+  await expect(editor.getByRole("button", { name: /Suggest orbs and sockets/ })).toHaveCount(0);
+  const fill = editor.getByRole("button", { name: /Fill socket 1/ });
+  if (await fill.count()) {
+    await fill.click();
+    await page.getByRole("dialog").filter({ has: page.getByRole("searchbox", { name: "Search items" }) }).locator(".picker-list button, ul li button").first().click();
+    await expect(editor.getByRole("button", { name: /^Change$/ }).first()).toBeVisible();
+  }
+});

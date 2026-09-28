@@ -881,6 +881,9 @@ export function createEngine(data) {
     const row = constantRow(id, key, occ) || (occ > 0 ? constantRow(id, key, 0) : null);
     let g = occ === 0 ? gameLine(b, id, key, blvl) : null;
     if (g?.hidden) return { hidden: true };
+    // A value of 0 is shown only if the game's own tooltip line would show it (Warmth's First
+    // Level hides "Cold Resistance: 0%").
+    if (occ === 0 && g?.values && g.values[0] === 0 && gameNamedLine(b, id, key, blvl)?.hidden) return { hidden: true };
     if (occ === 0 && !g?.values) {
       const named = gameNamedLine(b, id, key, blvl);
       if (named?.hidden) return { hidden: true };

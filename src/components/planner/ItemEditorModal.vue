@@ -6,9 +6,9 @@ import HoverCard from "./HoverCard.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 
 // The item editor (tier, rolls, sockets) as a modal over the planner.
-const { state, build, closeEditor } = usePlanner();
+const { state, closeEditor, gearItem } = usePlanner();
 const dialog = ref(null);
-const hasItem = computed(() => !!(state.editing && build.value.gear[state.editing]));
+const hasItem = computed(() => !!(state.editing && gearItem(state.editing)));
 
 onMounted(async () => {
   dialog.value?.showModal?.();

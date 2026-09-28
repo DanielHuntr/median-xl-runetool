@@ -5,23 +5,27 @@ import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
+import { MERC_SLOTS } from "../../planner/mercs.js";
 import { pointsFor } from "../../planner/character.js";
 import { superiorVariants, superiorLabel, superiorNames } from "../../planner/superior.js";
 
 const props = defineProps({ slot: { type: String, required: true } });
-const { catalog, build, character, updateItem, unequip, state, openPicker, applyFix, emptySockets, fillEmptySockets, fillSockets, clearSockets, enhance, canAddOrb, addOrb } =
+const { catalog, build, character, updateItem, unequip, state, openPicker, applyFix, emptySockets, fillEmptySockets, fillSockets, clearSockets, enhance, canAddOrb, addOrb, gearItem, itemLevel } =
   usePlanner();
+// "merc:<slot>": one of the mercenary's items (its level, strength and dexterity apply; the
+// suggestions, which score items for your build, don't).
+const mercKey = computed(() => (props.slot.startsWith("merc:") ? props.slot.slice(5) : null));
 
-const item = computed(() => build.value.gear[props.slot]);
+const item = computed(() => gearItem(props.slot));
 const ethereal = computed(() => item.value?.ethereal || r.value?.lines.some(l => /\bethereal\b/i.test(l)));
 const chosenOrb = ref('');
 const availableOrbs = computed(() => ORBS.filter(o => (!o.unique || state.includeUniqueOrbs) && orbFits(o, r.value.def, r.value.lines, item.value)));
 function removeOrb(i) {
   updateItem(props.slot, { orbs: item.value.orbs.filter((_, index) => index !== i) });
 }
-const r = computed(() => character.value.equipped[props.slot] || (item.value && catalog.resolve(item.value, build.value.level)));
-const inactive = computed(() => item.value && !character.value.equipped[props.slot]);
-const slotLabel = computed(() => SLOTS.find((s) => s.id === props.slot)?.label);
+const r = computed(() => (!mercKey.value && character.value.equipped[props.slot]) || (item.value && catalog.resolve(item.value, itemLevel(props.slot))));
+const inactive = computed(() => !mercKey.value && item.value && !character.value.equipped[props.slot]);
+const slotLabel = computed(() => (mercKey.value ? `Mercenary's ${MERC_SLOTS.find((s) => s.id === mercKey.value)?.label.toLowerCase()}` : SLOTS.find((s) => s.id === props.slot)?.label));
 
 const variants = computed(() => {
   const d = r.value?.baseDef || r.value?.def;
@@ -78,6 +82,14 @@ const lineClass = (p) =>
   ({ stats: "counted", skill: "counted", oskill: "counted", info: "info", unknown: "unknown" })[p.kind] || "effect";
 const reqs = computed(() => {
   const h = r.value.head;
+  if (mercKey.value) {
+    const m = character.value.merc;
+    return [
+      h.reqLevel && { t: `Level ${h.reqLevel}`, ok: (m?.level ?? 0) >= h.reqLevel },
+      h.reqStr && { t: `Str ${h.reqStr}`, ok: (m?.strength ?? 0) >= h.reqStr },
+      h.reqDex && { t: `Dex ${h.reqDex}`, ok: (m?.dexterity ?? 0) >= h.reqDex },
+    ].filter(Boolean);
+  }
   const a = character.value.attributes;
   return [
     h.reqLevel && {
@@ -146,7 +158,7 @@ const cubeLink = computed(() => {
           <option v-for="n in r.maxSockets + 1" :value="n - 1">{{ n - 1 }}</option>
         </select></label
       >
-      <button class="btn" @click="openPicker({ mode: 'slot', slot })">Change item</button>
+      <button class="btn" @click="openPicker(mercKey ? { mode: 'merc', slot: mercKey } : { mode: 'slot', slot })">Change item</button>
       <button class="btn" @click="unequip(slot)">Remove</button>
     </div>
 
@@ -163,11 +175,11 @@ const cubeLink = computed(() => {
     </div>
 
     <div class="sockets orb-editor">
-      <h3>Mystic orbs <button class="text-btn" @click="enhance(slot)">Suggest orbs and sockets</button></h3>
+      <h3>Mystic orbs <button v-if="!mercKey" class="text-btn" @click="enhance(slot)">Suggest orbs and sockets</button></h3>
       <p v-if="ethereal" class="muted">This item is Ethereal and cannot receive mystic orbs. Its empty sockets can still be filled.</p>
       <template v-else>
       <label class="switch"><input type="checkbox" role="switch" v-model="state.includeUniqueOrbs" />Include rare unique mystic orbs</label>
-      <p class="muted">Bonuses ×{{ orbMultiplier(r.lines) }}. Required level {{ r.head.reqLevel }} / {{ build.level }}. Orb penalties include your socket fillers.</p>
+      <p class="muted">Bonuses ×{{ orbMultiplier(r.lines) }}. Required level {{ r.head.reqLevel }} / {{ itemLevel(slot) }}. Orb penalties include your socket fillers.</p>
       <ul v-if="item.orbs?.length"><li v-for="(id, i) in item.orbs || []" :key="i">
         <span><b>{{ orbById(id)?.name }}</b><small>{{ orbById(id)?.lines.join(', ') }}</small><small>+{{ orbById(id)?.reqLevel }} required level</small></span>
         <button class="text-btn" :aria-label="`Remove ${orbById(id)?.name} orb`" @click="removeOrb(i)">Remove</button>
@@ -185,7 +197,7 @@ const cubeLink = computed(() => {
       <h3>
         Sockets
         <button
-          v-if="empty.length"
+          v-if="empty.length && !mercKey"
           class="text-btn"
           title="Best gems, runes or jewels for your build: damage stats and resistances up to the cap"
           @click="fillSockets(slot)"

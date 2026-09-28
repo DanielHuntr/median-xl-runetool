@@ -9,7 +9,9 @@ import SkillIcon from "./SkillIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { MERC_ACTS, MERC_SLOTS, MERC_CLASS_ITEMS, mercCats } from "../../planner/mercs.js";
 
-const { planner, catalog, build, character, openPicker, removeMercItem, toggleMercBuff, tipOn } = usePlanner();
+const { planner, catalog, build, character, openPicker, openEditor, removeMercItem, toggleMercBuff, tipOn, suggestMerc } = usePlanner();
+// A filled slot opens the item editor (tier, sockets, orbs); an empty one the picker.
+const openSlot = (id) => (build.value.merc?.gear?.[id] ? openEditor(`merc:${id}`) : openPicker({ mode: "merc", slot: id }));
 const m = computed(() => character.value.merc);
 const cells = computed(() => (m.value ? MERC_SLOTS.filter((s) => mercCats(m.value.act, s.id)) : []));
 const itemOf = (slot) => {
@@ -34,15 +36,16 @@ const RES = [["fire", "Fire"], ["cold", "Cold"], ["lightning", "Lightning"], ["p
         <section class="doll-panel merc-doll-panel" aria-label="Mercenary's equipment">
           <div class="doll-top">
             <h2 class="group-title">{{ m.spec }} <small class="muted">{{ MERC_ACTS[m.act].name }}</small></h2>
+            <button class="btn suggest-btn" title="Pick its gear: +All Skills first (a stronger buff), then life, resistances and defense" @click="suggestMerc"><Icon name="star" />Suggest gear</button>
           </div>
           <div class="doll merc-doll">
             <div v-for="s in cells" :key="s.id" class="doll-cell" :class="s.id" :style="{ gridArea: s.id }">
               <button
                 class="doll-slot"
                 :class="[s.id, { filled: itemOf(s.id) }]"
-                :aria-label="itemOf(s.id) ? `Mercenary's ${s.label.toLowerCase()}: ${itemOf(s.id).def.name}` : `Mercenary's ${s.label.toLowerCase()}: empty, choose an item`"
+                :aria-label="itemOf(s.id) ? `Mercenary's ${s.label.toLowerCase()}: ${itemOf(s.id).def.name}. Select to edit` : `Mercenary's ${s.label.toLowerCase()}: empty, choose an item`"
                 v-on="itemOf(s.id) ? tipOn({ kind: 'item', item: build.merc.gear[s.id] }) : {}"
-                @click="openPicker({ mode: 'merc', slot: s.id })"
+                @click="openSlot(s.id)"
               >
                 <template v-if="itemOf(s.id)">
                   <ItemIcon :icon="itemOf(s.id).def.icon" />

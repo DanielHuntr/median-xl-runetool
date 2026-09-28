@@ -1678,3 +1678,9 @@ test("unlockable skills need their deed's difficulty (Specialization: Baal on He
   assert.match(engine.canAdd(b("Nightmare"), "specialization").reason, /needs Hell difficulty/);
   assert.equal(engine.canAdd(b("Hell"), "specialization").ok, true);
 });
+
+test("tooltip lines worth 0 are hidden where the game hides them (Warmth's First Level, issue #12)", async () => {
+  const { engine } = await env();
+  const first = engine.describe({ cls: "Sorceress", level: 9, points: { warmth: 0 }, soft: {}, quests: {} }, "warmth", 0).effect.map((l) => l.text);
+  assert.deepEqual(first, ["Mana Regeneration Rate: 3%"]);
+});

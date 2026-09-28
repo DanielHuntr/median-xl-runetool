@@ -39,7 +39,9 @@ export const LINE_TYPES = {
   // "Poison Pierce: " + 30 + "%"
   2: { format: (l, a) => join(l.textA, n(a), l.textB) },
   // "Damage Pierces " + 4 + "% Enemy Fire Resistance", "Activation Delay: " + 13 + " frames"
-  3: { confirmed: "Incineration Trap", format: (l, a) => join(l.textA, n(a), l.textB) },
+  // Hidden at 0: Warmth's First Level shows its mana regeneration line but not "Cold
+  // Resistance: 0%" (GitHub issue #12).
+  3: { confirmed: "Incineration Trap; hidden at 0: Warmth", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, n(a), l.textB)) },
   // "Activation Frequency Multiplier: " + 100 + "%" (textB is a spacer)
   21: { confirmed: "Incineration Trap; hidden at 0: Discharge", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, n(a), "%")) },
   // "Fire Damage: " + 81 + "-" + 88 + " per second" (textB is a spacer)

@@ -9,7 +9,7 @@ import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
 import { againstTarget, typicalTarget } from "./target.js";
 import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
-import { cleanMerc, mercCats, mercSpecs } from "./mercs.js";
+import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 
 export const PlannerKey = Symbol("Planner");
@@ -559,15 +559,26 @@ export function createPlanner(engine, catalog, planner) {
     }
     state.slot = slot;
   }
+  // The item in a slot: yours, or the mercenary's for "merc:<slot>" (its sockets and orbs are
+  // edited with the same editor), and the level it's resolved at (its wearer's).
+  const mercSlot = (slot) => (typeof slot === "string" && slot.startsWith("merc:") ? slot.slice(5) : null);
+  const mercLevel = () => Math.min(build.value.merc?.level ?? build.value.level, build.value.level);
+  function gearItem(slot) {
+    const m = mercSlot(slot);
+    return (m ? build.value.merc?.gear?.[m] : build.value.gear[slot]) || null;
+  }
+  const itemLevel = (slot) => (mercSlot(slot) ? mercLevel() : build.value.level);
   function unequip(slot) {
     hideTip();
-    delete build.value.gear[slot];
+    const m = mercSlot(slot);
+    if (m) { if (build.value.merc) delete build.value.merc.gear[m]; }
+    else delete build.value.gear[slot];
     if (state.editing === slot) state.editing = null;
   }
   function openEditor(slot) {
     hideTip();
-    state.slot = slot;
-    if (build.value.gear[slot]) state.editing = slot;
+    if (!mercSlot(slot)) state.slot = slot;
+    if (gearItem(slot)) state.editing = slot;
   }
   function closeEditor() {
     state.editing = null;
@@ -620,6 +631,15 @@ export function createPlanner(engine, catalog, planner) {
     const n = parseInt(v, 10);
     build.value.merc.level = Number.isInteger(n) && n >= 1 ? Math.min(n, build.value.level) : null;
   }
+  // Its gear, as the starter builds pick it: +All Skills first (a stronger buff), then life,
+  // resistances and defense, from what it can wear at its level and stats.
+  function suggestMerc() {
+    const m = build.value.merc;
+    if (!m) return;
+    const gear = suggestMercGear(build.value, { catalog, data: planner });
+    m.gear = gear;
+    say(Object.keys(gear).length ? `Suggested ${Object.keys(gear).length} items for your ${m.spec}.` : "Nothing it can wear yet.", "info");
+  }
   function setMercHiredAt(v) {
     if (!build.value.merc) return;
     const n = parseInt(v, 10);
@@ -644,7 +664,7 @@ export function createPlanner(engine, catalog, planner) {
       if (item.suggested && state.suggestEnhancements) enhance(p.slot);
     }
     else if (p.mode === "socket") {
-      const it = build.value.gear[p.slot];
+      const it = gearItem(p.slot);
       if (it) {
         const sockets = [...(it.sockets || [])];
         sockets[p.index] = item.ref;
@@ -663,14 +683,14 @@ export function createPlanner(engine, catalog, planner) {
   }
   // Empty sockets of the item in a slot (by index), up to its socket count.
   function emptySockets(slot) {
-    const it = build.value.gear[slot];
-    const count = it ? catalog.resolve(it, build.value.level)?.socketCount || 0 : 0;
+    const it = gearItem(slot);
+    const count = it ? catalog.resolve(it, itemLevel(slot))?.socketCount || 0 : 0;
     const out = [];
     for (let i = 0; i < count; i++) if (!it.sockets?.[i]) out.push(i);
     return out;
   }
   function fillEmptySockets(slot, ref) {
-    const it = build.value.gear[slot];
+    const it = gearItem(slot);
     if (!it || !catalog.get(ref)) return 0;
     const empty = emptySockets(slot);
     const sockets = [...(it.sockets || [])];
@@ -699,14 +719,14 @@ export function createPlanner(engine, catalog, planner) {
     return result;
   }
   function canAddOrb(slot, id) {
-    const st = build.value.gear[slot], o = orbById(id);
-    const r = st && catalog.resolve(st, build.value.level);
-    if (!r || !o || o.minLevel > build.value.level || !orbFits(o, r.def, r.lines, st)) return false;
+    const st = gearItem(slot), o = orbById(id), lvl = itemLevel(slot);
+    const r = st && catalog.resolve(st, lvl);
+    if (!r || !o || o.minLevel > lvl || !orbFits(o, r.def, r.lines, st)) return false;
     const next = cleanOrbs([...(st.orbs || []), id]);
-    return next.length > (st.orbs || []).length && catalog.resolve({ ...st, orbs: next }, build.value.level).head.reqLevel <= build.value.level;
+    return next.length > (st.orbs || []).length && catalog.resolve({ ...st, orbs: next }, lvl).head.reqLevel <= lvl;
   }
   function addOrb(slot, id) {
-    if (canAddOrb(slot, id)) updateItem(slot, { orbs: [...(build.value.gear[slot].orbs || []), id] });
+    if (canAddOrb(slot, id)) updateItem(slot, { orbs: [...(gearItem(slot).orbs || []), id] });
   }
   const summarise = (picks) => {
     const counts = new Map();
@@ -714,10 +734,10 @@ export function createPlanner(engine, catalog, planner) {
     return [...counts].map(([n, c]) => (c > 1 ? `${c} × ${n}` : n)).join(", ");
   };
   function clearSockets(slot) {
-    if (build.value.gear[slot]) updateItem(slot, { sockets: [] });
+    if (gearItem(slot)) updateItem(slot, { sockets: [] });
   }
   function updateItem(slot, patch) {
-    const it = build.value.gear[slot];
+    const it = gearItem(slot);
     if (it) Object.assign(it, patch);
   }
   function addInventory(ref) {
@@ -826,7 +846,7 @@ export function createPlanner(engine, catalog, planner) {
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, setStage, stageFilled, copyStage, fillStages,
-    mercSlotCats, setMerc, setMercLevel, setMercHiredAt, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
+    gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };
