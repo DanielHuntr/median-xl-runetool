@@ -163,13 +163,18 @@ export function createGameEval(skill, names, inputs) {
       v = Math.trunc((base * (100 + p(1)) * (100 + bonus)) / 10000);
     } else if (["len", "rng", "skcd", "pets"].includes(name)) v = field(skill.vars?.[name], name);
     else if (name === "mana") {
-      // D2 mana cost: (mana + lvlmana × (lvl − 1)) × 2^ManaShift / 256.
+      // Mana cost: the base and the per-level cost are each scaled by 2^ManaShift / 256 and
+      // rounded down on their own, then cost = base + per-level × (lvl − 1). Mind Flay in game
+      // (mana 16, lvlmana 18, shift 5) costs exactly 2 × level at levels 1-17 (2, 4, 8, 10, 16,
+      // 18, 32, 34; GitHub issue #13): 2 + 2 × (lvl − 1), not (16 + 18 × (lvl − 1)) / 8, which
+      // gives 11 at level 5.
       const m = skill.mana;
       if (!m) throw new Error("skill has no mana data");
       const base = field(m.base, "mana"), per = field(m.perLevel, "lvlmana");
+      const scaled = (x) => Math.trunc((x * 2 ** m.shift) / 256);
       // Falling per-level costs cannot grant mana. Apply the same zero floor as
       // the community-data path, including references to another skill's cost.
-      v = Math.max(0, Math.trunc(((base + per * (Math.max(1, inputs.lvl) - 1)) * 2 ** m.shift) / 256));
+      v = Math.max(0, scaled(base) + scaled(per) * (Math.max(1, inputs.lvl) - 1));
     } else if (name === "wdm") v = Math.trunc(((skill.srcDam ?? 0) * 100) / 128);
     // enma/exma: the elemental damage as the tooltip shows it (Stormcall's 4-5 makes
     // Askari Lightning's in-game 15; Lava Pit shows enma × 5 = 40, exma × 5 = 45). Equal to
