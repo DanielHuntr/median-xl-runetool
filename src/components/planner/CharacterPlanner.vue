@@ -107,7 +107,7 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             class="btn"
             :class="{ active: planner.state.statsOpen }"
             :aria-pressed="planner.state.statsOpen"
-            aria-controls="stats-panel-title"
+            :aria-controls="planner.state.statsOpen ? 'stats-panel' : null"
             @click="planner.toggleStats()"
           >
             <Icon name="panel" />Stats

@@ -1,4 +1,5 @@
 <script setup>
+import { tabKeys } from "../../tabKeys.js";
 import SkillTreeGrid from "./SkillTreeGrid.vue";
 import SkillBar from "./SkillBar.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
@@ -14,11 +15,12 @@ const { engine, state, build, tabs, tab, setTab, available, spent, character } =
         <div class="skill-orb" aria-live="polite">
           <b>{{ available - spent }}</b><small>skill points</small>
         </div>
-        <div class="skills-tabs" role="tablist" aria-label="Skill trees" aria-orientation="vertical">
+        <div class="skills-tabs" role="tablist" aria-label="Skill trees" aria-orientation="vertical" @keydown="tabKeys">
           <button
             v-for="t in tabs"
             role="tab"
             :aria-selected="tab === t"
+            :tabindex="tab === t ? 0 : -1"
             :class="{ selected: tab === t }"
             @click="setTab(t)"
           >

@@ -2,6 +2,7 @@
 // Loot filters: the community's (median-xl.com Filter Exchange, via /api/filters) and the
 // player's own, edited here and exported in the same JSON. Item classes and codes come from
 // the game files (filter-data.json); the filter logic is in filters/lootFilter.js.
+import { tabKeys } from "../tabKeys.js";
 import { ref, computed, onMounted, nextTick, watch } from "vue";
 import Icon from "./AppIcon.vue";
 import FD from "../data/filter-data.json";
@@ -164,9 +165,9 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
 </script>
 <template>
   <section class="loot-filters" aria-label="Loot filters">
-    <div class="tabs" role="tablist">
-      <button role="tab" :aria-selected="tab === 'community'" @click="tab = 'community'">Community filters</button>
-      <button role="tab" :aria-selected="tab === 'mine'" @click="tab = 'mine'">My filters<span v-if="filters.length" class="badge">{{ filters.length }}</span></button>
+    <div class="tabs" role="tablist" aria-label="Loot filters" @keydown="tabKeys">
+      <button role="tab" :aria-selected="tab === 'community'" :tabindex="tab === 'community' ? 0 : -1" @click="tab = 'community'">Community filters</button>
+      <button role="tab" :aria-selected="tab === 'mine'" :tabindex="tab === 'mine' ? 0 : -1" @click="tab = 'mine'">My filters<span v-if="filters.length" class="badge">{{ filters.length }}</span></button>
     </div>
     <p v-if="message" class="lf-message" :class="tone" role="status">{{ message }}</p>
 

@@ -99,6 +99,7 @@ const mac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator
         @keydown.down.prevent="move(1)"
         @keydown.up.prevent="move(-1)"
         @keydown.enter.prevent="go(hits[active])"
+        @keydown.esc.prevent="close"
       />
       <button type="button" class="ss-esc" aria-label="Close" @click="close">Esc</button>
     </div>

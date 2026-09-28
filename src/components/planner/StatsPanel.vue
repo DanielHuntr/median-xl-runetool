@@ -274,6 +274,7 @@ function onKey(e) {
 </script>
 <template>
   <aside
+    id="stats-panel"
     class="stats-panel"
     :class="{ pinned: state.statsPinned }"
     aria-labelledby="stats-panel-title"

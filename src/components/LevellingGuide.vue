@@ -3,6 +3,7 @@
 // and 100 (Nightmare), 125 (Hell) and the endgame build at 150, each with the skills, gear
 // and attributes the planner's own rules give at that level (scripts/build-presets.mjs).
 // The stages are in their own file, loaded when a guide is first opened.
+import { tabKeys } from "../tabKeys.js";
 import { computed, ref, watch, nextTick } from "vue";
 import Icon from "./AppIcon.vue";
 import { encodeBuild, plannerHash } from "../planner/buildCode.js";
@@ -60,8 +61,8 @@ function close() {
       <p v-if="loadError" class="guide-note">Couldn't load the guide: {{ loadError }}</p>
       <p v-else-if="!stages.length" class="guide-note">This build's levelling guide hasn't been generated yet.</p>
       <template v-else>
-        <div class="guide-stages" role="tablist" aria-label="Stages">
-          <button v-for="(s, i) in stages" :key="s.level" type="button" role="tab" :aria-selected="pick === i" :class="{ selected: pick === i }" @click="pick = i">
+        <div class="guide-stages" role="tablist" aria-label="Stages" @keydown="tabKeys">
+          <button v-for="(s, i) in stages" :key="s.level" type="button" role="tab" :aria-selected="pick === i" :tabindex="pick === i ? 0 : -1" :class="{ selected: pick === i }" @click="pick = i">
             <b>{{ s.level }}</b><small>{{ label(s) }}</small>
           </button>
         </div>

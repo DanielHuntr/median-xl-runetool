@@ -78,8 +78,6 @@ function onDrop(e) {
       class="cube-grid"
       :class="{ over: dragOver }"
       :style="{ width: at(W), height: at(H), '--cell': `min(32px, calc((100vw - 72px) / ${W}))` }"
-      role="list"
-      aria-label="Cube contents"
       @mouseleave="hide()"
       @keydown.esc="hide()"
       @dragover.prevent="dragOver = true"
@@ -87,6 +85,8 @@ function onDrop(e) {
       @drop.prevent="onDrop"
     >
       <p v-if="!items.length" class="cube-grid-empty">Drag items here, or click them in the list.</p>
+      <!-- Only the items are in the list (the empty note and tooltip aren't); it adds no box. -->
+      <div role="list" aria-label="Cube contents" class="cube-grid-list">
       <div
         v-for="p in placed.filter((q) => q.x >= 0)"
         :key="p.it.id"
@@ -112,6 +112,7 @@ function onDrop(e) {
         </button>
         <button type="button" class="cube-slot-x" :aria-label="`Take ${cube.itemName(p.it)} out`" @click="emit('remove', p.it.id)"><Icon name="close" /></button>
       </div>
+      </div>
       <!-- The tooltip, drawn like the game's: name in its quality colour, then the item's lines. -->
       <div v-if="tip" class="cube-tip" :style="tipStyle" role="tooltip">
         <CubeItemInfo :cube="cube" :item="tip.it" />
@@ -122,6 +123,7 @@ function onDrop(e) {
   </div>
 </template>
 <style scoped>
+.cube-grid-list { display: contents; }
 .cube-grid-wrap { padding: 4px 0; }
 .cube-grid { position: relative; margin: 0 auto; border: 2px solid var(--border); border-radius: 4px; box-shadow: inset 0 0 24px #0008;
   background: linear-gradient(90deg, #ffffff0a 1px, transparent 1px) 0 0 / var(--cell) var(--cell), linear-gradient(#ffffff0a 1px, transparent 1px) 0 0 / var(--cell) var(--cell), #0b0a08; }
