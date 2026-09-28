@@ -59,7 +59,7 @@ const MAX_LEVEL_RULES = [
     bonus: (src) => src,
     note: "+1 to the soulchained totems' and Dark Gathering's maximum level per point" },
   perLevel("aptitude", 5, { start: 115 }),
-  perLevel("void_gazer", 5, { start: 95, confirmed: { at: { 100: 1, 150: 11 }, issue: 14 } }),
+  perLevel("void_gazer", 5, { start: 95, confirmed: { at: { 100: 1, 104: 1, 150: 11 }, issue: 14 } }),
   // 38 at level 150 in game, one more than MedianDB's 37: it starts from the game file's
   // base of 1 (skills2.bin), not 0.
   perLevel("warmth", 4, { start: 1, base: 1, confirmed: { at: { 150: 38 }, issue: 15 } }),
