@@ -55,3 +55,15 @@ test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();
 });
+
+test("a backup downloads and restores", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.evaluate(() => localStorage.setItem("mxlrw2:saved-builds", "[]"));
+  await page.getByRole("button", { name: "Back up & restore" }).click();
+  const dialog = page.getByRole("dialog", { name: "Back up & restore" });
+  const [download] = await Promise.all([page.waitForEvent("download"), dialog.getByRole("button", { name: /Download a backup/ }).click()]);
+  expect(download.suggestedFilename()).toMatch(/^runetool-backup-\d{4}-\d{2}-\d{2}\.json$/);
+  const backup = { format: "median-xl-runetool", version: 2, data: { "loot-filters": [{ id: "e2e", from: "", filter: {} }] } };
+  await dialog.locator("input[type=file]").setInputFiles({ name: "b.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(backup)) });
+  await expect(dialog.getByRole("status")).toContainText("1 loot filter added");
+});

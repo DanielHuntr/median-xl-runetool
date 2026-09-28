@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import Icon from "./AppIcon.vue";
+import BackupDialog from "./BackupDialog.vue";
 import { useRunetool, ISSUES_REPO } from "../composables/useRunetool.js";
 const { page, nav, PAGES } = useRunetool();
 // The sidebar can be collapsed to icons (remembered); icons then show their names on hover.
@@ -15,6 +16,11 @@ const docsLabel = computed(() => (page.value === "filters" ? "Filter Exchange" :
 const BAR = [["runewords", "Runewords"], ["uniques", "Uniques"], ["cube", "Cube"], ["planner", "Planner"]];
 const onBar = computed(() => BAR.some(([id]) => id === page.value));
 const sheet = ref(null);
+const backup = ref(null);
+function openBackup() {
+  closeMore();
+  backup.value?.open();
+}
 const openMore = () => sheet.value?.showModal();
 const closeMore = () => sheet.value?.close();
 function go(id) {
@@ -69,6 +75,7 @@ function reportHref() {
       <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Report a bug or issue" @click="(e) => (e.currentTarget.href = reportHref())"><Icon name="bug" /><span>Report a bug or issue</span></a>
       <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Suggest an idea" @click="(e) => (e.currentTarget.href = suggestHref())"><Icon name="idea" /><span>Suggest an idea</span></a>
       <a class="side-link" href="#confirm" :aria-current="page === 'confirm' ? 'page' : undefined" data-tip="Help confirm values" @click.prevent="nav('confirm')"><Icon name="camera" /><span>Help confirm values</span></a>
+      <button type="button" class="side-link" data-tip="Back up &amp; restore" @click="openBackup"><Icon name="backup" /><span>Back up &amp; restore</span></button>
       <a class="side-link" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" :data-tip="docsLabel"><Icon name="docs" /><span>{{ docsLabel }}</span></a>
       <button type="button" class="side-link side-collapse" :aria-pressed="collapsed" :data-tip="collapsed ? 'Expand the menu' : 'Collapse the menu'" @click="collapsed = !collapsed">
         <Icon :name="collapsed ? 'expand' : 'collapse'" /><span>Collapse menu</span>
@@ -106,10 +113,12 @@ function reportHref() {
       </ul>
       <div class="mobile-sheet-links">
         <a href="#confirm" @click.prevent="go('confirm')">Help confirm values <Icon name="check" /></a>
+        <a href="#" @click.prevent="openBackup">Back up &amp; restore <Icon name="backup" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = reportHref())">Report a bug or issue <Icon name="arrow" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = suggestHref())">Suggest an idea <Icon name="arrow" /></a>
         <a :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener">Game documentation <Icon name="arrow" /></a>
       </div>
     </div>
   </dialog>
+  <BackupDialog ref="backup" />
 </template>

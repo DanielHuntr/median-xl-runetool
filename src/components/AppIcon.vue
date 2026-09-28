@@ -33,6 +33,7 @@ const paths = {
   // A panel with its left column (the sidebar), and which way it's going.
   collapse: "M4 4h16v16H4Z M9 4v16 M15 9l-3 3 3 3",
   expand: "M4 4h16v16H4Z M9 4v16 M13 9l3 3-3 3",
+  backup: "M12 4v11 M8 11l4 4 4-4 M4 15v5h16v-5",
   tree:"M12 3v5 M12 8H6v4 M12 8h6v4 M6 12v4 M18 12v4 M4 16h4v4H4Z M16 16h4v4h-4Z M10 3h4",
 };
 </script>
