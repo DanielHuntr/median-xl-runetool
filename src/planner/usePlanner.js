@@ -645,7 +645,9 @@ export function createPlanner(engine, catalog, planner) {
   function setMercLevel(v) {
     if (!build.value.merc) return;
     const n = parseInt(v, 10);
-    build.value.merc.level = Number.isInteger(n) && n >= 1 ? Math.min(n, build.value.level) : null;
+    // Kept as typed: it's shown at most at the character's level (computeMerc), and follows
+    // once the character catches up.
+    build.value.merc.level = Number.isInteger(n) && n >= 1 ? Math.min(n, 150) : null;
   }
   // Its gear, as the starter builds pick it: +All Skills first (a stronger buff), then life,
   // resistances and defense, from what it can wear at its level and stats.

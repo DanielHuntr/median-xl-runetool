@@ -1,6 +1,6 @@
 <script setup>
 import ClassPicker from "../ClassPicker.vue";
-import { ref, shallowRef, provide, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, shallowRef, provide, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import Icon from "../AppIcon.vue";
 import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
@@ -60,6 +60,27 @@ const mercActs = computed(() => {
   const specs = planner.value ? mercSpecs(planner.value.planner) : [];
   return Object.entries(MERC_ACTS).map(([act, a]) => ({ act: +act, name: a.name, specs: specs.filter((x) => x.act === +act) })).filter((a) => a.specs.length);
 });
+// The stage's "Where to level" and "New runewords" popovers; one open at a time, closed by
+// Esc, a click elsewhere or changing stage.
+const stagePop = ref(null);
+const toggleStagePop = (name) => (stagePop.value = stagePop.value === name ? null : name);
+const closeStagePop = (e) => {
+  if (!stagePop.value) return;
+  if (e.type === "keydown" ? e.key === "Escape" : !e.target.closest?.(".stage-pop-wrap")) stagePop.value = null;
+};
+watch(() => planner.value && [planner.value.state.cls, stageName.value], () => (stagePop.value = null));
+// Why the mercenary's level can't go higher: it's never above the character's, and a
+// difficulty's mercenaries start at a level (a Hell Shapeshifter at 90).
+const mercHint = computed(() => {
+  const p = planner.value, m = p?.character.value.merc;
+  if (!m) return "";
+  const diff = p.build.value.merc?.difficulty || p.build.value.difficulty;
+  if (m.cap < m.minLevel)
+    return `A ${m.spec} hired in ${diff} starts at level ${m.minLevel}, and a mercenary can't be above your level (${m.cap}). Raise your level on the ${p.state.cls} tab, or choose an earlier difficulty.`;
+  if (m.level === m.cap && m.cap < 150 && (p.build.value.merc?.level ?? 0) > m.cap)
+    return `A mercenary can't be above your level (${m.cap}).`;
+  return "";
+});
 // Levelling stages: which exist, and for the one being edited where to level and the
 // runewords new since the stage before (src/levelling.js; areas from levels.bin).
 const areas = shallowRef(null);
@@ -105,8 +126,14 @@ const onHash = () => {
 onMounted(() => {
   if (!props.data) load();
   window.addEventListener("hashchange", onHash);
+  document.addEventListener("click", closeStagePop);
+  document.addEventListener("keydown", closeStagePop);
 });
-onBeforeUnmount(() => window.removeEventListener("hashchange", onHash));
+onBeforeUnmount(() => {
+  window.removeEventListener("hashchange", onHash);
+  document.removeEventListener("click", closeStagePop);
+  document.removeEventListener("keydown", closeStagePop);
+});
 
 async function share() {
   const url = planner.value.shareUrl();
@@ -195,6 +222,7 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             </select></label
           >
         </template>
+        <p v-if="mercHint" class="merc-hint">{{ mercHint }}</p>
       </div>
       <div v-else class="toolbar planner-toolbar">
         <ClassPicker :model-value="planner.state.cls" :classes="planner.engine.classNames" label="Class" @update:model-value="planner.setClass" /><label class="level"
@@ -249,14 +277,30 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
           This stage is empty.
           <button v-for="n in stageHelp.copyFrom" :key="n" type="button" class="text-btn" @click="planner.copyStage(n)">Copy {{ n }}</button>
         </p>
-        <p v-else-if="stageName !== 'Endgame' && stageHelp" class="stage-hint">
-          <template v-if="stageHelp.areas.length">
-            Level in: <span v-for="(a, i) in stageHelp.areas" :key="a.name">{{ i ? ", " : "" }}{{ a.name }} <small>({{ a.mlvl }})</small></span>.
-          </template>
-          <template v-if="stageHelp.runewords.length">
-            New runewords for your {{ stageHelp.cats.join(", ") }}: {{ stageHelp.runewords.map((r) => `${r.name} (${r.lvl})`).join(", ") }}.
-          </template>
-        </p>
+        <div v-else-if="stageName !== 'Endgame' && stageHelp && (stageHelp.areas.length || stageHelp.runewords.length)" class="stage-hint stage-pops">
+          <div v-if="stageHelp.areas.length" class="stage-pop-wrap">
+            <button type="button" class="text-btn" :aria-expanded="stagePop === 'areas'" aria-controls="stage-pop-areas" @click="toggleStagePop('areas')">
+              Where to level <small>({{ stageHelp.areas.length }})</small>
+            </button>
+            <div v-if="stagePop === 'areas'" id="stage-pop-areas" class="stage-pop" role="dialog" aria-label="Where to level">
+              <p class="stage-pop-title">Areas near level {{ planner.build.value.level }} ({{ planner.build.value.difficulty }})</p>
+              <ul>
+                <li v-for="a in stageHelp.areas" :key="a.name"><span>{{ a.name }}</span><small>monster level {{ a.mlvl }}</small></li>
+              </ul>
+            </div>
+          </div>
+          <div v-if="stageHelp.runewords.length" class="stage-pop-wrap">
+            <button type="button" class="text-btn" :aria-expanded="stagePop === 'runewords'" aria-controls="stage-pop-runewords" @click="toggleStagePop('runewords')">
+              New runewords <small>({{ stageHelp.runewords.length }})</small>
+            </button>
+            <div v-if="stagePop === 'runewords'" id="stage-pop-runewords" class="stage-pop" role="dialog" aria-label="New runewords">
+              <p class="stage-pop-title">New since level {{ stageHelp.prevLevel }} for your {{ stageHelp.cats.join(", ") }}</p>
+              <ul>
+                <li v-for="r in stageHelp.runewords" :key="r.name"><span>{{ r.name }}</span><small>level {{ r.lvl }}</small></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <p class="planner-message" :class="planner.state.tone" role="status">{{ planner.state.message }}</p>
 

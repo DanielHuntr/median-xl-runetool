@@ -2133,6 +2133,32 @@
   line-height: 1.5;
 }
 .stage-hint small { font-size: 0.75rem; }
+.stage-pops { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.stage-pop-wrap { position: relative; }
+.stage-pop-wrap .text-btn { margin-left: 0; }
+.stage-pop-wrap .text-btn small { color: var(--muted); }
+/* A small panel under its button (the stage's areas and runewords). */
+.stage-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  min-width: 240px;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  color: var(--text);
+}
+.stage-pop-title { margin: 0 0 6px; color: var(--muted); font-size: 0.75rem; }
+.stage-pop ul { margin: 0; padding: 0; list-style: none; }
+.stage-pop li { display: flex; justify-content: space-between; gap: 16px; padding: 3px 0; font-size: 0.8125rem; }
+.stage-pop li + li { border-top: 1px solid var(--border); }
+.stage-pop li small { color: var(--muted); white-space: nowrap; }
+.merc-hint { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.8125rem; }
 .stage-hint .text-btn { margin-left: 8px; }
 @media (max-width: 600px) {
   .stage-switch { flex-wrap: wrap; }

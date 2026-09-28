@@ -52,7 +52,10 @@ test("a starter build opens with its levelling stages", async ({ page }) => {
   await expect(stages.getByRole("button", { name: "Normal" })).toHaveClass(/filled/);
   await stages.getByRole("button", { name: "Normal" }).click();
   await expect(page.locator(".planner-toolbar").getByLabel("Character level")).toHaveValue("50");
-  await expect(page.locator(".stage-hint")).toContainText("Level in:");
+  await page.getByRole("button", { name: /Where to level/ }).click();
+  await expect(page.getByRole("dialog", { name: "Where to level" }).locator("li").first()).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Where to level" })).toHaveCount(0);
 });
 
 test("opening a starter build keeps your own build to go back to", async ({ page }) => {
@@ -70,6 +73,14 @@ test("opening a starter build keeps your own build to go back to", async ({ page
   await bar.getByRole("button", { name: "Back to my build" }).click();
   await expect(level).toHaveValue("77");
   await expect(bar).toHaveCount(0);
+});
+
+test("a mercenary hired in Hell says why its level can't be set yet", async ({ page }) => {
+  await page.goto("/#planner");
+  await page.getByRole("tab", { name: /Mercenary/ }).click();
+  await page.locator(".merc-toolbar select").first().selectOption("Shapeshifter");
+  await page.locator(".merc-toolbar").getByLabel(/Hired in/).selectOption("Hell");
+  await expect(page.locator(".merc-hint")).toContainText("starts at level 90");
 });
 
 test("the character planner loads", async ({ page }) => {

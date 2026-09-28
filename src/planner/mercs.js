@@ -200,7 +200,8 @@ export function computeMerc(b, { catalog, data }) {
     return out;
   });
   const buffs = skills.filter((x) => x.on).flatMap((x) => x.effects.map(([k, v]) => [k, v, `Mercenary's ${x.docsName} (level ${x.level})`, "game-inferred"]));
-  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, hiredAt, row: row.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
+  // The lowest level it can be hired at in that difficulty, and the character's level (its cap).
+  return { spec: m.spec, act, actName: MERC_ACTS[act]?.name, level: L, hiredAt, row: row.level, minLevel: type.rows[0].level, cap: b.level, difficulty: type.difficulty, life, defense, strength, dexterity, ar, damage, resist, extras, allSkills, skills, buffs, items, notes };
 }
 
 /** The specializations with a party buff (the ones worth hiring for your own stats). */
