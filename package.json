@@ -15,7 +15,9 @@
     "import-docs": "node scripts/import-docs.mjs",
     "import-skills": "node scripts/import-skills.mjs",
     "import-data": "node scripts/import-docs.mjs && node scripts/import-skills.mjs && node scripts/build-item-atlas.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "extract": "node scripts/extract-all.mjs",
+    "check-patch": "node scripts/check-patch.mjs"
   },
   "dependencies": {
     "vue": "^3.5.0"
