@@ -1630,10 +1630,15 @@ test("levelling stages: each is its own build, carried by save codes and share l
   q.importFromHash(`#planner?b=${p.buildCode()}`);
   q.setStage("Normal");
   assert.equal(q.build.value.level, 40);
-  // A starter's stages go only where a stage is empty.
+  // A starter's stages go only where a stage is empty (no points or gear), the one being
+  // edited included.
   q.fillStages("Sorceress", { Normal: { level: 20 }, Hell: { level: 125, difficulty: "Hell" } });
-  assert.equal(q.build.value.level, 40, "the stage being edited isn't replaced");
+  assert.equal(q.build.value.level, 20, "an empty stage being edited is filled");
   assert.equal(q.stageFilled("Hell"), true);
+  q.setLevel(60);
+  q.add(engine.skillIds().find((id) => engine.skill(id).class === "Sorceress" && engine.canAdd(q.build.value, id).ok));
+  q.fillStages("Sorceress", { Normal: { level: 30 } });
+  assert.equal(q.build.value.level, 60, "a stage with points isn't replaced");
   p.reset();
   assert.equal(p.stageFilled("Normal"), false, "reset clears every stage");
   scope.stop();

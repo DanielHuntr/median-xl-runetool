@@ -194,10 +194,16 @@ export function createPlanner(engine, catalog, planner) {
     say(`Copied the ${from} stage. Check what the planner flags at level ${level}.`, "info");
   }
   /** Stages worked out elsewhere (a starter build's levelling guide), put in the empty stages. */
+  // A stage only counts as made once it has skill points or gear: an empty one (opened before
+  // its starter build had stages, say) is filled too, including the one being edited.
+  const emptyStage = (b) => !b || (!Object.keys(b.points || {}).length && !Object.keys(b.gear || {}).length);
   function fillStages(cls, builds) {
     for (const [name, b] of Object.entries(builds)) {
-      if (name === state.stage[cls] || state.stages[cls][name] || !b) continue;
-      state.stages[cls] = { ...state.stages[cls], [name]: cleanBuild({ ...b, cls }, cls, engine, catalog, planner) };
+      if (!b) continue;
+      const next = cleanBuild({ ...b, cls }, cls, engine, catalog, planner);
+      if (name === state.stage[cls]) {
+        if (emptyStage(state.builds[cls])) state.builds[cls] = next;
+      } else if (emptyStage(state.stages[cls][name])) state.stages[cls] = { ...state.stages[cls], [name]: next };
     }
   }
 
