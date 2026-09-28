@@ -2201,6 +2201,16 @@ select optgroup {
   white-space: normal;
   pointer-events: none;
 }
+/* In a card's top row (the runeword and set cards' Copy link), a tooltip opening upwards
+   would be cut off by the card's edge: it opens below, lined up with the button's right. */
+.card-top [data-tip]:hover::after,
+.card-top [data-tip]:focus-visible::after {
+  top: calc(100% + 6px);
+  bottom: auto;
+  left: auto;
+  right: 0;
+  transform: none;
+}
 .item-art {
   flex: none;
   max-width: 40px;
