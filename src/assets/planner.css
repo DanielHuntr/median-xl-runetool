@@ -2041,3 +2041,40 @@
 .stat-note { margin: 0 0 8px; font-size: 0.75rem; line-height: 1.4; }
 /* Filter pills (item picker, target picker): hover like the other controls. */
 .picker-filters button:hover:not([aria-pressed="true"]) { color: var(--text); border-color: var(--gold); background: var(--raised); }
+
+/* Phones: every skill tree tab in view (a wrapping grid, not a sideways scroll), and the
+   small ring and amulet slots show just the item (its name is in the label and tooltip;
+   remove it from the item sheet). */
+@media (max-width: 600px) {
+  .skills-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    overflow: visible;
+  }
+  .skills-tabs button {
+    justify-content: center;
+    gap: 6px;
+  }
+  .doll-slot.ring1 .doll-name,
+  .doll-slot.ring2 .doll-name,
+  .doll-slot.amulet .doll-name,
+  .doll-slot.ring1 .doll-superior,
+  .doll-slot.ring2 .doll-superior,
+  .doll-slot.amulet .doll-superior,
+  .doll-slot.belt .doll-superior,
+  .doll-cell.ring1 .doll-remove,
+  .doll-cell.ring2 .doll-remove,
+  .doll-cell.amulet .doll-remove {
+    display: none;
+  }
+  .doll-slot.ring1 .item-icon,
+  .doll-slot.ring2 .item-icon,
+  .doll-slot.amulet .item-icon {
+    max-height: 100%;
+  }
+  .doll-slot.ring1,
+  .doll-slot.ring2,
+  .doll-slot.amulet {
+    padding: 3px;
+  }
+}
