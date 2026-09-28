@@ -122,6 +122,7 @@ const openOnes = `${ISSUES_REPO}/issues?q=is%3Aissue+label%3Aconfirmation`;
           <ul>
             <li v-for="c in s.confirms.slice(0, 5)" :key="c.key">
               {{ c.text }}<small class="muted"> · {{ c.skills }} skill{{ c.skills === 1 ? "" : "s" }}</small>
+              <small v-if="c.line" class="confirm-line">in the line “{{ c.line.replace(/:.*$/, "") }}”</small>
             </li>
             <li v-if="s.confirms.length > 5" class="muted">and {{ s.confirms.length - 5 }} more</li>
           </ul>

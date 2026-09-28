@@ -132,7 +132,8 @@ export function confirmationGaps(engine, { level = 150, blvl = 1, limit = 12 } =
     }
     if (!best) break;
     const confirms = [...best.gaps].filter((k) => !covered.has(k))
-      .map((k) => ({ key: k, text: describeGap(k, best.examples.get(k) || example(k)), skills: skillsWith.get(k).size }))
+      // The tooltip line of this skill it shows up in, so the screenshot shows the right part.
+      .map((k) => ({ key: k, text: describeGap(k, best.examples.get(k) || example(k)), skills: skillsWith.get(k).size, line: [best.examples.get(k)].flat().find(Boolean) || null }))
       .sort((a, b) => b.skills - a.skills);
     for (const k of best.gaps) covered.add(k);
     suggestions.push({ id: best.id, name: best.name, cls: best.cls, tab: best.tab, requiredLevel: best.requiredLevel, confirms, helps: bestHelp, affectsStats: best.affectsStats });

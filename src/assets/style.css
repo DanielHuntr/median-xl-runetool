@@ -2316,6 +2316,7 @@ svg.item-art {
 .confirm-questions .confirm-head h3 { font-size: 0.95rem; }
 .confirm-skill-of { margin: 2px 0 0; color: var(--gold); font-size: 0.8125rem; }
 .confirm-skill-of a { color: inherit; }
+.confirm-line { display: block; color: var(--gold); font-size: 0.75rem; }
 /* Base Items: what a Superior version adds (BaseItems.vue). */
 .superior-lines { border-top: 1px solid var(--soft-border); padding-top: 8px; margin-top: 8px; color: var(--muted); font-size: 0.8125rem; }
 /* ---------- Hover and press feedback for every control (links styled as buttons too).
