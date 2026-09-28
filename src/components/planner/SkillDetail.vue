@@ -115,6 +115,9 @@ const hasUnknown = computed(() =>
             <small v-if="d.levels.capSource.conflict" class="how-assumed">
               · MedianDB says {{ d.levels.capSource.conflict.medianDb }}, game files {{ d.levels.capSource.conflict.game }}; using the game's
             </small>
+            <small v-if="d.levels.capSource.confirmed" class="how-assumed">
+              · checked in game: {{ Object.entries(d.levels.capSource.confirmed.at).map(([l, c]) => `${c} at level ${l}`).join(", ") }}
+            </small>
           </dd>
         </div>
         <div>

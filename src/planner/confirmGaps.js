@@ -177,7 +177,8 @@ export function openQuestions(engine, data) {
         if (out.some((q) => q.skill?.id === n.id)) continue;
         const b = { cls, level: 150, points: {}, quests: {} };
         const L = engine.levels(b, n.id);
-        if (!L.capSource?.dynamic) continue;
+        // Answered: the game showed its cap (engine.js MAX_LEVEL_RULES confirmed).
+        if (!L.capSource?.dynamic || engine.capConfirmed?.(n.id)) continue;
         const at = (lvl) => engine.maxLevel({ ...b, level: lvl }, n.id, lvl);
         // Only caps that actually change with character level (other rules depend on points).
         if (at(1) === at(150)) continue;

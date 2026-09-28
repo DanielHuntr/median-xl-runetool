@@ -28,23 +28,26 @@ const DIFFICULTY_ORDER = ["Normal", "Nightmare", "Hell"];
 const clampLevel = (l) => Math.max(MIN_LEVEL, Math.min(MAX_LEVEL, Math.floor(Number(l) || MIN_LEVEL)));
 
 // ---------- Max level modifiers (skill-calculations.js MAX_LEVEL_MODIFIERS)
-const perLevel = (target, div, { start = 0, cap = Infinity } = {}) => ({
+// `confirmed`: maximum levels read in game at a character level ({ 150: 30 }), with the
+// GitHub issue that sent them; a test checks the rule gives each one.
+const perLevel = (target, div, { start = 0, cap = Infinity, base = 0, confirmed = null } = {}) => ({
   target: [target],
-  bonus: (_src, ulvl) => Math.min(Math.floor(Math.max(0, ulvl - start) / div), cap),
+  bonus: (_src, ulvl) => base + Math.min(Math.floor(Math.max(0, ulvl - start) / div), cap),
+  ...(confirmed ? { confirmed } : {}),
 });
 const MAX_LEVEL_RULES = [
   { source: "specialization", spec: true, bonus: (src) => Math.floor(src / 2),
     note: "+1 to the maximum level of active skills for every 2 points" },
-  perLevel("barkskin", 5),
+  perLevel("barkskin", 5, { confirmed: { at: { 150: 30 }, issue: 19 } }),
   { source: "noxious_mastery", target: ["curare"], bonus: (src) => Math.floor(src / 2),
     note: "+1 to Curare's maximum level for every 2 points" },
-  perLevel("sanctity", 5, { cap: 5 }),
-  perLevel("consecration", 5, { cap: 5 }),
-  perLevel("holy_fire", 2, { cap: 25 }),
+  perLevel("sanctity", 5, { cap: 5, confirmed: { at: { 150: 5 }, issue: 17 } }),
+  perLevel("consecration", 5, { cap: 5, confirmed: { at: { 150: 5 }, issue: 16 } }),
+  perLevel("holy_fire", 2, { cap: 25, confirmed: { at: { 150: 25 }, issue: 18 } }),
   { source: "elemental_command", target: ["trinity_arrow", "barrage"],
     bonus: (src, ulvl) => (src > 0 ? Math.min(Math.floor(ulvl / 4), 20) : 0),
     note: "+1 to Trinity Arrow and Barrage maximum level for every 4 character levels" },
-  perLevel("spiritual_alignment", 4, { start: 11 }),
+  perLevel("spiritual_alignment", 4, { start: 11, confirmed: { at: { 150: 34 }, issue: 20 } }),
   { target: ["lioness"],
     bonus: (_src, _ulvl, points) =>
       Math.floor(["fend", "great_hunt", "hunters_prowess", "hyena_strike", "pounce", "takedown"]
@@ -56,8 +59,10 @@ const MAX_LEVEL_RULES = [
     bonus: (src) => src,
     note: "+1 to the soulchained totems' and Dark Gathering's maximum level per point" },
   perLevel("aptitude", 5, { start: 115 }),
-  perLevel("void_gazer", 5, { start: 95 }),
-  perLevel("warmth", 4, { start: 1 }),
+  perLevel("void_gazer", 5, { start: 95, confirmed: { at: { 100: 1, 150: 11 }, issue: 14 } }),
+  // 38 at level 150 in game, one more than MedianDB's 37: it starts from the game file's
+  // base of 1 (skills2.bin), not 0.
+  perLevel("warmth", 4, { start: 1, base: 1, confirmed: { at: { 150: 38 }, issue: 15 } }),
 ];
 // Skills whose points raise other skills' caps; removing them must not strand points.
 const CAP_SOURCES = new Set(MAX_LEVEL_RULES.map((r) => r.source).filter(Boolean));
@@ -139,6 +144,8 @@ export function createEngine(data) {
     const s = skills[id];
     return gameCap(id) ? s.game.baseCap : s.max;
   }
+  // What the game showed for this skill's level-built cap ({ at: { 150: 38 }, issue }), or null.
+  const capConfirmed = (id) => MAX_LEVEL_RULES.find((r) => !r.source && r.confirmed && r.target?.includes(id))?.confirmed || null;
   function capSource(id) {
     const s = skills[id];
     if (!s) return null;
@@ -149,6 +156,7 @@ export function createEngine(data) {
       from: gameCap(id) ? datasets.game?.label : datasets.medianDb.label,
       dynamic,
       conflict: conflict && { medianDb: conflict.medianDb, game: conflict.game },
+      confirmed: capConfirmed(id),
     };
   }
   // Explanations for a skill's dynamic cap, limited to sources this class has.
@@ -1250,6 +1258,7 @@ export function createEngine(data) {
   }
 
   return {
+    capConfirmed,
     classNames,
     classes: data.classes,
     tabs: (cls) => tabsByClass[cls] || [],
