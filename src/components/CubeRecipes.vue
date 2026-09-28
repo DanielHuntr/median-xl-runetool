@@ -602,6 +602,13 @@ function findInGame(recipe) {
 .cube-jewels caption { text-align: left; color: var(--gold); padding: 0 0 8px; font-weight: 600; }
 .cube-jewels th, .cube-jewels td { padding: 8px 12px; border-top: 1px solid var(--border); text-align: left; }
 .cube-jewels td:first-child { color: var(--gold); white-space: nowrap; }
+/* Side by side, the picker is exactly as tall as the cube: it adds nothing to the row's
+   height (height 0), fills it (min-height 100%), and its item list scrolls inside. */
+@media (min-width: 1101px) {
+  .cube-layout { align-items: stretch; }
+  .cube-picker { position: static; height: 0; min-height: 100%; display: flex; flex-direction: column; }
+  .cube-picker > .cube-sections, .cube-picker > .cube-tiles { flex: 1 1 0; min-height: 0; max-height: none; overflow: hidden auto; }
+}
 @media (max-width: 1100px) {
   .cube-layout { grid-template-columns: minmax(0, 1fr); }
   .cube-picker { position: static; }
