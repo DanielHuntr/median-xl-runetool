@@ -15,8 +15,13 @@ const {
   tier,
   clampLevel,
   BASED,
+  catGroups,
 } = useRunetool();
+import { computed } from "vue";
+import CatalogFilters from "./CatalogFilters.vue";
+import FilterPills from "./FilterPills.vue";
 const f = browse.bases;
+const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value) }]);
 </script>
 <template>
   <section aria-label="Base items">
@@ -39,11 +44,8 @@ const f = browse.bases;
             type="search"
             placeholder="Search base item or stat"
             aria-label="Search base items" /></label
-        ><select v-model="f.cat" aria-label="Base item type">
-          <option value="">All item types</option>
-          <option v-for="c in baseCats">{{ c }}</option></select
-        ><select v-model="f.tier" aria-label="Show tier">
-          <option value="">Best tier for level</option>
+        ><CatalogFilters :model="f" :sections="sections" :count="`${bases.length} base item${bases.length === 1 ? '' : 's'}`" /><select v-model="f.tier" aria-label="Show tier">
+          <option value="">Best tier</option>
           <option v-for="t in baseTiers" :value="t">Show {{ t }}</option></select
         ><label class="level"
           >Max lvl
@@ -56,6 +58,7 @@ const f = browse.bases;
             aria-label="Maximum character level"
         /></label>
       </div>
+      <FilterPills :model="f" :keys="['cats']" />
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
@@ -115,7 +118,7 @@ const f = browse.bases;
         class="btn"
         @click="
           f.q = '';
-          f.cat = '';
+          f.cats = [];
         "
       >
         Clear filters

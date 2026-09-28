@@ -4,8 +4,11 @@ import ItemArt from "./ItemArt.vue";
 import Icon from "./AppIcon.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
-const { st, browse, sets, clampLevel, CLASSES, SETD } = useRunetool();
+import CatalogFilters from "./CatalogFilters.vue";
+import FilterPills from "./FilterPills.vue";
+const { st, browse, sets, clampLevel, CLASSES, SETD, TAGS } = useRunetool();
 const f = browse.sets;
+const sections = [{ key: "tags", title: "Stats", note: "Must have all chosen (items or bonuses)", options: TAGS.map((t) => t[0]) }];
 </script>
 <template>
   <section aria-label="Sets">
@@ -19,14 +22,14 @@ const f = browse.sets;
       </p>
     </div>
     <div class="toolbar">
-      <div class="unique-controls">
+      <div class="unique-controls base-controls set-controls">
         <label class="search"
           ><Icon name="search" /><input
             v-model="f.q"
             type="search"
             placeholder="Search set, item, base or stat"
             aria-label="Search sets" /></label
-        ><ClassPicker v-model="f.cls" :classes="CLASSES" any-label="Any class" other-label="Other sets" /><label class="level"
+        ><ClassPicker v-model="f.cls" :classes="CLASSES" any-label="Any class" other-label="Other sets" /><CatalogFilters :model="f" :sections="sections" :count="`${sets.length} set${sets.length === 1 ? '' : 's'}`" /><label class="level"
           >Max lvl
           <input
             v-model="st.lvl"
@@ -37,6 +40,7 @@ const f = browse.sets;
             aria-label="Maximum character level"
         /></label>
       </div>
+      <FilterPills :model="f" :keys="['tags']" />
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
@@ -98,6 +102,7 @@ const f = browse.sets;
         @click="
           f.q = '';
           f.cls = '';
+          f.tags = [];
         "
       >
         Clear filters

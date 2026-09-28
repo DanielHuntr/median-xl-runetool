@@ -4,9 +4,17 @@ import CubeLink from "./CubeLink.vue";
 import Icon from "./AppIcon.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
-const { st, browse, sacredCats, sacredUniques, clampLevel, SUD } =
+import { computed } from "vue";
+import CatalogFilters from "./CatalogFilters.vue";
+import FilterPills from "./FilterPills.vue";
+const { st, browse, sacredCats, sacredUniques, clampLevel, SUD, catGroups, TAGS, ELEMS } =
   useRunetool();
 const f = browse.sacred;
+const sections = computed(() => [
+  { key: "cats", groups: catGroups(sacredCats.value) },
+  { key: "tags", title: "Stats", note: "Must have all chosen", options: TAGS.map((t) => t[0]) },
+  { key: "elems", title: "Damage type", options: ELEMS.map((t) => t[0]) },
+]);
 </script>
 <template>
   <section aria-label="Sacred uniques">
@@ -28,10 +36,7 @@ const f = browse.sacred;
             type="search"
             placeholder="Search name, base or stat"
             aria-label="Search sacred uniques" /></label
-        ><select v-model="f.cat" aria-label="Sacred unique item type">
-          <option value="">All item types</option>
-          <option v-for="c in sacredCats">{{ c }}</option></select
-        ><label class="level"
+        ><CatalogFilters :model="f" :sections="sections" :count="`${sacredUniques.length} sacred unique${sacredUniques.length === 1 ? '' : 's'}`" /><label class="level"
           >Max lvl
           <input
             v-model="st.lvl"
@@ -42,6 +47,7 @@ const f = browse.sacred;
             aria-label="Maximum character level"
         /></label>
       </div>
+      <FilterPills :model="f" :keys="['cats', 'tags', 'elems']" />
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
@@ -84,7 +90,9 @@ const f = browse.sacred;
         class="btn"
         @click="
           f.q = '';
-          f.cat = '';
+          f.cats = [];
+          f.tags = [];
+          f.elems = [];
         "
       >
         Clear filters

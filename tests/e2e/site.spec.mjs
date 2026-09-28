@@ -88,3 +88,18 @@ test("site search opens a skill in the planner", async ({ page }) => {
   await expect(page).toHaveURL(/#planner$/);
   await expect(page.locator(".skill-detail")).toContainText("Fanged Assault");
 });
+
+test("catalogue filters: uniques with cast speed, then a pill removes it", async ({ page }) => {
+  await page.goto("/#uniques");
+  const count = page.locator(".result-count strong");
+  const all = Number(await count.textContent());
+  await page.getByRole("main").getByRole("button", { name: /^Filters/ }).click();
+  await page.getByRole("button", { name: /^Stats/ }).click();
+  await page.locator(".filter-drawer .chips button", { hasText: /^Cast speed$/ }).click();
+  await page.getByRole("button", { name: /^Show \d+ uniques?$/ }).click();
+  const some = Number(await count.textContent());
+  expect(some).toBeGreaterThan(0);
+  expect(some).toBeLessThan(all);
+  await page.getByRole("button", { name: "Remove Cast speed" }).click();
+  await expect(count).toHaveText(String(all));
+});

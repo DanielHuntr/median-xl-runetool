@@ -2894,3 +2894,15 @@ main article.found {
 @media (prefers-reduced-motion: reduce) {
   main article.found { animation: none; outline: 2px solid var(--gold); }
 }
+
+/* Sets: search, class, Filters and level on one row (the class picker needs the room). */
+@media (min-width: 1201px) {
+  .set-controls {
+    grid-template-columns: 1fr 230px 150px 126px;
+  }
+}
+@media (min-width: 901px) and (max-width: 1200px) {
+  .set-controls {
+    grid-template-columns: 1fr 185px 130px 115px;
+  }
+}

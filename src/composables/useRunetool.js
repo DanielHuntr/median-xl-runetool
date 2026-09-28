@@ -132,14 +132,16 @@ export function createRunetool() {
     drawer = ref(false),
     expanded = ref([]),
     tuQuery = ref(""),
-    tuCat = ref(""),
     compare = ref(true),
     tiers = reactive({}),
+    // The catalogue pages' filters (CatalogFilters.vue): item types, stats and damage types,
+    // each a list where any chosen type and every chosen stat must match.
     browse = reactive({
-      sacred: { q: "", cat: "" },
-      sets: { q: "", cls: "" },
+      tiered: { cats: [], tags: [], elems: [] },
+      sacred: { q: "", cats: [], tags: [], elems: [] },
+      sets: { q: "", cls: "", tags: [] },
       sock: { q: "", group: "" },
-      bases: { q: "", cat: "", tier: "" },
+      bases: { q: "", cats: [], tier: "" },
     }),
     dialog = ref(null),
     runeTrigger = ref(null);
@@ -153,6 +155,20 @@ export function createRunetool() {
     ["Great runes", OTHER],
   ];
   const cats = [...new Set(TUD.map((u) => u.cat))];
+  // Item types in three groups for the filter panels.
+  const JEWELRY = new Set(["Amulets", "Rings", "Jewels", "Arrow Quivers", "Crossbow Quivers"]);
+  const catGroups = (list) => [
+    { name: "Weapons", items: list.filter((c) => !ARMOR.has(c) && !JEWELRY.has(c)) },
+    { name: "Armor", items: list.filter((c) => ARMOR.has(c)) },
+    { name: "Jewelry & quivers", items: list.filter((c) => JEWELRY.has(c)) },
+  ].filter((g) => g.items.length);
+  // Every chosen stat and damage type appears on some line.
+  const hasAll = (lines, chosen, table) => chosen.every((t) => {
+    const re = table.find((x) => x[0] === t)?.[1];
+    return !re || lines.some((l) => re.test(l));
+  });
+  const statsMatch = (lines, f) => hasAll(lines, f.tags || [], TAGS) && hasAll(lines, f.elems || [], ELEMS);
+  const inCats = (cat, f) => !f.cats.length || f.cats.includes(cat);
   // The four docs catalogues start as the bundled snapshot and are replaced by
   // /api/catalog when it answers with a complete parse (see loadLiveCatalog).
   const catalog = {
@@ -210,9 +226,10 @@ export function createRunetool() {
     const q = words(browse.sacred.q);
     return catalog.SUD.value.filter(
       (u) =>
-        (!browse.sacred.cat || u.cat === browse.sacred.cat) &&
+        inCats(u.cat, browse.sacred) &&
         (u.req === null || u.req <= st.lvl) &&
-        q.every((w) => u.text.includes(w)),
+        q.every((w) => u.text.includes(w)) &&
+        statsMatch(u.lines, browse.sacred),
     );
   });
   const sets = computed(() => {
@@ -222,7 +239,8 @@ export function createRunetool() {
         (!browse.sets.cls ||
           (browse.sets.cls === "@none" ? !s.cls : s.cls === browse.sets.cls)) &&
         (s.minReq === null || s.minReq <= st.lvl) &&
-        q.every((w) => s.text.includes(w)),
+        q.every((w) => s.text.includes(w)) &&
+        statsMatch([...s.bonuses.flatMap((b) => b.lines), ...s.items.flatMap((i) => i.lines)], browse.sets),
     );
   });
   const socketables = computed(() => {
@@ -238,7 +256,7 @@ export function createRunetool() {
     const q = words(browse.bases.q);
     return catalog.BASED.value.filter(
       (b) =>
-        (!browse.bases.cat || b.cat === browse.bases.cat) &&
+        inCats(b.cat, browse.bases) &&
         q.every((w) => b.text.includes(w)),
     );
   });
@@ -377,8 +395,9 @@ export function createRunetool() {
     const q = tuQuery.value.toLowerCase().trim().split(/\s+/);
     return TUD.filter(
       (u) =>
-        (!tuCat.value || u.cat === tuCat.value) &&
-        q.every((w) => u.text.includes(w)),
+        inCats(u.cat, browse.tiered) &&
+        q.every((w) => u.text.includes(w)) &&
+        statsMatch(u.t.flatMap((t) => t.mods), browse.tiered),
     );
   });
   function tierIndex(u) {
@@ -410,17 +429,19 @@ export function createRunetool() {
   // scrolled to and highlighted.
   function reveal(to, name) {
     const shows = (list) => list.value.some((x) => x.name === name);
-    const lists = { "sacred-uniques": ["sacred", sacredUniques, "cat"], sets: ["sets", sets, "cls"], socketables: ["sock", socketables, "group"], "base-items": ["bases", bases, "cat"] };
+    const lists = { "sacred-uniques": ["sacred", sacredUniques], sets: ["sets", sets], socketables: ["sock", socketables], "base-items": ["bases", bases] };
+    // Back to no filter: lists empty, choices (class, group) to "any"; the search and tier stay.
+    const clear = (f) => { for (const k of Object.keys(f)) if (k !== "q" && k !== "tier") f[k] = Array.isArray(f[k]) ? [] : ""; };
     if (to === "runewords") {
       st.q = name;
       if (!shows(results)) Object.assign(st, defaults(), { q: name, sort: st.sort, full: st.full });
     } else if (to === "uniques") {
       tuQuery.value = name;
-      if (!shows(uniques)) tuCat.value = "";
+      if (!shows(uniques)) clear(browse.tiered);
     } else if (lists[to]) {
-      const [key, list, filter] = lists[to];
+      const [key, list] = lists[to];
       browse[key].q = name;
-      if (!shows(list)) browse[key][filter] = "";
+      if (!shows(list)) clear(browse[key]);
       if (!shows(list)) st.lvl = MAX_ITEM_LEVEL;
     } else return;
     nav(to);
@@ -495,7 +516,6 @@ export function createRunetool() {
     drawer,
     expanded,
     tuQuery,
-    tuCat,
     compare,
     tiers,
     browse,
@@ -505,6 +525,7 @@ export function createRunetool() {
     armorBases,
     groups,
     cats,
+    catGroups,
     sacredCats,
     baseCats,
     baseTiers,

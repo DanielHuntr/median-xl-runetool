@@ -4,7 +4,10 @@ import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 const {
   st,
   tuQuery,
-  tuCat,
+  browse,
+  catGroups,
+  TAGS,
+  ELEMS,
   compare,
   tiers,
   cats,
@@ -15,6 +18,14 @@ const {
   label,
 } = useRunetool();
 import UniqueCard from "./UniqueCard.vue";
+import CatalogFilters from "./CatalogFilters.vue";
+import FilterPills from "./FilterPills.vue";
+const f = browse.tiered;
+const sections = [
+  { key: "cats", groups: catGroups(cats) },
+  { key: "tags", title: "Stats", note: "Must have all chosen", options: TAGS.map((t) => t[0]) },
+  { key: "elems", title: "Damage type", options: ELEMS.map((t) => t[0]) },
+];
 </script>
 <template>
   <section aria-label="Tiered uniques">
@@ -36,10 +47,7 @@ import UniqueCard from "./UniqueCard.vue";
             type="search"
             placeholder="Search name, base or stat"
             aria-label="Search tiered uniques" /></label
-        ><select v-model="tuCat" aria-label="Unique item type">
-          <option value="">All item types</option>
-          <option v-for="c in cats">{{ c }}</option></select
-        ><label class="level"
+        ><CatalogFilters :model="f" :sections="sections" :count="`${uniques.length} unique${uniques.length === 1 ? '' : 's'}`" /><label class="level"
           >Max lvl
           <input
             v-model="st.lvl"
@@ -50,6 +58,7 @@ import UniqueCard from "./UniqueCard.vue";
             aria-label="Maximum character level"
         /></label>
       </div>
+      <FilterPills :model="f" :keys="['cats', 'tags', 'elems']" />
     </div>
     <div class="results-bar">
       <div class="result-count">
@@ -73,7 +82,9 @@ import UniqueCard from "./UniqueCard.vue";
         class="btn"
         @click="
           tuQuery = '';
-          tuCat = '';
+          f.cats = [];
+          f.tags = [];
+          f.elems = [];
         "
       >
         Clear filters
