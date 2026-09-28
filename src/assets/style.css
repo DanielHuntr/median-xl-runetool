@@ -2906,3 +2906,23 @@ main article.found {
     grid-template-columns: 1fr 185px 130px 115px;
   }
 }
+
+/* The collapsed rail can't scroll (its tooltips would be clipped), so it keeps every icon,
+   down to the collapse button, within the window: tighter spacing, tighter still on short
+   screens. */
+@media (min-width: 901px) {
+  .sidebar.collapsed { padding: 18px 10px 12px; }
+  .sidebar.collapsed .brand { margin: 0 auto 22px; }
+  .sidebar.collapsed .nav-search { margin-bottom: 14px; padding: 9px 0; }
+  .sidebar.collapsed nav { gap: 3px; }
+  .sidebar.collapsed .sidebar-bottom { gap: 2px; }
+  .sidebar.collapsed .version { padding: 8px 0; }
+  .sidebar.collapsed .side-link { min-height: 36px; padding: 0; }
+  .sidebar.collapsed .side-collapse { margin-top: 6px; padding-top: 8px !important; }
+}
+@media (min-width: 901px) and (max-height: 860px) {
+  .sidebar.collapsed nav button { min-height: 34px; padding: 7px; }
+  .sidebar.collapsed .side-link { min-height: 32px; }
+  .sidebar.collapsed .brand { margin-bottom: 14px; }
+  .sidebar.collapsed .brand-mark svg { width: 30px; height: 36px; }
+}
