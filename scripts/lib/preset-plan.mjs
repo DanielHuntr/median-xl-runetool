@@ -41,7 +41,11 @@ export function planTrees({ engine, catalog, planner, computeCharacter, damage, 
       const probed = active.map((n) => probe(n.id));
       for (const x of probed) if ((x.kind === "attack" || x.kind === "spell") && x.vs > 0 && !x.scales)
         noScaling.push(`${cls} ${tab}: ${engine.skillName(x.id)}`);
-      const hitters = probed.filter((x) => x.scales).filter((x) => (x.kind === "attack" || x.kind === "spell") && x.vs > 0).sort((a, b) => b.vs - a.vs);
+      // A skill anchors a preset only with damage worth the name at full points: the planner can
+      // show a token figure for skills whose real damage it doesn't model (Harvest's "Poison
+      // Damage: 0-1" at level 20, a healing skill of the Harvesters tree).
+      const MIN_VS = 10;
+      const hitters = probed.filter((x) => x.scales).filter((x) => (x.kind === "attack" || x.kind === "spell") && x.vs >= MIN_VS).sort((a, b) => b.vs - a.vs);
       const name = (id) => engine.skillName(id);
       // Two skills the game won't let you learn together (Shockwave Trap and Incineration Trap),
       // including through what they require (Askari Lightning needs Stormcall, which Hammer of

@@ -29,6 +29,11 @@ import { planTrees } from "./lib/preset-plan.mjs";
 import { probePointScaling } from "./lib/point-scaling.mjs";
 import { effectScope } from "vue";
 
+// A skill-bar skill counts as a damage skill (placed with the hitters and checked like one) only
+// with damage worth the name: the planner shows a token figure for some skills whose real effect
+// it doesn't model (Harvest's "Poison Damage: 0-1", a healing skill of the Harvesters tree).
+const dealsDamage = (d) => d.raw > 0 && d.vs >= 10;
+
 const PRESETS = [
   { id: "amazon-stormcall", cls: "Amazon", name: "Stormcall", main: "stormcall", extra: ["thundermaiden"], blurb: "Lightning spell caster from the Storm tree." },
   { id: "amazon-wyrmshot", cls: "Amazon", name: "Wyrmshot Bow", main: "wyrmshot", extra: ["dragonlore", "keen_sight"], blurb: "Bow attacks from the Bow tree." },
@@ -397,7 +402,7 @@ try {
       const tags = (id) => engine.skill(id).tags;
       const buffs = usable.filter((id) => isToggleSkill(engine.skill(id)));
       const hitters = usable.filter((id) => !buffs.includes(id) && b.points[id] > 1)
-        .map((id) => ({ id, d: damage(b, id) })).filter((x) => x.d.raw > 0).sort((x, y) => y.d.vs - x.d.vs).map((x) => x.id);
+        .map((id) => ({ id, d: damage(b, id) })).filter((x) => dealsDamage(x.d)).sort((x, y) => y.d.vs - x.d.vs).map((x) => x.id);
       const moves = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => t === "Warp" || t === "Warp Strike"));
       const summons = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => /Summon/.test(t)));
       const others = usable.filter((id) => b.points[id] > 1 && ![...buffs, ...hitters, ...moves, ...summons].includes(id)).sort((x, y) => b.points[y] - b.points[x]);
@@ -512,7 +517,7 @@ ${def.name}: levelling stages`);
     // chooses, but a skill that grows by less than a point per level (Frigid Domain) may not
     // show it over a few points.
     else for (const id of [def.main, def.right].filter(Boolean)) check(def, b, id, id === def.right);
-    for (const id of b.skillBar.filter((x) => damage(b, x).raw > 0)) check(def, b, id, true);
+    for (const id of b.skillBar.filter((x) => dealsDamage(damage(b, x)))) check(def, b, id, true);
     // What the Builds page shows without loading the planner: each slotted skill's damage
     // (every hit or cast it repeats, against the typical Hell monster), the gear and points.
     const summary = {

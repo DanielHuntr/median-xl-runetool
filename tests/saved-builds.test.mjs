@@ -168,3 +168,37 @@ test('every starter build stage follows the planner rules for its level and diff
     assert.ok(checked >= 280, `${checked} stages checked`);
   } finally { await vite.close(); }
 });
+
+test('starter build stages progress like a player: no tier or gem downgrades, orbs within budget', async () => {
+  const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
+  try {
+    const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
+    const { stages } = JSON.parse(await readFile(new URL('../src/data/preset-stages.json', import.meta.url), 'utf8'));
+    const data = await vite.ssrLoadModule('/src/data/index.js');
+    const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
+    const catalog = createCatalog(data, planner);
+    const BUDGET = { Normal: 2, Nightmare: 5, Hell: 10 };
+    for (const [id, list] of Object.entries(stages)) {
+      const best = {};
+      let gems = 0;
+      for (const st of list) {
+        if (st.final || !st.build) continue;
+        const name = `${id} level ${st.level}`;
+        for (const [slot, it] of Object.entries(st.build.gear)) {
+          const key = it.base || it.ref, tier = it.base ? it.baseVariant : it.variant;
+          if (Number.isInteger(tier) && key in best) assert.ok(tier >= best[key], `${name}: ${catalog.get(it.ref)?.name} (${slot}) went down a tier`);
+          assert.ok((it.orbs || []).length <= BUDGET[st.difficulty], `${name}: ${(it.orbs || []).length} orbs on ${slot}`);
+          for (const ref of it.sockets || []) {
+            const d = ref && catalog.get(ref);
+            if (d?.kind === 'socketable' && d.kindLabel === 'Gems') assert.ok((d.lvl || 0) >= gems, `${name}: ${d.name} after better gems`);
+          }
+        }
+        for (const it of Object.values(st.build.gear)) {
+          const key = it.base || it.ref, tier = it.base ? it.baseVariant : it.variant;
+          if (Number.isInteger(tier)) best[key] = Math.max(best[key] ?? -1, tier);
+          for (const ref of it.sockets || []) { const d = ref && catalog.get(ref); if (d?.kind === 'socketable' && d.kindLabel === 'Gems') gems = Math.max(gems, d.lvl || 0); }
+        }
+      }
+    }
+  } finally { await vite.close(); }
+});
