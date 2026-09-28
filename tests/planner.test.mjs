@@ -1302,6 +1302,33 @@ test("every mystic orb's lines count and its required level applies on items it 
   }
 });
 
+test("an Honorific base item gets double from its mystic orbs, and says so in its name", async () => {
+  const { catalog } = await env();
+  const { ORBS, orbFits } = await load("/src/planner/orbs.js");
+  const { superiorNames } = await load("/src/planner/superior.js");
+  const helm = catalog.forSlot("helm", "Paladin").find((d) => d.kind === "base");
+  const st = { ref: helm.key, variant: helm.variants.length - 1 };
+  const orb = ORBS.find((o) => orbFits(o, helm, helm.variants.at(-1).lines, {}) && catalog.resolve({ ...st, orbs: [o.id] }, 150).orbs[0]?.parsed.some((p) => p.effects?.length));
+  const value = (r) => r.orbs[0].parsed.flatMap((p) => p.effects || []).map(([, v]) => v)[0];
+  const plain = catalog.resolve({ ...st, orbs: [orb.id] }, 150), hono = catalog.resolve({ ...st, orbs: [orb.id], honorific: true }, 150);
+  assert.equal(value(hono), 2 * value(plain), orb.name);
+  assert.equal(superiorNames(hono).name, `Honorific ${helm.name}`);
+  // Only base items can be Honorific.
+  const unique = catalog.forSlot("helm", "Paladin").find((d) => d.kind === "unique");
+  assert.equal(catalog.resolve({ ref: unique.key, honorific: true }, 150).honorific, false);
+});
+
+test("items giving another class's skills are that class's, and Suggest gear leaves them out", async () => {
+  const { catalog } = await env();
+  const byName = (n) => catalog.all().find((d) => d.name === n);
+  assert.equal(catalog.forClass(byName("Warmage's Fireblade"), "Amazon"), false);
+  assert.equal(catalog.forClass(byName("Warmage's Fireblade"), "Sorceress"), true);
+  assert.equal(catalog.forClass(byName("Relic (Arcane Torrent)"), "Amazon"), false, "a relic of another class's skill");
+  assert.equal(catalog.forClass(byName("Relic (Summon Frostwalker)"), "Amazon"), true, "a skill no class owns");
+  assert.equal(catalog.forClass(byName("Elder Law"), "Barbarian"), false, "(Druid Only) skills");
+  assert.equal(catalog.forClass(byName("Ahriman"), "Amazon"), true);
+});
+
 test('dialogs get recommendations in the background, shared with the rest of the planner', async () => {
   const { engine, catalog } = await env();
   const { createPlanner } = await load('/src/planner/usePlanner.js');

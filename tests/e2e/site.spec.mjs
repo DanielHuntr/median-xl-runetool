@@ -114,6 +114,15 @@ test("starter builds show tiers, and the tier filter narrows them", async ({ pag
   await expect(cards.first().locator(".tier-unrated")).toBeVisible();
 });
 
+test("the gear switch shows each starter build on found gear", async ({ page }) => {
+  await page.goto("/#builds");
+  const card = page.locator(".starter-wrap", { hasText: "Stormcall" }).first();
+  await expect(card.locator(".tier-criteria")).toBeVisible();
+  await page.getByLabel("Starter gear").selectOption("found");
+  await expect(card.locator(".found-gear")).toContainText("Found gear:");
+  await expect(card.locator("a.starter-card")).toHaveAttribute("href", /found%20gear/);
+});
+
 test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();

@@ -232,3 +232,38 @@ test('starter builds have tiers: every non-summon build rated S to F, best score
   for (const t of order) assert.ok(rated.some((p) => p.summary.rating.tier === t), `some build is tier ${t}`);
   for (const p of rated) assert.ok(p.summary.rating.dps > 0 && p.summary.rating.ehp > 0, p.name);
 });
+
+test('found-gear versions use found gear only; builds carry charms, a teleport or utility skill, and tiers per criterion', async () => {
+  const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
+  try {
+    const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
+    const { presets } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
+    const data = await vite.ssrLoadModule('/src/data/index.js');
+    const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
+    const { createAvailability } = await vite.ssrLoadModule('/src/planner/availability.js');
+    const catalog = createCatalog(data, planner);
+    const avail = createAvailability(catalog, catalog.all().filter((d) => d.kind === 'socketable').map((d) => [d.name, d.kindLabel, d.lvl]));
+    const withFound = presets.filter((p) => p.found?.build);
+    assert.ok(withFound.length >= presets.length - 3, `${withFound.length} of ${presets.length} have a found-gear version`);
+    for (const p of withFound) {
+      const b = p.found.build;
+      for (const [slot, st] of Object.entries(b.gear)) {
+        const d = catalog.get(st.ref);
+        assert.ok(avail.found(d), `${p.name} (found gear): ${d?.name} in ${slot}`);
+        for (const s of st.sockets || []) if (s) assert.ok(avail.found(catalog.get(s)), `${p.name} (found gear): ${catalog.get(s)?.name} socketed in ${slot}`);
+      }
+      for (const it of b.inventory || []) assert.ok(avail.found(catalog.get(it.ref)), `${p.name} (found gear): ${catalog.get(it.ref)?.name} carried`);
+    }
+    // Nothing that gives another class's skills (items.js otherClassSkills).
+    for (const p of presets) for (const b of [p.build, p.found?.build].filter(Boolean))
+      for (const st of [...Object.values(b.gear), ...(b.inventory || [])]) {
+        const d = catalog.get(st.ref);
+        assert.ok(catalog.forClass(d, p.cls), `${p.name}: ${d?.name} gives ${catalog.otherClassSkills(d, p.cls).join(", ")}`);
+      }
+    const charmed = presets.filter((p) => (p.build.inventory || []).length);
+    assert.ok(charmed.length >= presets.length * 0.9, `${charmed.length} carry charms or relics`);
+    for (const p of presets) assert.ok((p.build.inventory || []).filter((i) => catalog.get(i.ref)?.kind === 'relic').length <= 3, `${p.name}: at most 3 relics`);
+    const rated = presets.filter((p) => p.summary?.rating?.tier);
+    for (const p of rated) for (const k of ['bossTier', 'clearTier', 'surviveTier']) assert.match(p.summary.rating[k], /^[SABCDF]$/, `${p.name} ${k}`);
+  } finally { await vite.close(); }
+});
