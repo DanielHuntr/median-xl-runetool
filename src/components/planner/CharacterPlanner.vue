@@ -376,11 +376,11 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
               {{ planner.game.report.formulaDiffers.length }} differ;
               {{ planner.game.report.formulaUnchecked.length }} couldn't be compared.
             </p>
-            <p><b>Hard-point caps</b> (the game value is used, except where MedianDB's 0 means the cap is built by level or skill rules):</p>
+            <p><b>Hard-point caps</b> (the game's is used, except where the cap grows with character level, which the game's code does rather than its data files):</p>
             <ul>
               <li v-for="x in planner.game.report.capDiffers">{{ x.name }}: MedianDB {{ x.medianDb }}, game {{ x.game }}</li>
             </ul>
-            <p><b>Required character level</b> (the higher is used, except for skills the game unlocks by a deed):</p>
+            <p><b>Required character level</b> (the game's is used):</p>
             <ul>
               <li v-for="x in planner.game.report.reqLevelDiffers">
                 {{ x.name }}: MedianDB {{ x.medianDb }}, game {{ x.game }}<template v-if="planner.engine.unlockOf(x.id)">;

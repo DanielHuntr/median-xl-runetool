@@ -128,11 +128,15 @@ export function createEngine(data) {
     if (v < 1 && !isInnate({ ...s, id })) v = 1;
     return v;
   }
-  // Hard-point cap before rules. Game files (skills2.bin) where MedianDB has a fixed cap;
-  // MedianDB's 0 marks a cap that rules below build from character level or other skills.
+  // Hard-point cap before rules: always the game files' (skills2.bin), except for the few
+  // skills whose cap grows with character level (MedianDB 0 + a level rule above). Their
+  // game number isn't the cap on its own (Warmth's is 1, Sanctity's is the rule's final 5):
+  // the growth is in the game's code, not its data files.
+  const levelBuilt = (id) => skills[id].max === 0 && MAX_LEVEL_RULES.some((r) => r.target?.includes(id));
+  const gameCap = (id) => skills[id].game?.baseCap != null && !levelBuilt(id);
   function baseCap(id) {
     const s = skills[id];
-    return s.game && s.max > 0 ? s.game.baseCap : s.max;
+    return gameCap(id) ? s.game.baseCap : s.max;
   }
   function capSource(id) {
     const s = skills[id];
@@ -141,7 +145,7 @@ export function createEngine(data) {
     const conflict = capConflicts.get(id) || null;
     return {
       base: baseCap(id),
-      from: s.game && s.max > 0 ? datasets.game?.label : datasets.medianDb.label,
+      from: gameCap(id) ? datasets.game?.label : datasets.medianDb.label,
       dynamic,
       conflict: conflict && { medianDb: conflict.medianDb, game: conflict.game },
     };
@@ -197,13 +201,11 @@ export function createEngine(data) {
     const line = skills[id]?.game?.lines?.find((l) => /Unlockable Skill/i.test(l.textA || ""));
     return line ? line.textA.split("\n").filter((t) => !/Unlockable Skill/i.test(t)).join(" ").trim() || null : null;
   }
-  // Required character level: the higher of MedianDB's tree and the game's skills.bin
-  // reqlevel (the sources disagree for a few skills; both are shown in the UI), except
-  // for unlockable skills, where the game's is used.
+  // Required character level: always the game's (skills.bin reqlevel, which is also what
+  // unlockable skills use); MedianDB's tree only for a skill the game gives none.
   const treeCharLevel = (id, b) =>
     Math.max(0, ...(node(b, id)?.prereqs || []).filter((p) => p.startsWith("character_level:")).map((p) => parseInt(p.split(":")[1], 10)));
-  const requiredCharLevel = (id, b) =>
-    unlockOf(id) ? skills[id].game.reqLevel || 0 : Math.max(treeCharLevel(id, b), skills[id]?.game?.reqLevel || 0);
+  const requiredCharLevel = (id, b) => skills[id]?.game?.reqLevel ?? treeCharLevel(id, b);
   function requiredLevelSource(id, b) {
     const tree = treeCharLevel(id, b), g = skills[id]?.game?.reqLevel ?? null, unlock = unlockOf(id);
     return { value: requiredCharLevel(id, b), medianDb: tree, game: g, conflict: reqConflicts.has(id), ...(unlock ? { unlock } : {}) };
