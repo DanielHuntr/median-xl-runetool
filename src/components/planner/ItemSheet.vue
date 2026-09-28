@@ -44,6 +44,7 @@ const fromSuperior = computed(() => superiorLineTexts(r.value));
 </script>
 <template>
   <div v-if="r" class="sheet item-sheet">
+    <p class="sheet-kind" :class="'q-' + r.def.kind">{{ r.def.kindLabel }}</p>
     <p class="sheet-name" :class="'q-' + r.def.kind">{{ names.name }}</p>
     <p v-if="names.base" class="sheet-base">
       {{ names.base }}<template v-if="r.label"> ({{ r.label }})</template>
@@ -79,3 +80,8 @@ const fromSuperior = computed(() => superiorLineTexts(r.value));
     </div>
   </div>
 </template>
+
+<style scoped>
+/* What the item is (Tiered unique, Set · name, Sacred unique…), above its name. */
+.sheet-kind { margin: 0 0 2px; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+</style>

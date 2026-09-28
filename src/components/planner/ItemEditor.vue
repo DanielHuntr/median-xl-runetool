@@ -1,4 +1,5 @@
 <script setup>
+import CubeLink from "../CubeLink.vue";
 import { computed, ref } from "vue";
 import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
@@ -100,6 +101,15 @@ const reqs = computed(() => {
     r.value.cls && { t: `${r.value.cls} only`, ok: r.value.cls === state.cls },
   ].filter(Boolean);
 });
+// "Show recipe" when the cube makes this item: a unique (at its tier) or a base item's tier.
+const cubeLink = computed(() => {
+  const d = r.value?.def;
+  if (!d) return null;
+  const tier = +(/Tier (\d)/.exec(r.value.label || "")?.[1] || 0);
+  if (d.kind === "unique" || d.kind === "sacred") return { kind: "unique", name: d.name, tier };
+  if (d.kind === "base" && tier) return { kind: "item", name: `${d.name} (${tier})` };
+  return null;
+});
 </script>
 <template>
   <section v-if="item && r" id="item-editor" tabindex="-1" class="item-editor" :aria-label="`${slotLabel}: ${r.def.name}`">
@@ -111,6 +121,7 @@ const reqs = computed(() => {
         <p class="base">
           {{ names.base || r.def.cat }}<template v-if="r.label"> · {{ r.label }}</template>
         </p>
+        <CubeLink v-if="cubeLink" v-bind="cubeLink" />
       </div>
     </div>
     <p v-if="inactive" class="warning">This slot belongs to the other weapon set, so it isn't counted right now.</p>
