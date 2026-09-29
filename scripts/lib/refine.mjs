@@ -15,7 +15,7 @@ const SLOTS = ["weapon", "offhand", "helm", "body", "gloves", "belt", "boots", "
 const ATTRS = ["strength", "dexterity", "vitality", "energy"];
 
 export function refineBuild(p, ctx) {
-  const { engine, catalog, planner, score, level, keepGear = null, allow = null, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log = () => {} } = ctx;
+  const { engine, catalog, planner, score: rawScore, level, keepGear = null, allow = null, use = null, wastedLines = null, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log = () => {} } = ctx;
   const env = { engine, catalog, planner };
   const clone = (b) => JSON.parse(JSON.stringify(b));
   // Attributes for a changed loadout: what it needs, the rest as the planner would spend it.
@@ -27,6 +27,13 @@ export function refineBuild(p, ctx) {
     b.attrs = spendRemaining(b, env, buildProfile(b, engine));
     return wearableBothSets(b, env);
   };
+  // Items are judged by what they do for this build, less a little for each of their lines
+  // that can't help it (relevance.js: another element, spell stats on an attack build, …), so
+  // a focused item beats one mostly bought for nothing when they're close. About what 1% more
+  // damage is worth per wasted line.
+  const WASTE = 0.6;
+  const waste = (b) => (use && wastedLines ? Object.values(b.gear).reduce((n, st) => n + wastedLines(catalog.resolve(st, b.level), use), 0) : 0);
+  const score = (b) => rawScore(b) - WASTE * waste(b);
   let cur = { b: clone(p.build.value), s: score(p.build.value) };
   const T = { t: Date.now(), trials: 0 };
   const lap = (what) => { if (process.env.PROFILE) console.log(`   [refine] ${what} ${((Date.now() - T.t) / 1000).toFixed(1)}s, ${T.trials} trials`); T.t = Date.now(); T.trials = 0; };
@@ -72,19 +79,34 @@ export function refineBuild(p, ctx) {
   lap("charms");
   // ---------- Gear, one slot at a time, by the build's own measure
   const setBuild = () => { p.build.value.gear = clone(cur.b.gear); p.build.value.attrs = clone(cur.b.attrs); p.build.value.inventory = clone(cur.b.inventory); };
+  // An item as it comes: no sockets filled and no orbs (a runeword keeps its runes).
+  const bare = (st) => st && { ...st, sockets: catalog.get(st.ref)?.kind === "runeword" ? st.sockets : [], orbs: [] };
   const slotPass = (n = 6) => {
-    // Each slot's candidates, ranked once for the build as it stands.
+    // Each slot's candidates, ranked once for the build as it stands. Items are compared on
+    // their own, before sockets and orbs: otherwise an item with a lower level requirement
+    // wins on the room it leaves for orbs (+4 required level each) rather than on itself,
+    // and early +skills get outbid. The winner then gets its sockets and orbs.
     setBuild();
     const ranked = Object.fromEntries(SLOTS.filter((slot) => !keepGear?.[slot]).map((slot) => [slot, p.recommend(slot, n)]));
     for (const [slot, list] of Object.entries(ranked)) {
+      const now = trial((b) => { if (b.gear[slot]) b.gear[slot] = bare(b.gear[slot]); });
+      let best = null;
       for (const cand of list) {
-        if (JSON.stringify(cand.state) === JSON.stringify(cur.b.gear[slot])) continue;
+        if (cand.def.key === cur.b.gear[slot]?.ref) continue;
         const x = trial((b) => {
-          b.gear[slot] = cand.state;
+          b.gear[slot] = bare(cand.state);
           if (slot === "weapon" && catalog.resolve(cand.state, b.level)?.twoHanded) delete b.gear.offhand;
         });
-        if (x && x.s > cur.s + 0.05) commit(x, `${slot}: ${nameOf(cur.b.gear[slot])} → ${cand.def.name}`);
+        if (x && (!best || x.s > best.x.s)) best = { x, cand };
       }
+      if (!best || (now && best.x.s <= now.s + 0.05)) continue;
+      const from = nameOf(cur.b.gear[slot]);
+      commit(best.x, `${slot}: ${from} → ${best.cand.def.name}`);
+      setBuild();
+      try { p.enhance(slot, { quiet: true }); } catch {}
+      const st = clone(p.build.value.gear[slot]);
+      const y = trial((b) => { b.gear[slot] = st; });
+      if (y) commit(y, `${slot}: sockets and orbs`);
     }
   };
   slotPass();

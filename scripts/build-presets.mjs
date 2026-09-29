@@ -82,6 +82,7 @@ try {
   const renv = await ratingEnv(load, planner, data);
   const catalog = createCatalog(data, planner);
   const { createAvailability } = await load("/src/planner/availability.js");
+  const relevance = await load("/src/planner/relevance.js");
   const foundGear = createAvailability(catalog, catalog.all().filter((d) => d.kind === "socketable").map((d) => [d.name, d.kindLabel, d.lvl]));
   const gameIds = new Map(Object.entries(planner.skills).filter(([, s]) => s.game).map(([id, s]) => [s.game.gameId, id]));
   // Skills a skill's formulas read: its synergies and upgrades (game files and MedianDB).
@@ -421,12 +422,16 @@ try {
     // The build's measure (rating.js): sustained bossing and clearing damage (speed
     // breakpoints, hit chance, cooldowns, mana), survivability (resistances, avoid, block),
     // hit recovery frames and movement; plus life recovery. Summons: their own numbers.
+    // Measured against this stage's own difficulty: its typical monster's resistances.
+    const renvD = { ...renv, difficulty, target: targets[difficulty] };
     const score = (b) => {
-      const m = renv.rating.buildMetrics(b, renv);
+      const m = renv.rating.buildMetrics(b, renvD);
       const combat = combatScore(b, computeCharacter(b, { engine, catalog, planner }), engine, profile);
       return renv.rating.buildValue(m, { summonPower: def.summoner || m.unrated ? summonPower(b) : 0 }) + combat.sustainScore;
     };
     const skillsOfClass = skillsOfClassFor(def.cls);
+    // Enhancement plans (sockets or orbs first, or orbs kept room for) judged by this measure.
+    p.state.enhanceJudge = (gear) => score({ ...p.build.value, gear });
     const tLoop = Date.now();
     for (let round = 0; round < engine.available(p.build.value); round++) {
       const b = p.build.value, now = score(b);
@@ -515,7 +520,8 @@ try {
     // Gear, charms and relics, sets and attributes by the build's own measure (refine.mjs).
     {
       const changes = [], tRef = Date.now();
-      refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log: (t) => changes.push(t) });
+      refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null,
+        use: relevance.buildUse(p.build.value, renvD), wastedLines: relevance.wastedLines, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log: (t) => changes.push(t) });
       if (final || changes.length) console.log(`   refined (level ${level}): ${changes.length} changes${changes.length ? `: ${changes.slice(0, 8).join("; ")}${changes.length > 8 ? " …" : ""}` : ""}`);
       if (process.env.PROFILE) console.log(`   [time] refine ${((Date.now() - tRef) / 1000).toFixed(1)}s`);
       if (notesEssentials.length && final) console.log(`   utility: ${notesEssentials.join(", ")}`);
