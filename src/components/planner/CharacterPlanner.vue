@@ -6,7 +6,7 @@ import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
 import EquipmentPanel from "./EquipmentPanel.vue";
 import SkillsPanel from "./SkillsPanel.vue";
-import SkillDetail from "./SkillDetail.vue";
+import QuestsDialog from "./QuestsDialog.vue";
 import ItemEditorModal from "./ItemEditorModal.vue";
 import ItemPicker from "./ItemPicker.vue";
 import StatsPanel from "./StatsPanel.vue";
@@ -150,6 +150,8 @@ function confirmReset() {
 }
 const shortDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { dateStyle: "medium" }) : "unknown date");
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
+// The quest list, from the stage row (QuestsDialog).
+const questsOpen = ref(false);
 </script>
 <template>
   <section aria-label="Character planner" class="planner">
@@ -301,6 +303,9 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             </div>
           </div>
         </div>
+        <!-- Quests, at the row's other end (QuestsDialog). -->
+        <button type="button" class="btn stage-quests" aria-haspopup="dialog" @click="questsOpen = true">Quests</button>
+        <QuestsDialog v-if="questsOpen" @close="questsOpen = false" />
       </div>
       <p class="planner-message" :class="planner.state.tone" role="status">{{ planner.state.message }}</p>
 
@@ -346,77 +351,6 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             <SkillsPanel />
           </div>
 
-          <div class="planner-details">
-            <SkillDetail />
-          </div>
-
-          <div class="planner-extras">
-            <section class="planner-summary" aria-label="Skill summary">
-              <h2 class="group-title">Skill summary</h2>
-              <p v-if="!planner.allocated.value.length" class="muted">No skill points spent yet.</p>
-              <ul v-else>
-                <li v-for="n in planner.allocated.value" :key="n.id">
-                  <button
-                    v-on="planner.tipOn({ kind: 'skill', id: n.id })"
-                    @click="
-                      planner.setTab(n.tree);
-                      planner.state.selected = n.id;
-                    "
-                  >
-                    <SkillIcon :image="n.image" /><span>{{ n.name }}<small>{{ n.tree }}</small></span
-                    ><b
-                      >{{ n.points
-                      }}<i v-if="planner.character.value.soft[n.id]">+{{ planner.character.value.soft[n.id] }}</i></b
-                    >
-                  </button>
-                </li>
-              </ul>
-            </section>
-            <details class="planner-quests">
-              <summary><h2 class="group-title">Quests</h2></summary>
-              <p class="muted">
-                Quests count as done once you reach the level they're usually finished at. Untick any you haven't done.
-              </p>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Quest</th>
-                    <th v-for="d in QUEST_DIFFS">{{ cap(d) }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="q in SKILL_QUESTS">
-                    <th scope="row">{{ q[1] }}</th>
-                    <td v-for="d in QUEST_DIFFS">
-                      <label v-if="q[2][d]" class="quest-check"
-                        ><input
-                          type="checkbox"
-                          :checked="planner.engine.questDone(planner.build.value, q[0], d)"
-                          @change="planner.toggleQuest(q[0], d, $event.target.checked)"
-                          :aria-label="`${q[1]}, ${d}: +${q[2][d][0]} skill points`"
-                        />+{{ q[2][d][0] }} skill</label
-                      >
-                    </td>
-                  </tr>
-                  <tr v-for="q in OTHER_QUESTS">
-                    <th scope="row">{{ q[1] }}</th>
-                    <td v-for="d in QUEST_DIFFS">
-                      <label v-if="q[3][d]" class="quest-check"
-                        ><input
-                          type="checkbox"
-                          :checked="otherQuestDone(planner.build.value, q[0], d)"
-                          @change="planner.toggleQuest(q[0], d, $event.target.checked)"
-                          :aria-label="`${q[1]}, ${d}`"
-                        />+{{ q[3][d][0] }}
-                        {{ q[2] === "stat_points" ? "stat" : q[2] === "flat_life" ? "life" : "signets" }}</label
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <button class="text-btn" @click="planner.resetQuests()">Go back to level-based quests</button>
-            </details>
-          </div>
           </template>
 
           <p class="coverage">
@@ -429,28 +363,6 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
             </template>
             Items from the official documentation. Values marked "est." are our own calculations of game formulas.
           </p>
-          <details v-if="planner.game" class="coverage data-report">
-            <summary>
-              Where MedianDB {{ planner.gameVersion }} and the {{ planner.game.patch }} game files disagree
-            </summary>
-            <p>
-              {{ planner.game.report.paired }} skills matched by name.
-              {{ planner.game.report.formulaMatches }} community formulas give the same results as the game's;
-              {{ planner.game.report.formulaDiffers.length }} differ;
-              {{ planner.game.report.formulaUnchecked.length }} couldn't be compared.
-            </p>
-            <p><b>Hard-point caps</b> (the game's is used, except where the cap grows with character level, which the game's code does rather than its data files):</p>
-            <ul>
-              <li v-for="x in planner.game.report.capDiffers">{{ x.name }}: MedianDB {{ x.medianDb }}, game {{ x.game }}</li>
-            </ul>
-            <p><b>Required character level</b> (the game's is used):</p>
-            <ul>
-              <li v-for="x in planner.game.report.reqLevelDiffers">
-                {{ x.name }}: MedianDB {{ x.medianDb }}, game {{ x.game }}<template v-if="planner.engine.unlockOf(x.id)">;
-                unlocked by "{{ planner.engine.unlockOf(x.id) }}", so the game's is used</template>
-              </li>
-            </ul>
-          </details>
         </div>
 
         <Transition name="stats-slide">
@@ -458,7 +370,7 @@ const cap = (s) => s[0].toUpperCase() + s.slice(1);
         </Transition>
       </div>
 
-      <HoverCard :active="!planner.state.picker && !planner.state.suggesting && !planner.state.skillChooser && !planner.state.editing" />
+      <HoverCard :active="!planner.state.picker && !planner.state.suggesting && !planner.state.skillChooser && !planner.state.editing && !planner.state.skillSummary" />
       <ItemEditorModal v-if="planner.state.editing" />
       <SkillChooser v-if="planner.state.skillChooser" />
       <SaveBuildDialog v-if="saving" @close="saving = false" />

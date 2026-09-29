@@ -420,6 +420,48 @@ export function buildValue(m, { summonPower = 0 } = {}) {
  * together) and one per criterion, each ranked among the rated builds, best first.
  * @returns Map id → { tier, rank, of, score, bossTier, clearTier, surviveTier }
  */
+// What each tier is ranked by: overall (bossing, clearing and survival together) and each
+// criterion on its own.
+const TIER_VALUES = {
+  overall: (m) => m.boss ** WEIGHTS.boss * m.clear ** WEIGHTS.clear * m.ehp ** WEIGHTS.survive,
+  boss: (m) => m.boss, clear: (m) => m.clear, survive: (m) => m.ehp,
+};
+const rateable = (m) => m && !m.unrated && m.boss > 0;
+/**
+ * The scale the rated builds make, for placing a build that isn't one of them (a player's
+ * own) as if it were: per criterion, the rated builds' values, highest first (a tier is a
+ * share of the ranks, TIERS). Saved with the starter builds (rate-presets.mjs tier-scales).
+ */
+export function tierScale(list) {
+  const rated = list.filter((x) => rateable(x.metrics));
+  return Object.fromEntries(Object.entries(TIER_VALUES).map(([k, f]) => [k, rated.map((x) => Math.round(f(x.metrics))).sort((a, b) => b - a)]));
+}
+// The tier a rank falls in among n builds, as assignTiers deals them out.
+function tierAtRank(rank, n) {
+  let start = 0;
+  for (const [i, [tier, share]] of TIERS.entries()) {
+    const end = i === TIERS.length - 1 ? n : Math.min(n, start + Math.round(share * n));
+    if (rank <= end) return tier;
+    start = end;
+  }
+  return TIERS.at(-1)[0];
+}
+/**
+ * Where a build's numbers (buildMetrics) would sit on a scale (tierScale): the tier it would
+ * get among those builds, overall and per criterion, and its rank.
+ */
+export function placeOnScale(m, scale) {
+  if (!rateable(m) || !scale?.overall?.length) return m?.unrated ? { unrated: m.unrated } : null;
+  const place = (k) => {
+    // Rounded as the scale's values are (tierScale), so a build equal to one of them ties with it.
+    const v = Math.round(TIER_VALUES[k](m)), values = scale[k];
+    const rank = values.filter((x) => x > v).length + 1;
+    return { rank, tier: tierAtRank(rank, values.length + 1) };
+  };
+  const o = place("overall");
+  return { tier: o.tier, rank: o.rank, of: scale.overall.length + 1, bossTier: place("boss").tier, clearTier: place("clear").tier, surviveTier: place("survive").tier };
+}
+
 export function assignTiers(list) {
   const rated = list.filter((x) => x.metrics && !x.metrics.unrated && x.metrics.boss > 0);
   const tierBy = (value) => {
@@ -433,8 +475,8 @@ export function assignTiers(list) {
     });
     return out;
   };
-  const overall = tierBy((m) => m.boss ** WEIGHTS.boss * m.clear ** WEIGHTS.clear * m.ehp ** WEIGHTS.survive);
-  const boss = tierBy((m) => m.boss), clear = tierBy((m) => m.clear), survive = tierBy((m) => m.ehp);
+  const overall = tierBy(TIER_VALUES.overall);
+  const boss = tierBy(TIER_VALUES.boss), clear = tierBy(TIER_VALUES.clear), survive = tierBy(TIER_VALUES.survive);
   const out = new Map();
   for (const x of rated) {
     const o = overall.get(x.id);

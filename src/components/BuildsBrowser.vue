@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, shallowRef, watch } from 'vue';
 import { useSavedBuilds, MAX_NAME } from '../planner/savedBuilds.js';
-import { encodeBuild, plannerHash } from '../planner/buildCode.js';
+import { encodeBuild, decodeBuild, plannerHash } from '../planner/buildCode.js';
 import presets from '../data/preset-builds.json';
 import ClassPicker from './ClassPicker.vue';
 import SkillIcon from './planner/SkillIcon.vue';
@@ -12,13 +12,23 @@ const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Pal
 const cls = ref(''), tier = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
 const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} ${b.tree || ''} ${(b.skills || []).join(' ')}`.toLowerCase().includes(query.value.trim().toLowerCase());
 const saved = computed(() => builds.value.filter(matches));
+// A saved build's own tier (its author's, inside the build) and what the estimate compared it with.
+const authorTierOf = (b) => { const t = decodeBuild(b.code)?.authorTier; return /^[SABCDF]$/.test(t || '') ? t : ''; };
+const estimateNote = (e) => `Bossing ${e.bossTier ?? '?'} · Clearing ${e.clearTier ?? '?'} · Survival ${e.surviveTier ?? '?'}, estimated among the starter builds at ${e.against?.level === 150 ? 'endgame' : `level ${e.against?.level ?? '?'} · ${e.against?.difficulty ?? ''}`} when saved`;
 // Tiers (src/planner/rating.js): S best to F, against the other starter builds; summon
 // builds aren't rated.
 const TIER_ORDER = ['S', 'A', 'B', 'C', 'D', 'F'];
-const ratingOf = (b) => b.summary?.rating || null;
+// What a card shows: the endgame build, or the selected levelling stage, each with its own
+// tier (rated among the builds at the same stage), card summary and build (rate-presets.mjs).
+const viewOf = (b) => {
+  const s = stageOf(b);
+  return s ? { level: s.level, difficulty: s.difficulty, rating: s.rating || null, summary: s.summary || null, build: s.build }
+    : { level: b.build.level, difficulty: 'Hell', rating: b.summary?.rating || null, summary: b.summary || null, build: b.build };
+};
+const ratingOf = (b) => viewOf(b).rating;
 // Which stage the cards show: the endgame build, or a levelling stage from its guide
 // (preset-stages.json, loaded when first asked for), the same ones the planner opens as its
-// Normal, Nightmare and Hell stages. Tiers rate the endgame build.
+// Normal, Nightmare and Hell stages.
 const STAGE_LEVEL = { Normal: 50, Nightmare: 100, Hell: 125 };
 const stage = ref('Endgame');
 const stageGuides = shallowRef(null);
@@ -86,6 +96,11 @@ function deleteBuild(id) {
         <div class="build-art" aria-hidden="true"><img :src="art(b.cls)" alt="" loading="lazy" /></div>
         <h3>{{ b.name }}</h3>
         <p>{{ b.cls }} · Level {{ b.level ?? 'unknown' }}</p>
+        <!-- The author's own tier (in the build) and the planner's estimate when it was saved. -->
+        <p v-if="authorTierOf(b) || b.estimate" class="tier-criteria mine-tiers">
+          <span v-if="authorTierOf(b)" :class="`tier-chip tier-${authorTierOf(b)}`">Your tier {{ authorTierOf(b) }}</span>
+          <span v-if="b.estimate" :class="`tier-chip tier-${b.estimate.tier}`" :title="estimateNote(b.estimate)">Estimate {{ b.estimate.tier }}</span>
+        </p>
         <p v-if="b.skills.length" class="muted">{{ b.skills.join(' · ') }}</p>
         <p v-if="b.savedAt" class="mine-edited">Last edited {{ new Date(b.savedAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) }}</p>
         <form v-if="editing === b.id" class="build-actions" @submit.prevent="commitRename(b.id)">
@@ -113,43 +128,34 @@ function deleteBuild(id) {
       <div v-for="b in g.builds" :key="b.id" class="starter-wrap">
       <a class="build-card starter-card" :href="href(b, true)">
         <div class="build-art" aria-hidden="true"><img :src="art(b.cls)" alt="" loading="lazy" /></div>
-        <h3><span v-if="ratingOf(b)?.tier" class="tier-badge" :class="`tier-${ratingOf(b).tier}`" :aria-label="`Tier ${ratingOf(b).tier}`">{{ ratingOf(b).tier }}</span>{{ b.name }}<span v-if="ratingOf(b)?.unrated" class="tier-unrated" :title="ratingOf(b).unrated">Unrated</span></h3><p>{{ b.cls }} · Level {{ stageOf(b)?.level ?? b.build.level }}<template v-if="stageOf(b)"> · {{ stageOf(b).difficulty }}</template><template v-if="b.tree"> · {{ b.tree }} tree</template></p>
-        <template v-if="endgame">
+        <h3><span v-if="ratingOf(b)?.tier" class="tier-badge" :class="`tier-${ratingOf(b).tier}`" :aria-label="`Tier ${ratingOf(b).tier}`">{{ ratingOf(b).tier }}</span>{{ b.name }}<span v-if="ratingOf(b)?.unrated" class="tier-unrated" :title="ratingOf(b).unrated">Unrated</span></h3><p>{{ b.cls }} · Level {{ viewOf(b).level }}<template v-if="!endgame"> · {{ viewOf(b).difficulty }}</template><template v-if="b.tree"> · {{ b.tree }} tree</template></p>
         <p v-if="ratingOf(b)?.bossTier" class="tier-criteria"><span v-for="[k, label] in CRITERIA" :key="k" :class="`tier-chip tier-${ratingOf(b)[k]}`">{{ label }} {{ ratingOf(b)[k] }}</span></p>
-        <p v-if="why(b)" class="tier-why">{{ why(b) }}</p>
-        <!-- Item or skill effects the game files give only in words, counted by assumption (rating.js). -->
-        <p v-if="ratingOf(b)?.assumed?.length" class="tier-assumed">Estimate assumes: {{ ratingOf(b).assumed.join('; ') }}</p>
-        <p v-if="ratingOf(b)?.tier" class="tier-note">{{ tierNote(ratingOf(b)) }}</p>
-        </template>
-        <p class="muted">{{ b.blurb }}</p>
-        <!-- A levelling stage: its own main skill, gear, life and mana. -->
-        <template v-if="stageOf(b)">
-          <p class="muted">Main skill: {{ stageOf(b).mainName }}</p>
-          <p class="muted stage-gear">Gear: {{ stageOf(b).gear.map(([, name]) => name).join(' · ') }}</p>
-          <p v-if="stageOf(b).build.merc?.spec" class="muted">Mercenary: {{ stageOf(b).build.merc.spec }}</p>
-          <p class="muted">{{ stageOf(b).life.toLocaleString() }} life · {{ stageOf(b).mana.toLocaleString() }} mana</p>
-        </template>
-        <template v-else>
+        <p v-if="why(b)" class="tier-why">{{ why(b) }}<span v-if="ratingOf(b)?.assumed?.length" class="tier-estimate" :title="`Estimate assumes: ${ratingOf(b).assumed.join('; ')}`">Estimate</span></p>
         <!-- Left and right skill, then the skill bar; each shows its tooltip on hover or focus. -->
-        <ul v-if="b.summary?.icons?.length" class="build-skills" aria-label="Skills">
-          <li v-for="(k, i) in b.summary.icons" :key="k.id + i" class="build-skill" :aria-describedby="`tip-${b.id}-${i}`">
+        <ul v-if="viewOf(b).summary?.icons?.length" class="build-skills" aria-label="Skills">
+          <li v-for="(k, i) in viewOf(b).summary.icons" :key="k.id + i" class="build-skill" :aria-describedby="`tip-${b.id}-${i}`">
             <SkillIcon :image="k.image" /><span v-if="SLOT_BADGE[k.slot]" class="build-skill-badge" aria-hidden="true">{{ SLOT_BADGE[k.slot] }}</span>
             <div :id="`tip-${b.id}-${i}`" role="tooltip" class="build-skill-tip">
               <b>{{ k.name }}</b>
               <small>{{ k.slot }} · {{ k.points }}<template v-if="k.soft"> + {{ k.soft }}</template> points<template v-if="k.active"> · switched on</template></small>
               <em v-if="k.description">{{ k.description }}</em>
-              <span v-if="k.vs" class="build-skill-dmg">{{ fmt(k.vs) }} {{ k.per }} vs a typical Hell monster (est.)</span>
+              <span v-if="k.vs" class="build-skill-dmg">{{ fmt(k.vs) }} {{ k.per }} vs a typical {{ viewOf(b).difficulty }} monster (est.)</span>
               <span v-for="l in k.lines" :key="l">{{ l }}</span>
             </div>
           </li>
         </ul>
-        <p v-if="b.summary?.bar?.length" class="muted">Skill bar: {{ b.summary.bar.join(' · ') }}</p>
-        <p v-if="b.build.merc?.spec" class="muted">Mercenary: {{ b.build.merc.spec }}</p>
-        <p v-if="b.summary" class="muted">{{ (ratingOf(b)?.life ?? b.summary.life).toLocaleString() }} life · {{ (ratingOf(b)?.mana ?? b.summary.mana).toLocaleString() }} mana</p>
-        <p v-if="b.summary?.unspent" class="muted">{{ b.summary.unspent }} skill points left to customise.</p>
-        <p v-else-if="b.summary" class="muted">All skill points allocated · {{ b.build.signets }} Signets of Learning</p>
-        </template>
+        <p v-if="viewOf(b).summary" class="muted">{{ (ratingOf(b)?.life ?? viewOf(b).summary.life).toLocaleString() }} life · {{ (ratingOf(b)?.mana ?? viewOf(b).summary.mana).toLocaleString() }} mana<template v-if="viewOf(b).build.merc?.spec"> · {{ viewOf(b).build.merc.spec }} mercenary</template></p>
       </a>
+      <!-- The rest on request: the numbers behind the tier, gear, points and what an estimate assumes. -->
+      <details v-if="viewOf(b).summary" class="card-more">
+        <summary>Details</summary>
+        <p v-if="ratingOf(b)?.tier" class="tier-note">{{ tierNote(ratingOf(b)) }}</p>
+        <p v-if="ratingOf(b)?.assumed?.length" class="tier-assumed">Estimate assumes: {{ ratingOf(b).assumed.join('; ') }}</p>
+        <p v-if="viewOf(b).summary.gear?.length" class="muted stage-gear">Gear: {{ viewOf(b).summary.gear.join(' · ') }}</p>
+        <p v-if="viewOf(b).summary.bar?.length" class="muted">Skill bar: {{ viewOf(b).summary.bar.join(' · ') }}</p>
+        <p v-if="viewOf(b).summary.unspent" class="muted">{{ viewOf(b).summary.unspent }} skill points left to customise.</p>
+        <p v-else class="muted">All skill points allocated · {{ viewOf(b).build.signets }} Signets of Learning</p>
+      </details>
       </div>
     </div>
     </section>
@@ -180,8 +186,16 @@ function deleteBuild(id) {
 /* The class art fills the card's right side. It sits in its own
    clipped layer so the skill tooltips can still reach past the card's edge. */
 .build-card { position:relative; padding:24px calc(40% + 8px) 24px 24px; border:1px solid var(--border); border-radius:8px; background:var(--panel); overflow:visible; }
-.starter-wrap { position:relative; }
-.starter-wrap .starter-card { height:100%; }
+.starter-wrap { position:relative; display:flex; flex-direction:column; }
+.starter-wrap .starter-card { flex:1; }
+/* Details under a card: joined to its bottom edge. */
+.starter-wrap:has(.card-more) .starter-card { border-bottom-left-radius:0; border-bottom-right-radius:0; }
+.card-more { border:1px solid var(--border); border-top:0; border-radius:0 0 8px 8px; background:var(--panel); padding:0 24px; font-size:.8125rem; }
+.card-more summary { cursor:pointer; padding:8px 0; color:var(--muted); font-size:.75rem; }
+.card-more summary:hover, .card-more summary:focus-visible { color:var(--text); }
+.card-more[open] { padding-bottom:12px; }
+.card-more p { margin:0 0 6px; }
+.tier-estimate { margin-left:.5em; padding:0 5px; border:1px solid var(--warn); border-radius:3px; color:var(--warn); font-size:.6875rem; cursor:help; vertical-align:.1em; }
 .starter-card { display:block; color:inherit; text-decoration:none; transition:border-color .15s, box-shadow .15s; }
 .starter-card:hover,
 .starter-card:focus-visible { border-color:var(--gold); box-shadow:0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent) inset, 0 0 18px color-mix(in srgb, var(--gold) 16%, transparent); outline:none; }

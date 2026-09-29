@@ -190,12 +190,8 @@ const hasUnknown = computed(() =>
         in either source, so it's left out.
       </p>
     </template>
-    <div v-else class="skill-empty">
-      <h2>Select a skill</h2>
-      <p>
-        Click a skill to add a point. Right-click, or press Delete, to remove one. Hold Shift to
-        change 10 at a time.
-      </p>
-    </div>
+    <p v-else class="skill-empty muted">
+      Click a skill to add a point. Right-click, or press Delete, to remove one. Hold Shift to change 10 at a time.
+    </p>
   </aside>
 </template>

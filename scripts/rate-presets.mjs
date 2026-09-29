@@ -1,8 +1,9 @@
-// Rates the published starter builds (src/data/preset-builds.json) without rebuilding them:
+// Rates the published starter builds (src/data/preset-builds.json) and their levelling stages
+// (preset-stages.json) without rebuilding them:
 // npm run rate-presets. build-presets.mjs does the same when it publishes.
 import { createServer } from "vite";
 import { readFile, writeFile } from "node:fs/promises";
-import { ratePresets, ratingEnv } from "./lib/rate-presets.mjs";
+import { ratePresets, rateStages, tierScales, ratingEnv } from "./lib/rate-presets.mjs";
 
 const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: "custom", logLevel: "error" });
 try {
@@ -13,6 +14,13 @@ try {
   const doc = JSON.parse(await readFile(file, "utf8"));
   ratePresets(doc.presets, env);
   await writeFile(file, JSON.stringify(doc));
+  // The levelling stages too: each among the others at the same stage, with its card.
+  const stagesFile = "src/data/preset-stages.json";
+  const guides = JSON.parse(await readFile(stagesFile, "utf8"));
+  rateStages(doc.presets, guides.stages, env);
+  await writeFile(stagesFile, JSON.stringify(guides));
+  // Where each tier starts, for placing a player's own build (the planner's estimate).
+  await writeFile("src/data/tier-scales.json", JSON.stringify({ patch: planner.game?.patch, ...tierScales(doc.presets, guides.stages, env) }));
   const rows = doc.presets.map((p) => p.summary.rating).filter((r) => r.tier).sort((a, b) => a.rank - b.rank);
   for (const t of ["S", "A", "B", "C", "D", "F"]) {
     const names = doc.presets.filter((p) => p.summary.rating.tier === t).sort((a, b) => a.summary.rating.rank - b.summary.rating.rank);

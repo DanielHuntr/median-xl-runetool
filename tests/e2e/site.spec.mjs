@@ -250,8 +250,51 @@ test("the stage switch shows each starter build's levelling stage, and opens the
   await page.getByLabel("Stage").selectOption("Nightmare");
   await expect(card.locator(".stage-gear")).toContainText("Gear:");
   await expect(card).toContainText("Level 100 · Nightmare");
-  await expect(card.locator(".tier-criteria")).toHaveCount(0);
+  // The stage has its own tier, among the builds at the same stage, and the same card parts.
+  await expect(card.locator(".tier-criteria")).toBeVisible();
+  await expect(card.locator(".build-skills")).toBeVisible();
   await expect(card.locator("a.starter-card")).toHaveAttribute("href", /&stage=Nightmare/);
   await card.locator("a.starter-card").click();
   await expect(page.getByRole("spinbutton", { name: /level/i }).first()).toHaveValue("100");
+});
+
+test("the charm list shows its count, scrolls within the equipment column, and folds from its heading", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Hammer of Zerae" }).first().locator("a.starter-card").click();
+  const charms = page.locator(".charms");
+  const toggle = charms.getByRole("button", { name: /Charms & relics/ });
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(charms.locator(".charms-count")).toHaveText(/^\d+$/);
+  const list = charms.locator("#charm-list");
+  await expect(list.locator("li").first()).toBeVisible();
+  expect(await list.evaluate((el) => el.scrollHeight > el.clientHeight), "a long list scrolls").toBe(true);
+  await toggle.click();
+  await expect(charms.locator(".charms-summary")).toContainText(/charms?/);
+});
+
+test("the skill summary opens from the skill points counter, and a skill in it opens its tree", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
+  await page.getByRole("button", { name: "Summary" }).click();
+  const dialog = page.getByRole("dialog", { name: /Skill summary/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("li").first()).toBeVisible();
+  await dialog.getByRole("button", { name: /Lion Stance/ }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole("tab", { name: /Nomad/ })).toHaveAttribute("aria-selected", "true");
+});
+
+test("a build's own tier and the planner's estimate show in the planner and on its saved card", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
+  await expect(page.locator(".build-tiers .build-tier-badge")).toHaveText(/^[SABCDF]$/);
+  await page.getByLabel("Your tier for this build").selectOption("B");
+  await page.getByRole("button", { name: "Save build" }).click();
+  const dialog = page.getByRole("dialog", { name: "Save build" });
+  await dialog.getByLabel("Name").fill("My Snake Bite");
+  await dialog.getByRole("button", { name: /^Save/ }).click();
+  await page.goto("/#builds");
+  const card = page.locator("article.build-card.mine", { hasText: "My Snake Bite" });
+  await expect(card.locator(".mine-tiers")).toContainText("Your tier B");
+  await expect(card.locator(".mine-tiers")).toContainText(/Estimate [SABCDF]/);
 });

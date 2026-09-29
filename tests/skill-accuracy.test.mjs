@@ -160,9 +160,9 @@ test("hard-point cap and required level come from the game files, checked at the
   assert.equal(engine.requiredCharLevel(WOTS, b(1)), g.reqLevel);
   assert.equal(engine.canAdd(b(g.reqLevel - 1), WOTS).ok, false);
   assert.equal(engine.canAdd(b(g.reqLevel), WOTS).ok, true);
-  // Where the sources disagree, the higher required level is used and both are exposed,
-  // except for skills the game unlocks by a deed ("Defeat Bartuc … / Unlockable Skill"):
-  // the game's reqlevel (1) applies and MedianDB's 100-125 isn't in the game files.
+  // Where the sources disagree, the game's required level is used and both are exposed;
+  // for skills the game unlocks by a deed ("Defeat Bartuc … / Unlockable Skill") that's the
+  // game's reqlevel (1): MedianDB's 100-125 isn't in the game files.
   const unlockable = [];
   for (const x of data.game.report.reqLevelDiffers) {
     const cls = data.skills[x.id].class;

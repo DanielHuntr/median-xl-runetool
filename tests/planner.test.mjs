@@ -397,7 +397,7 @@ test("planner renders attributes, equipment and skills together, with the stats 
     const { default: CharacterPlanner } = await load("/src/components/planner/CharacterPlanner.vue");
     const html = await renderToString(createSSRApp({ render: () => h(CharacterPlanner, { data: planner }) }));
     assert.ok(html.includes("Druid"), view);
-    for (const marker of ["attr-panel", "doll-slot", "skills-panel", "planner-details"])
+    for (const marker of ["attr-panel", "doll-slot", "skills-panel", "skill-detail"])
       assert.ok(html.includes(marker), `renders ${marker}`);
     assert.equal(/class="stats-panel/.test(html), view === "open", `stats panel ${view}`);
   }
@@ -1474,7 +1474,8 @@ test('monster picker uses its own difficulty without changing the character buil
     assert.equal(p.damageOf('flamefront').vs.difficulty, 'Nightmare');
     const context = {};
     const html = await renderToString(createSSRApp({ setup() { provide(PlannerKey, p); return () => h(TargetPicker); } }), context);
-    assert.match(html, /aria-haspopup="dialog"/);
+    // The target's row opens a pop-out (resistances, "Choose another target", how it's worked out).
+    assert.match(html, /aria-controls="target-pop"/);
     assert.doesNotMatch(html, /datalist/);
     const modal = context.teleports.body;
     assert.match(modal, /Choose damage target/);
@@ -1849,4 +1850,59 @@ test("a skill an item grants from outside the class works at the item's level, a
   assert.ok(on.s("attacker_takes_lightning_damage") > 0, "switched on, its effect counts");
   // A skill of the class's own tree isn't an item skill (+skills to it are soft levels).
   assert.ok(Object.keys(off.itemSkills).every((id) => !engine.node(build("Barbarian"), id)));
+});
+
+test("where MedianDB and the game files disagree, the game's value is used", async () => {
+  const { engine } = await env();
+  // Formulas: every one the import found differing shows the game's number (Incineration
+  // Trap's fire pierce: MedianDB 20% at level 1, the game 4%).
+  for (const x of planner.game.report.formulaDiffers) {
+    const s = planner.skills[x.id];
+    const b = build(s.class, { level: Math.max(x.ulvl, 1), points: { [x.id]: x.blvl } });
+    const line = engine.describe(b, x.id, x.blvl).effect.find((l) => l.text && l.text.includes(`${x.game}%`));
+    assert.ok(line, `${x.name}: the game's ${x.game} shown, not MedianDB's ${x.medianDb}`);
+  }
+  // Caps and required levels: the game's (level-grown caps aside, which follow what the game shows).
+  for (const x of planner.game.report.capDiffers) {
+    const src = engine.capSource(x.id);
+    if (!src.dynamic) assert.equal(src.base, x.game, `${x.name} cap`);
+  }
+  for (const x of planner.game.report.reqLevelDiffers) assert.equal(engine.requiredCharLevel(x.id, build(planner.skills[x.id].class)), x.game, `${x.name} required level`);
+});
+
+test("a player's build is placed on the starter builds' tier scale, and keeps its author's tier", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { placeOnScale } = await load("/src/planner/rating.js");
+  const scales = JSON.parse(await readFile(new URL("../src/data/tier-scales.json", import.meta.url), "utf8"));
+  const { presets } = JSON.parse(await readFile(new URL("../src/data/preset-builds.json", import.meta.url), "utf8"));
+  // A starter build placed on its own scale lands at its own rank (builds that measure the same
+  // share one: Nature's Harvest and Infected Roots), in its tier (or, at a tier's edge, the
+  // next one down: the placed build joins the field, one more than were rated).
+  const order = ["S", "A", "B", "C", "D", "F"];
+  for (const p of presets.filter((x) => x.summary?.rating?.tier)) {
+    const r = p.summary.rating, e = placeOnScale(r, scales.endgame.scale);
+    const tied = presets.filter((q) => q !== p && q.summary?.rating?.score === r.score).length;
+    assert.ok(e.rank <= r.rank && e.rank >= r.rank - tied, `${p.name}: rank ${e.rank} for ${r.rank}`);
+    assert.ok([0, 1].includes(order.indexOf(e.tier) - order.indexOf(r.tier)), `${p.name}: ${e.tier} for ${r.tier}`);
+  }
+  // Summoners stay unrated.
+  assert.ok(placeOnScale({ unrated: "Summon build" }, scales.endgame.scale).unrated);
+  // The author's tier travels with the build; anything else is dropped.
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { encodeBuild } = await load("/src/planner/buildCode.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Amazon");
+  p.setAuthorTier("S");
+  assert.equal(p.build.value.authorTier, "S");
+  assert.match(p.buildCode(), /./);
+  const shared = JSON.parse(JSON.stringify(p.build.value));
+  p.importFromHash(`#planner?b=${encodeBuild({ ...shared, authorTier: "S" })}`);
+  assert.equal(p.build.value.authorTier, "S");
+  p.importFromHash(`#planner?b=${encodeBuild({ ...shared, authorTier: "Z" })}`);
+  assert.equal(p.build.value.authorTier, undefined);
+  p.setAuthorTier("");
+  assert.equal(p.build.value.authorTier, undefined);
+  scope.stop();
 });

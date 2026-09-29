@@ -51,6 +51,8 @@ const KINDS = computed(() =>
         ? [["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"]]
         : [...(profileSummary.value.empty ? [] : [["best", "Best for build"]]), ["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"], ["custom", "Custom"]],
 );
+const carried = computed(() => new Set((build.value.inventory || []).map((x) => x.ref)));
+const relicsFull = computed(() => (build.value.inventory || []).filter((x) => catalog.get(x.ref)?.kind === "relic").length >= 3);
 const reqOf = (d) => {
   const lines = d.variants ? d.variants[0].lines : [];
   const l = lines.find((x) => /^Required Level: /.test(x));
@@ -58,7 +60,9 @@ const reqOf = (d) => {
 };
 const pool = computed(() => {
   if (props.mode === "socket") return [...catalog.socketables(), ...catalog.jewels()];
-  if (props.mode === "inventory") return catalog.all().filter((d) => d.kind === "charm" || d.kind === "relic");
+  // Charms and relics not carried yet (one of each), and relics only while fewer than 3 are
+  // (usePlanner addInventory refuses the rest).
+  if (props.mode === "inventory") return catalog.all().filter((d) => (d.kind === "charm" || (d.kind === "relic" && !relicsFull.value)) && !carried.value.has(d.key));
   if (merc) {
     const cats = mercCatsFor.value;
     return catalog.all().filter((d) =>
@@ -211,7 +215,7 @@ onMounted(async () => {
           <p v-else-if="!recList.length" class="muted">Nothing suits this build here yet. Try "All".</p>
         </template>
         <template v-else>
-        <p class="muted" aria-live="polite">{{ list.length }} items</p>
+        <p class="muted" aria-live="polite">{{ list.length }} items<template v-if="mode === 'inventory' && (carried.size || relicsFull)"> · the ones you carry are left out<template v-if="relicsFull">, and relics: you carry 3, the most allowed</template></template></p>
         <ul class="picker-list">
           <li v-for="d in list.slice(0, limit)" :key="d.key">
             <button v-on="d.variants ? tipOn({ kind: 'item', item: { ref: d.key, variant: bestVariant(d) } }) : {}" @click="choose(d)">

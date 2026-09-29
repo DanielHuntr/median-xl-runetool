@@ -1,10 +1,18 @@
 <script setup>
 import { computed } from "vue";
-import { usePlanner } from "../../planner/usePlanner.js";
+import { usePlanner, AUTHOR_TIERS } from "../../planner/usePlanner.js";
 import SkillSlots from "./SkillSlots.vue";
 import { ATTRIBUTES, capTone } from "../../planner/character.js";
 
-const { state, build, character, addAttr, setSignets, toggleStats } = usePlanner();
+const { state, build, character, addAttr, setSignets, toggleStats, estimate, setAuthorTier } = usePlanner();
+// The estimate's detail on hover: per criterion, its rank, and the stage it's compared with.
+const estimateTitle = computed(() => {
+  const e = estimate.value;
+  if (!e) return "No estimate: the build needs a damage skill the planner can work out.";
+  if (e.unrated) return e.unrated;
+  const where = e.against.level === 150 ? "endgame" : `level ${e.against.level} · ${e.against.difficulty}`;
+  return `Bossing ${e.bossTier} · Clearing ${e.clearTier} · Survival ${e.surviveTier}. Would be #${e.rank} of ${e.of} among the starter builds at ${where} (estimated with their measure)${e.assumed ? `. Assumes: ${e.assumed.join("; ")}` : ""}.`;
+});
 const c = character;
 const free = computed(() => c.value.statPoints.available - c.value.statPoints.spent);
 const title = (a) => a[0].toUpperCase() + a.slice(1);
@@ -27,6 +35,21 @@ const resists = computed(() => [
         <h2>{{ state.cls }}</h2>
       </div>
       <div class="level-badge"><small>Level</small><b>{{ build.level }}</b></div>
+    </div>
+    <!-- The planner's estimate of the build's tier, and the tier its author gives it (shared with it). -->
+    <div class="build-tiers">
+      <span class="build-tier" :title="estimateTitle">
+        Estimate
+        <b v-if="estimate?.tier" class="build-tier-badge" :class="'tier-' + estimate.tier">{{ estimate.tier }}</b>
+        <small v-else class="muted">{{ estimate?.unrated ? "unrated" : "—" }}</small>
+      </span>
+      <label class="build-tier"
+        >Your tier
+        <select :value="build.authorTier || ''" aria-label="Your tier for this build" @change="setAuthorTier($event.target.value)">
+          <option value="">—</option>
+          <option v-for="t in AUTHOR_TIERS" :key="t" :value="t">{{ t }}</option>
+        </select></label
+      >
     </div>
 
     <div class="attr-grid">
@@ -70,6 +93,16 @@ const resists = computed(() => [
     <p class="muted attr-hint">Hold Shift to add or remove 10 points.</p>
 
     <SkillSlots />
+    <!-- Defences fold into one line, so the three planner columns can match in height. -->
+    <details class="attr-defences">
+      <summary>
+        <span class="attr-defences-title">Defences <span class="attr-defences-caret" aria-hidden="true">▾</span></span>
+        <span class="attr-defences-line">
+          <template v-for="([name, r, key], i) in resists" :key="key">{{ i ? " / " : "Res " }}<span :class="['el-' + key, capTone(r.value, r.max)]" :title="`${name} resist`">{{ r.value }}%</span></template>
+          · Phys <span :class="capTone(c.resist.physical.value, c.resist.physical.max)">{{ c.resist.physical.value }}%</span>
+          · Block {{ c.block.value }}% · Avoid {{ c.avoid.value }}%
+        </span>
+      </summary>
     <div class="attr-combat">
       <div class="combat-box">
         <span>Attack rating <em class="est">est.</em></span><b>{{ fmt(c.ar.total) }}</b>
@@ -97,6 +130,7 @@ const resists = computed(() => [
         <dd :class="capTone(c.avoid.value, c.avoid.cap)">{{ c.avoid.value }}%<small> / {{ c.avoid.cap }}%</small></dd>
       </dl>
     </div>
+    </details>
 
     <div class="orbs">
       <div class="orb life"><b>{{ fmt(c.life.total) }}</b><small>Life</small></div>

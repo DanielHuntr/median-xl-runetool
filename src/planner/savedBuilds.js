@@ -23,7 +23,17 @@ function clean(e) {
     skills: (Array.isArray(e.skills) ? e.skills : []).map((s) => text(s, 60)).filter(Boolean).slice(0, 2),
     savedAt: typeof e.savedAt === "string" && !Number.isNaN(Date.parse(e.savedAt)) ? e.savedAt : null,
     ...(text(e.preset, 60) ? { preset: text(e.preset, 60) } : {}),
+    ...(cleanEstimate(e.estimate) ? { estimate: cleanEstimate(e.estimate) } : {}),
   };
+}
+// The planner's tier estimate when the build was saved: tiers S to F and the stage compared with.
+const TIER = /^[SABCDF]$/;
+function cleanEstimate(x) {
+  if (!x || typeof x !== "object" || !TIER.test(x.tier)) return null;
+  const t = (v) => (TIER.test(v) ? v : null);
+  const level = Number.isInteger(x.against?.level) ? x.against.level : null;
+  return { tier: x.tier, bossTier: t(x.bossTier), clearTier: t(x.clearTier), surviveTier: t(x.surviveTier),
+    ...(level ? { against: { level, difficulty: ["Normal", "Nightmare", "Hell"].includes(x.against.difficulty) ? x.against.difficulty : null } } : {}) };
 }
 function read() {
   try {
@@ -66,8 +76,8 @@ export function useSavedBuilds() {
    * Saves a build under a name; a build already saved under that name is replaced.
    * @returns {{ ok: boolean, entry?, replaced?: boolean, reason?: string }}
    */
-  function save({ name, code, cls, level, skills = [], preset }) {
-    const entry = clean({ id: byName(name)?.id || newId(), name, code, cls, level, skills, preset, savedAt: new Date().toISOString() });
+  function save({ name, code, cls, level, skills = [], preset, estimate = null }) {
+    const entry = clean({ id: byName(name)?.id || newId(), name, code, cls, level, skills, preset, estimate, savedAt: new Date().toISOString() });
     if (!entry) return { ok: false, reason: "That build can't be saved." };
     const replaced = !!byName(name);
     const rest = builds.value.filter((b) => b.id !== entry.id);

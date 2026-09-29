@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Icon from "../AppIcon.vue";
 import ItemIcon from "./ItemIcon.vue";
 import SuggestGear from "./SuggestGear.vue";
@@ -46,6 +46,18 @@ function removeSlot(slot) {
 const inventory = computed(() =>
   build.value.inventory.map((st, i) => ({ i, def: catalog.get(st.ref) })).filter((x) => x.def),
 );
+// The charm list, with how many are carried: open, scrolling within the space the equipment
+// column has left (planner.css), and folding away from its heading.
+const charmsOpen = ref(true);
+// Charms or relics only, when there are both.
+const charmFilter = ref("");
+const relicCount = computed(() => inventory.value.filter((x) => x.def.kind === "relic").length);
+const shownInventory = computed(() => (charmFilter.value ? inventory.value.filter((x) => (x.def.kind === "relic") === (charmFilter.value === "relic")) : inventory.value));
+const charmSummary = computed(() => {
+  const relics = inventory.value.filter((x) => x.def.kind === "relic").length;
+  const charms = inventory.value.length - relics;
+  return [charms && `${charms} charm${charms === 1 ? "" : "s"}`, relics && `${relics} relic${relics === 1 ? "" : "s"}`].filter(Boolean).join(" · ");
+});
 </script>
 <template>
   <section class="doll-panel" aria-label="Equipment">
@@ -94,12 +106,23 @@ const inventory = computed(() =>
 
     <div class="charms">
       <div class="doll-top">
-        <h2 class="group-title">Charms &amp; relics</h2>
+        <h2 class="group-title">
+          <button v-if="inventory.length" type="button" class="charms-toggle" :aria-expanded="charmsOpen" aria-controls="charm-list" @click="charmsOpen = !charmsOpen">
+            Charms &amp; relics <span class="charms-count">{{ inventory.length }}</span><span class="charms-caret" aria-hidden="true">{{ charmsOpen ? "▴" : "▾" }}</span>
+          </button>
+          <template v-else>Charms &amp; relics</template>
+        </h2>
         <button class="btn" @click="openPicker({ mode: 'inventory' })">+ Add</button>
       </div>
       <p v-if="!inventory.length" class="muted">None yet. Charms and up to 3 relics count toward your stats.</p>
-      <ul v-else>
-        <li v-for="x in inventory" :key="x.i">
+      <p v-else-if="!charmsOpen" class="muted charms-summary">{{ charmSummary }}</p>
+      <div v-if="charmsOpen && relicCount && relicCount < inventory.length" class="picker-filters charm-filters" aria-label="Show">
+        <button type="button" :aria-pressed="charmFilter === ''" @click="charmFilter = ''">All {{ inventory.length }}</button>
+        <button type="button" :aria-pressed="charmFilter === 'charm'" @click="charmFilter = 'charm'">Charms {{ inventory.length - relicCount }}</button>
+        <button type="button" :aria-pressed="charmFilter === 'relic'" @click="charmFilter = 'relic'">Relics {{ relicCount }}</button>
+      </div>
+      <ul v-if="inventory.length && charmsOpen" id="charm-list">
+        <li v-for="x in shownInventory" :key="x.i">
           <span class="charm-name" tabindex="0" v-on="tipOn({ kind: 'item', item: build.inventory[x.i] })"
             ><ItemIcon :icon="x.def.icon" /><span :class="'q-' + x.def.kind">{{ x.def.name }}</span></span
           >

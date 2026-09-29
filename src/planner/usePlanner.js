@@ -13,6 +13,10 @@ import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 import { createAvailability } from "./availability.js";
 import { buildUse } from "./relevance.js";
+import { buildMetrics, placeOnScale } from "./rating.js";
+import { speedProfile } from "./speed.js";
+import SPEED from "../data/speed.json";
+import TIER_SCALES from "../data/tier-scales.json";
 
 export const PlannerKey = Symbol("Planner");
 // A build's levelling stages: each is its own version of the character (skills, gear,
@@ -106,15 +110,20 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   b.inventory = (raw.inventory || []).map((x) => cleanItem(x, catalog)).filter(Boolean).slice(0, 80);
   // Saved data can be anything: only lists are read (a string here used to stop the planner).
   const list = (v) => (Array.isArray(v) ? v : []);
-  b.buffs = list(raw.buffs).filter((id) => engine.node(b, id));
+  // Buffs of the class's trees, and ones an item grants (character.js itemSkills applies those
+  // only while the item is worn).
+  b.buffs = list(raw.buffs).filter((id) => engine.node(b, id) || !!engine.skill(id));
   // Only skills with points can sit in the slots or on the bar.
   const usable = (id) => id === BASIC_ATTACK || (!!engine.node(b, id) && (b.points[id] || 0) > 0);
   if (raw.leftSkill === null || usable(raw.leftSkill)) b.leftSkill = raw.leftSkill ?? BASIC_ATTACK;
   if (usable(raw.rightSkill)) b.rightSkill = raw.rightSkill;
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
   b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
+  // The tier its author gives it (S to F), shared with the build; the planner's estimate is shown beside it.
+  if (AUTHOR_TIERS.includes(raw.authorTier)) b.authorTier = raw.authorTier;
   return b;
 }
+export const AUTHOR_TIERS = ["S", "A", "B", "C", "D", "F"];
 
 // One saved character per class, so switching class never loses work.
 export function createPlanner(engine, catalog, planner) {
@@ -132,6 +141,8 @@ export function createPlanner(engine, catalog, planner) {
     tip: null,
     // Alt pins the hover sheet in place (HoverCard.vue): the pointer can then move onto it.
     tipPinned: false,
+    // The skill summary dialog (SkillsPanel.vue): open or not; not saved.
+    skillSummary: false,
     suggesting: false,
     suggestAttributes: saved.suggestAttributes ?? false,
     allowAttributeRespec: false,
@@ -241,6 +252,32 @@ export function createPlanner(engine, catalog, planner) {
   // Item recommendations: the build's profile and the stats it values, recomputed as skills change.
   const profile = computed(() => buildProfile(build.value, engine));
   const profileSummary = computed(() => describeProfile(profile.value));
+  // The build's tier as an estimate: the starter builds' own measure (rating.js), placed among
+  // the starter builds at the nearest stage of the same difficulty (src/data/tier-scales.json:
+  // the endgame for level 140 and up in Hell, else the levelling stage closest in level).
+  const scaleFor = (b) => {
+    if (b.difficulty === "Hell" && b.level >= 140) return TIER_SCALES.endgame;
+    const same = Object.values(TIER_SCALES.stages || {}).filter((s) => s.difficulty === b.difficulty);
+    const pool = same.length ? same : Object.values(TIER_SCALES.stages || {});
+    return pool.sort((x, y) => Math.abs(x.level - b.level) - Math.abs(y.level - b.level))[0] || TIER_SCALES.endgame;
+  };
+  const estimate = computed(() => {
+    const b = build.value, s = scaleFor(b);
+    if (!s?.scale) return null;
+    try {
+      const m = buildMetrics(b, { engine, catalog, planner, computeCharacter, skillDamage, againstTarget, speedProfile, speedData: SPEED,
+        target: typicalTarget(planner.monsters, b.difficulty), difficulty: b.difficulty });
+      const place = placeOnScale(m, s.scale);
+      return place && { ...place, against: { level: s.level, difficulty: s.difficulty }, ...(m.assumed?.length ? { assumed: m.assumed } : {}) };
+    } catch {
+      return null;
+    }
+  });
+  // The author's own tier for the build (or none), carried in saves and share links.
+  const setAuthorTier = (t) => {
+    if (AUTHOR_TIERS.includes(t)) build.value.authorTier = t;
+    else delete build.value.authorTier;
+  };
   // What the build's damage skills deal and how (relevance.js): an item line of a kind it can't
   // use (lightning spell damage on a fire caster, attack stats with no attacks) does nothing.
   // Null until a damage or summon skill is chosen, when every line would look unused.
@@ -929,7 +966,7 @@ export function createPlanner(engine, catalog, planner) {
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
-    profile, profileSummary, lineUse, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
+    profile, profileSummary, lineUse, estimate, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };
 }
