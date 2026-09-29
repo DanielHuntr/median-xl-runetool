@@ -602,11 +602,13 @@ export function createEngine(data) {
       if (ELEMENT_KEYS[key] && g.elem?.type === ELEMENT_KEYS[key]) {
         // The skill's own tooltip line for this damage gives the display formula and
         // format (e.g. Incineration Trap: "Fire Damage: edmn-edmx per second").
-        const line = (g.lines || []).find(
-          (l) => l.block === "level" && l.calcA && l.calcB && /\bedm[nx]\b/.test(`${l.calcA.text} ${l.calcB.text}`),
-        );
+        // Failing that, a one-value line in a format confirmed in game (Egg Trap: "+94 bonus
+        // lightning damage to attack" is edmx; GitHub issue #24).
+        const levelLines = (g.lines || []).filter((l) => l.block === "level" && l.calcA);
+        const line = levelLines.find((l) => l.calcB && /\bedm[nx]\b/.test(`${l.calcA.text} ${l.calcB.text}`))
+          || levelLines.find((l) => !l.calcB && LINE_TYPES[l.type]?.confirmed && /^edm[nx]$/.test(l.calcA.text.trim()));
         if (line) {
-          const a = e.calc(line.calcA), c = e.calc(line.calcB);
+          const a = e.calc(line.calcA), c = line.calcB ? e.calc(line.calcB) : a;
           const bad = [a, c].find((r) => !r.ok);
           if (bad) return { failed: bad.reason };
           const f = formatLine(line, a.value, c.value);
@@ -614,7 +616,7 @@ export function createEngine(data) {
           return {
             values: [a.value, c.value],
             text: f.text,
-            source: gameSource(e, inputs, [...elemText(), `shown: ${line.calcA.text} to ${line.calcB.text}`], notes),
+            source: gameSource(e, inputs, [...elemText(), line.calcB ? `shown: ${line.calcA.text} to ${line.calcB.text}` : `shown: ${line.calcA.text}`], notes),
           };
         }
         // No damage line of its own: the raw value, as Median XL's tooltips show edmn/edmx.

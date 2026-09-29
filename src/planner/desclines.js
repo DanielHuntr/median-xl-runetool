@@ -30,7 +30,8 @@ export const LINE_TYPES = {
   // down, as the game's integer maths draws them: Snake Bite's 53 frames is "2.1 seconds".
   12: {
     confirmed: "Way of the Spider, Incineration Trap, Snake Bite (2.1); hidden at 0: Discharge",
-    format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, a == null ? "?" : tenths(a), " seconds")),
+    // One second is singular: Pagan Rites' "Cooldown: 1 second" (GitHub issue #25).
+    format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, a == null ? "?" : tenths(a), a != null && tenths(a) === "1" ? " second" : " seconds")),
   },
   // printf-style text from the game: "+%d%% Total Damage per Base Level"
   66: {

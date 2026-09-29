@@ -2526,6 +2526,401 @@
      "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
     }
    ]
+  },
+  {
+   "id": "egg-trap-level-1",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+94 bonus lightning damage to attack",
+    "Mana Cost: 27"
+   ],
+   "nextLines": [
+    "+103 bonus lightning damage to attack",
+    "Mana Cost: 29"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "egg-trap-level-5",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+179 bonus lightning damage to attack",
+    "Mana Cost: 34"
+   ],
+   "nextLines": [
+    "+192 bonus lightning damage to attack",
+    "Mana Cost: 35"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "egg-trap-level-10",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+334 bonus lightning damage to attack",
+    "Mana Cost: 42"
+   ],
+   "nextLines": [
+    "+357 bonus lightning damage to attack",
+    "Mana Cost: 43"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "egg-trap-level-15",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+558 bonus lightning damage to attack",
+    "Mana Cost: 50"
+   ],
+   "nextLines": [
+    "+586 bonus lightning damage to attack",
+    "Mana Cost: 51"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "egg-trap-level-20",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+873 bonus lightning damage to attack",
+    "Mana Cost: 58"
+   ],
+   "nextLines": [
+    "+915 bonus lightning damage to attack",
+    "Mana Cost: 60"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "egg-trap-level-25",
+   "skill": "egg_trap",
+   "source": "In-game Egg Trap tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #24, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: the issue gives 0. The lightning synergy is 5 × Character Level ÷ 4 × (100 + 15 × Base Level) ÷ 100 (its passive formula); only Character Level 150 gives the First Level's 86 and level 1's 94 (60 × 287% and 60 × 315%, halved by HitShift 7), and it fits every other level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 2 seconds",
+    "50% Weapon Damage",
+    "Converts 50% Physical Damage to Lightning",
+    "Trap Duration: 3 seconds",
+    "+1264 bonus lightning damage to attack",
+    "Mana Cost: 66"
+   ],
+   "nextLines": [
+    "+1314 bonus lightning damage to attack",
+    "Mana Cost: 68"
+   ],
+   "independentChecks": "Character Level is inferred from the First Level and level 1 values; the other five levels and every next level check the damage table, synergy and mana formulas."
+  },
+  {
+   "id": "pagan-rites-level-1",
+   "skill": "pagan_rites",
+   "source": "In-game Pagan Rites tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #25, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 1.8 seconds",
+    "Life Healed per Corpse: 7%",
+    "Mana Cost: 27"
+   ],
+   "nextLines": [
+    "Life Healed per Corpse: 8%",
+    "Mana Cost: 33"
+   ],
+   "synergyText": [
+    "Cooldown reduced by 0.2 seconds per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "pagan-rites-level-5",
+   "skill": "pagan_rites",
+   "source": "In-game Pagan Rites tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #25, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 1 second",
+    "Life Healed per Corpse: 9%",
+    "Mana Cost: 49"
+   ],
+   "nextLines": [
+    "Life Healed per Corpse: 10%",
+    "Mana Cost: 55"
+   ],
+   "synergyText": [
+    "Cooldown reduced by 0.2 seconds per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "pagan-rites-level-10",
+   "skill": "pagan_rites",
+   "source": "In-game Pagan Rites tooltip screenshot (Current Skill Level and Next Level) supplied by the project owner in GitHub issue #25, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Life Healed per Corpse: 12%",
+    "Mana Cost: 77"
+   ],
+   "nextLines": [
+    "Life Healed per Corpse: 12%",
+    "Mana Cost: 82"
+   ],
+   "synergyText": [
+    "Cooldown reduced by 0.2 seconds per Base Level"
+   ],
+   "independentChecks": "No cooldown line at level 10: 1.8 seconds less 0.2 per Base Level reaches 0, and the game hides it."
   }
  ]
 }
