@@ -1,14 +1,10 @@
 <script setup>
 import { computed } from "vue";
-import { usePlanner, AUTHOR_TIERS } from "../../planner/usePlanner.js";
+import { usePlanner } from "../../planner/usePlanner.js";
 import SkillSlots from "./SkillSlots.vue";
 import { ATTRIBUTES, capTone } from "../../planner/character.js";
 
-const { state, build, character, addAttr, setSignets, toggleStats, setAuthorTier } = usePlanner();
-// The build's tiers as its author gives them, as the starter builds show theirs: overall, then
-// bossing, clearing and survival.
-const CRITERIA = [["bossTier", "Bossing"], ["clearTier", "Clearing"], ["surviveTier", "Survival"]];
-const tierOf = (k) => build.value.authorTiers?.[k] || "";
+const { state, build, character, addAttr, setSignets, toggleStats } = usePlanner();
 const c = character;
 const free = computed(() => c.value.statPoints.available - c.value.statPoints.spent);
 const title = (a) => a[0].toUpperCase() + a.slice(1);
@@ -31,22 +27,6 @@ const resists = computed(() => [
         <h2>{{ state.cls }}</h2>
       </div>
       <div class="level-badge"><small>Level</small><b>{{ build.level }}</b></div>
-    </div>
-    <!-- The build's tiers, set by its author and shared with it: the starter builds' badge and chips. -->
-    <div class="build-tiers" role="group" aria-label="Your tiers for this build">
-      <label class="build-tier-pick overall" :class="tierOf('tier') && 'tier-' + tierOf('tier')" title="Your overall tier for this build"
-        ><select :value="tierOf('tier')" aria-label="Overall tier" @change="setAuthorTier('tier', $event.target.value)">
-          <option value="">Tier</option>
-          <option v-for="t in AUTHOR_TIERS" :key="t" :value="t">{{ t }}</option>
-        </select></label
-      >
-      <label v-for="[k, label] in CRITERIA" :key="k" class="build-tier-pick chip" :class="tierOf(k) && 'tier-' + tierOf(k)"
-        >{{ label }}
-        <select :value="tierOf(k)" :aria-label="`${label} tier`" @change="setAuthorTier(k, $event.target.value)">
-          <option value="">—</option>
-          <option v-for="t in AUTHOR_TIERS" :key="t" :value="t">{{ t }}</option>
-        </select></label
-      >
     </div>
 
     <div class="attr-grid">

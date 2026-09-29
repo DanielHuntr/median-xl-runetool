@@ -7,6 +7,7 @@ import AttributesPanel from "./AttributesPanel.vue";
 import EquipmentPanel from "./EquipmentPanel.vue";
 import SkillsPanel from "./SkillsPanel.vue";
 import QuestsDialog from "./QuestsDialog.vue";
+import BuildTitle from "./BuildTitle.vue";
 import ItemEditorModal from "./ItemEditorModal.vue";
 import ItemPicker from "./ItemPicker.vue";
 import StatsPanel from "./StatsPanel.vue";
@@ -172,6 +173,7 @@ const questsOpen = ref(false);
         <button type="button" class="btn" @click="planner.restoreKept()">Back to my build</button>
         <button type="button" class="text-btn" @click="planner.dropKept()">Keep this one instead</button>
       </div>
+      <BuildTitle />
       <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
         <button
           v-for="[v, label] in [['character', planner.state.cls], ['merc', 'Mercenary']]"

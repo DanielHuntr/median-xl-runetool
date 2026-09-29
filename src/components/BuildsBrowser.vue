@@ -61,7 +61,7 @@ const art = (cls) => `${import.meta.env.BASE_URL}builds/${cls.toLowerCase()}.web
 const fmt = (n) => Math.round(n).toLocaleString();
 const SLOT_BADGE = { 'Left skill': 'L', 'Right skill': 'R' };
 // A starter build also brings its levelling stages (&preset=, CharacterPlanner.vue).
-const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(b.build) : b.code)}&name=${encodeURIComponent(b.name)}${preset ? `&preset=${b.id}` : ""}${preset && !endgame.value ? `&stage=${stage.value}` : ""}`;
+const href = (b, preset = false) => `#${plannerHash(preset ? encodeBuild(b.build) : b.code)}&name=${encodeURIComponent(b.name)}${preset ? `&preset=${b.id}` : ""}${preset && !endgame.value ? `&stage=${stage.value}` : ""}${preset ? "" : "&mine=1"}`;
 function commitRename(id) {
   const result = rename(id, name.value);
   error.value = result.ok ? '' : result.reason;

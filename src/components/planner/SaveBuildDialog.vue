@@ -27,6 +27,7 @@ function submit() {
   const r = save({ name: name.value, code: buildCode(), cls: state.cls, level: build.value.level, skills: skills.value });
   if (!r.ok) return (error.value = r.reason);
   state.openedName[state.cls] = r.entry.name;
+  state.mine[state.cls] = true;
   say(`${r.replaced ? "Updated" : "Saved"} "${r.entry.name}". Find it under Builds.`, "info");
   close();
 }

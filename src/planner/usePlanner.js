@@ -179,6 +179,8 @@ export function createPlanner(engine, catalog, planner) {
     tone: "warn",
     // Name of the build last opened from the Builds page, per class (suggested when saving).
     openedName: {},
+    // Per class: true when the build was opened from the player's saved builds (it's theirs).
+    mine: {},
     // The planner's tab: your character or your mercenary.
     view: saved.view === "merc" ? "merc" : "character",
     // Per class: the stage being edited, and the other stages' builds.
@@ -192,10 +194,12 @@ export function createPlanner(engine, catalog, planner) {
     state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog, planner);
     state.stage[cls] = STAGES.includes(saved.stage?.[cls]) ? saved.stage[cls] : "Endgame";
     state.stages[cls] = cleanStages(saved.stages?.[cls], cls, state.stage[cls]);
+    if (typeof saved.openedName?.[cls] === "string") state.openedName[cls] = saved.openedName[cls].slice(0, 80);
+    if (saved.mine?.[cls] === true) state.mine[cls] = true;
     const k = saved.kept?.[cls];
     if (k && typeof k === "object" && k.build) {
       const stage = STAGES.includes(k.stage) ? k.stage : "Endgame";
-      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", stage,
+      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", mine: k.mine === true, stage,
         build: cleanBuild(k.build, cls, engine, catalog, planner), stages: cleanStages(k.stages, cls, stage) };
     }
   }
@@ -824,6 +828,7 @@ export function createPlanner(engine, catalog, planner) {
     state.stage[state.cls] = "Endgame";
     state.stages[state.cls] = {};
     state.openedName[state.cls] = "";
+    delete state.mine[state.cls];
     delete state.kept[state.cls];
     state.selected = null;
     state.slot = null;
@@ -839,6 +844,7 @@ export function createPlanner(engine, catalog, planner) {
     state.stage[cls] = k.stage;
     state.stages[cls] = k.stages;
     state.openedName[cls] = k.name;
+    state.mine[cls] = !!k.mine;
     delete state.kept[cls];
     state.selected = state.slot = state.editing = null;
     say(`Back to your own ${cls} build.`, "info");
@@ -891,11 +897,14 @@ export function createPlanner(engine, catalog, planner) {
       try { title = named ? decodeURIComponent(named[1]).slice(0, 80) : ""; } catch {}
       // The player's own build for this class is set aside, not lost: opening a build is for
       // looking at it. Only the first one opened is kept aside (opening another replaces the
-      // one being looked at), and an empty build isn't worth keeping.
-      const own = { name: state.openedName[b.cls] || "", build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls] };
+      // one being looked at), unless the one being looked at is theirs, opened from their saved
+      // builds (&mine=1): then it's the one to go back to. An empty build isn't worth keeping.
+      const mine = /[?&]mine=1(?:&|$)/.test(hash);
+      const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls] };
       const made = (x) => x && (!emptyStage(x) || Object.values(x.attrs || {}).some((v) => v > 0) || x.inventory?.length || x.merc);
       const blank = !STAGES.some((n) => made(n === own.stage ? own.build : own.stages[n]));
-      if (!state.kept[b.cls] && !blank && JSON.stringify(own.build) !== JSON.stringify(b)) state.kept[b.cls] = own;
+      if ((!state.kept[b.cls] || own.mine) && !blank && JSON.stringify(own.build) !== JSON.stringify(b)) state.kept[b.cls] = own;
+      state.mine[b.cls] = mine;
       state.builds[b.cls] = b;
       state.stage[b.cls] = STAGES.includes(raw.stage) ? raw.stage : "Endgame";
       state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
@@ -933,6 +942,8 @@ export function createPlanner(engine, catalog, planner) {
       stage: state.stage,
       stages: state.stages,
       kept: state.kept,
+      openedName: state.openedName,
+      mine: state.mine,
       view: state.view,
     }),
     (v) => {

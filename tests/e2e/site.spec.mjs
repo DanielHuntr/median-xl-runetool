@@ -287,10 +287,13 @@ test("the skill summary opens from the skill points counter, and a skill in it o
 test("a build's author sets its tiers in the planner, and its saved card shows them", async ({ page }) => {
   await page.goto("/#builds");
   await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
-  const tiers = page.getByRole("group", { name: "Your tiers for this build" });
-  await tiers.getByLabel("Overall tier").selectOption("A");
-  await tiers.getByLabel("Bossing tier").selectOption("S");
-  await tiers.getByLabel("Survival tier").selectOption("C");
+  await page.getByRole("button", { name: "Rate this build" }).click();
+  const tiers = page.getByRole("dialog", { name: "Your tiers for this build" });
+  await tiers.getByRole("group", { name: "Overall tier" }).getByRole("button", { name: "A" }).click();
+  await tiers.getByRole("group", { name: "Bossing tier" }).getByRole("button", { name: "S" }).click();
+  await tiers.getByRole("group", { name: "Survival tier" }).getByRole("button", { name: "C" }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".build-tiers-open")).toContainText("Bossing S");
   await page.getByRole("button", { name: "Save build" }).click();
   const dialog = page.getByRole("dialog", { name: "Save build" });
   await dialog.getByLabel("Name").fill("My Snake Bite");
@@ -301,4 +304,29 @@ test("a build's author sets its tiers in the planner, and its saved card shows t
   await expect(card.locator(".mine-tiers")).toContainText("Bossing S");
   await expect(card.locator(".mine-tiers")).toContainText("Survival C");
   await expect(card.locator(".mine-tiers")).not.toContainText("Clearing");
+});
+
+test("a saved build opened, then a starter build, goes back to the saved build by its name", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Hammer of Zerae" }).first().locator("a.starter-card").click();
+  await page.getByRole("button", { name: "Save build" }).click();
+  const dialog = page.getByRole("dialog", { name: "Save build" });
+  await dialog.getByLabel("Name").fill("My Hammer");
+  await dialog.getByRole("button", { name: /^Save/ }).click();
+  // Something else of the player's first (unsaved), so opening the saved build sets that aside.
+  page.once("dialog", (d) => d.accept());
+  await page.getByRole("button", { name: "Reset" }).click();
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Spear: Fend" }).first().locator("a.starter-card").click();
+  await expect(page.locator(".build-name")).toHaveText("Spear: Fend");
+  await page.goto("/#builds");
+  await page.locator("article.build-card.mine", { hasText: "My Hammer" }).getByRole("link", { name: "Open build" }).click();
+  await expect(page.locator(".build-name")).toHaveText("My Hammer");
+  await page.reload();
+  await expect(page.locator(".build-name"), "the name survives a reload").toHaveText("My Hammer");
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  await expect(page.locator(".build-name")).toHaveText("Stormcall");
+  await page.getByRole("button", { name: "Back to my build" }).click();
+  await expect(page.locator(".build-name")).toHaveText("My Hammer");
 });
