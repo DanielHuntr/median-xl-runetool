@@ -1044,9 +1044,11 @@ export function createEngine(data) {
   // Character stats a skill grants at its current level (stats.json pairedStat),
   // e.g. Warmth's cold resistance. Values that depend on character stats are skipped.
   // Each entry: [stat, value, label, trust] (trust as in TRUST).
-  function skillStatEffects(b, id) {
+  // minionOnly: just the minion bonuses (summoned_minion_*) of a learned skill that isn't a
+  // passive or a buff (character.js: Fervor, Apex Predator).
+  function skillStatEffects(b, id, { minionOnly = false } = {}) {
     const skill = skills[id];
-    if (!skill || !(skill.tags.includes('Passive') || isToggleSkill(skill))) return [];
+    if (!skill || !(minionOnly || skill.tags.includes('Passive') || isToggleSkill(skill))) return [];
     if (!skillEquipmentFits(skill, b.charStats)) return [];
     if (id === 'hunger' && !(b.buffs || []).includes('werebear_morph')) return [];
     if (id === 'feral_escalation' && !(b.buffs || []).includes('werewolf_form')) return [];
@@ -1151,7 +1153,7 @@ export function createEngine(data) {
       for (const element of ['fire', 'cold', 'lightning']) extra(`${element}_spell_damage`, amount, 'Spell Damage');
       extra('physical_magic_spell_damage', amount, 'Spell Damage');
     }
-    return out;
+    return minionOnly ? out.filter((effect) => effect[0].startsWith('summoned_minion_')) : out;
   }
   // Weapon poison a skill grants through D2's poisonmindam/maxdam/length passives (Way
   // of the Spider): per-frame damage in 1/256 units and frames. Null when there is none.

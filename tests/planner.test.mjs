@@ -1397,7 +1397,7 @@ test('"Help confirm values" ranks the screenshots that confirm the most, from th
   // Every gap a tooltip reports is counted, and each count matches the skills listing it.
   const shadowFlow = engine.describe({ cls: 'Assassin', level: 150, points: { shadow_flow: 1 }, quests: {} }, 'shadow_flow', 1);
   const keys = new Set(shadowFlow.effect.flatMap((l) => l.parts.flatMap((p) => p.source?.status === 'game-inferred' ? p.source.gaps : [])));
-  assert.ok(keys.has('format:2') && keys.has('variable:pst1'), 'Shadow Flow reports its unconfirmed line format and passive slot');
+  assert.ok(keys.has('variable:pst1'), 'Shadow Flow reports its unconfirmed passive slot');
   for (const k of keys) assert.ok(r.gaps.some((g) => g.key === k && g.skills >= 1), k);
 });
 
@@ -1893,4 +1893,22 @@ test("a build's author sets its tiers (overall, bossing, clearing, survival), an
   p.setAuthorTier("bossTier", "");
   assert.equal(p.build.value.authorTiers, undefined);
   scope.stop();
+});
+
+test("a learned upgrade's minion bonus reaches its summons: Fervor's summon damage in Resurrect (issue #23)", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const line = (points) => {
+    const b = build("Paladin", { level: 150, points: { conclave: 1, resurrect: 1, ...points } });
+    const c = computeCharacter(b, { engine, catalog, planner });
+    const d = engine.describe({ ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, "resurrect", 1);
+    return { c, text: d.effect.map((l) => l.text).find((t) => /^Physical Damage/.test(t)) };
+  };
+  // In game, with Fervor and Conclave at 1: Physical Damage +25% (20 + Fervor's 10 halved).
+  const withFervor = line({ fervor: 1 });
+  assert.equal(withFervor.text, "Physical Damage: +25%");
+  assert.equal(withFervor.c.s("summoned_minion_damage"), 10);
+  assert.equal(line({}).text, "Physical Damage: +20%");
+  // Only the minion bonus: Fervor's fire damage is its Servants', not the character's.
+  assert.ok(!withFervor.c.stats.total_damage_added_as_fire?.sources.some((x) => /Fervor/.test(x.source)));
 });

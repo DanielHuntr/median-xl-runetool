@@ -70,18 +70,18 @@ test("buff tooltips at those levels match the game (issues #9-#11)", () => {
   const tip = (spec, L, diff, hiredAt, name) => merc(spec, L, diff, { hiredAt }).skills.find((s) => s.name === name).tooltip;
   const same = (a, b) => assert.deepEqual([...a].sort(), [...b].sort());
   same(tip("Ranger", 43, "Nightmare", 36, "Dark Power"),
-    ["Duration: 23 seconds", "Attack Speed: 16%", "Magic Damage to Party Weapons: 5-7", "Physical Damage: 14%", "Chance of Crushing Blow: 10%"]);
+    ["Duration: 23 seconds", "Attack Speed: +16%", "Magic Damage to Party Weapons: 5-7", "Physical Damage: +14%", "Chance of Crushing Blow: 10%"]);
   same(tip("Shapeshifter", 44, "Normal", 16, "Bloodlust"),
-    ["Duration: 127 seconds", "Physical/Magic Spell Damage: 10%", "Elemental Spell Damage: 10%", "Physical Damage: 24%"]);
-  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Elemental Spell Damage: 29%"));
-  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Physical Damage: 51%"));
+    ["Duration: 127 seconds", "Physical/Magic Spell Damage: +10%", "Elemental Spell Damage: +10%", "Physical Damage: +24%"]);
+  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Elemental Spell Damage: +29%"));
+  assert.ok(tip("Bloodmage", 42, "Normal", 15, "Firedance").includes("Physical Damage: +51%"));
 });
 
 test("the buff mercenaries, and their expected tooltip lines from the game's own formulas", () => {
   assert.deepEqual(buffSpecs(data).map((x) => x.spec), ["Ranger", "Priestess", "Shapeshifter", "Bloodmage"]);
   const dp = merc("Ranger").skills.find((s) => s.name === "Dark Power");
   // The tooltip's attack speed (220 × …) and the stat it applies (200 × …) differ in the game files.
-  assert.ok(dp.tooltip.some((l) => /^Attack Speed: \d+%$/.test(l)));
+  assert.ok(dp.tooltip.some((l) => /^Attack Speed: \+\d+%$/.test(l)));
   assert.ok(dp.tooltip.includes("Duration: 50 seconds"));
 });
 

@@ -37,8 +37,8 @@ export const LINE_TYPES = {
     confirmed: "the game's text is the format string",
     format: (l, a) => (l.textA || "").replace(/%d/, n(a)).replace(/%%/g, "%"),
   },
-  // "Poison Pierce: " + 30 + "%"
-  2: { format: (l, a) => join(l.textA, n(a), l.textB) },
+  // "Physical Damage: " + "+25" + "%": signed, as in game.
+  2: { confirmed: "Resurrect (GitHub issue #23), Protector Spirit's Bloodlust lines", format: (l, a) => join(l.textA, plus(a), l.textB) },
   // "Damage Pierces " + 4 + "% Enemy Fire Resistance", "Activation Delay: " + 13 + " frames"
   // Hidden at 0: Warmth's First Level shows its mana regeneration line but not "Cold
   // Resistance: 0%" (GitHub issue #12).

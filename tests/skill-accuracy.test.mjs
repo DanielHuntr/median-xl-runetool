@@ -321,9 +321,10 @@ test("tooltip line formats: game format strings, confirmed and inferred types", 
   assert.equal(formatLine({ type: 6, textA: "% to Spell Damage" }, 0).hidden, true);
   assert.equal(formatLine({ type: 12, textA: "Thunder Frequency: every " }, 0).hidden, true);
   assert.equal(formatLine({ type: 6, textA: "% Damage" }, 20).text, "+20% Damage");
-  // Type 7 ("6 bolts") was confirmed by Magic Missiles; type 2 (Shadow Flow) not yet.
+  // Type 7 ("6 bolts") was confirmed by Magic Missiles; type 2, signed, by Resurrect (issue #23).
   assert.deepEqual([formatLine({ type: 7, textA: " bolts" }, 6).text, formatLine({ type: 7, textA: " bolts" }, 6).format], ["6 bolts", "confirmed"]);
-  assert.equal(formatLine({ type: 2, textA: "Hit Recovery: ", textB: "%" }, 13).format, "inferred");
+  const hr = formatLine({ type: 2, textA: "Hit Recovery: ", textB: "%" }, 13);
+  assert.deepEqual([hr.text, hr.format], ["Hit Recovery: +13%", "confirmed"]);
   assert.equal(formatLine({ type: 17, textA: "Fire Damage: ", textB: " " }, 81, 88).text, "Fire Damage: 81-88 per second");
   assert.equal(formatLine({ type: 19, textA: "Range: " }, 12).text, "Range: 8 yards");
   // Unknown line types still show their text and value, marked inferred.

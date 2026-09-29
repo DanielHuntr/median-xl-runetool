@@ -183,6 +183,8 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   };
   const active = activeSkillIds({ ...b, itemSkills, charStats: equipmentContext }, engine);
   const stance = active.find(id => engine.skill(id).tags.includes('Stance'));
+  const learnedMinionUpgrades = Object.keys(b.points || {}).filter(id => b.points[id] > 0 && !active.includes(id) && engine.node(b, id)
+    && !engine.skill(id).tags.some(t => ['Summon', 'Special Summon', 'Totem'].includes(t)));
   const skillFlags = {
     ...equipmentContext,
     stance: ({ bear_stance: 1, lion_stance: 2, snake_stance: 3, eagle_stance: 4, wolf_stance: 5 })[stance] || 0,
@@ -214,6 +216,12 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   for (let pass = 0; pass < 8; pass++) {
     const input = { ...b, soft, itemSkills, charStats: contextStats() };
     const effects = active.flatMap(id => engine.skillStatEffects(input, id).map(effect => ({ id, effect })));
+    // A learned skill that isn't a passive or a buff can still give minions their bonuses
+    // (Fervor's summon damage, Apex Predator's summon resistances: Resurrect's in-game
+    // Physical Damage counts Fervor's, GitHub issue #23). Only those: its other stats are
+    // for its own summons (Fervor's fire damage is its Servants').
+    for (const id of learnedMinionUpgrades)
+      for (const effect of engine.skillStatEffects(input, id, { minionOnly: true })) effects.push({ id, effect });
     const nextSignature = JSON.stringify(effects);
     if (nextSignature === signature) break;
     signature = nextSignature;
