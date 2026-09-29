@@ -3964,6 +3964,385 @@
     "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
    ],
    "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "harvesters-first-level",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 1",
+    "Cooldown: 1.2 seconds",
+    "Life: 2898 hit points",
+    "Damage: 71-83",
+    "Attack Rating: 200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Harvest's point and Energy are inferred here; the other five levels and every next level check them."
+  },
+  {
+   "id": "harvesters-level-1",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 1",
+    "Cooldown: 1.2 seconds",
+    "Life: 2898 hit points",
+    "Damage: 71-83",
+    "Attack Rating: 200",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 3670 hit points",
+    "Damage: 85-97",
+    "Attack Rating: 275",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
+  },
+  {
+   "id": "harvesters-level-5",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 5988 hit points",
+    "Damage: 126-138",
+    "Attack Rating: 500",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 6762 hit points",
+    "Damage: 140-152",
+    "Attack Rating: 575",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
+  },
+  {
+   "id": "harvesters-level-9",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 9,
+     "how": "shown: Current Skill Level 9"
+    },
+    "blvl": {
+     "value": 9,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 4",
+    "Cooldown: 4.8 seconds",
+    "Life: 9080 hit points",
+    "Damage: 181-193",
+    "Attack Rating: 800",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 9854 hit points",
+    "Damage: 195-207",
+    "Attack Rating: 875",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
+  },
+  {
+   "id": "harvesters-level-15",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 5",
+    "Cooldown: 6 seconds",
+    "Life: 13718 hit points",
+    "Damage: 263-276",
+    "Attack Rating: 1250",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 14490 hit points",
+    "Damage: 277-290",
+    "Attack Rating: 1325",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
+  },
+  {
+   "id": "harvesters-level-25",
+   "skill": "harvesters",
+   "source": "In-game Harvesters tooltip screenshot supplied by the project owner in GitHub issue #31, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "points": {
+     "value": {
+      "harvest": 1
+     },
+     "how": "inferred: not stated. Harvesters' life is +15% per Base Level of Harvest (clc1); only Harvest at 1 point gives the shown life at every level (0 points: 2520 at First Level, shown 2898)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 25
+     },
+     "how": "inferred: a Druid's starting Energy of 25, no attributes spent; the damage is × (100 + Energy)%, and only 25 gives the shown 71-83 at First Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Harvesters inherit All your Spellcaster attributes",
+    "Cast Harvest",
+    "Harvesters: 5",
+    "Cooldown: 6 seconds",
+    "Life: 21446 hit points",
+    "Damage: 401-413",
+    "Attack Rating: 2000",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 22220 hit points",
+    "Damage: 415-427",
+    "Attack Rating: 2075",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+1 Extra Minion per 3 Base Levels (Max 5)",
+    "Harvest: +15% Life per Base Level",
+    "Infected Roots: +30% Harvest Damage per Base Level"
+   ],
+   "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
   }
  ]
 }
