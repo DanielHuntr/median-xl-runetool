@@ -2921,6 +2921,544 @@
     "Cooldown reduced by 0.2 seconds per Base Level"
    ],
    "independentChecks": "No cooldown line at level 10: 1.8 seconds less 0.2 per Base Level reaches 0, and the game hides it."
+  },
+  {
+   "id": "iron-golem-level-1",
+   "skill": "iron_golem",
+   "source": "In-game Iron Golem tooltip screenshot supplied by the project owner in GitHub issue #26, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Casts Spike Rush on Attack",
+    "Life: 7328 hit points",
+    "Damage: 38-48",
+    "Attack Rating: 687",
+    "Mana Cost: 137"
+   ],
+   "nextLines": [
+    "Life: 8376 hit points",
+    "Damage: 47-57",
+    "Attack Rating: 875",
+    "Mana Cost: 151"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values; the First Level screenshot (level 1's values) agrees."
+  },
+  {
+   "id": "iron-golem-level-5",
+   "skill": "iron_golem",
+   "source": "In-game Iron Golem tooltip screenshot supplied by the project owner in GitHub issue #26, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Casts Spike Rush on Attack",
+    "Life: 11528 hit points",
+    "Damage: 73-83",
+    "Attack Rating: 1437",
+    "Mana Cost: 192"
+   ],
+   "nextLines": [
+    "Life: 12576 hit points",
+    "Damage: 82-92",
+    "Attack Rating: 1625",
+    "Mana Cost: 206"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values; the First Level screenshot (level 1's values) agrees."
+  },
+  {
+   "id": "iron-golem-level-10",
+   "skill": "iron_golem",
+   "source": "In-game Iron Golem tooltip screenshot supplied by the project owner in GitHub issue #26, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Casts Spike Rush on Attack",
+    "Life: 16776 hit points",
+    "Damage: 119-129",
+    "Attack Rating: 2375",
+    "Mana Cost: 261"
+   ],
+   "nextLines": [
+    "Life: 17828 hit points",
+    "Damage: 129-139",
+    "Attack Rating: 2562",
+    "Mana Cost: 275"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values; the First Level screenshot (level 1's values) agrees."
+  },
+  {
+   "id": "iron-golem-level-20",
+   "skill": "iron_golem",
+   "source": "In-game Iron Golem tooltip screenshot supplied by the project owner in GitHub issue #26, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Casts Spike Rush on Attack",
+    "Life: 27276 hit points",
+    "Damage: 227-237",
+    "Attack Rating: 4250",
+    "Mana Cost: 398"
+   ],
+   "nextLines": [
+    "Life: 28328 hit points",
+    "Damage: 239-249",
+    "Attack Rating: 4437",
+    "Mana Cost: 412"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values; the First Level screenshot (level 1's values) agrees."
+  },
+  {
+   "id": "iron-golem-level-25",
+   "skill": "iron_golem",
+   "source": "In-game Iron Golem tooltip screenshot supplied by the project owner in GitHub issue #26, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Casts Spike Rush on Attack",
+    "Life: 32528 hit points",
+    "Damage: 294-304",
+    "Attack Rating: 5187",
+    "Mana Cost: 467"
+   ],
+   "nextLines": [
+    "Life: 33576 hit points",
+    "Damage: 308-318",
+    "Attack Rating: 5375",
+    "Mana Cost: 481"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values; the First Level screenshot (level 1's values) agrees."
+  },
+  {
+   "id": "parasite-first-level",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 4 targets",
+    "+17 Bonus Magic Damage",
+    "Mana Cost: 3"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Targets at Base Level 0 (4) against level 1 (5) check the +1 per Base Level synergy."
+  },
+  {
+   "id": "parasite-level-1",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 5 targets",
+    "+17 Bonus Magic Damage",
+    "Mana Cost: 3"
+   ],
+   "nextLines": [
+    "+34 Bonus Magic Damage",
+    "Mana Cost: 5"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "parasite-level-5",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 9 targets",
+    "+86 Bonus Magic Damage",
+    "Mana Cost: 11"
+   ],
+   "nextLines": [
+    "+103 Bonus Magic Damage",
+    "Mana Cost: 13"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "parasite-level-10",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 14 targets",
+    "+172 Bonus Magic Damage",
+    "Mana Cost: 20"
+   ],
+   "nextLines": [
+    "+189 Bonus Magic Damage",
+    "Mana Cost: 22"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "parasite-level-20",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 24 targets",
+    "+344 Bonus Magic Damage",
+    "Mana Cost: 39"
+   ],
+   "nextLines": [
+    "+361 Bonus Magic Damage",
+    "Mana Cost: 41"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "parasite-level-25",
+   "skill": "parasite",
+   "source": "In-game Parasite tooltip screenshot supplied by the project owner in GitHub issue #27, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "stated: Character Level 150"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "100% Weapon Damage",
+    "Converts 50% Physical Damage to Magic",
+    "Attacks up to 29 targets",
+    "+421 Bonus Magic Damage",
+    "Mana Cost: 48"
+   ],
+   "nextLines": [
+    "+436 Bonus Magic Damage",
+    "Mana Cost: 50"
+   ],
+   "synergyText": [
+    "+1 Target per Base Level"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "hive-first-level",
+   "skill": "hive",
+   "source": "In-game Hive tooltip screenshot supplied by the project owner in GitHub issue #28, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 1,
+     "how": "stated: Character Level 1 (the level-30 requirement is shown unmet)"
+    },
+    "charStats": {
+     "value": {
+      "energy": 35,
+      "dexterity": 25
+     },
+     "how": "inferred: a new Sorceress's Energy 35 and Dexterity 25; the synergy line's 130 × (35 + 25 + 20) ÷ (500 + 25 + 35) = 18% matches the shown +18%"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Damage increases with your highest elemental spell damage stat",
+    "Activation Delay: 2 seconds",
+    "Poison Damage: 25-40 over 2 seconds",
+    "Duration: 60 seconds",
+    "Mana Cost: 55"
+   ],
+   "synergyText": [
+    "Witch Blood: double damage scaling",
+    "Energy and Dexterity: +18% Increased Damage",
+    "Activation Frequency Multiplier: 150%"
+   ],
+   "independentChecks": "The damage (25-40) uses Character Level 1 and the inferred Energy and Dexterity through the damage synergy: (50 + 10 × 1) × (50 + 18) ÷ 100 − 75 = −35%."
   }
  ]
 }
