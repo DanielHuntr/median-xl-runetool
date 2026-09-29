@@ -13,10 +13,6 @@ import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 import { createAvailability } from "./availability.js";
 import { buildUse } from "./relevance.js";
-import { buildMetrics, placeOnScale } from "./rating.js";
-import { speedProfile } from "./speed.js";
-import SPEED from "../data/speed.json";
-import TIER_SCALES from "../data/tier-scales.json";
 
 export const PlannerKey = Symbol("Planner");
 // A build's levelling stages: each is its own version of the character (skills, gear,
@@ -119,11 +115,14 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   if (usable(raw.rightSkill)) b.rightSkill = raw.rightSkill;
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
   b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
-  // The tier its author gives it (S to F), shared with the build; the planner's estimate is shown beside it.
-  if (AUTHOR_TIERS.includes(raw.authorTier)) b.authorTier = raw.authorTier;
+  // The tiers its author gives it (overall, bossing, clearing, survival), shared with the build.
+  const tiers = Object.fromEntries(AUTHOR_TIER_KEYS.filter((k) => AUTHOR_TIERS.includes(raw.authorTiers?.[k])).map((k) => [k, raw.authorTiers[k]]));
+  if (Object.keys(tiers).length) b.authorTiers = tiers;
   return b;
 }
 export const AUTHOR_TIERS = ["S", "A", "B", "C", "D", "F"];
+// Overall, then the three criteria the starter builds' tiers are split into (rating.js).
+export const AUTHOR_TIER_KEYS = ["tier", "bossTier", "clearTier", "surviveTier"];
 
 // One saved character per class, so switching class never loses work.
 export function createPlanner(engine, catalog, planner) {
@@ -252,31 +251,15 @@ export function createPlanner(engine, catalog, planner) {
   // Item recommendations: the build's profile and the stats it values, recomputed as skills change.
   const profile = computed(() => buildProfile(build.value, engine));
   const profileSummary = computed(() => describeProfile(profile.value));
-  // The build's tier as an estimate: the starter builds' own measure (rating.js), placed among
-  // the starter builds at the nearest stage of the same difficulty (src/data/tier-scales.json:
-  // the endgame for level 140 and up in Hell, else the levelling stage closest in level).
-  const scaleFor = (b) => {
-    if (b.difficulty === "Hell" && b.level >= 140) return TIER_SCALES.endgame;
-    const same = Object.values(TIER_SCALES.stages || {}).filter((s) => s.difficulty === b.difficulty);
-    const pool = same.length ? same : Object.values(TIER_SCALES.stages || {});
-    return pool.sort((x, y) => Math.abs(x.level - b.level) - Math.abs(y.level - b.level))[0] || TIER_SCALES.endgame;
-  };
-  const estimate = computed(() => {
-    const b = build.value, s = scaleFor(b);
-    if (!s?.scale) return null;
-    try {
-      const m = buildMetrics(b, { engine, catalog, planner, computeCharacter, skillDamage, againstTarget, speedProfile, speedData: SPEED,
-        target: typicalTarget(planner.monsters, b.difficulty), difficulty: b.difficulty });
-      const place = placeOnScale(m, s.scale);
-      return place && { ...place, against: { level: s.level, difficulty: s.difficulty }, ...(m.assumed?.length ? { assumed: m.assumed } : {}) };
-    } catch {
-      return null;
-    }
-  });
-  // The author's own tier for the build (or none), carried in saves and share links.
-  const setAuthorTier = (t) => {
-    if (AUTHOR_TIERS.includes(t)) build.value.authorTier = t;
-    else delete build.value.authorTier;
+  // The tiers the build's author gives it (overall, bossing, clearing, survival: S to F), as the
+  // starter builds have them; carried in saves and share links. An empty choice clears one.
+  const setAuthorTier = (key, t) => {
+    if (!AUTHOR_TIER_KEYS.includes(key)) return;
+    const tiers = { ...(build.value.authorTiers || {}) };
+    if (AUTHOR_TIERS.includes(t)) tiers[key] = t;
+    else delete tiers[key];
+    if (Object.keys(tiers).length) build.value.authorTiers = tiers;
+    else delete build.value.authorTiers;
   };
   // What the build's damage skills deal and how (relevance.js): an item line of a kind it can't
   // use (lightning spell damage on a fire caster, attack stats with no attacks) does nothing.
@@ -966,7 +949,7 @@ export function createPlanner(engine, catalog, planner) {
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
-    profile, profileSummary, lineUse, estimate, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
+    profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };
 }

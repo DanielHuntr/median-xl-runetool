@@ -143,50 +143,72 @@
   font-size: 1.3rem;
   font-weight: 500;
 }
-/* The planner's estimate of the build's tier, and the author's own. */
+/* The build's tiers, set by its author: the starter builds' badge (overall) and chips
+   (bossing, clearing, survival), each a small picker coloured by its tier. */
 .build-tiers {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px 16px;
-  margin: -6px 0 14px;
-  font-size: 0.8125rem;
-  color: var(--muted);
+  gap: 6px;
+  margin: -4px 0 14px;
 }
-.build-tier {
+.build-tier-pick {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  cursor: help;
-}
-label.build-tier {
-  cursor: default;
-}
-.build-tier select {
-  padding: 2px 6px;
-  font: inherit;
-}
-.build-tier-badge {
-  display: inline-grid;
-  place-items: center;
-  width: 1.7em;
-  height: 1.7em;
+  gap: 2px;
   border: 1px solid currentColor;
-  border-radius: 4px;
-  font-family: var(--serif);
-  font-weight: 600;
+  border-radius: 3px;
+  color: var(--muted);
+  font: 500 0.6875rem/1.5 Inter, sans-serif;
+  padding-left: 6px;
+  cursor: pointer;
 }
-.build-tier-badge.tier-S { color: #ffb454; background: color-mix(in srgb, #ffb454 16%, transparent); }
-.build-tier-badge.tier-A { color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); }
-.build-tier-badge.tier-B { color: #7ec27e; background: color-mix(in srgb, #7ec27e 12%, transparent); }
-.build-tier-badge.tier-C { color: #7fa8d8; background: color-mix(in srgb, #7fa8d8 12%, transparent); }
-.build-tier-badge.tier-D { color: #b59ad6; background: color-mix(in srgb, #b59ad6 12%, transparent); }
-.build-tier-badge.tier-F { color: var(--muted); background: color-mix(in srgb, var(--muted) 12%, transparent); }
-:root[data-theme="light"] .build-tier-badge.tier-S { color: #a35300; }
-:root[data-theme="light"] .build-tier-badge.tier-B { color: #2f7a2f; }
-:root[data-theme="light"] .build-tier-badge.tier-C { color: #2d5f9a; }
-:root[data-theme="light"] .build-tier-badge.tier-D { color: #6b479a; }
+.build-tier-pick select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: auto;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  line-height: 1.5;
+  padding: 0 6px 0 2px;
+  cursor: pointer;
+}
+.build-tier-pick select option {
+  color: var(--text);
+  background: var(--panel);
+}
+.build-tier-pick.overall {
+  padding-left: 0;
+  border-radius: 4px;
+  font: 600 0.95rem/1 var(--serif);
+}
+.build-tier-pick.overall select {
+  min-width: 1.9em;
+  height: 1.8em;
+  line-height: 1.8em;
+  padding: 0 6px;
+  text-align: center;
+}
+.build-tier-pick:focus-within {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+.build-tier-pick.tier-S { color: #ffb454; background: color-mix(in srgb, #ffb454 16%, transparent); }
+.build-tier-pick.tier-A { color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); }
+.build-tier-pick.tier-B { color: #7ec27e; background: color-mix(in srgb, #7ec27e 12%, transparent); }
+.build-tier-pick.tier-C { color: #7fa8d8; background: color-mix(in srgb, #7fa8d8 12%, transparent); }
+.build-tier-pick.tier-D { color: #b59ad6; background: color-mix(in srgb, #b59ad6 12%, transparent); }
+.build-tier-pick.tier-F { color: var(--muted); background: color-mix(in srgb, var(--muted) 12%, transparent); }
+.build-tier-pick.chip[class*="tier-"] { background: transparent; }
+:root[data-theme="light"] .build-tier-pick.tier-S { color: #a35300; }
+:root[data-theme="light"] .build-tier-pick.tier-B { color: #2f7a2f; }
+:root[data-theme="light"] .build-tier-pick.tier-C { color: #2d5f9a; }
+:root[data-theme="light"] .build-tier-pick.tier-D { color: #6b479a; }
 .attr-grid {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

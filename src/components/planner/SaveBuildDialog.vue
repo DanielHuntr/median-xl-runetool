@@ -5,7 +5,7 @@ import { usePlanner } from "../../planner/usePlanner.js";
 import { useSavedBuilds, MAX_NAME } from "../../planner/savedBuilds.js";
 import { BASIC_ATTACK } from "../../planner/damage.js";
 const emit = defineEmits(["close"]);
-const { state, build, engine, buildCode, say, estimate } = usePlanner();
+const { state, build, engine, buildCode, say } = usePlanner();
 const { save, byName } = useSavedBuilds();
 const dialog = ref(null), input = ref(null), error = ref("");
 // The skills in the left and right slots describe the build best.
@@ -24,10 +24,7 @@ function close() {
 function submit() {
   error.value = "";
   if (!name.value.trim()) return (error.value = "Give the build a name.");
-  // The planner's estimate as it stands, shown on the saved build's card (the Builds page doesn't load the planner).
-  const e = estimate.value;
-  const r = save({ name: name.value, code: buildCode(), cls: state.cls, level: build.value.level, skills: skills.value,
-    estimate: e?.tier ? { tier: e.tier, bossTier: e.bossTier, clearTier: e.clearTier, surviveTier: e.surviveTier, against: e.against } : null });
+  const r = save({ name: name.value, code: buildCode(), cls: state.cls, level: build.value.level, skills: skills.value });
   if (!r.ok) return (error.value = r.reason);
   state.openedName[state.cls] = r.entry.name;
   say(`${r.replaced ? "Updated" : "Saved"} "${r.entry.name}". Find it under Builds.`, "info");

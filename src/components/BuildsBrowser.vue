@@ -14,9 +14,11 @@ const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} 
 const saved = computed(() => builds.value.filter(matches));
 // "How these work": the starter builds' explanation, in a dialog.
 const helpDialog = ref(null);
-// A saved build's own tier (its author's, inside the build) and what the estimate compared it with.
-const authorTierOf = (b) => { const t = decodeBuild(b.code)?.authorTier; return /^[SABCDF]$/.test(t || '') ? t : ''; };
-const estimateNote = (e) => `Bossing ${e.bossTier ?? '?'} · Clearing ${e.clearTier ?? '?'} · Survival ${e.surviveTier ?? '?'}, estimated among the starter builds at ${e.against?.level === 150 ? 'endgame' : `level ${e.against?.level ?? '?'} · ${e.against?.difficulty ?? ''}`} when saved`;
+// A saved build's tiers as its author gave them (inside the build): overall and per criterion.
+const authorTiersOf = (b) => {
+  const t = decodeBuild(b.code)?.authorTiers || {};
+  return Object.fromEntries(['tier', 'bossTier', 'clearTier', 'surviveTier'].filter((k) => /^[SABCDF]$/.test(t[k] || '')).map((k) => [k, t[k]]));
+};
 // Tiers (src/planner/rating.js): S best to F, against the other starter builds; summon
 // builds aren't rated.
 const TIER_ORDER = ['S', 'A', 'B', 'C', 'D', 'F'];
@@ -96,12 +98,11 @@ function deleteBuild(id) {
     <div class="build-grid">
       <article v-for="b in saved" :key="b.id" class="build-card mine">
         <div class="build-art" aria-hidden="true"><img :src="art(b.cls)" alt="" loading="lazy" /></div>
-        <h3>{{ b.name }}</h3>
+        <!-- The tiers its author gave it (inside the build), as a starter build's badge and chips. -->
+        <h3><span v-if="authorTiersOf(b).tier" class="tier-badge" :class="`tier-${authorTiersOf(b).tier}`" :aria-label="`Tier ${authorTiersOf(b).tier}`">{{ authorTiersOf(b).tier }}</span>{{ b.name }}</h3>
         <p>{{ b.cls }} · Level {{ b.level ?? 'unknown' }}</p>
-        <!-- The author's own tier (in the build) and the planner's estimate when it was saved. -->
-        <p v-if="authorTierOf(b) || b.estimate" class="tier-criteria mine-tiers">
-          <span v-if="authorTierOf(b)" :class="`tier-chip tier-${authorTierOf(b)}`">Your tier {{ authorTierOf(b) }}</span>
-          <span v-if="b.estimate" :class="`tier-chip tier-${b.estimate.tier}`" :title="estimateNote(b.estimate)">Estimate {{ b.estimate.tier }}</span>
+        <p v-if="CRITERIA.some(([k]) => authorTiersOf(b)[k])" class="tier-criteria mine-tiers">
+          <template v-for="[k, label] in CRITERIA" :key="k"><span v-if="authorTiersOf(b)[k]" :class="`tier-chip tier-${authorTiersOf(b)[k]}`">{{ label }} {{ authorTiersOf(b)[k] }}</span></template>
         </p>
         <p v-if="b.skills.length" class="muted">{{ b.skills.join(' · ') }}</p>
         <p v-if="b.savedAt" class="mine-edited">Last edited {{ new Date(b.savedAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) }}</p>
@@ -145,7 +146,7 @@ function deleteBuild(id) {
         <h3>Estimates</h3>
         <p>Every number is the planner's estimate from the game files. Where an item or skill effect is only described in words, the estimate assumes what it does; those cards carry an <b>Estimate</b> tag, and "Details" says what's assumed.</p>
         <h3>Your own builds</h3>
-        <p>The planner estimates any build's tier the same way, among the starter builds at its stage, and you can give it your own tier; both are saved and shared with it.</p>
+        <p>Give your own builds tiers in the planner, under the class name: overall, bossing, clearing and survival. They're saved and shared with the build, and shown on its card here.</p>
         <h3>Opening a build</h3>
         <p>It opens in the planner with its levelling stages to switch between. Your current build for that class is kept aside, to go back to.</p>
       </div>

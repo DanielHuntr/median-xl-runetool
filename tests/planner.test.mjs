@@ -1870,39 +1870,27 @@ test("where MedianDB and the game files disagree, the game's value is used", asy
   for (const x of planner.game.report.reqLevelDiffers) assert.equal(engine.requiredCharLevel(x.id, build(planner.skills[x.id].class)), x.game, `${x.name} required level`);
 });
 
-test("a player's build is placed on the starter builds' tier scale, and keeps its author's tier", async () => {
+test("a build's author sets its tiers (overall, bossing, clearing, survival), and they travel with it", async () => {
   stubBrowser();
   const { engine, catalog } = await env();
-  const { placeOnScale } = await load("/src/planner/rating.js");
-  const scales = JSON.parse(await readFile(new URL("../src/data/tier-scales.json", import.meta.url), "utf8"));
-  const { presets } = JSON.parse(await readFile(new URL("../src/data/preset-builds.json", import.meta.url), "utf8"));
-  // A starter build placed on its own scale lands at its own rank (builds that measure the same
-  // share one: Nature's Harvest and Infected Roots), in its tier (or, at a tier's edge, the
-  // next one down: the placed build joins the field, one more than were rated).
-  const order = ["S", "A", "B", "C", "D", "F"];
-  for (const p of presets.filter((x) => x.summary?.rating?.tier)) {
-    const r = p.summary.rating, e = placeOnScale(r, scales.endgame.scale);
-    const tied = presets.filter((q) => q !== p && q.summary?.rating?.score === r.score).length;
-    assert.ok(e.rank <= r.rank && e.rank >= r.rank - tied, `${p.name}: rank ${e.rank} for ${r.rank}`);
-    assert.ok([0, 1].includes(order.indexOf(e.tier) - order.indexOf(r.tier)), `${p.name}: ${e.tier} for ${r.tier}`);
-  }
-  // Summoners stay unrated.
-  assert.ok(placeOnScale({ unrated: "Summon build" }, scales.endgame.scale).unrated);
-  // The author's tier travels with the build; anything else is dropped.
   const { createPlanner } = await load("/src/planner/usePlanner.js");
   const { encodeBuild } = await load("/src/planner/buildCode.js");
   const scope = effectScope();
   const p = scope.run(() => createPlanner(engine, catalog, planner));
   p.setClass("Amazon");
-  p.setAuthorTier("S");
-  assert.equal(p.build.value.authorTier, "S");
-  assert.match(p.buildCode(), /./);
+  p.setAuthorTier("tier", "A");
+  p.setAuthorTier("bossTier", "S");
+  p.setAuthorTier("clearTier", "B");
+  p.setAuthorTier("surviveTier", "Q"); // not a tier: ignored
+  p.setAuthorTier("mood", "S"); // not a criterion: ignored
+  assert.deepEqual(p.build.value.authorTiers, { tier: "A", bossTier: "S", clearTier: "B" });
+  // In a share link, and cleaned on the way in: anything that isn't a tier is dropped.
   const shared = JSON.parse(JSON.stringify(p.build.value));
-  p.importFromHash(`#planner?b=${encodeBuild({ ...shared, authorTier: "S" })}`);
-  assert.equal(p.build.value.authorTier, "S");
-  p.importFromHash(`#planner?b=${encodeBuild({ ...shared, authorTier: "Z" })}`);
-  assert.equal(p.build.value.authorTier, undefined);
-  p.setAuthorTier("");
-  assert.equal(p.build.value.authorTier, undefined);
+  p.importFromHash(`#planner?b=${encodeBuild({ ...shared, authorTiers: { tier: "A", bossTier: "S", clearTier: "Z", extra: "S" } })}`);
+  assert.deepEqual(p.build.value.authorTiers, { tier: "A", bossTier: "S" });
+  // Clearing them all leaves none.
+  p.setAuthorTier("tier", "");
+  p.setAuthorTier("bossTier", "");
+  assert.equal(p.build.value.authorTiers, undefined);
   scope.stop();
 });

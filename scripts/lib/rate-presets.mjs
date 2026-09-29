@@ -70,20 +70,6 @@ export function rateStages(presets, stages, env) {
   return stages;
 }
 
-// The scales the starter builds make, endgame and each levelling stage, for placing a player's
-// own build among them (rating.js placeOnScale): src/data/tier-scales.json. From the ratings
-// ratePresets and rateStages stored.
-export function tierScales(presets, stages, env) {
-  const { tierScale } = env.rating;
-  const out = { endgame: { level: 150, difficulty: "Hell", scale: tierScale(presets.map((p) => ({ metrics: p.summary?.rating }))) }, stages: {} };
-  const levels = [...new Set(Object.values(stages).flatMap((list) => (list || []).filter((x) => x.rating).map((x) => x.level)))].sort((a, b) => a - b);
-  for (const level of levels) {
-    const at = presets.map((p) => (stages[p.id] || []).find((x) => x.level === level && x.rating)).filter(Boolean);
-    out.stages[level] = { level, difficulty: at[0].difficulty, scale: tierScale(at.map((x) => ({ metrics: x.rating }))) };
-  }
-  return out;
-}
-
 // A summoner's measure in place of the damage the planner doesn't estimate for summons: its
 // summon skills' own numbers (life, damage, count, which points and synergies raise), summed.
 // Used by the generator (build-presets.mjs) and the audit (audit-builds.mjs) alike.

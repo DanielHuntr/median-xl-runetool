@@ -3,7 +3,7 @@
 // npm run rate-presets. build-presets.mjs does the same when it publishes.
 import { createServer } from "vite";
 import { readFile, writeFile } from "node:fs/promises";
-import { ratePresets, rateStages, tierScales, ratingEnv } from "./lib/rate-presets.mjs";
+import { ratePresets, rateStages, ratingEnv } from "./lib/rate-presets.mjs";
 
 const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: "custom", logLevel: "error" });
 try {
@@ -18,10 +18,7 @@ try {
   const stagesFile = "src/data/preset-stages.json";
   const guides = JSON.parse(await readFile(stagesFile, "utf8"));
   rateStages(doc.presets, guides.stages, env);
-  await writeFile(stagesFile, JSON.stringify(guides));
-  // Where each tier starts, for placing a player's own build (the planner's estimate).
-  await writeFile("src/data/tier-scales.json", JSON.stringify({ patch: planner.game?.patch, ...tierScales(doc.presets, guides.stages, env) }));
-  const rows = doc.presets.map((p) => p.summary.rating).filter((r) => r.tier).sort((a, b) => a.rank - b.rank);
+  await writeFile(stagesFile, JSON.stringify(guides));  const rows = doc.presets.map((p) => p.summary.rating).filter((r) => r.tier).sort((a, b) => a.rank - b.rank);
   for (const t of ["S", "A", "B", "C", "D", "F"]) {
     const names = doc.presets.filter((p) => p.summary.rating.tier === t).sort((a, b) => a.summary.rating.rank - b.summary.rating.rank);
     console.log(`${t}: ${names.map((p) => `${p.name} (${p.cls}) ${p.summary.rating.dps.toLocaleString()}/s ${p.summary.rating.ehp.toLocaleString()} ehp`).join("; ")}`);

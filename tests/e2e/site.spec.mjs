@@ -284,17 +284,21 @@ test("the skill summary opens from the skill points counter, and a skill in it o
   await expect(page.getByRole("tab", { name: /Nomad/ })).toHaveAttribute("aria-selected", "true");
 });
 
-test("a build's own tier and the planner's estimate show in the planner and on its saved card", async ({ page }) => {
+test("a build's author sets its tiers in the planner, and its saved card shows them", async ({ page }) => {
   await page.goto("/#builds");
   await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
-  await expect(page.locator(".build-tiers .build-tier-badge")).toHaveText(/^[SABCDF]$/);
-  await page.getByLabel("Your tier for this build").selectOption("B");
+  const tiers = page.getByRole("group", { name: "Your tiers for this build" });
+  await tiers.getByLabel("Overall tier").selectOption("A");
+  await tiers.getByLabel("Bossing tier").selectOption("S");
+  await tiers.getByLabel("Survival tier").selectOption("C");
   await page.getByRole("button", { name: "Save build" }).click();
   const dialog = page.getByRole("dialog", { name: "Save build" });
   await dialog.getByLabel("Name").fill("My Snake Bite");
   await dialog.getByRole("button", { name: /^Save/ }).click();
   await page.goto("/#builds");
   const card = page.locator("article.build-card.mine", { hasText: "My Snake Bite" });
-  await expect(card.locator(".mine-tiers")).toContainText("Your tier B");
-  await expect(card.locator(".mine-tiers")).toContainText(/Estimate [SABCDF]/);
+  await expect(card.locator(".tier-badge")).toHaveText("A");
+  await expect(card.locator(".mine-tiers")).toContainText("Bossing S");
+  await expect(card.locator(".mine-tiers")).toContainText("Survival C");
+  await expect(card.locator(".mine-tiers")).not.toContainText("Clearing");
 });
