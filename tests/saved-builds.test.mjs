@@ -267,3 +267,26 @@ test('found-gear versions use found gear only; builds carry charms, a teleport o
     for (const p of rated) for (const k of ['bossTier', 'clearTier', 'surviveTier']) assert.match(p.summary.rating[k], /^[SABCDF]$/, `${p.name} ${k}`);
   } finally { await vite.close(); }
 });
+
+test('no starter build wears an item mostly for stats it can\'t use (relevance.js)', async () => {
+  const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
+  try {
+    const load = (p) => vite.ssrLoadModule(p);
+    const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
+    const { presets } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
+    const { ratingEnv } = await import('../scripts/lib/rate-presets.mjs');
+    const env = await ratingEnv(load, planner, await load('/src/data/index.js'));
+    const { buildUse, lineWaste, mostlyWasted } = await load('/src/planner/relevance.js');
+    const bad = [];
+    for (const p of presets) for (const b of [p.build, p.found?.build].filter(Boolean)) {
+      const use = buildUse(b, env);
+      for (const [slot, st] of Object.entries(b.gear)) {
+        const r = env.catalog.resolve(st, b.level);
+        const lines = (r?.parsed || []).filter((x) => x.kind === 'stats');
+        const wasted = lines.filter((x) => lineWaste(x, use));
+        if (mostlyWasted(r, use)) bad.push(`${p.name}: ${r.def.name} (${slot}): ${wasted.map((x) => x.text).join('; ')}`);
+      }
+    }
+    assert.deepEqual(bad, []);
+  } finally { await vite.close(); }
+});
