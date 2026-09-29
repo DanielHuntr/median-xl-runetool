@@ -224,10 +224,10 @@ function deleteBuild(id) {
 :global(:root[data-theme="light"]) .tier-C { color:#2d5f9a; }
 :global(:root[data-theme="light"]) .tier-D { color:#6b479a; }
 .tier-unrated { margin-left:.6em; padding:1px 6px; border:1px solid var(--border); border-radius:4px; font:500 .6875rem/1.4 Inter, sans-serif; color:var(--muted); vertical-align:.2em; }
-.tier-criteria { display:flex; flex-wrap:wrap; gap:4px; margin:-4px 0 6px; }
+.tier-criteria { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 10px; }
 .tier-chip { padding:0 6px; border:1px solid currentColor; border-radius:3px; font:500 .6875rem/1.5 Inter, sans-serif; background:transparent !important; }
 .tier-note { font-size:.75rem; color:var(--muted); margin:-6px 0 8px; }
-.tier-why { font-size:.8125rem; margin:-2px 0 8px; }
+.tier-why { font-size:.8125rem; margin:0 0 10px; }
 .tier-assumed { font-size:.75rem; color:var(--warn); margin:-4px 0 8px; }
 .build-card p { line-height:1.6; }
 .build-actions { margin-top:20px; }
