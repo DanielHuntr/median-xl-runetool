@@ -29,9 +29,9 @@ export function refineBuild(p, ctx) {
   };
   // Items are judged by what they do for this build, less a little for each of their lines
   // that can't help it (relevance.js: another element, spell stats on an attack build, …), so
-  // a focused item beats one mostly bought for nothing when they're close. About what 1% more
+  // a focused item beats one mostly bought for nothing when they're close. About what 2% more
   // damage is worth per wasted line.
-  const WASTE = 0.6;
+  const WASTE = 1.2;
   const waste = (b) => (use && wastedLines ? Object.values(b.gear).reduce((n, st) => n + wastedLines(catalog.resolve(st, b.level), use), 0) : 0);
   const score = (b) => rawScore(b) - WASTE * waste(b);
   let cur = { b: clone(p.build.value), s: score(p.build.value) };
@@ -79,9 +79,10 @@ export function refineBuild(p, ctx) {
   lap("charms");
   // ---------- Gear, one slot at a time, by the build's own measure
   const setBuild = () => { p.build.value.gear = clone(cur.b.gear); p.build.value.attrs = clone(cur.b.attrs); p.build.value.inventory = clone(cur.b.inventory); };
-  // An item as it comes: no sockets filled and no orbs (a runeword keeps its runes).
-  const bare = (st) => st && { ...st, sockets: catalog.get(st.ref)?.kind === "runeword" ? st.sockets : [], orbs: [] };
-  const slotPass = (n = 6) => {
+  // An item before orbs: its sockets filled (they're part of the item) but no orbs, whose
+  // +4 required level each would favour items with a lower requirement over better ones.
+  const bare = (st) => st && { ...st, orbs: [] };
+  const slotPass = (n = 10) => {
     // Each slot's candidates, ranked once for the build as it stands. Items are compared on
     // their own, before sockets and orbs: otherwise an item with a lower level requirement
     // wins on the room it leaves for orbs (+4 required level each) rather than on itself,

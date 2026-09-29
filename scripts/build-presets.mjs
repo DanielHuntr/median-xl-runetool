@@ -26,7 +26,7 @@ import { createServer } from "vite";
 import { readFile, writeFile, rm } from "node:fs/promises";
 import { publishPresets } from "./lib/publish-presets.mjs";
 import { planTrees } from "./lib/preset-plan.mjs";
-import { ratePresets, ratingEnv } from "./lib/rate-presets.mjs";
+import { ratePresets, ratingEnv, summonPowerOf } from "./lib/rate-presets.mjs";
 import { refineBuild } from "./lib/refine.mjs";
 import { probePointScaling } from "./lib/point-scaling.mjs";
 import { effectScope } from "vue";
@@ -100,7 +100,8 @@ try {
     const c = computeCharacter(b, { engine, catalog, planner });
     const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, charStats: c.charStats }, character: c });
     const vs = d && againstTarget(d, c, target, "Hell");
-    return { d, vsParts: vs?.parts || [], raw: d?.all?.[1] ?? d?.total?.[1] ?? 0, vs: vs?.all?.[1] ?? vs?.total?.[1] ?? 0 };
+    // Per hit: a repeating skill's hits rarely all land on one target.
+    return { d, vsParts: vs?.parts || [], raw: d?.total?.[1] ?? 0, vs: vs?.total?.[1] ?? 0 };
   };
   // The top weapon Suggest gear would pick for a probe build (tree planning).
   const recommendWeapon = (b) => {
@@ -134,7 +135,9 @@ try {
         const text = engine.describe({ ...b, points: { ...b.points, [id]: n }, soft: c.soft, charStats: c.charStats }, id, n).effect.map((l) => l.text).join(" ");
         return Number(/up to (\d+) (?:targets|enemies|monsters)/i.exec(text)?.[1] || 0);
       };
-      const reachGrows = !less.scales && reach(b.points[id]) > reach(less.fewer);
+      // Or how many hits a cast makes (Magic Missiles' bolts): per-hit damage stays put.
+      const hits = (n) => damage({ ...b, points: { ...b.points, [id]: n } }, id).d?.count?.n || 1;
+      const reachGrows = !less.scales && (reach(b.points[id]) > reach(less.fewer) || hits(b.points[id]) > hits(less.fewer));
       if (reachGrows) report.push(`  targets: ${reach(less.fewer)} → ${reach(b.points[id])}`);
       if (!less.scales && !reachGrows) fail(`${b.points[id] - less.fewer} points fewer doesn't lower damage (${less.damage} vs ${base.raw})`, true);
       else responds = true;
@@ -181,7 +184,7 @@ try {
     const c = computeCharacter(b, { engine, catalog, planner });
     const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, charStats: c.charStats }, character: c });
     const vs = d && againstTarget(d, c, targets[difficulty], difficulty);
-    return vs?.all?.[1] ?? vs?.total?.[1] ?? 0;
+    return vs?.total?.[1] ?? 0;
   };
   // The skills a stage is built around: the preset's own when they can be learned at that
   // level; otherwise the strongest damage skill that can (from the main skill's tree first),
@@ -414,11 +417,7 @@ try {
     const profile = buildProfile(p.build.value, engine);
     // A summoner's damage isn't estimated: its summons' own numbers (life, damage, count, which
     // points and synergies raise) stand in for it.
-    const summonPower = (b) => [def.main, def.right].filter(Boolean).reduce((n, id) => {
-      const c = computeCharacter(b, { engine, catalog, planner });
-      const v = engine.skillValues({ ...b, soft: c.soft, charStats: c.charStats }, id);
-      return n + Object.values(v).flat().filter((x) => typeof x === "number" && x > 0).reduce((a, x) => a + x, 0);
-    }, 0);
+    const summonPower = (b) => summonPowerOf(b, [def.main, def.right], { engine, catalog, planner, computeCharacter });
     // The build's measure (rating.js): sustained bossing and clearing damage (speed
     // breakpoints, hit chance, cooldowns, mana), survivability (resistances, avoid, block),
     // hit recovery frames and movement; plus life recovery. Summons: their own numbers.
@@ -644,20 +643,8 @@ ${def.name}: levelling stages`);
       life: Math.round(c.life.total), mana: Math.round(c.mana.total),
     };
     scope.stop();
-    // The same build on found gear only (availability.js): no sacred uniques, high runes, late
-    // sets or uber charms. Its problems are notes, not reasons to hold back the preset.
-    let foundVersion = null;
-    try {
-      const fsink = [];
-      const f = await buildAt(def, LEVEL, "Hell", true, fsink, { found: true });
-      const fb = JSON.parse(JSON.stringify(f.p.build.value));
-      f.scope.stop();
-      foundVersion = { build: fb, gear: Object.entries(fb.gear).filter(([slot]) => !slot.endsWith("2")).map(([, st]) => catalog.resolve(st, fb.level)?.def.name).filter(Boolean),
-        life: Math.round(computeCharacter(fb, { engine, catalog, planner }).life.total), ...(fsink.length ? { notes: fsink.slice(0, 4) } : {}) };
-      console.log(`   found-gear version: ${foundVersion.gear.join(", ")}`);
-    } catch (e) { console.log(`   found-gear version failed: ${e.message}`); }
-    out.push({ id: def.id, name: def.name, cls: def.cls, tree: def.tree, level: b.level, blurb: def.blurb,
-      skills: [def.main, def.right, ...b.skillBar].filter(Boolean).map((id) => engine.skillName(id)), summary, build: b, ...(foundVersion ? { found: foundVersion } : {}) });
+    out.push({ id: def.id, name: def.name, cls: def.cls, tree: def.tree, level: b.level, blurb: def.blurb, ...(def.summoner ? { summoner: true } : {}),
+      skills: [def.main, def.right, ...b.skillBar].filter(Boolean).map((id) => engine.skillName(id)), summary, build: b });
     if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, b);
     if (!only.length) {
       done[def.id] = { preset: out.at(-1), stages: stages[def.id] || null, problems: problems.slice(before) };
@@ -677,8 +664,15 @@ shard ${shardK}/${shardN}: ${out.length} presets saved to ${PROGRESS}`);
   }
   else if (only.length) {
     console.log(`\nONLY=${only.join(",")}: ${out.length} built, presets not published`);
-    // Their levelling guides are merged into the guides file (one build's guide can be redone alone).
-    if (!process.env.NO_STAGES && Object.keys(stages).length) {
+    // TRIAL_OUT=file: the builds and their guides go to that file alone, for the audit's --from
+    // (a trial of a generator change on a few builds before remaking them all).
+    if (process.env.TRIAL_OUT) {
+      await writeFile(process.env.TRIAL_OUT, JSON.stringify({ presets: out, stages }));
+      console.log(`trial written to ${process.env.TRIAL_OUT}`);
+    }
+    // Otherwise their levelling guides are merged into the guides file (one build's guide can be
+    // redone alone).
+    else if (!process.env.NO_STAGES && Object.keys(stages).length) {
       const file = "src/data/preset-stages.json";
       const prev = JSON.parse(await readFile(file, "utf8").catch(() => '{"stages":{}}'));
       await writeFile(file, JSON.stringify({ patch: planner.game?.patch, stages: { ...prev.stages, ...stages } }));

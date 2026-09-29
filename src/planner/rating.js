@@ -15,6 +15,11 @@ const WEIGHTS = { boss: 0.4, clear: 0.35, survive: 0.25 };
 const FIGHT_SECONDS = 60;
 // The most targets counted for one skill in a pack.
 const PACK = 5;
+// Monster to-hit from the game's tables (monstats × monlvl) is about 6× lower than the Warcry
+// Barbarian guide's figure: "825k defense at level 140 reaches the 5% chance-to-be-hit floor"
+// needs ~43 000 to-hit, the tables give ~7 500. Median XL scales monster accuracy somewhere
+// the planner doesn't read; this factor matches the guide. Calibrated, not checked in game.
+const MONSTER_TO_HIT = 5.8;
 
 // Hit recovery: frames by faster hit recovery, per class (Diablo II's tables; the Median XL
 // build guides quote the same breakpoints: Assassin 7/15/27/48/86/200, Amazon 86/174/600,
@@ -68,7 +73,8 @@ export function buildMetrics(b, env) {
     const d = id && skillDamage(id, { engine, build: b, skillBuild: sb, character: c });
     if (!d || !["attack", "spell"].includes(d.kind) || !(d.total?.[1] > 0)) return null;
     const vs = againstTarget(d, c, target, env.difficulty || "Hell", b.level);
-    const perAction = mid(vs?.all ?? vs?.total);
+    // One hit: a skill that repeats (bolts, arrows, beams) rarely lands them all on one target.
+    const perAction = mid(vs?.total);
     if (!(perAction > 0)) return null;
     const lines = engine.describe(sb, id, b.points[id] || 0).effect.map((l) => l.text || "");
     const text = [...(d.lines || []), ...lines].join(" ");
@@ -114,15 +120,28 @@ export function buildMetrics(b, env) {
   const sustainOf = (r) => (r.mana > 0 ? Math.min(1, manaIn / r.mana) : 1);
   const bossR = rotation(() => 1), clearR = rotation((x) => x.targets);
   const boss = bossR.dps * sustainOf(bossR), clear = clearR.dps * sustainOf(clearR);
-  // Survivability: life, over what gets through resistances in Hell (the four elements, then
-  // physical resistance), avoid and block, as effective life.
+  // Survivability: life, over how much of the difficulty's typical monster's hit gets through,
+  // as effective life. Half the hit is physical: the chance it lands (Diablo II's: its to-hit
+  // against your defense, scaled by the two levels, 5% to 95%), block, physical resistance,
+  // then flat physical damage reduction. Half is elemental: your average resistance, then flat
+  // elemental/magic reduction. Avoid dodges either.
   const el = ["fire", "cold", "lightning", "poison"].map((k) => c.resist[k]?.value ?? 0);
   const elemAvg = el.reduce((n, v) => n + Math.max(-100, Math.min(95, v)), 0) / el.length;
   const phys = Math.max(0, Math.min(95, c.resist.physical?.value ?? 0));
   const avoid = Math.max(0, Math.min(75, c.avoid?.value ?? 0)), block = Math.max(0, Math.min(75, c.block?.value ?? 0));
   const life = c.life.total;
-  const ehp = ((life * 100) / (100 - elemAvg)) * (100 / (100 - phys)) / (1 - avoid / 100) / (1 - block / 200);
-  const out = { life: Math.round(life), resist: Math.round(elemAvg), avoid: Math.round(avoid), block: Math.round(block), ehp: Math.round(ehp),
+  const k = { Normal: 0, Nightmare: 1, Hell: 2 }[env.difficulty || "Hell"] ?? 2;
+  const hitSize = target?.hit?.[k] || 0, toHit = (target?.toHit?.[k] || 0) * MONSTER_TO_HIT, mlvl = target?.levels?.[k] || b.level;
+  const defense = c.defense?.total ?? 0;
+  const landed = toHit ? Math.max(5, Math.min(95, (100 * toHit) / (toHit + defense) * ((2 * mlvl) / (mlvl + b.level)))) / 100 : 1;
+  let ehp;
+  if (hitSize > 0) {
+    const physHit = Math.max(1, hitSize * (1 - phys / 100) - c.s("physical_damage_taken_reduced"));
+    const elemHit = Math.max(1, hitSize * (1 - elemAvg / 100) - c.s("elemental_magic_damage_taken_reduced"));
+    const through = (0.5 * landed * (1 - block / 100) * physHit + 0.5 * elemHit) * (1 - avoid / 100);
+    ehp = (life * hitSize) / through;
+  } else ehp = ((life * 100) / (100 - elemAvg)) * (100 / (100 - phys)) / (1 - avoid / 100) / (1 - block / 200);
+  const out = { life: Math.round(life), resist: Math.round(elemAvg), avoid: Math.round(avoid), block: Math.round(block), ehp: Math.round(ehp), hitChance: Math.round(landed * 100), defense: Math.round(defense),
     fhrFrames: hitRecoveryFrames(b.cls, c.s("hit_recovery")), fhrBase: HIT_RECOVERY[b.cls]?.[0][1] ?? null, fhrAt86: hitRecoveryFrames(b.cls, 86), movement: Math.round(c.s("movement_speed")),
     manaIn: Math.round(manaIn), mana: Math.round(c.mana.total) };
   // A summon build's damage is mostly its minions', which the planner doesn't estimate: its

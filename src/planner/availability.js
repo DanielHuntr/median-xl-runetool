@@ -1,6 +1,6 @@
 // "Found gear": items a player can count on finding or making without trading for the
-// rarest drops (the community starter tier list's budget idea). Used for each starter build's
-// found-gear version (scripts/build-presets.mjs) and shown on the Builds page.
+// rarest drops (the community starter tier list's budget idea). Used for the starter builds'
+// levelling stages (scripts/build-presets.mjs).
 //   - tiered uniques, base items and standard crafting: yes;
 //   - sacred uniques (Hell-only drops): no;
 //   - runewords: only standard runes up to Ist (enchanted, great and elemental runes are rare
@@ -31,13 +31,5 @@ export function createAvailability(catalog, socketables) {
     if (def.kind === "socketable" && /runes/i.test(def.kindLabel || "")) return runeOk(def.name);
     return true;
   }
-  /** Why an item isn't found gear, for the Builds page. */
-  function why(def) {
-    if (def.kind === "sacred") return "sacred unique";
-    if (def.kind === "runeword") return "high runes";
-    if (def.kind === "set") return "late set";
-    if (def.kind === "charm" || def.kind === "relic") return "uber charm";
-    return "";
-  }
-  return { found, why };
+  return { found };
 }

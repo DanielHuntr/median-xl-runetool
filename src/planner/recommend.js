@@ -279,7 +279,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
   };
   for (const def of catalog.forSlot(slot, build.cls)) {
     if (def.kind === "base") continue;
-    // Only items the caller allows (a starter build's found-gear version, availability.js).
+    // Only items the caller allows (found gear for a starter build's levelling stages, availability.js).
     if (allow && !allow(def)) continue;
     // Not items whose skill bonuses are another class's (items.js otherClassSkills).
     if (catalog.forClass && !catalog.forClass(def, build.cls)) continue;

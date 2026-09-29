@@ -54,7 +54,6 @@ const hasDetails = (s) => !!s.d?.total;
             >{{ range((s.d.vs || s.d).total) }}</span
           >
           <small v-if="s.d?.total" class="muted">{{ per(s.d) }}, {{ s.d.vs ? `vs ${s.d.vs.target.name}` : "before enemy resistance" }}</small>
-          <small v-if="s.d?.count && (s.d.vs || s.d).all" class="muted skill-slot-upto">Up to {{ range((s.d.vs || s.d).all) }} if all {{ s.d.count.n }} hit</small>
         </div>
         <button
           v-if="hasDetails(s)"
@@ -69,10 +68,11 @@ const hasDetails = (s) => !!s.d?.total;
       <div v-if="hasDetails(s)" v-show="details[s.side]" :id="`skill-slot-${s.side}-details`" class="skill-slot-details">
       <!-- One hit or cast against the chosen target, by element. -->
       <dl v-if="s.d?.total" class="skill-slot-stats">
+        <!-- Several hits a cast: the count as a fact; damage stays per hit (rarely do all land). -->
         <div v-if="s.d.count" class="skill-slot-stat">
           <dt>{{ s.d.count.text }}</dt>
-          <dd>{{ range((s.d.vs || s.d).all || (s.d.vs || s.d).total) }}</dd>
-          <dd class="res">if all hit</dd>
+          <dd>{{ range((s.d.vs || s.d).total) }}</dd>
+          <dd class="res">each</dd>
         </div>
         <div v-for="p in (s.d.vs ? s.d.vs.parts : s.d.parts)" :key="p.element" class="skill-slot-stat">
           <dt :class="'el-' + p.element">{{ p.element[0].toUpperCase() + p.element.slice(1) }}</dt>
@@ -88,7 +88,7 @@ const hasDetails = (s) => !!s.d?.total;
           <dd class="res"></dd>
         </div>
       </dl>
-      <p v-if="s.d?.count" class="skill-slot-note">Damage is for one; the "if all hit" figure is an upper bound. Spread, range and timing decide how many land on one monster, and poison doesn't stack per hit.</p>
+      <p v-if="s.d?.count" class="skill-slot-note">Damage is for one hit. Spread, range and timing decide how many land on one monster (rarely all of them), and poison doesn't stack per hit.</p>
       <p v-if="s.d?.kind === 'spell'" class="skill-slot-note">Includes spell bonuses.</p>
       </div>
       <small v-for="l in s.d?.total ? [] : (s.d?.lines || []).slice(0, 2)" class="skill-slot-line">{{ l }}</small>

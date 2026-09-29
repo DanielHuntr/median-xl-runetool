@@ -30,6 +30,11 @@ if (ms.size !== 424) throw new Error(`monstats.bin records are ${ms.size} bytes,
 const ml = readBin(mpq.read("data/global/excel/monlvl.bin"));
 if (ml.size !== 120) throw new Error(`monlvl.bin records are ${ml.size} bytes, expected 120 (D2 1.13c)`);
 const levelDefense = (level, k) => (level > 0 && level < ml.count ? ml.record(level).readInt32LE(k * 4) : 0);
+// To-hit and damage the same way: monstats 0xC2 (A1TH) and 0xDA/0xE0 (A1MinD/A1MaxD) ×3 are
+// percentages of monlvl.bin's to-hit (int32 columns 6-8) and damage (18-20) for the level
+// (D2MOO's layout, in order after defense; checked: a Hell Ghoul, level 110, to-hit 3519,
+// 172-403 damage). The monster's first attack; its other attacks and spells aren't read.
+const levelColumn = (level, col, k) => (level > 0 && level < ml.count ? ml.record(level).readInt32LE((col + k) * 4) : 0);
 
 const RES = ["physical", "magic", "fire", "lightning", "cold", "poison"];
 const bit = (f, n) => ((f >>> n) & 1) === 1;
@@ -52,8 +57,11 @@ for (let id = 0; id < ms.count; id++) {
   seen.add(key);
   const acPct = three(r, 0xbc);
   const def = levels.map((l, k) => Math.floor((acPct[k] * levelDefense(l, k)) / 100));
+  const thPct = three(r, 0xc2), minPct = three(r, 0xda), maxPct = three(r, 0xe0);
+  const toHit = levels.map((l, k) => Math.floor((thPct[k] * levelColumn(l, 6, k)) / 100));
+  const damage = levels.map((l, k) => [Math.floor((minPct[k] * levelColumn(l, 18, k)) / 100), Math.floor((maxPct[k] * levelColumn(l, 18, k)) / 100)]);
   out.push({
-    id, name, levels, res, def,
+    id, name, levels, res, def, toHit, damage,
     ...(bit(flags, 6) ? { boss: true } : {}),
     ...(bit(flags, 13) ? { demon: true } : {}),
     ...(bit(flags, 11) || bit(flags, 12) ? { undead: true } : {}),

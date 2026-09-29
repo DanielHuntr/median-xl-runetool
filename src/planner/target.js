@@ -70,7 +70,10 @@ export function typicalTarget(monsters, difficulty) {
   };
   const res = Object.fromEntries(ELEMENTS.map((e) => [e, [0, 1, 2].map((k) => (k === d ? median(pool.map((m) => m.res[e][d])) : 0))]));
   const third = (f) => [0, 1, 2].map((k) => (k === d ? median(pool.map(f)) : 0));
-  return { id: "typical", name: `Typical ${difficulty} monster`, typical: true, count: pool.length, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}) };
+  // Its first attack's to-hit and average damage per hit (extract-monsters.mjs), for how much
+  // of a hit gets through a character's defense and damage reduction (rating.js).
+  const withHit = pool.some((m) => m.toHit) ? { toHit: third((m) => m.toHit?.[d] ?? 0), hit: third((m) => (m.damage?.[d] ? (m.damage[d][0] + m.damage[d][1]) / 2 : 0)) } : {};
+  return { id: "typical", name: `Typical ${difficulty} monster`, typical: true, count: pool.length, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}), ...withHit };
 }
 
 /**

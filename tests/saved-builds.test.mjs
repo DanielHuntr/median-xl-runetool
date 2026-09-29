@@ -233,29 +233,33 @@ test('starter builds have tiers: every non-summon build rated S to F, best score
   for (const p of rated) assert.ok(p.summary.rating.dps > 0 && p.summary.rating.ehp > 0, p.name);
 });
 
-test('found-gear versions use found gear only; builds carry charms, a teleport or utility skill, and tiers per criterion', async () => {
+test('levelling stages use found gear only; builds carry charms, a teleport or utility skill, and tiers per criterion', async () => {
   const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom', logLevel: 'error' });
   try {
     const planner = JSON.parse(await readFile(new URL('../public/planner/data.json', import.meta.url), 'utf8'));
     const { presets } = JSON.parse(await readFile(new URL('../src/data/preset-builds.json', import.meta.url), 'utf8'));
+    const { stages } = JSON.parse(await readFile(new URL('../src/data/preset-stages.json', import.meta.url), 'utf8'));
     const data = await vite.ssrLoadModule('/src/data/index.js');
     const { createCatalog } = await vite.ssrLoadModule('/src/planner/items.js');
     const { createAvailability } = await vite.ssrLoadModule('/src/planner/availability.js');
     const catalog = createCatalog(data, planner);
     const avail = createAvailability(catalog, catalog.all().filter((d) => d.kind === 'socketable').map((d) => [d.name, d.kindLabel, d.lvl]));
-    const withFound = presets.filter((p) => p.found?.build);
-    assert.ok(withFound.length >= presets.length - 3, `${withFound.length} of ${presets.length} have a found-gear version`);
-    for (const p of withFound) {
-      const b = p.found.build;
+    // The levelling stages: what a player finds on the way (availability.js). The endgame is
+    // best in slot, as the community's guides give it.
+    assert.ok(presets.every((p) => !p.found), 'no separate found-gear version');
+    const staged = presets.flatMap((p) => (stages[p.id] || []).filter((s) => s.build).map((s) => ({ p, s })));
+    assert.ok(staged.length >= presets.length * 3, `${staged.length} levelling stages`);
+    for (const { p, s } of staged) {
+      const b = s.build, at = `${p.name} (level ${s.level})`;
       for (const [slot, st] of Object.entries(b.gear)) {
         const d = catalog.get(st.ref);
-        assert.ok(avail.found(d), `${p.name} (found gear): ${d?.name} in ${slot}`);
-        for (const s of st.sockets || []) if (s) assert.ok(avail.found(catalog.get(s)), `${p.name} (found gear): ${catalog.get(s)?.name} socketed in ${slot}`);
+        assert.ok(avail.found(d), `${at}: ${d?.name} in ${slot}`);
+        for (const x of st.sockets || []) if (x) assert.ok(avail.found(catalog.get(x)), `${at}: ${catalog.get(x)?.name} socketed in ${slot}`);
       }
-      for (const it of b.inventory || []) assert.ok(avail.found(catalog.get(it.ref)), `${p.name} (found gear): ${catalog.get(it.ref)?.name} carried`);
+      for (const it of b.inventory || []) assert.ok(avail.found(catalog.get(it.ref)), `${at}: ${catalog.get(it.ref)?.name} carried`);
     }
     // Nothing that gives another class's skills (items.js otherClassSkills).
-    for (const p of presets) for (const b of [p.build, p.found?.build].filter(Boolean))
+    for (const p of presets) for (const b of [p.build, ...(stages[p.id] || []).map((s) => s.build)].filter(Boolean))
       for (const st of [...Object.values(b.gear), ...(b.inventory || [])]) {
         const d = catalog.get(st.ref);
         assert.ok(catalog.forClass(d, p.cls), `${p.name}: ${d?.name} gives ${catalog.otherClassSkills(d, p.cls).join(", ")}`);
@@ -278,7 +282,7 @@ test('no starter build wears an item mostly for stats it can\'t use (relevance.j
     const env = await ratingEnv(load, planner, await load('/src/data/index.js'));
     const { buildUse, lineWaste, mostlyWasted } = await load('/src/planner/relevance.js');
     const bad = [];
-    for (const p of presets) for (const b of [p.build, p.found?.build].filter(Boolean)) {
+    for (const p of presets) for (const b of [p.build]) {
       const use = buildUse(b, env);
       for (const [slot, st] of Object.entries(b.gear)) {
         const r = env.catalog.resolve(st, b.level);
