@@ -12,6 +12,8 @@ const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Pal
 const cls = ref(''), tier = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
 const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} ${b.tree || ''} ${(b.skills || []).join(' ')}`.toLowerCase().includes(query.value.trim().toLowerCase());
 const saved = computed(() => builds.value.filter(matches));
+// "How these work": the starter builds' explanation, in a dialog.
+const helpDialog = ref(null);
 // A saved build's own tier (its author's, inside the build) and what the estimate compared it with.
 const authorTierOf = (b) => { const t = decodeBuild(b.code)?.authorTier; return /^[SABCDF]$/.test(t || '') ? t : ''; };
 const estimateNote = (e) => `Bossing ${e.bossTier ?? '?'} · Clearing ${e.clearTier ?? '?'} · Survival ${e.surviveTier ?? '?'}, estimated among the starter builds at ${e.against?.level === 150 ? 'endgame' : `level ${e.against?.level ?? '?'} · ${e.against?.difficulty ?? ''}`} when saved`;
@@ -118,9 +120,36 @@ function deleteBuild(id) {
       </article>
     </div>
     </section>
-    <h2 class="starter-title">Starter builds</h2>
-    <p class="muted">Generated with the planner for patch {{ presets.patch }}. These are starting points, not builds verified in game.
-      Tiers, from S (best) to F, compare them with each other on what the community's tier lists weigh: bossing (damage per second to a typical Hell monster, one at a time), clearing (the same on packs, from each skill's reach) and survival (effective life through resistances, avoid and block), with attack and cast speed breakpoints, hit chance, cooldowns and whether it can pay for its casting in mana. Summon builds aren't rated yet. <b>Stage</b>: Endgame shows each build in its best gear; Normal, Nightmare and Hell show its levelling stages (levels 50, 100 and 125), on gear a player finds on the way without trading for the rarest drops (no sacred uniques, high runes, late sets or uber charms). Opening one keeps your current build for that class aside, to go back to. Each opens with its levelling stages (Normal, Nightmare, Hell and Endgame) to switch between in the planner.</p>
+    <div class="starter-head">
+      <h2 class="starter-title">Starter builds</h2>
+      <button type="button" class="btn" aria-haspopup="dialog" @click="helpDialog?.showModal()">How these work</button>
+    </div>
+    <p class="muted">Generated with the planner for patch {{ presets.patch }}: starting points, not builds verified in game.</p>
+    <!-- What the tiers, stages and estimates mean, on request rather than above the list. -->
+    <dialog ref="helpDialog" class="item-picker starter-help" aria-labelledby="starter-help-title" @click="(e) => e.target === helpDialog && helpDialog.close()">
+      <div class="picker-content">
+        <div class="drawer-header">
+          <h2 id="starter-help-title">How the starter builds work</h2>
+          <button type="button" class="icon-btn" aria-label="Close" @click="helpDialog.close()">&times;</button>
+        </div>
+        <h3>Tiers</h3>
+        <p>From S (best) to F, each build against the others on what the community's tier lists weigh:</p>
+        <ul>
+          <li><b>Bossing:</b> damage per second to the difficulty's typical boss, one at a time.</li>
+          <li><b>Clearing:</b> the same on packs of its typical monster, from each skill's reach.</li>
+          <li><b>Survival:</b> effective life through resistances, defense, avoid and block.</li>
+        </ul>
+        <p>Counted in: attack and cast speed breakpoints, hit chance, cooldowns, whether it can pay for its casting in mana, debuffs, procs and crushing blow. Summon builds aren't rated yet.</p>
+        <h3>Stages</h3>
+        <p><b>Endgame</b> shows each build in its best gear. <b>Normal</b>, <b>Nightmare</b> and <b>Hell</b> show its levelling stages (levels 50, 100 and 125), on gear a player finds on the way without trading for the rarest drops (no sacred uniques, high runes, late sets or uber charms), each rated among the builds at the same stage.</p>
+        <h3>Estimates</h3>
+        <p>Every number is the planner's estimate from the game files. Where an item or skill effect is only described in words, the estimate assumes what it does; those cards carry an <b>Estimate</b> tag, and "Details" says what's assumed.</p>
+        <h3>Your own builds</h3>
+        <p>The planner estimates any build's tier the same way, among the starter builds at its stage, and you can give it your own tier; both are saved and shared with it.</p>
+        <h3>Opening a build</h3>
+        <p>It opens in the planner with its levelling stages to switch between. Your current build for that class is kept aside, to go back to.</p>
+      </div>
+    </dialog>
     <p v-if="!starters.length" class="muted">No starter builds match these filters.</p>
     <section v-for="g in starterGroups" :key="g.cls" class="starter-group" :aria-label="`${g.cls} starter builds`">
     <h3 class="starter-class">{{ g.cls }} <span class="muted">{{ g.builds.length }}</span></h3>
@@ -183,6 +212,12 @@ function deleteBuild(id) {
 .build-card.mine:focus-within { border-color:var(--gold); box-shadow:0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent) inset, 0 0 18px color-mix(in srgb, var(--gold) 16%, transparent); }
 .mine-edited { margin:4px 0 0; color:var(--muted); font-size:.75rem; }
 .starter-title { margin-top:28px; }
+.starter-head { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:8px 16px; }
+.starter-head .starter-title { margin-bottom:0; }
+.starter-help { width:min(640px, calc(100vw - 32px)); max-width:min(640px, calc(100vw - 32px)); }
+.starter-help h3 { margin:16px 0 6px; font-family:var(--serif); color:var(--gold); font-size:1rem; }
+.starter-help p, .starter-help li { font-size:.875rem; line-height:1.55; }
+.starter-help ul { margin:0 0 8px; padding-left:20px; }
 /* The class art fills the card's right side. It sits in its own
    clipped layer so the skill tooltips can still reach past the card's edge. */
 .build-card { position:relative; padding:24px calc(40% + 8px) 24px 24px; border:1px solid var(--border); border-radius:8px; background:var(--panel); overflow:visible; }
