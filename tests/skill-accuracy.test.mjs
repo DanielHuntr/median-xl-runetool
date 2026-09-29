@@ -486,3 +486,16 @@ test("Death Pact's tree bonuses agree with MedianDB's planner for a real build",
   for (const text of ["+47% to Weapon Physical Damage", "+1% to Attack Speed", "+2% to Spell Damage", "+34 to Mana"]) assert.ok(shown.includes(text), text);
   assert.ok(!shown.includes("Summon Elemental Resistances"), "0% line hidden");
 });
+
+test("element tags follow the game files: the damage table's element, never one its tooltip doesn't name", () => {
+  const tags = (id) => data.skills[id].tags;
+  // Parasite's damage and conversion are magic in game (issue #27); MedianDB tagged it Fire.
+  assert.ok(tags("parasite").includes("Magic") && !tags("parasite").includes("Fire"));
+  assert.ok(tags("earthquake").includes("Magic"), "added where MedianDB had none");
+  assert.ok(tags("stampede").includes("Lightning") && tags("stampede").includes("Magic"), "a tag its tooltip names stays");
+  const E = ["Fire", "Cold", "Lightning", "Poison", "Magic"];
+  for (const [id, s] of Object.entries(data.skills)) {
+    const own = E.find((e) => e.toLowerCase() === s.game?.elem?.type);
+    if (own) assert.ok(s.tags.includes(own), `${id}: ${own}`);
+  }
+});

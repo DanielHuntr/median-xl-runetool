@@ -83,7 +83,7 @@ export function mergeGameData(data, extract, fixtures = null) {
     const m = middle(classIds[s.class]);
     return copies.sort((a, b) => Math.abs(a.gameId - m) - Math.abs(b.gameId - m))[0];
   }
-  const report = { paired: 0, unpaired: [], capDiffers: [], reqLevelDiffers: [], formulaChecks: { matches: 0, differs: [], unchecked: [] } };
+  const report = { paired: 0, unpaired: [], capDiffers: [], reqLevelDiffers: [], tagFixes: [], formulaChecks: { matches: 0, differs: [], unchecked: [] } };
   for (const [id, s] of Object.entries(data.skills)) {
     const g = byName.get(`${s.name}|${s.class}`) ?? byName.get(s.name) ?? unclassed(s);
     if (!g) {
@@ -111,6 +111,8 @@ export function mergeGameData(data, extract, fixtures = null) {
       // The game's own tooltip lines: per-level, extra and synergy blocks.
       lines: g.lines || [],
     };
+    const tagFix = elementTags(s, g);
+    if (tagFix) report.tagFixes.push({ id, name: s.name, ...tagFix });
     if (!noPoints && g.baseCap !== s.max) report.capDiffers.push({ id, name: s.name, medianDb: s.max, game: g.baseCap });
     // Cross-check MedianDB formulas that have a game passive-stat equivalent.
     for (const row of s.constants) {
@@ -149,10 +151,28 @@ export function mergeGameData(data, extract, fixtures = null) {
       formulaMatches: report.formulaChecks.matches,
       formulaDiffers: report.formulaChecks.differs,
       formulaUnchecked: report.formulaChecks.unchecked,
+      tagFixes: report.tagFixes,
     },
   };
   data.fixtures = fixtures?.fixtures ?? [];
   return report;
+}
+
+// A skill's element tags, game data first: the element of its damage table (elem.type) is
+// added when MedianDB's tags leave it out (Earthquake: magic), and an element tag is dropped
+// when the skill has a damage table and nothing in its game tooltip names that element
+// (Parasite's "Fire": its damage and conversion are magic, GitHub issue #27). A tag its
+// tooltip does name stays (Stampede's "Magic"). Gear suggestions and the rating read these.
+const ELEMENT_TAGS = ["Fire", "Cold", "Lightning", "Poison", "Magic"];
+function elementTags(s, g) {
+  const own = ELEMENT_TAGS.find((e) => e.toLowerCase() === g.elem?.type);
+  if (!own) return null;
+  const text = (g.lines || []).map((l) => `${l.textA || ""} ${l.textB || ""}`).join(" ").toLowerCase();
+  const dropped = s.tags.filter((t) => ELEMENT_TAGS.includes(t) && t !== own && !text.includes(t.toLowerCase()));
+  const added = s.tags.includes(own) ? [] : [own];
+  if (!added.length && !dropped.length) return null;
+  s.tags = [...s.tags.filter((t) => !dropped.includes(t)), ...added];
+  return { added, dropped };
 }
 
 // Evaluates a MedianDB formula and the game's passive-stat formula on a grid of
