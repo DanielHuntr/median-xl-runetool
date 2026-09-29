@@ -157,14 +157,17 @@ function procsOf(c, planner) {
 // and restrictions too ("Deal no Elemental Damage"; spells, where only melee, summon and support
 // skills may be used). A skill "Nullified" is lost.
 const AREA = /in an Area|Area Effect|Explod|Nova|area/i;
-// Skills whose missile deals its damage again and again as it travels, read from the game's
-// missiles.bin (Diablo II 1.13c layout: life at 0x96, sub-missile at 0x18, its spawn interval in
-// Param1 at 0x38): the missile's life in frames over how often it drops a damaging burst. Taken
-// at its best case, every burst hitting the target (shown as assumed).
-//   Hammer of Zerae (missile 2586, "blessedhammer"): 85 frames, a lightning nova (2587) every
-//   frame: 85 hits. With "Deals Weapon Damage in an Area as it Travels" (Echoing Fury; missile
-//   5502): a weapon damage burst (5504) every 2 frames: 42.
-const TRAVEL_HITS = { hammer_of_zerae: { hits: 85, travelling: 42 } };
+// Skills whose missile drops damaging bursts as it travels, from the game's missiles.bin
+// (scripts/dev/decode-missiles.mjs): a monster is hit by the bursts dropped while the missile is
+// within the burst's reach of it, not by all of them. An estimate (shown as assumed): the
+// missile's speed and the burst's radius in Diablo II's usual units (eighths of a sub-tile a
+// frame; sub-tiles), passing a monster once or twice as it spirals out.
+//   Hammer of Zerae (missile 2586, "blessedhammer"): 85 frames at speed 35-84, a lightning nova
+//   (2587, radius 3) every frame: about 3 hits on a monster in its path. With "Deals Weapon
+//   Damage in an Area as it Travels" (Echoing Fury; missile 5502): a weapon damage burst (5504,
+//   radius 1) every 2 frames: about 2. (Every burst hitting would be 85 and 42: the Sin War
+//   ladder's Storm Amazons, few and middling, don't bear that out.)
+const TRAVEL_HITS = { hammer_of_zerae: { hits: 3, travelling: 2 } };
 function itemEffectsOn(id, kind, c, engine) {
   const fx = { mult: 1, adds: [], targetsAdd: 0, targetsMult: 1, minTargets: 0, cdCut: 0, nullified: false, physicalOnly: false, ignoreDefense: false, hits: 1, assumed: [] };
   const travel = TRAVEL_HITS[id];
@@ -205,7 +208,7 @@ function itemEffectsOn(id, kind, c, engine) {
     else if (AREA.test(t)) { fx.minTargets = Math.max(fx.minTargets, 4); fx.assumed.push(`${t}: reaches a pack`); }
     else if (/Pierce/i.test(t)) { fx.minTargets = Math.max(fx.minTargets, 2.5); fx.assumed.push(`${t}: reaches a few`); }
   }
-  if (travel) fx.assumed.push(`${name}: best case, every burst it drops as it travels hits (${fx.hits} per cast)`);
+  if (travel) fx.assumed.push(`${name}: about ${fx.hits} of the bursts it drops as it travels hit a monster in its path (estimated from the game's missile data)`);
   return fx;
 }
 
