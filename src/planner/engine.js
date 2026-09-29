@@ -90,7 +90,9 @@ export function createEngine(data) {
   }
   const node = (b, id) => nodesByClass[b.cls]?.get(id);
   const nodes = (b) => [...(nodesByClass[b.cls]?.values() || [])];
-  const pts = (b, id) => b.points[id] || 0;
+  // A skill's level from points, or for one an item grants from outside the class's tree
+  // (character.js itemSkills), the item's level.
+  const pts = (b, id) => b.points[id] || b.itemSkills?.[id] || 0;
   const skillName = (id) => skills[id]?.name || data.skillNames?.[id] || String(id).replace(/_/g, " ");
   const isInnate = (s) => s.tabName === "Innate" || /innate/i.test(s.id);
 

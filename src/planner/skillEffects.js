@@ -83,10 +83,11 @@ export const PASSIVE_STATS = {
   485: ['spell_focus'], 487: ['summoned_minion_resistances'],
 };
 export function activeSkillIds(build, engine) {
-  const available = id => !!engine.node(build, id) && ((build.points[id] || 0) > 0 || engine.isInnate(id));
+  // Learned (or innate) skills of the class, and skills an item grants (character.js itemSkills).
+  const available = id => (!!engine.node(build, id) && ((build.points[id] || 0) > 0 || engine.isInnate(id))) || (build.itemSkills?.[id] || 0) > 0;
   const toggled = (build.buffs || []).filter(id => available(id) && isToggleSkill(engine.skill(id)));
   const last = tag => toggled.filter(id => engine.skill(id).tags.includes(tag)).at(-1);
-  return [...new Set([...Object.keys(build.points), ...toggled])].filter(id => {
+  return [...new Set([...Object.keys(build.points), ...Object.keys(build.itemSkills || {}), ...toggled])].filter(id => {
     if (!available(id)) return false;
     const skill = engine.skill(id);
     if (!skillEquipmentFits(skill, build.charStats)) return false;

@@ -28,6 +28,7 @@ import { publishPresets } from "./lib/publish-presets.mjs";
 import { planTrees } from "./lib/preset-plan.mjs";
 import { ratePresets, ratingEnv, summonPowerOf } from "./lib/rate-presets.mjs";
 import { refineBuild } from "./lib/refine.mjs";
+import { ORB_BUDGET } from "./lib/stage-rules.mjs";
 import { probePointScaling } from "./lib/point-scaling.mjs";
 import { effectScope } from "vue";
 
@@ -83,6 +84,22 @@ try {
   const catalog = createCatalog(data, planner);
   const { createAvailability } = await load("/src/planner/availability.js");
   const relevance = await load("/src/planner/relevance.js");
+  // The generator's measure of a finished endgame build (buildAt's score, against Hell), for
+  // comparing it with the build already published under the same id.
+  const endgameValue = (def, b) => {
+    const m = renv.rating.buildMetrics(b, renv);
+    const c = computeCharacter(b, { engine, catalog, planner });
+    const use = relevance.buildUse(b, renv);
+    const waste = Object.values(b.gear).reduce((n, st) => n + relevance.wastedLines(catalog.resolve(st, b.level), use), 0);
+    const summons = def.summoner || m.unrated ? summonPowerOf(b, [def.main, def.right], { engine, catalog, planner, computeCharacter }) : 0;
+    return renv.rating.buildValue(m, { summonPower: summons }) + combatScore(b, c, engine, buildProfile(b, engine)).sustainScore - 1.2 * waste;
+  };
+  const previous = new Map((JSON.parse(await readFile("src/data/preset-builds.json", "utf8").catch(() => '{"presets":[]}')).presets || []).map((x) => [x.id, x.build]));
+  // What gear costs to get at a stage (ease.js), and what else each slot could wear
+  // (refine.mjs), by build id: { endgame, [stage level] }, published beside the builds.
+  const easeMod = await load("/src/planner/ease.js");
+  const runeLevels = easeMod.runeLevels(catalog);
+  const alternatives = {};
   const foundGear = createAvailability(catalog, catalog.all().filter((d) => d.kind === "socketable").map((d) => [d.name, d.kindLabel, d.lvl]));
   const gameIds = new Map(Object.entries(planner.skills).filter(([, s]) => s.game).map(([id, s]) => [s.game.gameId, id]));
   // Skills a skill's formulas read: its synergies and upgrades (game files and MedianDB).
@@ -98,7 +115,7 @@ try {
   // Damage of one skill: every hit if it repeats, against the typical Hell monster too.
   const damage = (b, id) => {
     const c = computeCharacter(b, { engine, catalog, planner });
-    const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, charStats: c.charStats }, character: c });
+    const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, character: c });
     const vs = d && againstTarget(d, c, target, "Hell");
     // Per hit: a repeating skill's hits rarely all land on one target.
     return { d, vsParts: vs?.parts || [], raw: d?.total?.[1] ?? 0, vs: vs?.total?.[1] ?? 0 };
@@ -132,7 +149,7 @@ try {
       // targets" at 1 point, 15 at 25): that responds to the player's choice too.
       const reach = (n) => {
         const c = computeCharacter({ ...b, points: { ...b.points, [id]: n } }, { engine, catalog, planner });
-        const text = engine.describe({ ...b, points: { ...b.points, [id]: n }, soft: c.soft, charStats: c.charStats }, id, n).effect.map((l) => l.text).join(" ");
+        const text = engine.describe({ ...b, points: { ...b.points, [id]: n }, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, id, n).effect.map((l) => l.text).join(" ");
         return Number(/up to (\d+) (?:targets|enemies|monsters)/i.exec(text)?.[1] || 0);
       };
       // Or how many hits a cast makes (Magic Missiles' bolts): per-hit damage stays put.
@@ -182,7 +199,7 @@ try {
   const targets = Object.fromEntries(["Normal", "Nightmare", "Hell"].map((d) => [d, typicalTarget(planner.monsters, d)]));
   const damageIn = (b, id, difficulty) => {
     const c = computeCharacter(b, { engine, catalog, planner });
-    const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, charStats: c.charStats }, character: c });
+    const d = skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, character: c });
     const vs = d && againstTarget(d, c, targets[difficulty], difficulty);
     return vs?.total?.[1] ?? 0;
   };
@@ -276,7 +293,6 @@ try {
   // or a stage of its levelling guide. Problems go to `sink`.
   // Orbs a levelling stage may put on one item (a levelling player doesn't stack dozens); the
   // endgame build has no budget.
-  const ORB_BUDGET = { Normal: 2, Nightmare: 5, Hell: 10 };
   async function buildAt(def, level, difficulty, final, sink, { minTiers = null, minGemLevel = 0, keepGear = null, found = false } = {}) {
     memory.clear();
     const scope = effectScope();
@@ -519,9 +535,15 @@ try {
     // Gear, charms and relics, sets and attributes by the build's own measure (refine.mjs).
     {
       const changes = [], tRef = Date.now();
-      refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null,
-        use: relevance.buildUse(p.build.value, renvD), wastedLines: relevance.wastedLines, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log: (t) => changes.push(t) });
-      if (final || changes.length) console.log(`   refined (level ${level}): ${changes.length} changes${changes.length ? `: ${changes.slice(0, 8).join("; ")}${changes.length > 8 ? " …" : ""}` : ""}`);
+      const weight = easeMod.crystalWeight(level);
+      const ease = weight ? (st) => weight * easeMod.easeOf(st, { catalog, level, difficulty, runes: runeLevels }).crystals : null;
+      const measure = (b) => { const m = renv.rating.buildMetrics(b, renvD); return { boss: m.boss || 0, clear: m.clear || 0, ehp: m.ehp || 0 }; };
+      // The class's innate buff (planner.skills: tab "Innate"), tried on and off by the measure.
+      const innate = Object.entries(planner.skills).filter(([, x]) => x.class === def.cls && x.tabName === "Innate" && x.tags.includes("Buff")).map(([id]) => id);
+      const refined = refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null, ease, measure, optionalBuffs: innate,
+        use: relevance.buildUse(p.build.value, renvD), wastedLines: relevance.wastedLines, mostlyWasted: relevance.mostlyWasted, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log: (t) => changes.push(t) });
+      (alternatives[def.id] ??= {})[level < LEVEL ? level : "endgame"] = refined.alternatives;
+      if (final || changes.length) console.log(`   refined (level ${level}): ${changes.length} changes${changes.length ? `: ${(process.env.VERBOSE ? changes : changes.slice(0, 8)).join("; ")}${changes.length > 8 && !process.env.VERBOSE ? " …" : ""}` : ""}`);
       if (process.env.PROFILE) console.log(`   [time] refine ${((Date.now() - tRef) / 1000).toFixed(1)}s`);
       if (notesEssentials.length && final) console.log(`   utility: ${notesEssentials.join(", ")}`);
     }
@@ -579,6 +601,7 @@ try {
     if (done[def.id]) {
       out.push(done[def.id].preset);
       if (done[def.id].stages) stages[def.id] = done[def.id].stages;
+      if (done[def.id].alternatives) alternatives[def.id] = done[def.id].alternatives;
       problems.push(...done[def.id].problems);
       continue;
     }
@@ -590,12 +613,31 @@ try {
 ${def.name}: levelling stages`);
       out.push(pub);
       if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, pub.build);
-      done[def.id] = { preset: pub, stages: stages[def.id] || null, problems: problems.slice(before) };
+      done[def.id] = { preset: pub, stages: stages[def.id] || null, alternatives: alternatives[def.id] || null, problems: problems.slice(before) };
       await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
       continue;
     }
     const { p, scope, count, t0 } = await buildAt(def, LEVEL, "Hell", true, problems);
-    const b = JSON.parse(JSON.stringify(p.build.value));
+    let b = JSON.parse(JSON.stringify(p.build.value));
+    // Never worse than the build it replaces. The generator improves one thing at a time from
+    // its own start and can settle lower than a run before it did (Hammer of Zerae lost its
+    // flat damage reduction for 100% movement): the published build, with its class's innate
+    // buff tried on as well, is kept when it measures better and can still be worn as it is.
+    {
+      const prev = previous.get(def.id);
+      if (prev && prev.cls === b.cls && prev.level === b.level) {
+        const innate = Object.entries(planner.skills).filter(([, x]) => x.class === def.cls && x.tabName === "Innate" && x.tags.includes("Buff")).map(([id]) => id);
+        const env = { engine, catalog, planner };
+        const tries = [prev, ...innate.filter((id) => !prev.buffs.includes(id)).map((id) => ({ ...prev, buffs: [...prev.buffs, id] }))]
+          .filter((x) => wearableBothSets(x, env) && engine.spent(x) === engine.available(x));
+        const best = tries.map((x) => ({ x, v: endgameValue(def, x) })).sort((a, z) => z.v - a.v)[0];
+        const now = endgameValue(def, b);
+        if (best && best.v > now + 0.05) {
+          console.log(`   kept the published build: ${best.v.toFixed(1)} against this run's ${now.toFixed(1)}`);
+          b = JSON.parse(JSON.stringify(best.x));
+        }
+      }
+    }
     const c = computeCharacter(b, { engine, catalog, planner });
     if (engine.spent(b) !== engine.available(b)) problems.push(`${def.name}: ${engine.available(b) - engine.spent(b)} skill points remain unspent`);
     if (c.statPoints.signets !== c.statPoints.signetCap) problems.push(`${def.name}: signets are not at the available cap`);
@@ -611,7 +653,7 @@ ${def.name}: levelling stages`);
     if (def.summoner) for (const id of [def.main, def.right].filter(Boolean)) {
       // Summons: their numbers must respond to points in them.
       const c0 = computeCharacter(b, { engine, catalog, planner });
-      const at = (n) => JSON.stringify(engine.skillValues({ ...b, points: { ...b.points, [id]: n }, soft: c0.soft, charStats: c0.charStats }, id));
+      const at = (n) => JSON.stringify(engine.skillValues({ ...b, points: { ...b.points, [id]: n }, soft: c0.soft, itemSkills: c0.itemSkills, charStats: c0.charStats }, id));
       if (b.points[id] > 1 && at(b.points[id]) === at(b.points[id] - 1)) problems.push(`${def.name}: ${engine.skillName(id)}'s values don't change with points`);
     }
     // The right-hand skill is checked like the bar's: it must respond to something the player
@@ -631,7 +673,7 @@ ${def.name}: levelling stages`);
       bar: b.skillBar.map((id) => engine.skillName(id)),
       // The card's skill icons and what their hover shows (the Builds page has no skill data).
       icons: [[def.main, "Left skill"], [def.right, "Right skill"], ...b.skillBar.map((id) => [id, "Skill bar"])].filter(([id]) => id).map(([id, slot]) => {
-        const sb = { ...b, soft: c.soft, charStats: c.charStats }, sk = engine.skill(id), d = damage(b, id);
+        const sb = { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, sk = engine.skill(id), d = damage(b, id);
         const lines = engine.describe(sb, id, b.points[id] || 0).effect.filter((l) => l.status !== "unknown" && l.text && !l.heading).map((l) => l.text).slice(0, 6);
         return { id, slot, name: sk.name, image: sk.image, points: b.points[id] || 0, soft: c.soft[id] || 0,
           ...(b.buffs.includes(id) ? { active: true } : {}), description: sk.description?.[0] || "", lines,
@@ -647,7 +689,7 @@ ${def.name}: levelling stages`);
       skills: [def.main, def.right, ...b.skillBar].filter(Boolean).map((id) => engine.skillName(id)), summary, build: b });
     if (!process.env.NO_STAGES) stages[def.id] = await levellingGuide(def, b);
     if (!only.length) {
-      done[def.id] = { preset: out.at(-1), stages: stages[def.id] || null, problems: problems.slice(before) };
+      done[def.id] = { preset: out.at(-1), stages: stages[def.id] || null, alternatives: alternatives[def.id] || null, problems: problems.slice(before) };
       await writeFile(PROGRESS, JSON.stringify({ patch: planner.game?.patch, done }));
     }
   }
@@ -667,7 +709,7 @@ shard ${shardK}/${shardN}: ${out.length} presets saved to ${PROGRESS}`);
     // TRIAL_OUT=file: the builds and their guides go to that file alone, for the audit's --from
     // (a trial of a generator change on a few builds before remaking them all).
     if (process.env.TRIAL_OUT) {
-      await writeFile(process.env.TRIAL_OUT, JSON.stringify({ presets: out, stages }));
+      await writeFile(process.env.TRIAL_OUT, JSON.stringify({ presets: out, stages, alternatives }));
       console.log(`trial written to ${process.env.TRIAL_OUT}`);
     }
     // Otherwise their levelling guides are merged into the guides file (one build's guide can be

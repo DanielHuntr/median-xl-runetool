@@ -18,6 +18,7 @@
 import { createServer } from "vite";
 import { readFile, writeFile } from "node:fs/promises";
 import { ratingEnv, summonPowerOf } from "./lib/rate-presets.mjs";
+import { ORB_BUDGET } from "./lib/stage-rules.mjs";
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => { const [k, v] = a.replace(/^--/, "").split("="); return [k, v ?? true]; }));
 const only = args.only ? String(args.only).split(",") : null;
@@ -41,6 +42,8 @@ try {
   const { engine, catalog } = env0;
 
   const { buildUse, keyReason, mostlyWasted } = await load("/src/planner/relevance.js");
+  const { easeOf, crystalWeight, runeLevels } = await load("/src/planner/ease.js");
+  const runes = runeLevels(catalog);
   const profileOf = (b, env) => buildUse(b, env);
   function whyDead(p, prof, c) {
     const keys = p.kind === "stats" ? p.effects.map(([k]) => k) : [];
@@ -83,13 +86,16 @@ try {
   const pl = plScope.run(() => createPlanner(engine, catalog, planner));
   const add = async (p, label, b, difficulty) => {
     const env = envFor(difficulty);
-    // The generator's own measure: the rating plus life recovery (combatScore's sustain), and
-    // for a summoner its summons' own numbers.
+    // The generator's own measure: the rating plus life recovery (combatScore's sustain), for a
+    // summoner its summons' own numbers, and while levelling less what the gear costs to get
+    // (ease.js), as the generator counts it.
     const profile = buildProfile(b, engine);
+    const weight = crystalWeight(b.level);
+    const easeCost = (bb) => (weight ? Object.entries(bb.gear).reduce((n, [slot, st]) => n + (/2$/.test(slot) ? 0 : weight * easeOf(st, { catalog, level: bb.level, difficulty, runes }).crystals), 0) : 0);
     const value = (bb) => {
       const m = env.rating.buildMetrics(bb, env);
       const summons = p.summoner || m.unrated ? summonPowerOf(bb, [bb.leftSkill, bb.rightSkill], env) : 0;
-      return env.rating.buildValue(m, { summonPower: summons }) + combatScore(bb, env.computeCharacter(bb, env), engine, profile).sustainScore;
+      return env.rating.buildValue(m, { summonPower: summons }) + combatScore(bb, env.computeCharacter(bb, env), engine, profile).sustainScore - easeCost(bb);
     };
     const base = value(b), prof = profileOf(b, env), cBase = env.computeCharacter(b, env);
     const items = [];
@@ -127,7 +133,9 @@ try {
     if (bySlot.size) {
       pl.setClass(b.cls);
       pl.state.builds[b.cls] = JSON.parse(JSON.stringify(b));
-      pl.state.foundGear = label !== "best"; // the levelling stages are on found gear
+      // A levelling stage's rules, as the generator keeps them: found gear, orbs per item.
+      pl.state.foundGear = label !== "best";
+      pl.state.maxOrbsPerItem = label !== "best" ? ORB_BUDGET[difficulty] ?? null : null;
       for (const [slot, n] of bySlot) {
         for (const cand of pl.recommend(slot, 8)) {
           if (cand.def.key === b.gear[slot]?.ref) continue;

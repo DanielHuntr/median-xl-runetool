@@ -63,7 +63,21 @@ export function effectiveResist(res, pierce) {
 /** A made-up but representative target: the median resistances of ordinary (non-boss) monsters. */
 export function typicalTarget(monsters, difficulty) {
   const d = DIFFICULTY_INDEX[difficulty] ?? 2;
-  const pool = monsters.filter((m) => !m.boss && m.levels[d] > 0);
+  return typicalOf(monsters.filter((m) => !m.boss && m.levels[d] > 0), difficulty, "typical", `Typical ${difficulty} monster`);
+}
+
+/**
+ * The typical boss of a difficulty: the median of the monsters the game files flag as bosses.
+ * In Hell they resist about 60% of each element (ordinary monsters 35%) and 30% physical, which
+ * is why the build guides aim their pierce at bosses (rating.js measures bossing against this).
+ */
+export function typicalBoss(monsters, difficulty) {
+  const d = DIFFICULTY_INDEX[difficulty] ?? 2;
+  return typicalOf(monsters.filter((m) => m.boss && m.levels[d] > 0), difficulty, "typical-boss", `Typical ${difficulty} boss`);
+}
+
+function typicalOf(pool, difficulty, id, name) {
+  const d = DIFFICULTY_INDEX[difficulty] ?? 2;
   const median = (xs) => {
     const s = [...xs].sort((a, b) => a - b);
     return s.length ? s[Math.floor(s.length / 2)] : 0;
@@ -73,7 +87,9 @@ export function typicalTarget(monsters, difficulty) {
   // Its first attack's to-hit and average damage per hit (extract-monsters.mjs), for how much
   // of a hit gets through a character's defense and damage reduction (rating.js).
   const withHit = pool.some((m) => m.toHit) ? { toHit: third((m) => m.toHit?.[d] ?? 0), hit: third((m) => (m.damage?.[d] ? (m.damage[d][0] + m.damage[d][1]) / 2 : 0)) } : {};
-  return { id: "typical", name: `Typical ${difficulty} monster`, typical: true, count: pool.length, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}), ...withHit };
+  // Its life (extract-monsters.mjs), for crushing blow's share of current life (rating.js).
+  const life = pool.some((m) => m.life) ? { life: third((m) => m.life?.[d] ?? 0) } : {};
+  return { id, name, typical: true, count: pool.length, ...life, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}), ...withHit };
 }
 
 /**

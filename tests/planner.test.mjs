@@ -1836,3 +1836,17 @@ test("tier explanations name the strength and what holds a build back (tierWhy.j
   assert.equal(tierWhy({ ...typical, bossTier: "D", clearTier: "D", surviveTier: "D", sustain: 60 }, field), "Even across bossing, clearing and survival (D): mana for 60% of its casting.");
   assert.equal(tierWhy({ unrated: "summons" }, field), null);
 });
+
+test("a skill an item grants from outside the class works at the item's level, and its buff can be switched on", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const helm = catalog.all().find((d) => d.name === "Bul Kathos' Temper");
+  const at = (buffs) => computeCharacter(build("Barbarian", { level: 120, attrs: { strength: 400, dexterity: 100, vitality: 0, energy: 0 }, gear: { helm: { ref: helm.key } }, buffs }), { engine, catalog, planner });
+  const off = at([]), on = at(["lightning_shield"]);
+  // Its level: the item's own plus +all skills (the Oskill Index); not a Barbarian skill, so no points.
+  assert.ok(off.itemSkills.lightning_shield > 0, "Lightning Shield granted");
+  assert.equal(off.s("attacker_takes_lightning_damage"), 0);
+  assert.ok(on.s("attacker_takes_lightning_damage") > 0, "switched on, its effect counts");
+  // A skill of the class's own tree isn't an item skill (+skills to it are soft levels).
+  assert.ok(Object.keys(off.itemSkills).every((id) => !engine.node(build("Barbarian"), id)));
+});

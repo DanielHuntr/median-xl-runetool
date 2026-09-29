@@ -237,7 +237,7 @@ export function createPlanner(engine, catalog, planner) {
   const build = computed(() => state.builds[state.cls]);
   const character = computed(() => computeCharacter(build.value, { engine, catalog, planner }));
   // The build as skill rules and tooltips see it: +skills from gear become soft levels.
-  const skillBuild = computed(() => ({ ...build.value, soft: character.value.soft, charStats: character.value.charStats }));
+  const skillBuild = computed(() => ({ ...build.value, soft: character.value.soft, itemSkills: character.value.itemSkills, charStats: character.value.charStats }));
   // Item recommendations: the build's profile and the stats it values, recomputed as skills change.
   const profile = computed(() => buildProfile(build.value, engine));
   const profileSummary = computed(() => describeProfile(profile.value));

@@ -11,7 +11,7 @@ const ELEMENTS = ["fire", "cold", "lightning", "poison", "magic", "physical"];
 export function buildUse(b, env) {
   const { engine, computeCharacter, skillDamage } = env;
   const c = computeCharacter(b, env);
-  const sb = { ...b, soft: c.soft, charStats: c.charStats };
+  const sb = { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats };
   const out = { elements: new Set(), spell: false, attack: false, summon: false };
   for (const id of new Set([b.leftSkill, b.rightSkill, ...(b.skillBar || [])])) {
     if (!id) continue;

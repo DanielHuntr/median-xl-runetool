@@ -18,7 +18,7 @@ export function ratePresets(presets, env) {
 export function summonPowerOf(b, ids, { engine, catalog, planner, computeCharacter }) {
   const c = computeCharacter(b, { engine, catalog, planner });
   return ids.filter(Boolean).reduce((n, id) => {
-    const v = engine.skillValues({ ...b, soft: c.soft, charStats: c.charStats }, id);
+    const v = engine.skillValues({ ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, id);
     return n + Object.values(v).flat().filter((x) => typeof x === "number" && x > 0).reduce((a, x) => a + x, 0);
   }, 0);
 }

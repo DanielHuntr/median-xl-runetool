@@ -117,6 +117,8 @@ function deleteBuild(id) {
         <template v-if="endgame">
         <p v-if="ratingOf(b)?.bossTier" class="tier-criteria"><span v-for="[k, label] in CRITERIA" :key="k" :class="`tier-chip tier-${ratingOf(b)[k]}`">{{ label }} {{ ratingOf(b)[k] }}</span></p>
         <p v-if="why(b)" class="tier-why">{{ why(b) }}</p>
+        <!-- Item or skill effects the game files give only in words, counted by assumption (rating.js). -->
+        <p v-if="ratingOf(b)?.assumed?.length" class="tier-assumed">Estimate assumes: {{ ratingOf(b).assumed.join('; ') }}</p>
         <p v-if="ratingOf(b)?.tier" class="tier-note">{{ tierNote(ratingOf(b)) }}</p>
         </template>
         <p class="muted">{{ b.blurb }}</p>
@@ -212,6 +214,7 @@ function deleteBuild(id) {
 .tier-chip { padding:0 6px; border:1px solid currentColor; border-radius:3px; font:500 .6875rem/1.5 Inter, sans-serif; background:transparent !important; }
 .tier-note { font-size:.75rem; color:var(--muted); margin:-6px 0 8px; }
 .tier-why { font-size:.8125rem; margin:-2px 0 8px; }
+.tier-assumed { font-size:.75rem; color:var(--warn); margin:-4px 0 8px; }
 .build-card p { line-height:1.6; }
 .build-actions { margin-top:20px; }
 .build-skills { list-style:none; display:flex; flex-wrap:wrap; gap:6px; padding:0; margin:12px 0 4px; }

@@ -12,7 +12,7 @@ export function relativeSpeed(speed, weaponModifier = 0) {
 
 export function combatScore(build, character, engine, profile) {
   const c = character, s = c.s;
-  const skillBuild = { ...build, soft: c.soft, charStats: c.charStats };
+  const skillBuild = { ...build, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats };
   const selected = new Set([build.leftSkill, build.rightSkill, ...(build.skillBar || [])]);
   const skills = Object.keys(build.points).filter(id => build.points[id] > 0 && !engine.skill(id)?.tags.includes('Passive'));
   const attackRate = relativeSpeed(s('attack_speed'), c.weapon?.head.speedMod || 0);
@@ -52,7 +52,9 @@ export function combatScore(build, character, engine, profile) {
   const melee = c.weapon && !/Bows$|Crossbows$|Javelins$|Throwing/.test(c.weapon.def.cat || '');
   const onHit = s('life_on_striking') + (melee ? s('life_on_melee_attack') : 0);
   // Sustain potential is conditional on landing hits and on the target allowing leech.
-  const recovery = Math.max(0, s('life_regenerated_per_second') + attacks * attackRate * attackHit *
+  // Life after each kill (the casters' guides' main sustain) at an assumed one kill a second
+  // while clearing: the planner doesn't know how fast a build kills.
+  const recovery = Math.max(0, s('life_regenerated_per_second') + s('life_after_each_kill') + attacks * attackRate * attackHit *
     (onHit + physical * Math.max(0, s('life_stolen_per_hit')) / 100));
   let incoming = 0.4 * (1 - clamp(c.resist.physical.value, -100, 90) / 100);
   for (const el of ['fire', 'cold', 'lightning', 'poison', 'magic']) incoming += 0.12 * (1 - clamp(c.resist[el].value, -100, 90) / 100);

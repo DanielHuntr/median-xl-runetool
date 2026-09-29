@@ -157,6 +157,17 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   const gearAllSkills = sum(skillBonus.all);
   let allSkills = gearAllSkills;
   const classSkills = sum(skillBonus.cls);
+  // Skills items grant from outside the class's tree ("+3 to Pestilence", "+(6 to 16) to
+  // Bloodlust"): usable at the item's level plus +all skills, with no synergies (the Oskill
+  // Index). The engine reads them as the skill's level (engine.js pts), and a buff among them
+  // can be switched on like a learned one (skillEffects.js activeSkillIds).
+  const itemSkills = {};
+  const idByName = new Map(Object.entries(planner.skills || {}).map(([id, s]) => [s.name, id]));
+  for (const o of lists.oskills) {
+    const id = o.id || idByName.get(o.name);
+    if (!id || engine.node(b, id) || !(o.value > 0)) continue;
+    itemSkills[id] = Math.max(itemSkills[id] || 0, Math.trunc(o.value) + gearAllSkills);
+  }
   const soft = {};
   const setSoft = () => { for (const tab of engine.tabs(b.cls))
     for (const n of engine.treeNodes(b.cls, tab)) {
@@ -170,7 +181,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
     has_weapon: Number(weapon?.def.slotType === 'weapon'), weapon_category: weapon?.def.cat || '',
     elemental_weapon: Number(!!weapon && !weapon.head.damage), shield_category: offhand?.def.cat || '',
   };
-  const active = activeSkillIds({ ...b, charStats: equipmentContext }, engine);
+  const active = activeSkillIds({ ...b, itemSkills, charStats: equipmentContext }, engine);
   const stance = active.find(id => engine.skill(id).tags.includes('Stance'));
   const skillFlags = {
     ...equipmentContext,
@@ -201,7 +212,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   };
   let skillEffects = [], signature = '';
   for (let pass = 0; pass < 8; pass++) {
-    const input = { ...b, soft, charStats: contextStats() };
+    const input = { ...b, soft, itemSkills, charStats: contextStats() };
     const effects = active.flatMap(id => engine.skillStatEffects(input, id).map(effect => ({ id, effect })));
     const nextSignature = JSON.stringify(effects);
     if (nextSignature === signature) break;
@@ -219,7 +230,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   }
   for (const { id, effect: [key, value, , trust] } of skillEffects)
     if (key === 'all_skills') skillBonus.all.push({ source: `${engine.skillName(id)} (skill)`, value: Math.trunc(value), trust });
-  const withSoft = { ...b, soft, charStats: contextStats() };
+  const withSoft = { ...b, soft, itemSkills, charStats: contextStats() };
   const skillPoison = [];
   for (const id of active) {
     const sk = engine.skill(id);
@@ -364,6 +375,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
 
   return {
     charStats,
+    itemSkills,
     stats, s, equipped, inventory, weapon, offhand, sets, soft, allSkills, classSkills, skillBonus,
     attributes, statPoints, life, mana, resist, defense, block, ar, damage, spellFocus, avoid, merc,
     difficulty: diff, issues, warnings: issues.map((i) => i.text), ...lists,
