@@ -167,7 +167,14 @@ export function createCatalog(app, planner) {
     }
     return out;
   }
-  const forClass = (def, cls) => !cls || !def || otherClassSkills(def, cls).length === 0;
+  // An item with skill bonuses for several classes (Voidstream: +4 to Amazon and +4 to Paladin
+  // Skill Levels) is each of those classes' item: it's left out only when none are for this one.
+  const ownClassSkills = (def, cls) => {
+    const lines = def.lines || def.variants?.at(-1)?.lines || [];
+    return lines.some((l) => new RegExp(`to ${cls} Skill|\\(${cls} Only\\)`, "i").test(l)
+      || (/^\+(?:\d+|\(\d+ to \d+\)) to (.+?)$/.exec(l) && skillClassOf(/^\+(?:\d+|\(\d+ to \d+\)) to (.+?)$/.exec(l)[1].trim()) === cls));
+  };
+  const forClass = (def, cls) => !cls || !def || otherClassSkills(def, cls).length === 0 || ownClassSkills(def, cls);
 
   // Items that fit a slot for a class (class-restricted items for other classes are left out).
   // Whether a gear item (or runeword base) can go in a slot for a class.

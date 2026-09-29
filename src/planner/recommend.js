@@ -214,7 +214,7 @@ export function wantedStats(profile, character) {
 // maxOrbs: at most that many mystic orbs per item (starter builds' levelling stages).
 // minTiers: { item or runeword base key: lowest tier (variant) allowed }, so a levelling build
 // never goes back to a lower tier of something it already had.
-export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null, allow = null }, limit = 30) {
+export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null, allow = null, judge = null }, limit = 30) {
   const mainSlot = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
   if (mainSlot && build.gear[mainSlot] && catalog.resolve(build.gear[mainSlot], build.level)?.twoHanded) return [];
   const slotDef = SLOTS.find((s) => s.id === slot);
@@ -388,7 +388,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
         const gear = { ...build.gear, [slot]: candidate };
         if (catalog.resolve(candidate, build.level)?.twoHanded) delete gear[slot === 'weapon' ? 'offhand' : 'offhand2'];
         const plan = suggestEnhancements({ build: { ...build, gear }, ...env, computeCharacter, activeSlots,
-          profile, only: slot, includeUnique, maxOrbs, minGemLevel, allow });
+          profile, only: slot, includeUnique, maxOrbs, minGemLevel, allow, judge });
         const state = plan.gear[slot], resolved = catalog.resolve(state, build.level);
         if (!resolved || resolved.head.reqLevel > build.level) continue;
         const outcome = fitsAttributes(state, resolved);
@@ -477,7 +477,7 @@ function socketValue(parsed, want, character, profile, build) {
  */
 // minGemLevel: no gem below this level (normal 12, flawless 15, perfect 18): a levelling build
 // that has socketed flawless gems doesn't go back to normal ones. Runes and jewels aren't graded.
-export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null, minGemLevel = null, allow = null }) {
+export function suggestSockets({ build, engine, catalog, planner, computeCharacter, activeSlots, profile, only = null, minGemLevel = null, allow = null, keepOrbRoom = false }) {
   // A plain copy (the store's gear is a reactive proxy, which structuredClone can't copy).
   const gear = JSON.parse(JSON.stringify(build.gear));
   const reqLevel = (d) => {
@@ -506,7 +506,7 @@ export function suggestSockets({ build, engine, catalog, planner, computeCharact
       // and the attribute check are the costly parts); the first that passes is the pick.
       // The sort is stable, so ties keep catalogue order.
       const scored = candidates
-        .filter((d) => !(d.slotType === "jewel" && usedJewels.has(d.key)))
+        .filter((d) => !(d.slotType === "jewel" && usedJewels.has(d.key)) && (!keepOrbRoom || reqLevel(d) <= r0.head.reqLevel))
         .map((d) => ({ d, score: socketValue(catalog.socketFill(d, r0.def.slotType, build.level).parsed, want, character, profile, build) }))
         .sort((a, b) => b.score.v - a.score.v);
       let best = null;
@@ -539,10 +539,12 @@ export function suggestEnhancements(options) {
   const slots = activeSlots(build).filter(s => !only || (Array.isArray(only) ? only.includes(s) : s === only));
   const original = computeCharacter(build, { engine, catalog, planner });
   const want = wantedStats(profile, original);
-  function plan(socketsFirst) {
+  // keepOrbRoom: socket fillers no higher-level than the item itself, so the orbs' level cost
+  // (+4 each) still fits (a level-120 jewel leaves a level-51 weapon room for one orb at 125).
+  function plan(socketsFirst, keepOrbRoom = false) {
     let gear = JSON.parse(JSON.stringify(build.gear)), picks = [];
     const orbPicks = [];
-    if (socketsFirst) ({ gear, picks } = suggestSockets({ ...options, build: { ...build, gear } }));
+    if (socketsFirst) ({ gear, picks } = suggestSockets({ ...options, keepOrbRoom, build: { ...build, gear } }));
     // All normal orbs cost at least four levels. This also bounds malformed inputs.
     for (let step = 0; step < slots.length * 40; step++) {
       const character = computeCharacter({ ...build, gear }, { engine, catalog, planner });
@@ -559,7 +561,8 @@ export function suggestEnhancements(options) {
           // requirement and the orb's effect are known without resolving the whole item.
           if (r.head.reqLevel + o.reqLevel > build.level) continue;
           const next = { ...st, orbs: [...(st.orbs || []), o.id] };
-          const applied = { parsed: catalog.orbParsed(o, orbMultiplier(r.lines), build.level) };
+          // Honorific items get double from their orbs (items.js), as do items that say so.
+          const applied = { parsed: catalog.orbParsed(o, orbMultiplier(r.lines) * (r.honorific ? 2 : 1), build.level) };
           // Only recommend bonuses the planner can quantify.
           if (applied.parsed.some(p => !['stats', 'skill', 'info'].includes(p.kind))) continue;
           const score = socketValue(applied.parsed, weights, character, profile, build);
@@ -576,7 +579,7 @@ export function suggestEnhancements(options) {
       gear[best.slot] = best.next;
       orbPicks.push({ slot: best.slot, ref: best.orb.id, name: best.orb.name, reasons: best.reasons });
     }
-    if (!socketsFirst) ({ gear, picks } = suggestSockets({ ...options, build: { ...build, gear } }));
+    if (!socketsFirst) ({ gear, picks } = suggestSockets({ ...options, keepOrbRoom, build: { ...build, gear } }));
     // Score the aggregate addition, so resistance above the cap isn't rewarded per orb.
     const effects = new Map(), other = [];
     for (const slot of slots) {
@@ -592,6 +595,10 @@ export function suggestEnhancements(options) {
     const score = socketValue([{ kind: 'stats', effects: [...effects], text: '' }, ...other], want, original, profile, build).v;
     return { gear, picks, orbPicks, score };
   }
-  const first = plan(false), second = plan(true);
-  return second.score > first.score ? second : first;
+  // The plans, compared by the caller's own measure when it gives one (the starter-build
+  // generator: the build's damage and survival), else by the stat wishlist.
+  const plans = [plan(false), plan(true), plan(true, true)];
+  const judge = options.judge;
+  const value = (p) => (judge ? judge(p.gear) : p.score);
+  return plans.reduce((best, p) => (value(p) > value(best) ? p : best));
 }
