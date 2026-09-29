@@ -12,6 +12,7 @@ import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
 import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 import { createAvailability } from "./availability.js";
+import { buildUse } from "./relevance.js";
 
 export const PlannerKey = Symbol("Planner");
 // A build's levelling stages: each is its own version of the character (skills, gear,
@@ -129,6 +130,8 @@ export function createPlanner(engine, catalog, planner) {
     picker: null,
     // Hover sheet: null | { kind: "item", item: itemState, slot? } | { kind: "skill", id }, plus the anchor's rect.
     tip: null,
+    // Alt pins the hover sheet in place (HoverCard.vue): the pointer can then move onto it.
+    tipPinned: false,
     suggesting: false,
     suggestAttributes: saved.suggestAttributes ?? false,
     allowAttributeRespec: false,
@@ -141,7 +144,7 @@ export function createPlanner(engine, catalog, planner) {
     // Also the generator's: items a stage keeps as they are ({ slot: item }), because the
     // previous stage and the finished build both wear them (no swapping away and back).
     keepGear: null,
-    // Also the generator's: only found gear (availability.js), for a build's found-gear version.
+    // Also the generator's: only found gear (availability.js), for a starter build's levelling stages.
     foundGear: false,
     // Also the generator's: its own measure of a build, to choose between enhancement plans
     // (recommend.js suggestEnhancements); the site uses the stat wishlist.
@@ -238,6 +241,13 @@ export function createPlanner(engine, catalog, planner) {
   // Item recommendations: the build's profile and the stats it values, recomputed as skills change.
   const profile = computed(() => buildProfile(build.value, engine));
   const profileSummary = computed(() => describeProfile(profile.value));
+  // What the build's damage skills deal and how (relevance.js): an item line of a kind it can't
+  // use (lightning spell damage on a fire caster, attack stats with no attacks) does nothing.
+  // Null until a damage or summon skill is chosen, when every line would look unused.
+  const lineUse = computed(() => {
+    const use = buildUse(build.value, { engine, computeCharacter: () => character.value, skillDamage });
+    return use.elements.size || use.summon ? use : null;
+  });
   const wanted = computed(() => wantedStats(profile.value, character.value));
   // Found gear only (state.foundGear): the items availability.js counts as findable.
   const availability = createAvailability(catalog, catalog.all().filter((d) => d.kind === "socketable").map((d) => [d.name, d.kindLabel, d.lvl]));
@@ -620,7 +630,7 @@ export function createPlanner(engine, catalog, planner) {
   let tipTimer = null;
   const canHover = () => typeof window !== "undefined" && window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
   function showTip(el, payload) {
-    if (!canHover() || !el?.getBoundingClientRect) return;
+    if (!canHover() || !el?.getBoundingClientRect || state.tipPinned) return;
     clearTimeout(tipTimer);
     tipTimer = setTimeout(() => {
       const r = el.getBoundingClientRect();
@@ -630,13 +640,16 @@ export function createPlanner(engine, catalog, planner) {
   function hideTip() {
     clearTimeout(tipTimer);
     state.tip = null;
+    state.tipPinned = false;
   }
+  // Leaving the anchor closes the sheet, unless it's pinned.
+  const leaveTip = () => { if (!state.tipPinned) hideTip(); };
   // v-on helper: <button v-on="tipOn({ kind: 'skill', id })">
   const tipOn = (payload) => ({
     mouseenter: (e) => showTip(e.currentTarget, payload),
-    mouseleave: hideTip,
+    mouseleave: leaveTip,
     focus: (e) => showTip(e.currentTarget, payload),
-    blur: hideTip,
+    blur: leaveTip,
   });
   function openPicker(p) {
     hideTip();
@@ -916,7 +929,7 @@ export function createPlanner(engine, catalog, planner) {
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
-    profile, profileSummary, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
+    profile, profileSummary, lineUse, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
   };
 }

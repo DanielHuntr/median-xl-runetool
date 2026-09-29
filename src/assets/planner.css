@@ -1512,6 +1512,46 @@
 .sheet-lines small {
   color: var(--muted);
 }
+/* Lines the build can't use: grouped at the bottom, closed; opened on a pinned sheet. */
+.sheet-unused {
+  margin: 2px 0;
+}
+.sheet-socketed {
+  margin: 0;
+  color: var(--stats);
+}
+.sheet-unused .unused-toggle {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.sheet-unused button.unused-toggle {
+  cursor: pointer;
+}
+.sheet-unused button.unused-toggle:hover,
+.sheet-unused button.unused-toggle:focus-visible {
+  background: none;
+  color: var(--text);
+}
+.unused-list li {
+  color: var(--muted);
+  margin-top: 4px;
+}
+.unused-list small {
+  display: block;
+  font-size: 0.6875rem;
+  font-style: italic;
+}
+/* Pinned with Alt: the pointer can reach it, and a tall sheet scrolls. */
+.hover-card.pinned {
+  pointer-events: auto;
+  overflow: auto;
+  border-color: var(--gold);
+}
 .sheet-sockets {
   list-style: none;
   padding: 6px 0 0;

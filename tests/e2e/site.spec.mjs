@@ -114,15 +114,6 @@ test("starter builds show tiers, and the tier filter narrows them", async ({ pag
   await expect(cards.first().locator(".tier-unrated")).toBeVisible();
 });
 
-test("the gear switch shows each starter build on found gear", async ({ page }) => {
-  await page.goto("/#builds");
-  const card = page.locator(".starter-wrap", { hasText: "Stormcall" }).first();
-  await expect(card.locator(".tier-criteria")).toBeVisible();
-  await page.getByLabel("Starter gear").selectOption("found");
-  await expect(card.locator(".found-gear")).toContainText("Found gear:");
-  await expect(card.locator("a.starter-card")).toHaveAttribute("href", /found%20gear/);
-});
-
 test("the character planner loads", async ({ page }) => {
   await page.goto("/#planner");
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();
@@ -218,4 +209,49 @@ test("a unique amulet's Show recipe loads the random-unique recipe", async ({ pa
   await expect(page).toHaveURL(/#cube/);
   await expect(page.locator(".cube-link-note")).toContainText("random unique Amulet");
   await expect(page.locator(".cube-slot")).toHaveCount(4);
+});
+
+test("an item's unused lines are grouped at the bottom, shown with why on a sheet pinned with Alt", async ({ page }) => {
+  await page.goto("/#builds");
+  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  const tip = page.locator("#planner-tip");
+  // The first equipped item with a line the build can't use.
+  const slots = page.locator("button.doll-slot.filled");
+  await expect(slots.first()).toBeVisible();
+  let found = false;
+  for (let i = 0; i < (await slots.count()) && !found; i++) {
+    await slots.nth(i).hover();
+    await expect(tip).toBeVisible();
+    found = (await tip.locator(".sheet-unused").count()) > 0;
+  }
+  expect(found, "some Stormcall item has a line it can't use").toBe(true);
+  const group = tip.locator(".sheet-unused");
+  await expect(group).toContainText(/Unused by this build \(\d+\) · Alt to pin and show/);
+  await expect(group.locator(".unused-list")).toHaveCount(0);
+  await page.keyboard.press("Alt");
+  await expect(tip).toHaveClass(/pinned/);
+  // The sheet stays while the pointer moves onto it; the group opens with each line's reason.
+  const toggle = group.getByRole("button", { name: /Unused by this build/ });
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(group.locator(".unused-list li small").first()).toHaveText(/wrong damage type|no attacks|no damage spells|no summons|no spells/);
+  // Scrolling doesn't close a pinned sheet; moving the pointer away from it does.
+  await page.mouse.wheel(0, 200);
+  await expect(tip).toBeVisible();
+  const box = await tip.boundingBox();
+  await page.mouse.move(box.x + box.width + 150, box.y + box.height / 2);
+  await expect(tip).toHaveCount(0);
+});
+
+test("the stage switch shows each starter build's levelling stage, and opens the planner on it", async ({ page }) => {
+  await page.goto("/#builds");
+  const card = page.locator(".starter-wrap", { hasText: "Stormcall" }).first();
+  await expect(card.locator(".tier-criteria")).toBeVisible();
+  await page.getByLabel("Stage").selectOption("Nightmare");
+  await expect(card.locator(".stage-gear")).toContainText("Gear:");
+  await expect(card).toContainText("Level 100 · Nightmare");
+  await expect(card.locator(".tier-criteria")).toHaveCount(0);
+  await expect(card.locator("a.starter-card")).toHaveAttribute("href", /&stage=Nightmare/);
+  await card.locator("a.starter-card").click();
+  await expect(page.getByRole("spinbutton", { name: /level/i }).first()).toHaveValue("100");
 });

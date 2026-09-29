@@ -1796,3 +1796,43 @@ test("tooltip lines worth 0 are hidden where the game hides them (Warmth's First
   const first = engine.describe({ cls: "Sorceress", level: 9, points: { warmth: 0 }, soft: {}, quests: {} }, "warmth", 0).effect.map((l) => l.text);
   assert.deepEqual(first, ["Mana Regeneration Rate: 3%"]);
 });
+
+test("item sheets mark lines the build can't use, once it has a damage skill (relevance.js)", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { lineWaste } = await load("/src/planner/relevance.js");
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { presets } = JSON.parse(await readFile(new URL("../src/data/preset-builds.json", import.meta.url), "utf8"));
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  // No skills yet: nothing is marked, rather than every line.
+  p.setClass("Sorceress");
+  assert.equal(p.lineUse.value, null);
+  // A starter build with a line of the wrong kind for it: the planner names it, with the reason.
+  let found = null;
+  for (const pre of presets) {
+    p.setClass(pre.cls);
+    p.state.builds[pre.cls] = JSON.parse(JSON.stringify(pre.build));
+    const use = p.lineUse.value;
+    if (!use) continue;
+    for (const st of Object.values(pre.build.gear)) {
+      const line = catalog.resolve(st, pre.build.level)?.parsed.find((x) => lineWaste(x, use));
+      if (line) { found = { use, line }; break; }
+    }
+    if (found) break;
+  }
+  assert.ok(found, "some starter build carries a line it can't use");
+  assert.match(lineWaste(found.line, found.use), /wrong damage type|no attacks|no damage spells|no summons|no spells/);
+  scope.stop();
+});
+
+test("tier explanations name the strength and what holds a build back (tierWhy.js)", async () => {
+  const { tierWhy, fieldOf } = await load("/src/planner/tierWhy.js");
+  const typical = { bossTier: "B", clearTier: "B", surviveTier: "B", life: 13000, resist: 90, hitChance: 26, perAction: 24000, rate: 3.5, boss: 100000, clear: 140000, ehp: 300000, avoid: 0, block: 0, sustain: 100, hit: 95 };
+  const field = fieldOf([typical, typical, typical]);
+  const glass = { ...typical, bossTier: "S", clearTier: "A", surviveTier: "F", life: 7000, resist: 50, hitChance: 60 };
+  assert.equal(tierWhy(glass, field), "Best at bossing (S). Held back by survival (F): hit 60% of the time, less life than most (7,000).");
+  assert.equal(tierWhy({ ...typical, bossTier: "A", surviveTier: "B" }, field), "Best at bossing (A). Weakest at clearing and survival (B).");
+  assert.equal(tierWhy({ ...typical, bossTier: "D", clearTier: "D", surviveTier: "D", sustain: 60 }, field), "Even across bossing, clearing and survival (D): mana for 60% of its casting.");
+  assert.equal(tierWhy({ unrated: "summons" }, field), null);
+});

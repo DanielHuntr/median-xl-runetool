@@ -1,12 +1,18 @@
+<script>
+import { ref as moduleRef } from "vue";
+// Whether the unused lines are shown, for every sheet this visit.
+const openUnused = moduleRef(false);
+</script>
 <script setup>
 import { computed } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { orbMultiplier } from '../../planner/orbs.js';
 import { superiorNames, superiorLineTexts } from '../../planner/superior.js';
+import { lineWaste } from '../../planner/relevance.js';
 
 // The in-game style item sheet shown when hovering an item.
-const props = defineProps({ item: { type: Object, required: true } });
-const { catalog, build, character } = usePlanner();
+const props = defineProps({ item: { type: Object, required: true }, pinned: { type: Boolean, default: false } });
+const { catalog, build, character, lineUse } = usePlanner();
 
 const r = computed(() => catalog.resolve(props.item, build.value.level));
 const HEAD = /^(Required |Item Level|Quality Level|Socketed \(|\(\w+ Only\)$|(One-Hand|Two-Hand|Throw) Damage|Defense:|Chance to Block)/;
@@ -39,6 +45,14 @@ const set = computed(() => {
 const cls = (p) =>
   ({ stats: "counted", skill: "counted", oskill: "counted", unknown: "unknown" })[p.kind] || "effect";
 const fmt = (n) => Math.floor(n).toLocaleString();
+// Lines this build can't use (relevance.js), with why.
+const unused = (p) => (lineUse.value ? lineWaste(p, lineUse.value) : null);
+const usedLines = computed(() => lines.value.filter((p) => !unused(p)));
+const unusedLines = computed(() => lines.value.filter(unused));
+// Grouped at the bottom, closed: the sheet shows what the build uses at a glance. Opened on a
+// pinned sheet, and left open for the next one this visit.
+const unusedOpen = computed(() => openUnused.value);
+const toggleUnused = () => { openUnused.value = !openUnused.value; };
 const names = computed(() => superiorNames(r.value));
 const fromSuperior = computed(() => superiorLineTexts(r.value));
 </script>
@@ -57,11 +71,21 @@ const fromSuperior = computed(() => superiorLineTexts(r.value));
     <p v-if="r.head.block != null">Chance to Block: <b>{{ r.head.block }}%{{ r.head.blockClass ? " + Class" : "" }}</b></p>
     <p v-for="q in reqs" :class="{ unmet: !q.ok }">{{ q.t }}</p>
     <ul class="sheet-lines">
-      <li v-for="p in lines" :class="cls(p)">
+      <li v-for="p in usedLines" :class="cls(p)">
         {{ p.text }}<small v-if="p.kind === 'unknown'"> (not counted)</small><small v-else-if="fromSuperior.has(p.text)" class="superior-note"> (Superior)</small>
       </li>
       <li v-if="r.socketCount" class="counted">Socketed ({{ r.socketCount }})</li>
     </ul>
+    <!-- Right after the lines the build uses: the ones it can't. -->
+    <div v-if="unusedLines.length" class="sheet-unused">
+      <button v-if="pinned" type="button" class="unused-toggle" :aria-expanded="unusedOpen" @click="toggleUnused">
+        Unused by this build ({{ unusedLines.length }}) <span aria-hidden="true">{{ unusedOpen ? "▴" : "▾" }}</span>
+      </button>
+      <p v-else class="unused-toggle">Unused by this build ({{ unusedLines.length }}) · Alt to pin and show</p>
+      <ul v-if="pinned && unusedOpen" class="sheet-lines unused-list">
+        <li v-for="p in unusedLines" :key="p.text">{{ p.text }}<small>{{ unused(p) }}</small></li>
+      </ul>
+    </div>
     <ul v-if="r.orbs?.length" class="sheet-sockets">
       <li v-for="o in r.orbs"><b>{{ o.def.name }} orb</b>: {{ o.def.lines.join(', ') }}<span v-if="orbMultiplier(r.lines) > 1"> (bonuses ×{{ orbMultiplier(r.lines) }})</span> (+{{ o.def.reqLevel }} required level)<small v-if="o.parsed.some(p => p.kind === 'unknown')"> — some effects not counted</small></li>
     </ul>
