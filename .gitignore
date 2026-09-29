@@ -11,3 +11,4 @@ playwright-report/
 .preset-progress.json
 .preset-stages-progress.json
 .preset-shard-*
+build-audit.json

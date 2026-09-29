@@ -54,7 +54,8 @@ function targetsOf(sk, text) {
 /**
  * One build's numbers.
  * @param b    a planner build
- * @param env  { engine, catalog, planner, computeCharacter, skillDamage, againstTarget, speedProfile, speedData, target }
+ * @param env  { engine, catalog, planner, computeCharacter, skillDamage, againstTarget, speedProfile, speedData, target,
+ *   difficulty } — target: the typical monster of that difficulty (Hell unless given)
  * @returns {{ boss, clear, dps, sustain, ehp, life, resist, avoid, block, fhrFrames, movement, skills, skill, perAction, rate, hit, cooldown?, manaSpend, manaIn }
  *   | { unrated, ... }}
  */
@@ -66,7 +67,7 @@ export function buildMetrics(b, env) {
   const one = (id) => {
     const d = id && skillDamage(id, { engine, build: b, skillBuild: sb, character: c });
     if (!d || !["attack", "spell"].includes(d.kind) || !(d.total?.[1] > 0)) return null;
-    const vs = againstTarget(d, c, target, "Hell", b.level);
+    const vs = againstTarget(d, c, target, env.difficulty || "Hell", b.level);
     const perAction = mid(vs?.all ?? vs?.total);
     if (!(perAction > 0)) return null;
     const lines = engine.describe(sb, id, b.points[id] || 0).effect.map((l) => l.text || "");

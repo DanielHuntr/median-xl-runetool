@@ -120,14 +120,18 @@ export function computeCharacter(b, { engine, catalog, planner }) {
       else if (p.kind === "unknown") lists.unknown.push({ text: p.text, source: label });
     }
   }
+  // b.ablate (the build audit, scripts/audit-builds.mjs): one line of one item left out,
+  // { slot, line } (line: an index into the item's own parsed lines, or "all"), or a carried
+  // item, { slot: "inv:<index>" }, to measure what it adds.
+  const ablated = (slot, list) => (b.ablate?.slot === slot ? (b.ablate.line === "all" ? [] : list.filter((_, i) => i !== b.ablate.line)) : list);
   for (const [slot, r] of Object.entries(equipped)) {
     const label = `${r.def.name} (${SLOTS.find((x) => x.id === slot).label})`;
-    takeParsed(r.parsed, label, r);
+    takeParsed(ablated(slot, r.parsed), label, r);
     r.orbs?.forEach(o => takeParsed(o.parsed, `${o.def.name} orb on ${r.def.name}`, r, true));
     r.sockets.forEach((sock, i) => sock && takeParsed(sock.parsed, `${sock.def.name} in ${r.def.name}`, r, true));
     if (r.cls && r.cls !== b.cls) warn(`${r.def.name} can only be used by a ${r.cls}.`);
   }
-  for (const r of inventory) takeParsed(r.parsed, r.def.name, null);
+  inventory.forEach((r, i) => takeParsed(ablated(`inv:${i}`, r.parsed), r.def.name, null));
   if (weapon?.twoHanded && offhand)
     warn(`${weapon.def.name} is two-handed, so the off-hand item can't be used with it.`);
 
