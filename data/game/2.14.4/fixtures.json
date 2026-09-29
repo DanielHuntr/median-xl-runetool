@@ -3684,6 +3684,286 @@
     "Mana Cost: 1"
    ],
    "independentChecks": "Cooldown, attack rating and mana use no inferred input; the damage fixes how an unlearned upgrade (Grim Vision) is read."
+  },
+  {
+   "id": "fire-elementals-first-level",
+   "skill": "fire_elementals",
+   "source": "In-game Fire Elementals tooltip screenshot supplied by the project owner in GitHub issue #30, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 49,
+     "how": "stated: Character Level 49"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Elementals inherit your Fire Spell Damage, Fire Pierce, Energy and Spell Focus",
+    "30% Chance to cast level 4/17/30 Fire Cannonade on Death",
+    "+1% Fire Spell Damage and Fire Pierce per Skill Level",
+    "5% Chance to cast level 2 Inner Fire on Attack",
+    "Cooldown: 2 seconds",
+    "Spirits: 5",
+    "Life: 446 hit points",
+    "Attack Rating: 200",
+    "Damage: 7-17",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+25% Life per Base Level",
+    "Balance, Curare, Wild and Free, Defensive Harmony",
+    "+2% Fire Spell Damage and Fire Pierce per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "fire-elementals-level-1",
+   "skill": "fire_elementals",
+   "source": "In-game Fire Elementals tooltip screenshot supplied by the project owner in GitHub issue #30, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 49,
+     "how": "stated: Character Level 49"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Elementals inherit your Fire Spell Damage, Fire Pierce, Energy and Spell Focus",
+    "30% Chance to cast level 4/17/30 Fire Cannonade on Death",
+    "+1% Fire Spell Damage and Fire Pierce per Skill Level",
+    "5% Chance to cast level 2 Inner Fire on Attack",
+    "Cooldown: 2.4 seconds",
+    "Spirits: 5",
+    "Life: 558 hit points",
+    "Attack Rating: 200",
+    "Damage: 7-17",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Spirits: 6",
+    "Life: 752 hit points",
+    "Attack Rating: 350",
+    "Damage: 12-22",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+25% Life per Base Level",
+    "Balance, Curare, Wild and Free, Defensive Harmony",
+    "+2% Fire Spell Damage and Fire Pierce per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values.",
+   "knownDifferences": [
+    {
+     "game": "Cooldown: 2.4 seconds",
+     "planner": "Cooldown: 2 seconds",
+     "why": "Cooldown is (10 − Unstable Essence's clc2 − syn1) × Spirits frames, and Spirits is min(4 + level, 10): 5 at level 1, so 2 seconds. The game shows 2.4 (6 Spirits' worth) at level 1, but 2 at First Level (unlearned) and 4 from level 10. Working the Cooldown line out one level ahead once learned fits all of them, but would also change Black Wind, Doom, Mana Pulse, Jinn and Ward of Fate, which no screenshot covers yet, so the planner doesn't do it. A screenshot at level 2-5 settles it (one level ahead: 2.8 at level 2, 4 from level 5)."
+    }
+   ]
+  },
+  {
+   "id": "fire-elementals-level-10",
+   "skill": "fire_elementals",
+   "source": "In-game Fire Elementals tooltip screenshot supplied by the project owner in GitHub issue #30, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 49,
+     "how": "stated: Character Level 49"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Elementals inherit your Fire Spell Damage, Fire Pierce, Energy and Spell Focus",
+    "30% Chance to cast level 4/17/30 Fire Cannonade on Death",
+    "+1% Fire Spell Damage and Fire Pierce per Skill Level",
+    "5% Chance to cast level 2 Inner Fire on Attack",
+    "Cooldown: 4 seconds",
+    "Spirits: 10",
+    "Life: 6484 hit points",
+    "Attack Rating: 1550",
+    "Damage: 54-64",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Spirits: 10",
+    "Life: 7030 hit points",
+    "Attack Rating: 1700",
+    "Damage: 61-71",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+25% Life per Base Level",
+    "Balance, Curare, Wild and Free, Defensive Harmony",
+    "+2% Fire Spell Damage and Fire Pierce per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "fire-elementals-level-20",
+   "skill": "fire_elementals",
+   "source": "In-game Fire Elementals tooltip screenshot supplied by the project owner in GitHub issue #30, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 49,
+     "how": "stated: Character Level 49"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Elementals inherit your Fire Spell Damage, Fire Pierce, Energy and Spell Focus",
+    "30% Chance to cast level 4/17/30 Fire Cannonade on Death",
+    "+1% Fire Spell Damage and Fire Pierce per Skill Level",
+    "5% Chance to cast level 2 Inner Fire on Attack",
+    "Cooldown: 4 seconds",
+    "Spirits: 10",
+    "Life: 20490 hit points",
+    "Attack Rating: 3050",
+    "Damage: 122-132",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Spirits: 10",
+    "Life: 21428 hit points",
+    "Attack Rating: 3200",
+    "Damage: 129-139",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+25% Life per Base Level",
+    "Balance, Curare, Wild and Free, Defensive Harmony",
+    "+2% Fire Spell Damage and Fire Pierce per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "fire-elementals-level-25",
+   "skill": "fire_elementals",
+   "source": "In-game Fire Elementals tooltip screenshot supplied by the project owner in GitHub issue #30, 2026-09-29 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 49,
+     "how": "stated: Character Level 49"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Elementals inherit your Fire Spell Damage, Fire Pierce, Energy and Spell Focus",
+    "30% Chance to cast level 4/17/30 Fire Cannonade on Death",
+    "+1% Fire Spell Damage and Fire Pierce per Skill Level",
+    "5% Chance to cast level 2 Inner Fire on Attack",
+    "Cooldown: 4 seconds",
+    "Spirits: 10",
+    "Life: 30424 hit points",
+    "Attack Rating: 3800",
+    "Damage: 163-173",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Spirits: 10",
+    "Life: 31558 hit points",
+    "Attack Rating: 3950",
+    "Damage: 172-182",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+25% Life per Base Level",
+    "Balance, Curare, Wild and Free, Defensive Harmony",
+    "+2% Fire Spell Damage and Fire Pierce per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
   }
  ]
 }
