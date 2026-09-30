@@ -1395,9 +1395,11 @@ test('"Help confirm values" ranks the screenshots that confirm the most, from th
     assert.ok(engine.classNames.includes(s.cls) && engine.tabs(s.cls).includes(s.tab), `${s.name}: in its class's tree`);
   }
   // Every gap a tooltip reports is counted, and each count matches the skills listing it.
-  const shadowFlow = engine.describe({ cls: 'Assassin', level: 150, points: { shadow_flow: 1 }, quests: {} }, 'shadow_flow', 1);
-  const keys = new Set(shadowFlow.effect.flatMap((l) => l.parts.flatMap((p) => p.source?.status === 'game-inferred' ? p.source.gaps : [])));
-  assert.ok(keys.has('variable:pst1'), 'Shadow Flow reports its unconfirmed passive slot');
+  // (Every Assassin skill at one point; Shadow Flow, once the example, is now confirmed in game.)
+  const keys = new Set(engine.tabs('Assassin').flatMap((t) => engine.treeNodes('Assassin', t)).flatMap((n) =>
+    engine.describe({ cls: 'Assassin', level: 150, points: { [n.id]: 1 }, quests: {} }, n.id, 1).effect
+      .flatMap((l) => l.parts.flatMap((p) => p.source?.status === 'game-inferred' ? p.source.gaps : []))));
+  assert.ok(keys.size > 0, 'some Assassin tooltips report unconfirmed gaps');
   for (const k of keys) assert.ok(r.gaps.some((g) => g.key === k && g.skills >= 1), k);
 });
 

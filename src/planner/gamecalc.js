@@ -121,7 +121,9 @@ export function createGameEval(skill, names, inputs) {
     else if (name === "ulvl") v = inputs.ulvl;
     else if (/^par[1-8]$/.test(name)) v = p(+name[3] - 1);
     else if (LINEAR[name]) v = p(LINEAR[name][0]) + (inputs.lvl - 1) * p(LINEAR[name][1]);
-    else if (BASE_LINEAR[name]) v = p(BASE_LINEAR[name][0]) + (inputs.blvl - 1) * p(BASE_LINEAR[name][1]);
+    // At Base Level 0 (unlearned) it's 0: Shadow Dancer's First Level shows no Critical
+    // Strike Chance (bl12 would otherwise be 15 − 1 = 14).
+    else if (BASE_LINEAR[name]) v = inputs.blvl > 0 ? p(BASE_LINEAR[name][0]) + (inputs.blvl - 1) * p(BASE_LINEAR[name][1]) : 0;
     else if (DIMINISHING[name]) {
       const [a, b] = DIMINISHING[name].map(p);
       v = a + Math.trunc((110 * inputs.lvl * (b - a)) / (100 * (inputs.lvl + 6)));

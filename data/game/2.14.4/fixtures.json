@@ -4569,6 +4569,719 @@
     "Mana Cost: 1"
    ],
    "independentChecks": "Damage, attack rating and the minion damage bonus use no inferred input; life at three levels and their next levels fixes Character Level and Blood Skeleton together."
+  },
+  {
+   "id": "shadow-dancer-first-level",
+   "skill": "shadow_dancer",
+   "source": "In-game Shadow Dancer tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Claw Physical Damage: +30%",
+    "Bloodbath",
+    "Duration: +0.2 seconds"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-dancer-level-1",
+   "skill": "shadow_dancer",
+   "source": "In-game Shadow Dancer tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Critical Strike Chance: +15%",
+    "Claw Physical Damage: +30%",
+    "Bloodbath",
+    "Duration: +0.2 seconds"
+   ],
+   "nextLines": [
+    "Claw Physical Damage: +39%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-dancer-level-10",
+   "skill": "shadow_dancer",
+   "source": "In-game Shadow Dancer tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Critical Strike Chance: +24%",
+    "Claw Physical Damage: +111%",
+    "Bloodbath",
+    "Duration: +2 seconds"
+   ],
+   "nextLines": [
+    "Claw Physical Damage: +120%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-dancer-level-25",
+   "skill": "shadow_dancer",
+   "source": "In-game Shadow Dancer tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Critical Strike Chance: +39%",
+    "Claw Physical Damage: +228%",
+    "Bloodbath",
+    "Duration: +5 seconds"
+   ],
+   "nextLines": [
+    "Claw Physical Damage: +235%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "noctule-first-level",
+   "skill": "noctule",
+   "source": "In-game Noctule tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "70% Weapon Damage",
+    "Deals more damage in crowded areas",
+    "8 bats total",
+    "+1 Bonus Magic Damage",
+    "Mana Cost: 3"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "noctule-level-1",
+   "skill": "noctule",
+   "source": "In-game Noctule tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "70% Weapon Damage",
+    "Deals more damage in crowded areas",
+    "8 bats total",
+    "+1 Bonus Magic Damage",
+    "Mana Cost: 3"
+   ],
+   "nextLines": [
+    "8 bats total",
+    "+1 Bonus Magic Damage",
+    "Mana Cost: 6"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "noctule-level-5",
+   "skill": "noctule",
+   "source": "In-game Noctule tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "70% Weapon Damage",
+    "Deals more damage in crowded areas",
+    "10 bats total",
+    "+5 Bonus Magic Damage",
+    "Mana Cost: 13"
+   ],
+   "nextLines": [
+    "10 bats total",
+    "+6 Bonus Magic Damage",
+    "Mana Cost: 16"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "noctule-level-10",
+   "skill": "noctule",
+   "source": "In-game Noctule tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "70% Weapon Damage",
+    "Deals more damage in crowded areas",
+    "12 bats total",
+    "+18 Bonus Magic Damage",
+    "Mana Cost: 26"
+   ],
+   "nextLines": [
+    "13 bats total",
+    "+21 Bonus Magic Damage",
+    "Mana Cost: 28"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "noctule-level-25",
+   "skill": "noctule",
+   "source": "In-game Noctule tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "70% Weapon Damage",
+    "Deals more damage in crowded areas",
+    "20 bats total",
+    "+210 Bonus Magic Damage",
+    "Mana Cost: 63"
+   ],
+   "nextLines": [
+    "20 bats total",
+    "+230 Bonus Magic Damage",
+    "Mana Cost: 66"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "wild-and-free-first-level",
+   "skill": "wild_and_free",
+   "source": "In-game Wild and Free tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 51,
+     "how": "stated in GitHub issue #22: Character Level 51"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Movement Speed: +10%",
+    "Hit Recovery: +15%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "wild-and-free-level-1",
+   "skill": "wild_and_free",
+   "source": "In-game Wild and Free tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 51,
+     "how": "stated in GitHub issue #22: Character Level 51"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Movement Speed: +12%",
+    "Hit Recovery: +15%"
+   ],
+   "nextLines": [
+    "Hit Recovery: +27%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "wild-and-free-level-5",
+   "skill": "wild_and_free",
+   "source": "In-game Wild and Free tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 51,
+     "how": "stated in GitHub issue #22: Character Level 51"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Movement Speed: +21%",
+    "Hit Recovery: +50%"
+   ],
+   "nextLines": [
+    "Hit Recovery: +55%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "wild-and-free-level-15",
+   "skill": "wild_and_free",
+   "source": "In-game Wild and Free tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 51,
+     "how": "stated in GitHub issue #22: Character Level 51"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Movement Speed: +37%",
+    "Hit Recovery: +78%"
+   ],
+   "nextLines": [
+    "Hit Recovery: +80%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "wild-and-free-level-25",
+   "skill": "wild_and_free",
+   "source": "In-game Wild and Free tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 25,
+     "how": "shown: Current Skill Level 25"
+    },
+    "blvl": {
+     "value": 25,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 51,
+     "how": "stated in GitHub issue #22: Character Level 51"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Movement Speed: +50%",
+    "Hit Recovery: +88%"
+   ],
+   "nextLines": [
+    "Hit Recovery: +89%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-flow-first-level",
+   "skill": "shadow_flow",
+   "source": "In-game Shadow Flow tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Activation Frequency: +3%",
+    "Movement Speed: +5%",
+    "Block Speed: +1%",
+    "Hit Recovery: +1%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-flow-level-1",
+   "skill": "shadow_flow",
+   "source": "In-game Shadow Flow tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Activation Frequency: +3%",
+    "Movement Speed: +6%",
+    "Block Speed: +1%",
+    "Hit Recovery: +1%"
+   ],
+   "nextLines": [
+    "Block Speed: +1%",
+    "Hit Recovery: +1%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-flow-level-5",
+   "skill": "shadow_flow",
+   "source": "In-game Shadow Flow tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Maximum Chance to Avoid increased by: +1%",
+    "Activation Frequency: +10%",
+    "Movement Speed: +10%",
+    "Block Speed: +2%",
+    "Hit Recovery: +2%"
+   ],
+   "nextLines": [
+    "Block Speed: +3%",
+    "Hit Recovery: +3%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "shadow-flow-level-15",
+   "skill": "shadow_flow",
+   "source": "In-game Shadow Flow tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: not stated; none of the shown values depends on Character Level"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Maximum Chance to Avoid increased by: +5%",
+    "Activation Frequency: +30%",
+    "Movement Speed: +20%",
+    "Block Speed: +7%",
+    "Hit Recovery: +7%"
+   ],
+   "nextLines": [
+    "Block Speed: +8%",
+    "Hit Recovery: +8%"
+   ],
+   "independentChecks": "Nothing is inferred from the shown values."
   }
  ]
 }

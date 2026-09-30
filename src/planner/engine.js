@@ -403,6 +403,9 @@ export function createEngine(data) {
     thunder_frequency: ["thunderfrequencyevery"],
     total_damage_reduction: ["globaldamagereduction"],
     enemy_cast_speed: ["enemyattackandcastspeed"],
+    // The game's own wording: "8 bats total" (Noctule), "Activation Frequency: +3%" (Shadow Flow).
+    total_bats: ["batstotal"],
+    activation_frequency: ["activationfrequency"],
   };
   // Values the game states as fixed text in a tooltip line ("Enemy Weapon Damage: -30%",
   // "8 Wraiths", "Cooldown: 3 seconds"): normalised label → { value, text }.
@@ -1053,7 +1056,8 @@ export function createEngine(data) {
     if (!text || hidden) return null;
     const segments = text.split(/(\[\[[a-z0-9_-]+\]\])/gi).filter(Boolean).map(value => {
       const ref = /^\[\[([a-z0-9_-]+)\]\]$/i.exec(value);
-      return ref ? { text: skillName(ref[1]), skill: ref[1] } : { text: value };
+      // The game names an innate skill without the planner's "(Innate)": Shadow Dancer's "Bloodbath".
+      return ref ? { text: skillName(ref[1]).replace(/ \(Innate\)$/, ""), skill: ref[1] } : { text: value };
     });
     const heading = /^\s*\[\[[a-z0-9_-]+\]\]\s*:?[\s]*$/i.test(text);
     text = segments.map(s => s.text).join('');

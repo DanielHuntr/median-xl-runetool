@@ -39,7 +39,8 @@ export const LINE_TYPES = {
     format: (l, a) => (l.textA || "").replace(/%d/, n(a)).replace(/%%/g, "%"),
   },
   // "Physical Damage: " + "+25" + "%": signed, as in game.
-  2: { confirmed: "Resurrect (GitHub issue #23), Protector Spirit's Bloodlust lines", format: (l, a) => join(l.textA, plus(a), l.textB) },
+  // Hidden at 0: Shadow Flow's "Maximum Chance to Avoid increased by" below 3 Base Levels.
+  2: { confirmed: "Resurrect (GitHub issue #23), Protector Spirit's Bloodlust lines; hidden at 0: Shadow Flow", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, plus(a), l.textB)) },
   // "Damage Pierces " + 4 + "% Enemy Fire Resistance", "Activation Delay: " + 13 + " frames"
   // Hidden at 0: Warmth's First Level shows its mana regeneration line but not "Cold
   // Resistance: 0%" (GitHub issue #12).

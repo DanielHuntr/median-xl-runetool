@@ -415,7 +415,8 @@ test("skill references across all classes have readable names and styled segment
       assert.ok(!/\[\[/.test(line.text), `${id}: ${line.text}`);
       for (const segment of line.segments || []) {
         if (!segment.skill) continue;
-        assert.equal(segment.text, engine.skillName(segment.skill));
+        // As the game names it: an innate skill without the planner's "(Innate)".
+        assert.equal(segment.text, engine.skillName(segment.skill).replace(/ \(Innate\)$/, ""));
         checked++;
       }
     }
