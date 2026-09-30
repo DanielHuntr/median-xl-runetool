@@ -47,14 +47,21 @@ const WEAPON_WORDS = [
   ["scythe", (c) => /Scythes$/.test(c)],
 ];
 const RANGED = (c) => /Bows$|Crossbows$|Javelins$|Throwing/.test(c);
-function weaponNeed(restrictions) {
+export function weaponNeed(restrictions) {
   for (const r of restrictions) {
     const m = /^Requires an? (.+)$/i.exec(r.trim());
     if (!m) continue;
     const text = m[1].toLowerCase();
     if (/melee weapon/.test(text)) return { label: "melee weapon", fits: (c) => !RANGED(c) };
-    // Longest words first so "throwing knife" beats "knife"-like overlaps.
-    const tests = WEAPON_WORDS.filter(([w]) => new RegExp(`\\b${w}s?\\b`).test(text)).map(([, f]) => f);
+    // Consume longer phrases first so "throwing axe" does not also satisfy plain "axe".
+    const tests = [];
+    let remaining = text;
+    for (const [word, fits] of [...WEAPON_WORDS].sort((a, b) => b[0].length - a[0].length)) {
+      const re = new RegExp(`\\b${word}s?\\b`);
+      if (!re.test(remaining)) continue;
+      tests.push(fits);
+      remaining = remaining.replace(re, " ");
+    }
     if (tests.length) return { label: m[1], fits: (c) => tests.some((f) => f(c)) };
   }
   return null;

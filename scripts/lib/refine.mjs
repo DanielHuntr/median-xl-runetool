@@ -17,7 +17,7 @@ const SLOTS = ["weapon", "offhand", "helm", "body", "gloves", "belt", "boots", "
 const ATTRS = ["strength", "dexterity", "vitality", "energy"];
 
 export function refineBuild(p, ctx) {
-  const { engine, catalog, planner, score: rawScore, level, keepGear = null, allow = null, ease = null, optionalBuffs = [], measure = null, use = null, wastedLines = null, mostlyWasted = null, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log = () => {} } = ctx;
+  const { engine, catalog, planner, score: rawScore, level, keepGear = null, allow = null, ease = null, optionalBuffs = [], measure = null, use = null, wastedLines = null, mostlyWasted = null, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, fast = false, log = () => {} } = ctx;
   const env = { engine, catalog, planner };
   const clone = (b) => JSON.parse(JSON.stringify(b));
   // Attributes for a changed loadout: what it needs, the rest as the planner would spend it.
@@ -116,8 +116,8 @@ export function refineBuild(p, ctx) {
   // A slot's candidates: the top suggestions, plus its best runewords (which the suggestions'
   // ranking can leave out while levelling), less items mostly worn for nothing.
   const shortlist = (slot, n) => {
-    const all = p.recommend(slot, 60);
-    const top = all.slice(0, n), runewords = all.filter((c) => c.def.kind === "runeword" && !top.includes(c)).slice(0, 3);
+    const all = p.recommend(slot, fast ? 30 : 60);
+    const top = all.slice(0, n), runewords = all.filter((c) => c.def.kind === "runeword" && !top.includes(c)).slice(0, fast ? 1 : 3);
     return [...top, ...runewords].filter((c) => !wastedItem(c.state));
   };
   // full: items compared as they'd be worn (sockets and orbs, as the suggestion fills them),
@@ -157,11 +157,11 @@ export function refineBuild(p, ctx) {
     }
     return changed;
   };
-  slotPass();
+  slotPass(fast ? 5 : 10);
   lap("slots");
 
   // ---------- Sets, as a whole: the best piece of the set in each slot it has one for
-  {
+  if (!fast) {
     setBuild();
     const bySet = new Map();
     for (const slot of SLOTS) {
@@ -212,7 +212,7 @@ export function refineBuild(p, ctx) {
   // ---------- Honorific bases: a base item made Honorific (orbs count double), its sockets and
   // orbs filled by the planner's own suggestion. Its random magic affixes aren't counted. Weapons
   // keep the build's weapon type; each slot tries its three best bases the level allows.
-  {
+  if (!fast) {
     const reqOfLines = (lines) => Number((lines || []).map((l) => /^Required Level: (\d+)/.exec(l)?.[1]).find(Boolean) || 0);
     const cls = cur.b.cls;
     for (const slot of ["weapon", "offhand", "helm", "body", "gloves", "belt", "boots"]) {
@@ -262,7 +262,7 @@ export function refineBuild(p, ctx) {
   // ---------- A last look at each slot: the build has changed since its slot was compared
   // (other slots, sets, attributes), and an item that lost then can win now. Again while it
   // changes something (a new belt can make another weapon the better one), up to 3 times.
-  for (let round = 0; round < 3; round++) {
+  for (let round = 0; round < (fast ? 0 : 3); round++) {
     const changed = slotPass(10, { full: true });
     attributePass();
     buffPass();
@@ -272,7 +272,7 @@ export function refineBuild(p, ctx) {
   // ---------- What else each slot could wear, for the alternatives list: each candidate in
   // the finished build, by the same measure, with what it changes.
   const alternatives = {};
-  if (measure) {
+  if (measure && !fast) {
     setBuild();
     const m0 = measure(cur.b);
     const pct = (a, b) => (b > 0 ? Math.round((a / b - 1) * 1000) / 10 : 0);

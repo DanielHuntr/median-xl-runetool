@@ -7,6 +7,9 @@
 //   ONLY=id1,id2 node scripts/build-presets.mjs   builds just those, without publishing.
 //   STAGES_ONLY=1 node scripts/build-presets.mjs  remakes only the levelling stages, keeping the
 //     published endgame builds (after a change that affects levelling but not level 150).
+//   FAST_PRESETS=1 node scripts/build-presets.mjs skips the slowest polish passes
+//     (set-combo search, honorific search, final slot loops and alternatives) for quick
+//     legal drafts before a final full-quality run.
 //   SHARD=k/N (with PROGRESS_FILE)              builds only every Nth preset (k-th of them) into
 //     its own progress file and stops; scripts/build-presets-parallel.mjs runs N at once.
 //   RESUME=1 node scripts/build-presets.mjs       carries on a full run that stopped: each
@@ -74,7 +77,7 @@ try {
   const { createPlanner } = await load("/src/planner/usePlanner.js");
   const { isToggleSkill } = await load("/src/planner/skillEffects.js");
   const { fundLoadout, spendRemaining, releaseUnusedRequirements, wearableBothSets } = await load("/src/planner/attributeAllocation.js");
-  const { buildProfile, recommendForSlot, wantedStats } = await load("/src/planner/recommend.js");
+  const { buildProfile, recommendForSlot, wantedStats, weaponNeed } = await load("/src/planner/recommend.js");
   const { buffSpecs, suggestMercGear } = await load("/src/planner/mercs.js");
   const { combatScore } = await load("/src/planner/combatScore.js");
   const planner = JSON.parse(await readFile("public/planner/data.json", "utf8"));
@@ -126,6 +129,20 @@ try {
     return recommendForSlot("weapon", { build: b, engine, catalog, planner, character: c, profile, want: wantedStats(profile, c) }, 1)[0];
   };
   const probe = (b, text) => ({ ...b, inventory: [...b.inventory, { ref: "custom", custom: { name: "Probe", slotType: "charm", text } }] });
+  const equippedWeapon = (b) => catalog.resolve(b.gear?.[b.swap ? "weapon2" : "weapon"], b.level);
+  const skillWeaponNeed = (id) => weaponNeed(engine.skill(id)?.restriction || []);
+  const skillFitsWeapon = (b, id) => {
+    const need = skillWeaponNeed(id);
+    const weapon = equippedWeapon(b);
+    return !need || (weapon && need.fits(weapon.def.cat || ""));
+  };
+  const weaponProblem = (b, id) => {
+    const need = skillWeaponNeed(id);
+    const weapon = equippedWeapon(b);
+    return need && weapon && !need.fits(weapon.def.cat || "")
+      ? `${engine.skillName(id)} requires ${need.label}, weapon is ${weapon.def.name} (${weapon.def.cat})`
+      : null;
+  };
 
   // Skill-bar skills (secondary = true) may legitimately not gain damage from their own
   // points (War Spirit is a fixed 50% weapon hit; Mana Pulse's cold damage grows with
@@ -426,6 +443,54 @@ try {
     }
     return count;
     };
+    const pruneWeaponIncompatibleUtility = () => {
+      const b = p.build.value;
+      const keptBuffs = [];
+      for (const id of b.buffs || []) {
+        if (id === def.main || id === def.right || skillFitsWeapon(b, id)) keptBuffs.push(id);
+        else if (final) console.log(`   dropped incompatible buff: ${engine.skillName(id)} (${weaponProblem(b, id)})`);
+      }
+      b.buffs = keptBuffs;
+      const keptBar = [];
+      for (const id of b.skillBar || []) {
+        if (skillFitsWeapon(b, id)) keptBar.push(id);
+        else if (final) console.log(`   dropped incompatible skill-bar skill: ${engine.skillName(id)} (${weaponProblem(b, id)})`);
+      }
+      b.skillBar = keptBar;
+      if (b.rightSkill && !skillFitsWeapon(b, b.rightSkill)) {
+        if (final) console.log(`   dropped incompatible right-hand skill: ${engine.skillName(b.rightSkill)} (${weaponProblem(b, b.rightSkill)})`);
+        b.rightSkill = null;
+      }
+    };
+    const enforceMainWeapon = async () => {
+      const b = p.build.value;
+      const needed = [b.leftSkill, b.rightSkill].filter(Boolean).map((id) => weaponProblem(b, id)).filter(Boolean);
+      if (!needed.length) return true;
+      if (keepGear?.weapon) {
+        sink.push(`${def.name} (level ${level}): kept weapon doesn't fit active skill: ${needed.join("; ")}`);
+        return false;
+      }
+      const pick = p.recommend("weapon", 30).find((x) => {
+        const trial = { ...b, gear: { ...b.gear, weapon: x.state } };
+        if (catalog.resolve(x.state, b.level)?.twoHanded) delete trial.gear.offhand;
+        return [trial.leftSkill, trial.rightSkill].filter(Boolean).every((id) => !weaponProblem(trial, id));
+      });
+      if (!pick) {
+        sink.push(`${def.name} (level ${level}): no suggested weapon fits active skill: ${needed.join("; ")}`);
+        return false;
+      }
+      b.gear.weapon = pick.state;
+      if (catalog.resolve(pick.state, b.level)?.twoHanded) delete b.gear.offhand;
+      const env = { engine, catalog, planner };
+      const funded = fundLoadout(b, {}, env);
+      if (funded) {
+        b.attrs = funded;
+        b.attrs = releaseUnusedRequirements(b, {}, env);
+        b.attrs = spendRemaining(b, env, buildProfile(b, engine));
+      }
+      pruneWeaponIncompatibleUtility();
+      return true;
+    };
     let count = await suggestGear();
     // Spend the full budget, comparing damage of the slotted skills plus survivability
     // and recovery. Neutral choices favour the main tree and passives, one point at a
@@ -497,12 +562,13 @@ try {
       const usable = Object.keys(b.points).filter((id) => b.points[id] > 0 && !slotted.has(id) && engine.node(b, id)
         && !engine.skill(id).tags.some((t) => ["Passive", "Upgrade"].includes(t)) && engine.skill(id).tags.length);
       const tags = (id) => engine.skill(id).tags;
-      const buffs = usable.filter((id) => isToggleSkill(engine.skill(id)));
+      const weaponOk = (id) => skillFitsWeapon(b, id);
+      const buffs = usable.filter((id) => isToggleSkill(engine.skill(id)) && weaponOk(id));
       const hitters = usable.filter((id) => !buffs.includes(id) && b.points[id] > 1)
-        .map((id) => ({ id, d: damage(b, id) })).filter((x) => dealsDamage(x.d)).sort((x, y) => y.d.vs - x.d.vs).map((x) => x.id);
-      const moves = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => t === "Warp" || t === "Warp Strike"));
-      const summons = usable.filter((id) => !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => /Summon/.test(t)));
-      const others = usable.filter((id) => b.points[id] > 1 && ![...buffs, ...hitters, ...moves, ...summons].includes(id)).sort((x, y) => b.points[y] - b.points[x]);
+        .filter(weaponOk).map((id) => ({ id, d: damage(b, id) })).filter((x) => dealsDamage(x.d)).sort((x, y) => y.d.vs - x.d.vs).map((x) => x.id);
+      const moves = usable.filter((id) => weaponOk(id) && !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => t === "Warp" || t === "Warp Strike"));
+      const summons = usable.filter((id) => weaponOk(id) && !buffs.includes(id) && !hitters.includes(id) && tags(id).some((t) => /Summon/.test(t)));
+      const others = usable.filter((id) => weaponOk(id) && b.points[id] > 1 && ![...buffs, ...hitters, ...moves, ...summons].includes(id)).sort((x, y) => b.points[y] - b.points[x]);
       const bar = [...buffs, ...hitters, ...moves, ...summons, ...others].slice(0, 8);
       for (const id of buffs.filter((id) => bar.includes(id))) {
         const exclusive = tags(id).find((t) => t === "Stance" || t === "Morph");
@@ -532,6 +598,8 @@ try {
     if (!(count = await suggestGear(true))) {
       sink.push(`${def.name}: final equipment suggestion failed`);
     }
+    pruneWeaponIncompatibleUtility();
+    await enforceMainWeapon();
     // Gear, charms and relics, sets and attributes by the build's own measure (refine.mjs).
     {
       const changes = [], tRef = Date.now();
@@ -540,13 +608,15 @@ try {
       const measure = (b) => { const m = renv.rating.buildMetrics(b, renvD); return { boss: m.boss || 0, clear: m.clear || 0, ehp: m.ehp || 0 }; };
       // The class's innate buff (planner.skills: tab "Innate"), tried on and off by the measure.
       const innate = Object.entries(planner.skills).filter(([, x]) => x.class === def.cls && x.tabName === "Innate" && x.tags.includes("Buff")).map(([id]) => id);
-      const refined = refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null, ease, measure, optionalBuffs: innate,
+      const refined = refineBuild(p, { engine, catalog, planner, score, level, keepGear, allow: found ? foundGear.found : null, ease, measure, optionalBuffs: innate, fast: !!process.env.FAST_PRESETS,
         use: relevance.buildUse(p.build.value, renvD), wastedLines: relevance.wastedLines, mostlyWasted: relevance.mostlyWasted, fundLoadout, releaseUnusedRequirements, spendRemaining, wearableBothSets, buildProfile, computeCharacter, log: (t) => changes.push(t) });
       (alternatives[def.id] ??= {})[level < LEVEL ? level : "endgame"] = refined.alternatives;
       if (final || changes.length) console.log(`   refined (level ${level}): ${changes.length} changes${changes.length ? `: ${(process.env.VERBOSE ? changes : changes.slice(0, 8)).join("; ")}${changes.length > 8 && !process.env.VERBOSE ? " …" : ""}` : ""}`);
       if (process.env.PROFILE) console.log(`   [time] refine ${((Date.now() - tRef) / 1000).toFixed(1)}s`);
       if (notesEssentials.length && final) console.log(`   utility: ${notesEssentials.join(", ")}`);
     }
+    pruneWeaponIncompatibleUtility();
+    await enforceMainWeapon();
     // Whatever happened above, the build must be able to put its gear on. If it can't (no
     // funding of its attributes fits the loadout), the loadout is put back together from
     // nothing: its items one at a time, the lowest requirement first, each kept if the whole
@@ -642,6 +712,17 @@ ${def.name}: levelling stages`);
     if (engine.spent(b) !== engine.available(b)) problems.push(`${def.name}: ${engine.available(b) - engine.spent(b)} skill points remain unspent`);
     if (c.statPoints.signets !== c.statPoints.signetCap) problems.push(`${def.name}: signets are not at the available cap`);
     if (c.statPoints.spent !== c.statPoints.available) problems.push(`${def.name}: attribute points remain unspent`);
+    for (const id of [b.leftSkill, b.rightSkill, ...(b.skillBar || []), ...(b.buffs || [])].filter(Boolean)) {
+      const msg = weaponProblem(b, id);
+      if (msg) problems.push(`${def.name}: ${msg}`);
+    }
+    {
+      const profile = buildProfile(b, engine);
+      const need = profile.weapons?.[0];
+      const weapon = equippedWeapon(b);
+      if ((profile.roles.attack || 0) > 0.3 && need && weapon && !need.fits(weapon.def.cat || ""))
+        problems.push(`${def.name}: profile needs ${need.label}, weapon is ${weapon.def.name} (${weapon.def.cat})`);
+    }
     console.log(`\n${def.name} (${def.cls}), level ${b.level}: ${engine.spent(b)}/${engine.available(b)} points, ${count} items in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     console.log(`   points: ${Object.entries(b.points).map(([id, n]) => `${engine.skillName(id)} ${n}`).join(", ")}`);
     { const m = renv.rating.buildMetrics(b, renv); console.log(`   rating: boss ${m.boss ?? "-"}/s, clear ${m.clear ?? "-"}/s, sustain ${m.sustain ?? "-"}% (mana ${m.mana}, in ${m.manaIn}/s, spend ${m.manaSpend ?? "-"}/s), ehp ${m.ehp} (life ${m.life}, res ${m.resist}, avoid ${m.avoid}, block ${m.block}), hit recovery ${m.fhrFrames} frames, movement ${m.movement}%; inventory ${b.inventory.length}; attrs ${JSON.stringify(b.attrs)}`); }

@@ -172,6 +172,9 @@ test("recommendations follow the build's skills", async () => {
   assert.ok(a.recs.every((x) => x.reasons.length), "every suggestion explains itself");
   const off = run(bow, "offhand").recs;
   assert.ok(off.length && off.every((x) => x.def.slotType === "quiver"), "bow builds get quivers in the off-hand");
+  const snake = run(build("Barbarian", { level: 110, attrs: { strength: 500, dexterity: 500, vitality: 0, energy: 0 }, points: { snake_bite: 20 } }), "weapon");
+  assert.equal(R.describeProfile(snake.profile).weapon, "throwing axe");
+  assert.ok(snake.recs.length && snake.recs.every((x) => (x.def.cat || catalog.get(x.state.base)?.cat) === "Throwing Axes"), "throwing axe skills get throwing axes, not regular axes");
   const sorc = build("Sorceress", { level: 110, points: { molten_core: 1, warmth: 10, flamefront: 25, overheat: 10, flamestrike: 20 } });
   const s = run(sorc, "weapon");
   assert.deepEqual(R.describeProfile(s.profile).elements.map((e) => e.name), ["fire"]);
