@@ -4369,6 +4369,206 @@
     "Duration: 1.8 seconds"
    ],
    "independentChecks": "The deciding screenshot for the extra-block rule: level 1's table value is +28, level 2's is +50, and the game shows +50 at 1/1."
+  },
+  {
+   "id": "veil-king-first-level",
+   "skill": "veil_king",
+   "source": "In-game Veil King tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; with Blood Skeleton below, Character Level 150 is the only level (1-150 searched) giving all six life readings"
+    },
+    "points": {
+     "value": {
+      "blood_skeleton": 1
+     },
+     "how": "inferred: not stated; Blood Skeleton gives Veil King +10% life per Base Level, and only 1 point (0-20 searched) fits all six life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 15 seconds",
+    "Life: 15240 hit points",
+    "Damage: 58-68",
+    "Attack Rating: 500",
+    "Necromancer Minions: +11% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "independentChecks": "Damage, attack rating and the minion damage bonus use no inferred input."
+  },
+  {
+   "id": "veil-king-level-1",
+   "skill": "veil_king",
+   "source": "In-game Veil King tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; with Blood Skeleton below, Character Level 150 is the only level (1-150 searched) giving all six life readings"
+    },
+    "points": {
+     "value": {
+      "blood_skeleton": 1
+     },
+     "how": "inferred: not stated; Blood Skeleton gives Veil King +10% life per Base Level, and only 1 point (0-20 searched) fits all six life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 15 seconds",
+    "Life: 15240 hit points",
+    "Damage: 58-68",
+    "Attack Rating: 500",
+    "Necromancer Minions: +11% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 16512 hit points",
+    "Damage: 97-107",
+    "Attack Rating: 700",
+    "Necromancer Minions: +12% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "independentChecks": "Damage, attack rating and the minion damage bonus use no inferred input; life at three levels and their next levels fixes Character Level and Blood Skeleton together."
+  },
+  {
+   "id": "veil-king-level-10",
+   "skill": "veil_king",
+   "source": "In-game Veil King tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; with Blood Skeleton below, Character Level 150 is the only level (1-150 searched) giving all six life readings"
+    },
+    "points": {
+     "value": {
+      "blood_skeleton": 1
+     },
+     "how": "inferred: not stated; Blood Skeleton gives Veil King +10% life per Base Level, and only 1 point (0-20 searched) fits all six life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 15 seconds",
+    "Life: 26680 hit points",
+    "Damage: 401-411",
+    "Attack Rating: 2300",
+    "Necromancer Minions: +20% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 27952 hit points",
+    "Damage: 435-445",
+    "Attack Rating: 2500",
+    "Necromancer Minions: +21% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "independentChecks": "Damage, attack rating and the minion damage bonus use no inferred input; life at three levels and their next levels fixes Character Level and Blood Skeleton together."
+  },
+  {
+   "id": "veil-king-level-15",
+   "skill": "veil_king",
+   "source": "In-game Veil King tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "stated: no gear or other skills adding levels"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; with Blood Skeleton below, Character Level 150 is the only level (1-150 searched) giving all six life readings"
+    },
+    "points": {
+     "value": {
+      "blood_skeleton": 1
+     },
+     "how": "inferred: not stated; Blood Skeleton gives Veil King +10% life per Base Level, and only 1 point (0-20 searched) fits all six life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Cooldown: 15 seconds",
+    "Life: 33032 hit points",
+    "Damage: 570-580",
+    "Attack Rating: 3300",
+    "Necromancer Minions: +25% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 34304 hit points",
+    "Damage: 603-613",
+    "Attack Rating: 3500",
+    "Necromancer Minions: +26% Total Damage",
+    "Mana Cost: 1"
+   ],
+   "independentChecks": "Damage, attack rating and the minion damage bonus use no inferred input; life at three levels and their next levels fixes Character Level and Blood Skeleton together."
   }
  ]
 }
