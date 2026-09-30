@@ -479,15 +479,11 @@ export function createEngine(data) {
         const ob = other ? pts(b, other) : 0;
         const ol = ob > 0 ? ob + (b.soft?.[other] || 0) : 0;
         const who = other ? skillName(other) : `helper skill ${ref}`;
-        // A skill the character hasn't learned reads 0, as in Diablo II: Snake Bite's poison
-        // lasts 45 frames in game with no points in Gladiator's Dominance, whose clc3 would
-        // add 18 at level 0. (Helper skills, never learned, still read their values.)
-        // An upgrade is the exception: its base applies unlearned, read at level 0. Night
-        // Hawks "Inherits Grim Vision Aura", and with Grim Vision at 0 points its damage is
-        // +20% in game (Grim Vision's clc2 = par3 20 + 10 per level), at all ten readings
-        // in GitHub issue #29.
-        if (other && !ob && name !== "blvl" && name !== "lvl" && !skills[other].tags.includes("Upgrade"))
-          return { value: 0, label: `${who} ${name}: 0 (not learned)` };
+        // A skill the character hasn't learned is read at level 0: its per-level values are 0
+        // (gamecalc.js), its fixed ones still count. In game: Snake Bite's poison ignores
+        // Gladiator's Dominance's clc3 (ln56 / 2, per level); Night Hawks gets Grim Vision's
+        // base +20% (par3, GitHub issue #29); Frigid Nova gets Witch Blood's clc2, which is
+        // Character Level and Energy, not skill level (all six readings, 2026-09-30).
         // A variable the planner can't work out fails the whole formula (shown as
         // missing) rather than silently counting as 0.
         let e, v;

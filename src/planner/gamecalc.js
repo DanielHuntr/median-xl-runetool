@@ -120,13 +120,14 @@ export function createGameEval(skill, names, inputs) {
     else if (name === "lvl") v = inputs.lvl;
     else if (name === "ulvl") v = inputs.ulvl;
     else if (/^par[1-8]$/.test(name)) v = p(+name[3] - 1);
-    else if (LINEAR[name]) v = p(LINEAR[name][0]) + (inputs.lvl - 1) * p(LINEAR[name][1]);
+    // Per-level values are 0 at level 0 (an unlearned skill another skill reads; see engine.js).
+    else if (LINEAR[name]) v = inputs.lvl > 0 ? p(LINEAR[name][0]) + (inputs.lvl - 1) * p(LINEAR[name][1]) : 0;
     // At Base Level 0 (unlearned) it's 0: Shadow Dancer's First Level shows no Critical
     // Strike Chance (bl12 would otherwise be 15 − 1 = 14).
     else if (BASE_LINEAR[name]) v = inputs.blvl > 0 ? p(BASE_LINEAR[name][0]) + (inputs.blvl - 1) * p(BASE_LINEAR[name][1]) : 0;
     else if (DIMINISHING[name]) {
       const [a, b] = DIMINISHING[name].map(p);
-      v = a + Math.trunc((110 * inputs.lvl * (b - a)) / (100 * (inputs.lvl + 6)));
+      v = inputs.lvl > 0 ? a + Math.trunc((110 * inputs.lvl * (b - a)) / (100 * (inputs.lvl + 6))) : 0;
     } else if (/^blz[1357]$/.test(name)) {
       // Like bl12-bl78 but counted from Base Level 0: par(a) + blvl × par(b). Inferred
       // from the name; used once (Mind Spark's maximum Tempest bolts).
