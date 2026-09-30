@@ -203,7 +203,9 @@ test("every tooltip value carries its provenance; unknowns stay out of confirmed
             assert.equal(l.status, "unknown", `${n.id} ${p.key}`);
             assert.ok(p.source.notes[0], `${n.id} ${p.key} says why`);
           }
-  assert.equal(missing, 0, "every tooltip value of every tree skill is worked out");
+  // Ceaseless Fury's cooldown line reads Harbinger's cooldown through mlvl, a game variable
+  // not modelled yet; it's the only one (the tooltip shows "?" and says why).
+  assert.equal(missing, 1, "every tooltip value of every tree skill is worked out but Ceaseless Fury's");
   // MedianDB-only values are labelled community.
   const community = engine.classNames.some((cls) =>
     engine.tabs(cls).some((tab) =>
@@ -399,9 +401,10 @@ test("all classes: displayed mana costs remain finite and nonnegative at high bo
 test("Backstab shows its conditional section and hard-point weapon bonus", () => {
   const build = { cls: 'Assassin', level: 150, points: { backstab: 2 }, soft: { backstab: 16 }, quests: {}, buffs: [] };
   const lines = engine.describe(build, 'backstab', 2).effect;
-  const heading = lines.findIndex(l => l.heading && l.text === 'While backstabbing:');
+  // The game's own wording and order (its skilldesc text, drawn bottom-up).
+  const heading = lines.findIndex(l => l.heading && l.text === 'While Backstabbing:');
   assert.ok(heading > 0);
-  assert.equal(lines[heading + 1].text, '2% Avoid per 5 Base Levels');
+  assert.equal(lines[heading + 1].text, '2% avoid per 5 base levels');
   assert.match(lines[heading + 2].text, /\+120% Weapon Physical Damage/);
   assert.ok(engine.describe(build, 'backstab', 3).effect.some(l => /\+140% Weapon Physical Damage/.test(l.text)));
 });
@@ -462,7 +465,7 @@ test("game tooltip text fills values MedianDB words differently or states as tex
 test("the only values still missing are the documented unknowns", () => {
   // exma/enma aren't decoded; stat 470 has no source in the skill data; minion life and
   // attack rating come from the summoned monster, which isn't modelled.
-  const allowed = /\b(exma|enma)\b|stat 470|summoned monster/;
+  const allowed = /\b(exma|enma)\b|stat 470|summoned monster|variable mlvl/;
   for (const cls of engine.classNames)
     for (const tab of engine.tabs(cls))
       for (const n of engine.treeNodes(cls, tab))

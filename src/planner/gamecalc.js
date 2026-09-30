@@ -214,7 +214,9 @@ export function createGameEval(skill, names, inputs) {
       // Tooltip formulas' pstN: the value of passive stat slot N (inferred from Way of
       // the Spider, whose "Poison Spell Damage" line is pst1 = its first passive stat).
       const row = skill.passive?.find((x) => (x.slot ?? skill.passive.indexOf(x) + 1) === +name[3]);
-      if (!row) throw new Error(`${name}: no passive stat in that slot`);
+      // A slot the skill has no passive stat in reads 0 (Warmth's "Maximum Cold Resist" reads
+      // pst3 of two; the game hides the line, GitHub issue #12).
+      if (!row) return assumed.set(`${name} (no passive stat in that slot)`, 0), 0;
       const r = calc(row.calc);
       if (!r.ok) throw new Error(`${name}: ${r.reason}`);
       v = r.value;

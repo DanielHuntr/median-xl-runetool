@@ -790,7 +790,7 @@ export function createEngine(data) {
       if (f.hidden) continue;
       const colour = l.colour != null ? COLOURS[l.colour] : undefined;
       if (!l.calcA && !l.calcB && isHeading(l, f.text || "")) {
-        lines.push({ text: f.text, heading: true, colour, status: "ok", parts: [] });
+        lines.push({ text: f.text, heading: true, colour, status: "ok", slot: l.slot, parts: [] });
         continue;
       }
       const failed = [a, c].find((x) => x.failed)?.failed;
@@ -802,9 +802,14 @@ export function createEngine(data) {
       else if (f.format === "inferred") source.status = "game-inferred";
       const texts = l.calcA || l.calcB ? [f.text] : f.lines || [f.text];
       for (const text of texts) {
+        // A line of fixed text ending in a colon heads what follows ("While Backstabbing:").
+        if (!l.calcA && !l.calcB && /^[^\d]+:$/.test(text.trim())) {
+          lines.push({ text, heading: true, colour, status: "ok", slot: l.slot, parts: [] });
+          continue;
+        }
         const seen = !failed && observed.has(text);
         const src = seen ? { ...source, status: "verified", notes: [...source.notes, "Matches the in-game tooltip text"] } : source;
-        lines.push({ text, colour, status: failed ? "unknown" : "ok", trust: src.status, parts: [{ key: block, values: [a.value, c.value], source: src }] });
+        lines.push({ text, colour, status: failed ? "unknown" : "ok", trust: src.status, slot: l.slot, parts: [{ key: block, values: [a.value, c.value], source: src }] });
       }
     }
     return { title, lines };
@@ -1227,6 +1232,8 @@ export function createEngine(data) {
   }
   // asShown: the tooltip as the game draws it (the default, for pages and in-game checks);
   // false for calculations, which need what the skill does at its level (see lineEval).
+  // Tooltip lines the game draws itself, not from skilldesc: damage and mana cost.
+  const AUTO_LINE_KEYS = [...Object.keys(ELEMENT_KEYS), ...PHYSICAL_KEYS, "poison_dot", "mana_cost", "minion_mana_cost"];
   function describe(b, id, blvl, { asShown = true } = {}) {
     if (asShown && !b.asShown) b = { ...b, asShown: true };
     const s = skills[id];
@@ -1267,6 +1274,44 @@ export function createEngine(data) {
           }
         : l,
     );
+    // The tooltip as shown is the game's own (game files first): its extra block, then its
+    // per-level block, each drawn bottom-up as the game does, then the lines the game adds
+    // itself rather than from skilldesc (the skill's damage and its Mana Cost), still worked
+    // out from the game formulas through MedianDB's keys. MedianDB's own wording is only a
+    // fallback, for a skill the game files don't describe. Calculations (asShown: false)
+    // keep the keyed lines below.
+    if (asShown && s.game?.lines?.length && game) {
+      // A game line and MedianDB's line for the same value share a label ("Attack Rating").
+      const label = (t) => norm(String(t).replace(/\([^)]*\)/g, "").replace(/[-+?\d.%]+/g, " ").replace(/\b(seconds?|yards?|hit points)\b/gi, ""));
+      const keyed = new Map(effect.filter((l) => l.parts.length === 1).map((l) => [label(l.text), l]));
+      // Skill names in the game's text link to the skill, as MedianDB's [[skill]] references do.
+      const names = [...nodesByClass[s.class]?.values() || []].map((n) => [skills[n.id].name.replace(/ \(Innate\)$/, ""), n.id]).filter(([n]) => n.length > 3).sort((x, y) => y[0].length - x[0].length);
+      const link = (l) => {
+        const hit = names.find(([n]) => l.text.includes(n));
+        if (!hit) return l;
+        const [n, ref] = hit, at = l.text.indexOf(n);
+        return { ...l, segments: [{ text: l.text.slice(0, at) }, { text: n, skill: ref }, { text: l.text.slice(at + n.length) }].filter((x) => x.text) };
+      };
+      // "Unlockable Skill …" text is shown with the skill's unlock requirement, not in its tooltip.
+      const drawn = (block) => gameBlock(b, id, blvl, block, seen).lines.filter((l) => !l.header && !/^Unlockable Skill/i.test(l.text)).map((l, i) => [l, i]).sort((x, y) => (y[0].slot ?? 0) - (x[0].slot ?? 0) || x[1] - y[1]).map(([l]) => l).map((l) => {
+        const mdb = l.parts.length ? keyed.get(label(l.text)) : null;
+        // The game's formula can't be worked out yet (a variable not modelled): MedianDB's
+        // value for the same line, if it has one; otherwise the line stays unknown.
+        if (l.status === "unknown" && mdb && mdb.status !== "unknown") return link(mdb);
+        return link(mdb ? { ...l, parts: l.parts.map((p) => {
+          // Fixed text ("Enemy Weapon Damage: -30%") has no formula: MedianDB's number for it.
+          const values = p.values.filter((v) => v != null);
+          return { ...p, key: mdb.parts[0].key, values: values.length ? values : mdb.parts[0].values };
+        }) } : l);
+      });
+      const added = block(s.effect.filter((t) => AUTO_LINE_KEYS.some((k) => t.includes(`{{${k}}}`)))).filter((l) => !notInGame(l));
+      return {
+        description: block(s.description),
+        restriction: block(s.restriction),
+        effect: [...drawn("extra"), ...drawn("level"), ...added],
+        notInGame: [],
+      };
+    }
     // No MedianDB line renders for this skill (Death Pact lists only sub-entries): the game's own
     // per-level and extra lines instead.
     const fromGame = !effect.length && s.game ? [...gameBlock(b, id, blvl, "level").lines, ...gameBlock(b, id, blvl, "extra").lines].filter((l) => !l.header) : [];
@@ -1297,6 +1342,7 @@ export function createEngine(data) {
 
   return {
     capConfirmed,
+    gameBlock,
     classNames,
     classes: data.classes,
     tabs: (cls) => tabsByClass[cls] || [],

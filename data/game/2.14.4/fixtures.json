@@ -4596,11 +4596,15 @@
     "current": {}
    },
    "otherLines": [
-    "Claw Physical Damage: +30%",
-    "Bloodbath",
-    "Duration: +0.2 seconds"
+    "Claw Physical Damage: +30%"
    ],
-   "independentChecks": "Nothing is inferred from the shown values."
+   "independentChecks": "Nothing is inferred from the shown values.",
+   "synergyText": [
+    "Duration: +0.2 seconds",
+    "(Depends on Character Level)",
+    "Critical Strike Chance Increased by 1% per Base Level",
+    "Bloodbath Duration Increased by 0.2 seconds per Base Level"
+   ]
   },
   {
    "id": "shadow-dancer-level-1",
@@ -4634,14 +4638,18 @@
    },
    "otherLines": [
     "Critical Strike Chance: +15%",
-    "Claw Physical Damage: +30%",
-    "Bloodbath",
-    "Duration: +0.2 seconds"
+    "Claw Physical Damage: +30%"
    ],
    "nextLines": [
     "Claw Physical Damage: +39%"
    ],
-   "independentChecks": "Nothing is inferred from the shown values."
+   "independentChecks": "Nothing is inferred from the shown values.",
+   "synergyText": [
+    "Duration: +0.2 seconds",
+    "(Depends on Character Level)",
+    "Critical Strike Chance Increased by 1% per Base Level",
+    "Bloodbath Duration Increased by 0.2 seconds per Base Level"
+   ]
   },
   {
    "id": "shadow-dancer-level-10",
@@ -4675,14 +4683,18 @@
    },
    "otherLines": [
     "Critical Strike Chance: +24%",
-    "Claw Physical Damage: +111%",
-    "Bloodbath",
-    "Duration: +2 seconds"
+    "Claw Physical Damage: +111%"
    ],
    "nextLines": [
     "Claw Physical Damage: +120%"
    ],
-   "independentChecks": "Nothing is inferred from the shown values."
+   "independentChecks": "Nothing is inferred from the shown values.",
+   "synergyText": [
+    "Duration: +2 seconds",
+    "(Depends on Character Level)",
+    "Critical Strike Chance Increased by 1% per Base Level",
+    "Bloodbath Duration Increased by 0.2 seconds per Base Level"
+   ]
   },
   {
    "id": "shadow-dancer-level-25",
@@ -4716,14 +4728,18 @@
    },
    "otherLines": [
     "Critical Strike Chance: +39%",
-    "Claw Physical Damage: +228%",
-    "Bloodbath",
-    "Duration: +5 seconds"
+    "Claw Physical Damage: +228%"
    ],
    "nextLines": [
     "Claw Physical Damage: +235%"
    ],
-   "independentChecks": "Nothing is inferred from the shown values."
+   "independentChecks": "Nothing is inferred from the shown values.",
+   "synergyText": [
+    "Duration: +5 seconds",
+    "(Depends on Character Level)",
+    "Critical Strike Chance Increased by 1% per Base Level",
+    "Bloodbath Duration Increased by 0.2 seconds per Base Level"
+   ]
   },
   {
    "id": "noctule-first-level",
