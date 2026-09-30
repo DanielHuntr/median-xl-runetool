@@ -203,9 +203,7 @@ test("every tooltip value carries its provenance; unknowns stay out of confirmed
             assert.equal(l.status, "unknown", `${n.id} ${p.key}`);
             assert.ok(p.source.notes[0], `${n.id} ${p.key} says why`);
           }
-  // Ceaseless Fury's cooldown line reads Harbinger's cooldown through mlvl, a game variable
-  // not modelled yet; it's the only one (the tooltip shows "?" and says why).
-  assert.equal(missing, 1, "every tooltip value of every tree skill is worked out but Ceaseless Fury's");
+  assert.equal(missing, 0, "every tooltip value of every tree skill is worked out");
   // MedianDB-only values are labelled community.
   const community = engine.classNames.some((cls) =>
     engine.tabs(cls).some((tab) =>
@@ -214,7 +212,8 @@ test("every tooltip value carries its provenance; unknowns stay out of confirmed
       ),
     ),
   );
-  assert.ok(community);
+  // Every tree skill's values now come from the game files; none is MedianDB's alone.
+  assert.equal(community, false, "no value is MedianDB's alone");
   // Skill contributions to character stats carry the same label.
   for (const [, , , trust] of engine.skillStatEffects(at().build, WOTS)) assert.equal(trust, "verified");
 });
@@ -293,16 +292,16 @@ test("synergy lines and the current synergy bonus follow their own inputs", () =
 });
 
 test("a value that needs something the planner can't work out is missing, not zero", async () => {
-  // toht (to-hit) isn't modelled: a formula needing it fails with the reason, unless the
-  // unknown is multiplied by 0.
+  // pass isn't modelled (Paragon of Fate's unlock reads it): a formula needing it fails with
+  // the reason, unless the unknown is multiplied by 0.
   const { createGameEval } = await import("../src/planner/gamecalc.js");
   const names = data.game.variables;
-  const toht = names.findIndex((n) => n.trim() === "toht");
+  const toht = names.findIndex((n) => n.trim() === "pass");
   const e = createGameEval({ params: [], passive: [] }, names, { blvl: 1, lvl: 1, ulvl: 1 });
   const hex = (bytes) => ({ code: bytes.map((b) => b.toString(16).padStart(2, "0")).join("") });
   const alone = e.calc(hex([0x04, toht, 0x00]));
   assert.equal(alone.ok, false);
-  assert.match(alone.reason, /toht/);
+  assert.match(alone.reason, /pass/);
   assert.deepEqual(e.calc(hex([0x04, toht, 0x07, 0, 0x12, 0x00])), { ok: true, value: 0 });
 });
 
@@ -424,7 +423,8 @@ test("skill references across all classes have readable names and styled segment
       }
     }
   }
-  assert.ok(checked > 100, `styled ${checked} references`);
+  // (Lines worth 0 are hidden as the game hides them, Execution's Broadside line at level 1 among them.)
+  assert.ok(checked > 90, `styled ${checked} references`);
 });
 
 test("extracted skill fields agree with independent sources", async () => {
@@ -465,7 +465,7 @@ test("game tooltip text fills values MedianDB words differently or states as tex
 test("the only values still missing are the documented unknowns", () => {
   // exma/enma aren't decoded; stat 470 has no source in the skill data; minion life and
   // attack rating come from the summoned monster, which isn't modelled.
-  const allowed = /\b(exma|enma)\b|stat 470|summoned monster|variable mlvl/;
+  const allowed = /\b(exma|enma)\b|stat 470|summoned monster/;
   for (const cls of engine.classNames)
     for (const tab of engine.tabs(cls))
       for (const n of engine.treeNodes(cls, tab))
@@ -512,4 +512,39 @@ test("the tooltip's extra block is drawn one level ahead once learned; calculati
   assert.equal(engine.skillValues(b, "mana_pulse").bonus_cold_damage_to_weapons[0], 28);
   // Unlearned (First Level): the current level either way.
   assert.equal(engine.describe({ ...b, points: {} }, "mana_pulse", 0).effect.map((l) => l.text).find((t) => /cold/.test(t)), "+28 bonus cold damage to attack");
+});
+
+test("maximum level is the game's: skills2.bin's cap plus its maximum-level formula", () => {
+  const cap = (id, ulvl, points = {}) => engine.maxLevel({ cls: data.skills[id].class, level: ulvl, points: { [id]: 1, ...points }, quests: {} }, id);
+  // Every in-game reading (GitHub issues #14-#20).
+  assert.deepEqual([cap("warmth", 150), cap("barkskin", 150), cap("spiritual_alignment", 150), cap("holy_fire", 150)], [38, 30, 34, 25]);
+  assert.deepEqual([cap("sanctity", 150), cap("consecration", 150), cap("aptitude", 150)], [5, 5, 5]);
+  assert.deepEqual([cap("void_gazer", 100), cap("void_gazer", 104), cap("void_gazer", 150)], [1, 1, 11]);
+  // A class's own copy of a shared skill: Specialization's +1 per 2 points (Blink reads skill(1185)).
+  assert.equal(cap("blink", 150, { specialization: 10 }) - cap("blink", 150), 5);
+  // Elemental Command's "(Current Bonus: +14)" at level 75: Trinity Arrow 5 + 14.
+  assert.equal(cap("trinity_arrow", 75, { elemental_command: 1 }), 19);
+  // "Requires either Pestilence or Dream Eater" (the game's own Nightwalker text).
+  assert.ok(cap("nightwalker", 150, { pestilence: 1 }) > cap("nightwalker", 150));
+});
+
+test("attack rating bonus (toht) and maximum level (mlvl) are read from the game files", () => {
+  const line = (id, blvl, re) => engine.describe({ cls: data.skills[id].class, level: 150, points: { [id]: blvl }, soft: {}, quests: {} }, id, blvl).effect.map((l) => l.text).find((t) => re.test(t));
+  // skills.bin ToHit 10, LevToHit 5 (0x198, 0x19c).
+  assert.equal(line("iron_spiral", 10, /Attack Rating/), "Attack Rating: +55%");
+  // Harbinger's 50 frames ÷ Ceaseless Fury's cap of 6, as its own synergy text says (0.33 s per Base Level).
+  assert.equal(line("ceaseless_fury", 3, /Cooldown/), "Cooldown reduced by 1 second");
+});
+
+test("in-game screenshots confirm what their lines rely on, and say which", () => {
+  const b = { cls: "Assassin", level: 150, points: { shadow_dancer: 10 }, soft: {}, quests: {} };
+  const crit = engine.describe(b, "shadow_dancer", 10).effect.find((l) => /Critical Strike/.test(l.text));
+  const src = crit.parts[0].source;
+  assert.ok(!src.gaps.includes("variable:pst1"), "passive slot 1 is confirmed");
+  // The evidence itself: matching lines in several screenshots, none against.
+  const t = engine.gapEvidence().get("function:reference");
+  assert.ok(t.for.size >= 2 && !t.against.size);
+  const ref = engine.describe({ cls: "Paladin", level: 150, points: { resurrect: 1, conclave: 1 }, soft: {}, quests: {} }, "resurrect", 1)
+    .effect.find((l) => /^Life:/.test(l.text)).parts[0].source;
+  assert.ok(ref.notes.some((n) => /^Checked against \d+ in-game screenshots?/.test(n)), "says which screenshots");
 });

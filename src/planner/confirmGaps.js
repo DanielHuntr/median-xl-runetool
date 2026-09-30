@@ -12,6 +12,8 @@ const VARIABLE_HELP = {
   clc: (n) => `the skill's calculated value ${n} (formula variable clc${n})`,
   ln: (n) => `a per-level table (formula variable ln${n})`,
   bl: (n) => `a per-base-level table (formula variable bl${n})`,
+  dm: (n) => `a diminishing-returns table by level (formula variable dm${n})`,
+  bd: (n) => `a diminishing-returns table by Base Level (formula variable bd${n})`,
 };
 const NAMED_VARIABLES = {
   mana: "the mana cost formula (formula variable mana)",
@@ -24,11 +26,12 @@ const NAMED_VARIABLES = {
   pdmx: "the skill's physical damage table (formula variable pdmx)",
   mnhp: "a summon's life (formula variable mnhp)",
   mnar: "a summon's armor (formula variable mnar)",
+  toht: "the skill's attack rating bonus (formula variable toht: ToHit + LevToHit per level, read from skills.bin)",
+  mlvl: "the skill's maximum level (formula variable mlvl)",
 };
 
 // The display rules engine.js notes, in plain words.
 const RULE_HELP = [
-  [/^Mana modifier formula not applied/, "An extra mana cost adjustment in the game files, which the planner doesn't apply yet"],
   [/^Shown as the raw damage value/, "How the game shows the skill's elemental damage (as a raw value, like Stormcall)"],
   [/^Physical damage table shown as the raw value/, "How the game shows physical damage from the skill's own damage table"],
   [/^The skill's own poison/, "How the game shows the skill's own poison damage"],

@@ -14,7 +14,10 @@ export const OPCODES = {
   0x04: { name: "var", size: 1, confirmed: "skillcalc.bin variable index" },
   0x07: { name: "int8", size: 1, confirmed: "1-byte constant" },
   0x08: { name: "int16", size: 2, confirmed: "2-byte little-endian constant" },
-  0x09: { name: "int32", size: 4, inferred: "4-byte constant (09 50 c3 00 00 = 50000)" },
+  // Confirmed by decoding: a wrong size would desynchronise every formula holding one, and all
+  // of them decode to their end marker with constants the game's text states (Ecstatic
+  // Frenzy's cap of 50000, the summons' mana 51200).
+  0x09: { name: "int32", size: 4, confirmed: "4-byte constant (09 50 c3 00 00 = 50000); every formula using it decodes to its end" },
   0x0a: { name: "<", size: 0, arity: 2, inferred: "lvl < 41 ? 5 × lvl : 120 + 2 × lvl (equal at 40)" },
   0x0b: { name: ">", size: 0, arity: 2, inferred: "ulvl > 11 ? cubic curve : linear start" },
   0x0c: { name: "<=", size: 0, arity: 2, inferred: "range check: (x >= 1990) × (x <= 2010)" },
@@ -35,7 +38,7 @@ export const FUNCTIONS = {
   1: { name: "max", args: 2, confirmed: true },
   2: { name: "rand", args: 2, confirmed: false, note: "(min, max) random roll, e.g. rand(0, 99) < chance" },
   3: { name: "skillref", args: 2, confirmed: false, note: "(skill id, variable) of another skill" },
-  4: { name: "missref", args: 2, confirmed: false, note: "(id, variable) of a missile; missile data isn't extracted" },
+  4: { name: "missref", args: 2, confirmed: true, note: "(missile id, misscalc.bin variable): par1-5, cpa1-5, hpa1-3, chp1-3, dpa1-2 of missiles.bin" },
   5: { name: "statref", args: 2, confirmed: false, note: "(stat id, layer): a stat on the character" },
   7: { name: "state", args: 1, confirmed: false, note: "(state id): whether the character has that state" },
   10: { name: "func10", args: 1, confirmed: false, note: "(n): hard points in the class's nth skill tree (Death Pact)" },

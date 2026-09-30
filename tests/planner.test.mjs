@@ -744,7 +744,10 @@ test('spell estimates include orb damage bonuses and Askari scales Stormcall onc
   b.gear.body.orbs = Array(5).fill('mo-6');
   const after = estimate('stormcall');
   assert.deepEqual(after.total, before.total.map(v => Math.floor(v * 1.1)), '10% lightning spell damage reaches displayed estimate');
-  assert.deepEqual(estimate('askari_lightning').total, askariBefore.total.map(v => Math.floor(v * 1.1)), 'Askari formula already reads Stormcall; apply the lightning bonus once');
+  // Askari reads Stormcall's enma, which has the mastery in it (applied in 256ths, before the
+  // game's ÷ 256, so a little above ×1.1): once, not ×1.21.
+  const ratio = estimate('askari_lightning').total[1] / askariBefore.total[1];
+  assert.ok(ratio > 1.09 && ratio < 1.12, `Askari formula already reads Stormcall; apply the lightning bonus once (×${ratio})`);
   b.gear.body.orbs = Array(5).fill('mo-25');
   assert.ok(estimate('stormcall').total[1] > before.total[1], 'spell focus reaches the underlying formula');
   b.gear.body.custom.text += '\n+100 Spell Focus\n+10% Bonus to Spell Focus';
@@ -1385,7 +1388,9 @@ test('"Help confirm values" ranks the screenshots that confirm the most, from th
   const { confirmationGaps } = await load('/src/planner/confirmGaps.js');
   const r = confirmationGaps(engine);
   assert.ok(r.skills > 400 && r.unconfirmedSkills <= r.skills);
-  assert.ok(r.suggestions.length > 5, 'several suggestions');
+  // Everything is confirmed now (the game's code, and 138 in-game screenshots): no suggestions.
+  assert.equal(r.unconfirmedSkills, 0);
+  assert.deepEqual(r.suggestions, []);
   // Greedy cover: each pick adds less than the one before, and nothing is suggested twice.
   const helps = r.suggestions.map((s) => s.helps);
   assert.deepEqual(helps, [...helps].sort((a, b) => b - a));
@@ -1399,8 +1404,8 @@ test('"Help confirm values" ranks the screenshots that confirm the most, from th
   const keys = new Set(engine.tabs('Assassin').flatMap((t) => engine.treeNodes('Assassin', t)).flatMap((n) =>
     engine.describe({ cls: 'Assassin', level: 150, points: { [n.id]: 1 }, quests: {} }, n.id, 1).effect
       .flatMap((l) => l.parts.flatMap((p) => p.source?.status === 'game-inferred' ? p.source.gaps : []))));
-  assert.ok(keys.size > 0, 'some Assassin tooltips report unconfirmed gaps');
-  for (const k of keys) assert.ok(r.gaps.some((g) => g.key === k && g.skills >= 1), k);
+  assert.equal(keys.size, 0, 'no Assassin tooltip reports an unconfirmed gap');
+  assert.deepEqual(r.gaps, []);
 });
 
 test("tooltip sections below the levels keep the game's headings and colours", async () => {

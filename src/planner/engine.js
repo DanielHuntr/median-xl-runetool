@@ -104,7 +104,9 @@ export function createEngine(data) {
     medianDb: { label: `MedianDB ${data.gameVersion}`, patch: data.gameVersion, commit: data.source?.commit?.slice(0, 7) || null, repo: data.source?.repo || null },
     game: game ? { label: `Game files ${game.patch}`, patch: game.patch, extractedAt: game.extractedAt, files: game.files, method: game.method } : null,
   };
-  const byGameId = new Map(Object.entries(skills).filter(([, s]) => s.game).map(([id, s]) => [s.game.gameId, id]));
+  // Game id → planner skill, including class copies of a shared skill (merge-game.mjs aliases).
+  const byGameId = new Map([...Object.entries(data.game?.aliases || {}).map(([gid, id]) => [Number(gid), id]),
+    ...Object.entries(skills).filter(([, s]) => s.game).map(([id, s]) => [s.game.gameId, id])]);
   const capConflicts = new Map((game?.report?.capDiffers || []).filter((x) => x.medianDb > 0).map((x) => [x.id, x]));
   const reqConflicts = new Map((game?.report?.reqLevelDiffers || []).map((x) => [x.id, x]));
 
@@ -126,9 +128,28 @@ export function createEngine(data) {
   const spent = (b) => Object.values(b.points).reduce((a, n) => a + n, 0);
 
   // ---------- Max level
+  // The game's own cap: skills2.bin's hard-point cap plus its maximum-level formula, read at
+  // this character level and these points (Specialization's +1 per 2 points, Warmth's
+  // ulvl / 4, Lioness's points in six other skills ÷ 3 …). Locks (−500 and below: devotions
+  // and prerequisites) fall back to the planner's own rules, which explain them.
+  function gameMaxLevel(b, id, level, points) {
+    const g = skills[id]?.game;
+    if (!game || g?.baseCap == null || !g.capModifier) return null;
+    const blvl = points[id] || 0;
+    const r = evalRecord(g, { ...b, level: clampLevel(level), points }, blvl, blvl, 0).calc(g.capModifier);
+    // A lock (±500 and beyond: an exclusive devotion or a missing prerequisite) leaves the cap to
+    // the planner's rules, which say why the skill is locked.
+    if (!r.ok || Math.abs(r.value) >= 500) return null;
+    return g.baseCap + r.value;
+  }
   function maxLevel(b, id, level = b.level, points = b.points) {
     const s = skills[id];
     if (!s) return 0;
+    const fromGame = gameMaxLevel(b, id, level, points);
+    if (fromGame != null) {
+      const v = Math.min(fromGame, MAX_LEVEL);
+      return v < 1 && !isInnate({ ...s, id }) ? 1 : v;
+    }
     let v = baseCap(id);
     for (const r of MAX_LEVEL_RULES) {
       const src = r.source ? points[r.source] || 0 : 0;
@@ -433,6 +454,12 @@ export function createEngine(data) {
       blvl,
       lvl,
       ulvl: b.level,
+      missiles: game.missiles,
+      // The skill's maximum level, for maxe; worked out only when a formula reads it.
+      get maxLevel() {
+        const id = byGameId.get(g.gameId);
+        return id && b.points ? maxLevel(b, id) : undefined;
+      },
       resolve(kind, ref, name) {
         // Hard points in the class's nth skill tree (Death Pact: "Based on Points in the
         // Crossbow Tree" reads func10(4); Crossbow is the Necromancer's 4th tree).
@@ -520,6 +547,79 @@ export function createEngine(data) {
   // level 1: the game shows Askari Lightning's (299 + lvl) × (100 + blvl) / 100 as 300%.
   const levelOf = (b, id, blvl) => (blvl > 0 ? blvl + (b.soft?.[id] || 0) : 1);
   const levelInputs = (b, id, blvl) => ({ blvl, lvl: levelOf(b, id, blvl), ulvl: b.level });
+  // ---------- In-game evidence. Every line an in-game screenshot shows (data.fixtures) that the
+  // planner reproduces exactly supports each gap it relies on (a formula variable, operator,
+  // line format or display rule); a line with the same label that doesn't match counts
+  // against them. A gap with two or more different matching lines and nothing against it is
+  // confirmed, and says by which screenshots. Worked out once, on first use.
+  let evidence = null, collecting = false;
+  function gapEvidence() {
+    const found = new Map(); // gap → { for: Map(text → fixture id), against: Set(fixture id) }
+    const tally = (gap) => found.get(gap) ?? (found.set(gap, { for: new Map(), against: new Set() }), found.get(gap));
+    for (const f of data.fixtures || []) {
+      if (!skills[f.skill]) continue;
+      const input = (k) => f.inputs[k].value;
+      const b = { cls: skills[f.skill].class, level: input("ulvl"), points: { ...(f.inputs.points?.value || {}), [f.skill]: input("blvl") },
+        soft: { [f.skill]: input("lvl") - input("blvl") }, quests: {}, buffs: [], charStats: f.inputs.charStats?.value };
+      const readings = [[b, input("blvl"), f.otherLines, f.synergyText]];
+      if (f.nextLines) {
+        const nb = input("blvl") + f.nextLevel.blvl, nl = input("lvl") + f.nextLevel.lvl;
+        readings.push([{ ...b, points: { ...b.points, [f.skill]: nb }, soft: { [f.skill]: nl - nb } }, nb, f.nextLines, null]);
+      }
+      for (const [rb, blvl, shown, synergyShown] of readings) {
+        let lines = [];
+        try {
+          lines = [...describe(rb, f.skill, blvl).effect, ...(synergyShown ? synergies(rb, f.skill, blvl)?.lines || [] : [])];
+        } catch { continue; }
+        // A recorded difference that's layout only (sameValue: Snake Bite's "over 1.8 seconds" on
+        // its own line) counts as a match; one in the value counts against.
+        const layout = new Map((f.knownDifferences || []).filter((k) => k.sameValue).map((k) => [k.game, k.planner]));
+        const byLabel = new Map([...(shown || []), ...(synergyShown || [])].map((t) => [lineLabel(layout.get(t) ?? t), layout.get(t) ?? t]));
+        for (const l of lines) {
+          const game = byLabel.get(lineLabel(l.text));
+          if (game == null) continue;
+          const match = game.toLowerCase() === String(l.text).toLowerCase();
+          for (const p of l.parts || [])
+            for (const gap of p.source?.rawGaps || p.source?.gaps || []) {
+              const t = tally(gap);
+              if (match) t.for.set(l.text, f.id);
+              else t.against.add(f.id);
+            }
+        }
+      }
+    }
+    return found;
+  }
+  const confirmedGap = (gap) => {
+    const t = evidence?.get(gap);
+    return !!t && t.for.size >= 2 && !t.against.size;
+  };
+  // The gaps a provenance note stands for, so a confirmed gap's note goes with it.
+  function gapsOfNote(n) {
+    const vars = /^Uses formula variables not yet checked in game: (.*)$/.exec(n);
+    if (vars) return vars[1].split(", ").map((v) => `variable:${v}`);
+    const ops = /^Uses formula operators decoded by inference, not yet checked in game: (.*)$/.exec(n);
+    if (ops) return ops[1].split(", ").map((o) => `operator:${o}`);
+    if (/^Reads other skills or stats through formula functions/.test(n)) return ["function:reference"];
+    const g = noteGap(n);
+    return g === "missing" ? [] : [g];
+  }
+  // Takes out the gaps in-game screenshots confirm, saying which; keeps the raw list (rawGaps).
+  function withEvidence(source) {
+    if (!evidence && !collecting) {
+      collecting = true;
+      try { evidence = gapEvidence(); } finally { collecting = false; }
+    }
+    const rawGaps = source.rawGaps || source.gaps;
+    const confirmed = rawGaps.filter(confirmedGap);
+    if (!confirmed.length) return { ...source, rawGaps };
+    const gaps = rawGaps.filter((g) => !confirmedGap(g));
+    const ids = [...new Set(confirmed.flatMap((g) => [...evidence.get(g).for.values()]))];
+    const notes = [...source.notes.filter((n) => { const own = gapsOfNote(n); return !own.length || own.some((g) => gaps.includes(g)); }),
+      `Checked against ${ids.length} in-game screenshot${ids.length > 1 ? "s" : ""}: ${ids.slice(0, 4).join(", ")}${ids.length > 4 ? ", …" : ""}`];
+    const status = source.status === "game-inferred" && !gaps.length ? "game" : source.status;
+    return { ...source, rawGaps, gaps, notes, status };
+  }
   function gameSource(e, inputs, formula, notes = []) {
     const unconfirmed = e.unconfirmed();
     const resolved = e.resolved();
@@ -528,9 +628,9 @@ export function createEngine(data) {
     const ops = e.inferred();
     if (ops.length) n.push(`Uses formula operators decoded by inference, not yet checked in game: ${ops.join(", ")}`);
     if (Object.keys(resolved).length) n.push("Reads other skills or stats through formula functions whose meaning is inferred");
-    return { status: n.length ? "game-inferred" : "game", from: datasets.game.label, formula, inputs, assumed: e.assumed(), resolved, notes: n,
-      gaps: [...unconfirmed.map((v) => `variable:${v}`), ...ops.map((o) => `operator:${o}`),
-        ...(Object.keys(resolved).length ? ["function:reference"] : []), ...notes.map(noteGap)] };
+    const gaps = [...unconfirmed.map((v) => `variable:${v}`), ...ops.map((o) => `operator:${o}`),
+      ...(Object.keys(resolved).length ? ["function:reference"] : []), ...notes.map(noteGap)];
+    return withEvidence({ status: n.length ? "game-inferred" : "game", from: datasets.game.label, formula, inputs, assumed: e.assumed(), resolved, notes: n, gaps });
   }
   // What a screenshot would need to confirm, as a stable key: a line format, a formula
   // variable or operator, or a display rule (shared when several skills rely on it).
@@ -573,7 +673,7 @@ export function createEngine(data) {
           source: gameSource(e, inputs, [
             `mana = (${g.mana.base.text} + ${g.mana.perLevel?.text ?? 0} × (lvl − 1)) × 2^${g.mana.shift} ÷ 256`,
             'Mana cost is floored at zero.',
-          ], g.mana.modifier ? [`Mana modifier formula not applied (meaning unconfirmed): ${g.mana.modifier.text || g.mana.modifier.undecoded}`] : []),
+          ]),
         };
       }
       const stat = STAT_IDS[key];
@@ -679,6 +779,8 @@ export function createEngine(data) {
   // Delay: " for activation_delay), evaluated and formatted as the game shows it. Only
   // line types with a known format are used; the rest stay with MedianDB.
   const norm = (t) => String(t || "").toLowerCase().replace(/[^a-z]/g, "");
+  // A tooltip line's label without its numbers ("Attack Rating"), to pair lines for one value.
+  const lineLabel = (t) => norm(String(t).replace(/\([^)]*\)/g, "").replace(/[-+?\d.%]+/g, " ").replace(/\b(seconds?|yards?|hit points)\b/gi, ""));
   function gameNamedLine(b, id, key, blvl) {
     const g = skills[id]?.game;
     // Match on MedianDB's internal name and on the label it displays: "Life flat" is shown
@@ -797,7 +899,7 @@ export function createEngine(data) {
       const formula = [l.calcA && `value = ${l.calcA.text || l.calcA.undecoded}`, l.calcB && `second value = ${l.calcB.text || l.calcB.undecoded}`].filter(Boolean);
       const source = gameSource(e, inputs, formula, failed ? [`Formula can't be evaluated: ${failed}`] : []);
       source.notes.push(f.format === "confirmed" ? `Line format confirmed by ${f.confirmedBy}` : `Line format (type ${l.type}) inferred from its text; not yet seen in game`);
-      if (f.format !== "confirmed") source.gaps.push(`format:${l.type}`);
+      if (f.format !== "confirmed") Object.assign(source, withEvidence({ ...source, rawGaps: undefined, gaps: [...(source.rawGaps || source.gaps), `format:${l.type}`] }));
       if (failed) source.status = "missing";
       else if (f.format === "inferred") source.status = "game-inferred";
       const texts = l.calcA || l.calcB ? [f.text] : f.lines || [f.text];
@@ -1282,7 +1384,7 @@ export function createEngine(data) {
     // keep the keyed lines below.
     if (asShown && s.game?.lines?.length && game) {
       // A game line and MedianDB's line for the same value share a label ("Attack Rating").
-      const label = (t) => norm(String(t).replace(/\([^)]*\)/g, "").replace(/[-+?\d.%]+/g, " ").replace(/\b(seconds?|yards?|hit points)\b/gi, ""));
+      const label = lineLabel;
       const keyed = new Map(effect.filter((l) => l.parts.length === 1).map((l) => [label(l.text), l]));
       // Skill names in the game's text link to the skill, as MedianDB's [[skill]] references do.
       const names = [...nodesByClass[s.class]?.values() || []].map((n) => [skills[n.id].name.replace(/ \(Innate\)$/, ""), n.id]).filter(([n]) => n.length > 3).sort((x, y) => y[0].length - x[0].length);
@@ -1304,11 +1406,15 @@ export function createEngine(data) {
           return { ...p, key: mdb.parts[0].key, values: values.length ? values : mdb.parts[0].values };
         }) } : l);
       });
-      const added = block(s.effect.filter((t) => AUTO_LINE_KEYS.some((k) => t.includes(`{{${k}}}`)))).filter((l) => !notInGame(l));
+      // Only where the game files have the value: Snake Stance has no poison table of its own (its
+      // poison is the game's "Poison Damage to Weapon" line), so MedianDB's "Poison Damage: ?-?" goes.
+      const added = block(s.effect.filter((t) => AUTO_LINE_KEYS.some((k) => t.includes(`{{${k}}}`)))).filter((l) => !notInGame(l) && l.status !== "unknown");
       return {
         description: block(s.description),
         restriction: block(s.restriction),
-        effect: [...drawn("extra"), ...drawn("level"), ...added],
+        // A value the game draws a line for itself (Rend's "Physical Damage: +4") isn't added again.
+        effect: (() => { const own = [...drawn("extra"), ...drawn("level")], labels = new Set(own.map((l) => lineLabel(l.text)));
+          return [...own, ...added.filter((l) => !labels.has(lineLabel(l.text)))]; })(),
         notInGame: [],
       };
     }
@@ -1343,6 +1449,8 @@ export function createEngine(data) {
   return {
     capConfirmed,
     gameBlock,
+    /** In-game evidence per gap: { for: Map(line → screenshot), against: Set(screenshot) }. */
+    gapEvidence: () => { if (!evidence) withEvidence({ gaps: [], notes: [] }); return evidence; },
     classNames,
     classes: data.classes,
     tabs: (cls) => tabsByClass[cls] || [],

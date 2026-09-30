@@ -144,6 +144,16 @@ function record(id, name, d) {
     // skills2.bin byte 47: hard-point cap (Way of the Spider = 25; matches MedianDB for 366 of 376 skills).
     baseCap: skills2.record(id)[47],
     maxLvl: i16(r, 0x12c),
+    // skills2.bin 0x3e: the maximum-level modifier. The hard-point cap in game is baseCap
+    // + this formula: Warmth 1 + ulvl / 4 = 38 at 150, Void Gazer 1 + max(0, ulvl − 100) / 5
+    // = 1, 1, 11 at 100, 104, 150, and eight more in-game readings (GitHub issues #14-#20).
+    // Values of −500 and below are locks (devotions, prerequisites), −999 while Resurrect's
+    // Servants of Valor has under 10 points. (Read before as a mana modifier; it isn't one.)
+    capModifier: calcAt(skills2.record(id).readInt32LE(0x3e), skills2Code),
+    // ToHit (0x198) and LevToHit (0x19c): the attack rating bonus formulas read as toht.
+    // Found by scanning for MedianDB's values (Iron Spiral 10 + 5 per level, Angel of Death
+    // 30 + 10, Catapult Shot 50 + 15; six skills agree on these two offsets and no others).
+    toHit: [i32(r, 0x198), i32(r, 0x19c)],
     params: list(r, 0x148, 8),
     calcs: Object.fromEntries(
       [["clc1", 0x138], ["clc2", 0x13c], ["clc3", 0x140], ["clc4", 0x144]].map(([k, o]) => [k, calcAt(i32(r, o))]).filter(([, v]) => v),
@@ -179,7 +189,7 @@ function record(id, name, d) {
       shift: r[0x188],
       base: calcAt(skills2.record(id).readInt32LE(0x36), skills2Code),
       perLevel: calcAt(skills2.record(id).readInt32LE(0x3a), skills2Code),
-      modifier: calcAt(skills2.record(id).readInt32LE(0x3e), skills2Code),
+
     },
     // SrcDam (0x1a5): weapon damage share in 128ths; formulas read it as wdm (%).
     srcDam: r[0x1a5],
@@ -250,6 +260,22 @@ for (let i = 0; i < charstats.count; i++) {
   });
 }
 
+// Missiles skill formulas read through missref(id, variable): the parameter groups the
+// variable list (misscalc.bin: par1-5, cpa1-5, hpa1-3, chp1-3, dpa1-2) names, from missiles.bin
+// (D2 1.13c, 420-byte records): Param 0x38, HitPar 0x4C, CltParam 0x58, CltHitPar 0x6C,
+// DmgParam 0x78. Catapult Shot's "Converts 100% Physical Damage to Fire" is missile 1750's dpa1.
+const missilesBin = mpq.read("data/global/excel/missiles.bin");
+const missileSize = (missilesBin.length - 4) / missilesBin.readUInt32LE(0);
+if (missileSize !== 420) throw new Error(`missiles.bin records are ${missileSize} bytes, expected 420 (D2 1.13c)`);
+const missileIds = new Set();
+JSON.stringify(out, (k, v) => { if (k === "text" && typeof v === "string") for (const m of v.matchAll(/missref\((\d+), /g)) missileIds.add(+m[1]); return v; });
+const missiles = {};
+for (const id of [...missileIds].sort((a, b) => a - b)) {
+  const r = missilesBin.subarray(4 + id * 420, 4 + (id + 1) * 420);
+  const ints = (o, n) => Array.from({ length: n }, (_, k) => r.readInt32LE(o + 4 * k));
+  missiles[id] = { par: ints(0x38, 5), hpa: ints(0x4c, 3), cpa: ints(0x58, 5), chp: ints(0x6c, 3), dpa: ints(0x78, 2) };
+}
+
 const result = {
   patch,
   extractedAt: new Date().toISOString(),
@@ -268,6 +294,7 @@ const result = {
   skills: out,
   // Unnamed skills that other skills' formulas read (fixed parameters and formulas).
   helpers,
+  missiles,
 };
 const target = new URL(`../data/game/${patch}/`, import.meta.url);
 mkdirSync(target, { recursive: true });

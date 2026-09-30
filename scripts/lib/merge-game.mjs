@@ -98,6 +98,10 @@ export function mergeGameData(data, extract, fixtures = null) {
       gameId: g.gameId,
       reqLevel: noPoints ? null : g.reqLevel,
       baseCap: noPoints ? null : g.baseCap,
+      // The hard-point cap as formulas read it (mlvl), kept for skills without points too.
+      cap: g.baseCap,
+      toHit: g.toHit || [0, 0],
+      capModifier: g.capModifier || null,
       params: g.params,
       calcs: g.calcs,
       passive: g.passive,
@@ -132,8 +136,22 @@ export function mergeGameData(data, extract, fixtures = null) {
         const tree = Number((n.prereqs.find((p) => p.startsWith("character_level:")) || "character_level:1").split(":")[1]);
         if (g && g.reqLevel != null && g.reqLevel !== tree) report.reqLevelDiffers.push({ id: n.id, name: data.skills[n.id].name, medianDb: tree, game: g.reqLevel });
       }
+  // Class copies of one planner skill: the game has a Specialization per class (Assassin's
+  // 1185, Barbarian's 1278 …) where the planner has one shared skill, and formulas read the
+  // class's own copy (Blink's cap reads skill(1185).clc1). Game id → planner id, by name.
+  const pairedIds = new Set(Object.values(data.skills).filter((s) => s.game).map((s) => s.game.gameId));
+  const plannerByName = new Map();
+  for (const [id, s] of Object.entries(data.skills)) {
+    const n = s.name.replace(/ \(Innate\)$/, "");
+    plannerByName.set(n, plannerByName.has(n) ? null : id);
+  }
+  const aliases = {};
+  for (const g of extract.skills) if (!pairedIds.has(g.gameId) && plannerByName.get(g.name)) aliases[g.gameId] = plannerByName.get(g.name);
   data.game = {
     patch: extract.patch,
+    aliases,
+    // Missile parameters formulas read (missref), by missile id.
+    missiles: extract.missiles || {},
     // Unnamed helper skills read by other skills' formulas, by game id.
     helpers: Object.fromEntries(
       (extract.helpers || []).map((h) => [h.gameId, { gameId: h.gameId, params: h.params, calcs: h.calcs, ast: h.ast, vars: h.vars, mana: h.mana, srcDam: h.srcDam, phys: h.phys, passive: h.passive, elem: h.elem }]),

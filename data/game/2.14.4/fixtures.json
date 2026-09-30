@@ -2110,12 +2110,14 @@
     {
      "game": "Poison Damage: 58706",
      "planner": "Poison Damage: 58706 over 1.8 seconds",
-     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line."
+     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line.",
+     "sameValue": true
     },
     {
      "game": "Poison Damage: 59691",
      "planner": "Poison Damage: 59691 over 1.8 seconds",
-     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line."
+     "why": "Same value; the game draws \"over 1.8 seconds\" on the next line, the planner on the same line.",
+     "sameValue": true
     }
    ]
   },

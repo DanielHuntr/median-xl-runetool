@@ -200,7 +200,10 @@ export function skillDamage(id, { engine, build, skillBuild, character }) {
         const key = ['magic', 'physical'].includes(d.element) ? 'physical_magic_spell_damage' : `${d.element}_spell_damage`;
         const stat = { fire: 329, lightning: 330, cold: 331, poison: 332 }[d.element];
         const resolved = d.source?.resolved || {};
-        const included = stat && resolved[`stat${stat}`] || Object.values(resolved).some(r => r.label?.startsWith(`${key} `));
+        // Mastery is already in a value read through enma/exma (the game's elemental damage with
+        // mastery), including another skill's: Askari Lightning reads Stormcall's enma.
+        const included = stat && resolved[`stat${stat}`] || Object.values(resolved).some(r => r.label?.startsWith(`${key} `))
+          || Object.keys(resolved).some(k => /\.(enma|exma)$/.test(k));
         const multiplier = c.s(`disable_${d.element}_damage`) || c.s('disable_elemental_damage') && ['fire', 'cold', 'lightning'].includes(d.element) ? 0
           : included ? 1 : Math.max(0, 1 + c.s(key) / 100);
         return { element: d.element, range: pair(d.range[0] * multiplier, d.range[1] * multiplier) };

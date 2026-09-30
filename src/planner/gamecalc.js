@@ -13,7 +13,7 @@ export const CONFIRMED_VARIABLES = new Set([
   "blvl", "lvl", "ulvl", "par1", "par2", "par3", "par4", "par5", "par6", "par7", "par8",
   "ln12", "bl34", "clc1", "edmn", "edmx", "edln",
   // Mana cost: every fixture's Mana Cost line matches (Discharge 240, Askari Lightning 5 → 8,
-  // Stormcall 2 → 4, Magic Missiles 1 → 3 and others). The mana modifier stays unconfirmed.
+  // Stormcall 2 → 4, Magic Missiles 1 → 3 and others).
   "mana",
   // Range and radius: Incineration Trap "Range: 8 yards", Lava Pit and Magic Missiles 2 yards.
   "rng",
@@ -23,6 +23,32 @@ export const CONFIRMED_VARIABLES = new Set([
   "ast1", "ast2",
   // Mind Flay's physical damage table at levels 1-3: +2, 2-3, +3.
   "pdmn", "pdmx",
+  // Families: each member runs the same code on a different slot of the same array, so one
+  // member confirmed in game confirms the rest. ln12-ln78 (ln78: Anathema's duration, 14
+  // readings), bl12-bl78 (bl12: Anathema's innate elemental damage, 9), ast1-ast6 (ast3:
+  // Iron Golem's attack rating, 19; ast6: Lava Pit, Magic Missiles), pst1-pst5 and clc1-clc4
+  // (formula slots of the skill's own record, confirmed across 138 in-game screenshots).
+  "ln34", "ln56", "ln78", "bl12", "bl56", "bl78",
+  "ast3", "ast4", "ast5", "ast6", "pst1", "pst2", "pst3", "pst4", "pst5", "clc2", "clc3", "clc4",
+  // dm12-dm78: D2Common.dll 0x6FD9DC30, min(min + trunc(trunc(110 × lvl ÷ (lvl + 6)) × (max − min)
+  // ÷ 100), max); dm34 matches Wild and Free's Hit Recovery in game (8 readings).
+  "dm12", "dm34", "dm56", "dm78",
+  // bd12-bd78: D2Sigma.dll 0x100A5BE0, the same by Base Level (D2Common #10306 with no bonus
+  // levels), called with par1/par2 … par7/par8 (skills.bin 0x148-0x164); 0 below Base Level 1.
+  "bd12", "bd34", "bd56", "bd78",
+  // toht: skills.bin ToHit (0x198) + LevToHit (0x19c) × (lvl − 1). The only offset pair where
+  // six skills' attack rating bonuses all come out as MedianDB states them (Iron Spiral, Overkill,
+  // Raid, Angel of Death, Carnage, Catapult Shot).
+  "toht",
+  // mlvl: the skill's hard-point cap, skills2.bin's word at 0x2F (D2Sigma.dll 0x100A654C);
+  // Ceaseless Fury's own text ("0.33 seconds per Base Level") is Harbinger's 50 frames ÷ its cap of 6.
+  "mlvl",
+  // Median XL's own variables, read from its callback (D2Sigma.dll, table 0x100A67B0 for
+  // variables 73-110): wdm = SrcDam × 100 ÷ 128 (0x100A6532), blz1-blz7 and bdz1-bdz7 (bl and
+  // bd with par(a) below Base Level 1), maxe (0x100A65C3).
+  "wdm", "blz1", "blz3", "blz5", "blz7", "bdz1", "bdz3", "bdz5", "bdz7", "maxe",
+  // enma/exma: D2Common.dll variables 49/50 (see variable); Lava Pit's First Level in game.
+  "enma", "exma",
 ]);
 // MedianDB stat keys ↔ D2 passive stat ids (ItemStatCost) with the same meaning.
 export const STAT_IDS = {
@@ -34,6 +60,9 @@ export const WEAPON_POISON_STATS = { min: 57, max: 58, length: 59 };
 const LINEAR = { ln12: [0, 1], ln34: [2, 3], ln56: [4, 5], ln78: [6, 7] };
 const BASE_LINEAR = { bl12: [0, 1], bl34: [2, 3], bl56: [4, 5], bl78: [6, 7] };
 const DIMINISHING = { dm12: [0, 1], dm34: [2, 3], dm56: [4, 5], dm78: [6, 7] };
+// bd12-bd78: the same diminishing returns counted by Base Level (D2Sigma.dll 0x100A5BE0, see
+// CONFIRMED_VARIABLES). Ferocity's attack speed at Base Level 1 is 29% (MedianDB says 28%).
+const BASE_DIMINISHING = { bd12: [0, 1], bd34: [2, 3], bd56: [4, 5], bd78: [6, 7] };
 
 /**
  * @param {object} skill  one entry of the extract's `skills`
@@ -90,6 +119,29 @@ export function createGameEval(skill, names, inputs) {
     const withSynergy = Math.trunc((sum * (100 + synergy)) / 100);
     return i32(Math.trunc((withSynergy * 2 ** hitShift) / 256));
   }
+  // enma/exma (see variable): the damage in 256ths, plus mastery% of it, then ÷ 256.
+  const MASTERY_STAT = { fire: 329, lightning: 330, cold: 331, poison: 332 };
+  function elementalMastery(which) {
+    const e = skill.elem;
+    if (!e) throw new Error("skill has no elemental damage table");
+    const hitShift = e.hitShift ?? 8;
+    const sum = which === "min" ? levelTableSum(e.min, e.minLev, inputs.lvl) : levelTableSum(e.max, e.maxLev, inputs.lvl);
+    let synergy = 0;
+    if (e.synergy) {
+      const s = calc(e.synergy);
+      if (!s.ok) throw new Error(`damage synergy: ${s.reason}`);
+      synergy = s.value;
+    }
+    const shifted = i32(Math.trunc((sum * (100 + synergy)) / 100) * 2 ** hitShift);
+    const stat = MASTERY_STAT[e.type];
+    let mastery = 0;
+    if (stat) {
+      const r = inputs.resolve?.("stat", stat, 0);
+      if (r) { resolved.set(`stat${stat}`, r); mastery = r.value; }
+      else assumed.set(`${e.type} spell damage (stat ${stat})`, 0);
+    }
+    return i32(Math.trunc((shifted + Math.trunc((shifted * mastery) / 100)) / 256));
+  }
   // A summon's "+N% Minion Life per Base Level" synergy, for summons whose minion-life
   // formula doesn't include it. Read from the line's formula, or the number in its text
   // ("+25% Life per Base Level"); 0 if there's none. (Damage bonuses are already in the
@@ -126,13 +178,27 @@ export function createGameEval(skill, names, inputs) {
     // Strike Chance (bl12 would otherwise be 15 − 1 = 14).
     else if (BASE_LINEAR[name]) v = inputs.blvl > 0 ? p(BASE_LINEAR[name][0]) + (inputs.blvl - 1) * p(BASE_LINEAR[name][1]) : 0;
     else if (DIMINISHING[name]) {
-      const [a, b] = DIMINISHING[name].map(p);
-      v = inputs.lvl > 0 ? a + Math.trunc((110 * inputs.lvl * (b - a)) / (100 * (inputs.lvl + 6))) : 0;
+      // D2Common.dll 0x6FD9DC30: the level's share is truncated first, then capped at max.
+      const [a, b] = DIMINISHING[name].map(p), L = inputs.lvl;
+      v = L > 0 ? Math.min(a + Math.trunc((Math.trunc((110 * L) / (L + 6)) * (b - a)) / 100), b) : 0;
+    } else if (BASE_DIMINISHING[name]) {
+      // D2Sigma.dll 0x100A5BE0 (no cap at max, unlike dm).
+      const [a, b] = BASE_DIMINISHING[name].map(p), L = inputs.blvl;
+      v = L > 0 ? a + Math.trunc((Math.trunc((110 * L) / (L + 6)) * (b - a)) / 100) : 0;
     } else if (/^blz[1357]$/.test(name)) {
-      // Like bl12-bl78 but counted from Base Level 0: par(a) + blvl × par(b). Inferred
-      // from the name; used once (Mind Spark's maximum Tempest bolts).
+      // D2Sigma.dll 0x100A5C40 with its flag set: bl's par(a) + (blvl − 1) × par(b) from Base
+      // Level 1, and par(a) itself below it (bl gives 0 there). Mind Spark's Tempest bolts.
       const a = +name[3] - 1;
-      v = p(a) + inputs.blvl * p(a + 1);
+      v = inputs.blvl > 0 ? p(a) + (inputs.blvl - 1) * p(a + 1) : p(a);
+    } else if (/^bdz[1357]$/.test(name)) {
+      // D2Sigma.dll 0x100A5BE0 with its flag set: bd, and par(a) below Base Level 1.
+      const a = +name[3] - 1, L = inputs.blvl, lo = p(a), hi = p(a + 1);
+      v = L > 0 ? lo + Math.trunc((Math.trunc((110 * L) / (L + 6)) * (hi - lo)) / 100) : lo;
+    } else if (name === "maxe") {
+      // D2Sigma.dll 0x100A65C3: 1 when the skill has points and its Base Level is its maximum
+      // (bmax), else 0 (Dirge reads Soulbond's). The maximum comes from the planner's cap.
+      const max = inputs.maxLevel ?? skill.cap ?? skill.baseCap;
+      v = inputs.blvl > 0 && max != null && inputs.blvl >= max ? 1 : 0;
     } else if (/^clc[1-4]$/.test(name)) {
       // An empty slot is 0, as with ast1-ast6.
       v = field(skill.calcs?.[name], name);
@@ -173,8 +239,9 @@ export function createGameEval(skill, names, inputs) {
       // Snake Bite (9, 29, shift 5) 70, 73 at 20, 21. Rounding each part on its own gives
       // 32, 7 and 58 there. Mind Flay (16, 18, shift 5) is the exception: the game shows
       // exactly 2 × level (GitHub issue #13), which this gives only at levels 1-4; its
-      // fixtures record the difference. The skill's mana modifier (Specialization's points
-      // ÷ 2, and the Paladin devotion lock) isn't applied yet.
+      // fixtures record the difference, as do Resurrect's (both Paladin skills; the per-level
+      // cost is about 10% lower in game). skills2.bin 0x3e, once read as a mana modifier, is
+      // the maximum-level formula (engine.js gameMaxLevel); skills.bin's own mana fields are 0.
       const m = skill.mana;
       if (!m) throw new Error("skill has no mana data");
       const base = field(m.base, "mana"), per = field(m.perLevel, "lvlmana");
@@ -182,12 +249,17 @@ export function createGameEval(skill, names, inputs) {
       // the community-data path, including references to another skill's cost.
       v = Math.max(0, Math.trunc(((base + per * (Math.max(1, inputs.lvl) - 1)) * 2 ** m.shift) / 256));
     } else if (name === "wdm") v = Math.trunc(((skill.srcDam ?? 0) * 100) / 128);
-    // enma/exma: the elemental damage as the tooltip shows it (Stormcall's 4-5 makes
-    // Askari Lightning's in-game 15; Lava Pit shows enma × 5 = 40, exma × 5 = 45). Equal to
-    // edmn/edmx for a character without elemental mastery; whether mastery is included
-    // isn't known yet.
-    else if (name === "enma") v = elemental("min");
-    else if (name === "exma") v = elemental("max");
+    // toht: attack rating bonus %, ToHit + LevToHit × (level − 1) (D2 1.13c), 0 at level 0.
+    else if (name === "toht") v = inputs.lvl > 0 ? (skill.toHit?.[0] ?? 0) + (inputs.lvl - 1) * (skill.toHit?.[1] ?? 0) : 0;
+    // mlvl: the skill's hard-point cap. Ceaseless Fury's "Cooldown reduced by 0.33 seconds per
+    // Base Level" is Harbinger's 50 frames ÷ its cap of 6 (Harbinger's skcd reads it as mlvl).
+    else if (name === "mlvl") v = skill.cap ?? skill.baseCap ?? 0;
+    // enma/exma: edmn/edmx with the character's mastery for the skill's element (D2Common.dll:
+    // variables 49/50 run edmn's and edmx's routines, 0x6FDA0460 and 0x6FDA0360, with the
+    // mastery flag set; 0x6FD9F870 reads fire, lightning, cold or poison spell damage, stats
+    // 329-332) applied to the value before the ÷ 256. Lava Pit's First Level in game (no gear,
+    // no mastery): enma × 5 = 40, exma × 5 = 45.
+    else if (name === "enma" || name === "exma") v = elementalMastery(name === "enma" ? "min" : "max");
     else if (name === "pdmn") v = elemental("min", skill.phys, "physical");
     else if (name === "pdmx") v = elemental("max", skill.phys, "physical");
     else if (/^ast[1-6]$/.test(name)) {
@@ -244,6 +316,22 @@ export function createGameEval(skill, names, inputs) {
       return avg;
     }
     // Buffs, states and stats from particular sources aren't tracked: counted as 0.
+    // missref(missile, variable): a missile's parameter, by misscalc.bin's variable order
+    // (par1-5, cpa1-5, hpa1-3, chp1-3, dpa1-2) from missiles.bin (merge-game.mjs missiles).
+    if (fn === "missref") {
+      const m = inputs.missiles?.[a];
+      const groups = [["par", 5], ["cpa", 5], ["hpa", 3], ["chp", 3], ["dpa", 2]];
+      let i = b;
+      for (const [g, n] of groups) {
+        if (i < n) {
+          if (!m) throw new Error(`missile ${a} isn't extracted`);
+          resolved.set(`missile ${a} ${g}${i + 1}`, { value: m[g][i], label: `missile ${a} ${g}${i + 1} (missiles.bin)` });
+          return m[g][i];
+        }
+        i -= n;
+      }
+      throw new Error(`missref(${a}, ${b}): missile variable ${b} isn't modelled`);
+    }
     if (fn === "state") return assumed.set(`state ${a} active`, 0), 0;
     if (fn === "statsrc") return assumed.set(`stat ${a} from source ${args[2]}`, 0), 0;
     if (fn === "unitstat") return assumed.set(`stat ${b} of related unit ${a}`, 0), 0;

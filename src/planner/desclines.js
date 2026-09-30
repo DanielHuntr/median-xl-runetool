@@ -1,9 +1,13 @@
 // Formats the game's own tooltip lines (skilldesc.bin; see scripts/extract-game-data.mjs).
-// The game client decides how each line type is shown, and that code isn't in the data
-// files, so every type records how its format is known:
-//   confirmed — matches an in-game tooltip (Way of the Spider, 2.14.4), or the game's
-//               text is itself the format string;
+// The game client decides how each line type is shown: D2Client.dll's line-type switch
+// (0x6FAE177A: it reads the type byte at 0x42 of the skilldesc record, 1-75, and jumps
+// through the table at 0x6FAE2ABC to a drawing helper per type). Every type records how its
+// format is known:
+//   confirmed — read from that code (helper address given), matches an in-game tooltip,
+//               or the game's text is itself the format string;
 //   inferred  — read from the text's shape and classic D2 conventions.
+// The helpers print numbers with "+%d" when signed and not negative, "%d" otherwise, and
+// most return without drawing when the value is 0.
 // Values arrive already calculated; null means the formula couldn't be evaluated.
 
 const n = (v) => (v == null ? "?" : String(v));
@@ -51,22 +55,56 @@ export const LINE_TYPES = {
   17: { confirmed: "Incineration Trap", format: (l, a, b) => join(l.textA, `${n(a)}-${n(b)} per second`) },
   // "Range: " + internal units × 2/3 + " yards" (12 → "8 yards")
   19: { confirmed: "Incineration Trap", format: (l, a) => join(l.textA, a == null ? "?" : fmt((a * 2) / 3), " yards") },
-  // " " + 4 + "% Lightning Resistance Pierce per Base Level"
-  20: { format: (l, a) => join(l.textA, n(a), "%", l.textB).trim() },
-  // "20" + "% to All Speeds per Base Level"
-  7: { confirmed: "Magic Missiles (6 bolts)", format: (l, a) => join(n(a), l.textA) },
-  // "Energy" / "Increased Damage": "Energy: +X% Increased Damage"
-  63: { confirmed: "Stormcall (+10%), Magic Missiles (+8%)", format: (l, a) => join(l.textA, ": ", plus(a), "% ", l.textB) },
-  // "Any other spear skill" / "+1 Max Skill Level per 3 Base Levels"
-  65: { format: (l) => join(l.textA, ": ", l.textB) },
-  // "Mana Cost: ", "Magic Damage: " + value
-  4: { format: (l, a) => join(l.textA, n(a)) },
-  5: { format: (l, a) => join(l.textA, n(a)) },
+  // textA + "+%d" + "%" + textB; nothing at 0 (D2Client 0x6FADD8E0, string 0x10B3 "%").
+  20: { confirmed: "D2Client.dll 0x6FADD8E0", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, plus(a), "%", l.textB).trim()) },
+  // "%d" + textA; nothing at 0 (D2Client 0x6FADDBF0, flag 0; 6 signs it).
+  7: { confirmed: "Magic Missiles (6 bolts); D2Client.dll 0x6FADDBF0", format: (l, a) => (a === 0 ? { hidden: true } : join(n(a), l.textA)) },
+  // "Energy" / "Increased Damage": "Energy: +X% Increased Damage" (D2Client 0x6FADCE10; nothing at 0)
+  63: { confirmed: "Stormcall (+10%), Magic Missiles (+8%); D2Client.dll 0x6FADCE10", format: (l, a) => (a === 0 ? { hidden: true } : join(String(l.textA ?? "").trim() ? `${l.textA}: ` : "", plus(a), "% ", l.textB)) },
+  // textA + ": " + textB, no value; nothing unless both texts exist (D2Client 0x6FADCB60).
+  65: { confirmed: "D2Client.dll 0x6FADCB60", format: (l) => (!String(l.textA ?? "").trim() || !String(l.textB ?? "").trim() ? { hidden: true } : join(l.textA, ": ", l.textB)) },
+  // textA + "+%d" (4) or "%d" (5); nothing at 0 (D2Client 0x6FADDCA0, flag 1 / 0).
+  4: { confirmed: "D2Client.dll 0x6FADDCA0", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, plus(a))) },
+  5: { confirmed: "D2Client.dll 0x6FADDCA0; Javelins: 1 (Eviscerate)", format: (l, a) => (a === 0 ? { hidden: true } : join(l.textA, n(a))) },
+  // "Duration: " + a-b frames as seconds ("%d-%d", or "%d.%d-%d.%d" when either has tenths)
+  // + " seconds"; nothing when both are 0 (D2Client 0x6FADDF50, string 0x10B0).
+  16: {
+    confirmed: "D2Client.dll 0x6FADDF50",
+    format: (l, a, b) => {
+      if (!a && !b) return { hidden: true };
+      if (a == null || b == null) return "Duration: ?-? seconds";
+      const whole = (x) => Math.trunc(x / 25), tenth = (x) => Math.trunc(((x % 25) * 10) / 25);
+      const range = tenth(a) || tenth(b) ? `${whole(a)}.${tenth(a)}-${whole(b)}.${tenth(b)}` : `${whole(a)}-${whole(b)}`;
+      return `Duration: ${range} seconds`;
+    },
+  },
+  // textA + ": " + "+A.B" (the second value is the digits after the point) + " " + textB;
+  // nothing without textA or when both values are 0 (D2Client 0x6FADCD20, 0x6FADC790).
+  42: {
+    confirmed: "D2Client.dll 0x6FADCD20",
+    format: (l, a, b) => (!String(l.textA ?? "").trim() || (!a && !b) ? { hidden: true } : join(l.textA, ": ", a != null && a >= 0 ? "+" : "", n(a), ".", n(b), " ", l.textB)),
+  },
+  // A value in 256ths: value ÷ 256, with one more digit (remainder × calcB ÷ 256, calcB 10 if
+  // unset) when there is one: textA + "%d" or "%d.%d" + textB (D2Client 0x6FADF870; 60 signs it).
+  61: {
+    confirmed: "D2Client.dll 0x6FADF870",
+    format: (l, a, b) => {
+      if (!a) return { hidden: true };
+      const whole = Math.trunc(a / 256), digit = Math.trunc(((a % 256) * (b || 10)) / 256);
+      return join(l.textA, digit ? `${whole}.${Math.abs(digit)}` : String(whole), l.textB);
+    },
+  },
+  // (textA + ": " when there is one) + "+%d" + "%" (63) or nothing (67) + " " + textB;
+  // nothing at 0 (D2Client 0x6FADCE10).
+  67: { confirmed: "D2Client.dll 0x6FADCE10", format: (l, a) => (a === 0 ? { hidden: true } : join(String(l.textA ?? "").trim() ? `${l.textA}: ` : "", plus(a), " ", l.textB)) },
+  // "a/b " + textA; nothing unless a is set and b positive (D2Client 0x6FAE2917).
+  73: { confirmed: "D2Client.dll 0x6FAE2917", format: (l, a, b) => (!a || !(b > 0) ? { hidden: true } : `${n(a)}/${n(b)} ${l.textA ?? ""}`) },
   // "(Total Fire Damage: " + a-b + ")"; one number when both are equal (Psionic Storm's
   // "Magic Feedback Damage: 8% of Total Energy").
   38: { confirmed: "Psionic Storm (equal values)", format: (l, a, b) => join(l.textA, a === b ? n(a) : `${n(a)}-${n(b)}`, l.textB) },
-  // a-b + " bonus cold damage to attack" (label in the second text)
-  52: { format: (l, a, b) => join(`${n(a)}-${n(b)}`, l.textB) },
+  // textA + "+a-b" + textB; one unsigned number when both are equal, nothing then at 0
+  // (D2Client 0x6FADF6E0, flag 1; 17 and 38 are the same without the sign).
+  52: { confirmed: "D2Client.dll 0x6FADF6E0", format: (l, a, b) => (a === b ? (a === 0 ? { hidden: true } : join(l.textA, n(a), l.textB)) : join(l.textA, `+${n(a)}-${n(b)}`, l.textB)) },
   // Blank spacer line.
   77: { confirmed: "Way of the Spider", format: () => ({ hidden: true }) },
 };

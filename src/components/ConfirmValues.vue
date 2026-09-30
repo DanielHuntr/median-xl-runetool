@@ -102,7 +102,11 @@ const openOnes = `${ISSUES_REPO}/issues?q=is%3Aissue+label%3Aconfirmation`;
         </ul>
       </section>
       <h2 class="confirm-subhead">Screenshots that confirm the most</h2>
-      <ol class="confirm-list">
+      <p v-if="!result.suggestions.length" class="confirm-done" role="status">
+        Nothing is waiting on a screenshot: every skill value is worked out from the game files, and each
+        formula, variable and line format is confirmed by the game's own code or by in-game screenshots.
+      </p>
+      <ol v-else class="confirm-list">
         <li v-for="(s, i) in result.suggestions" :key="s.id" class="confirm-card">
           <div class="confirm-head">
             <span class="confirm-rank">{{ i + 1 }}</span>
