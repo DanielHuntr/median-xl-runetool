@@ -330,3 +330,17 @@ test("a saved build opened, then a starter build, goes back to the saved build b
   await page.getByRole("button", { name: "Back to my build" }).click();
   await expect(page.locator(".build-name")).toHaveText("My Hammer");
 });
+
+test("on a short screen the sidebar scrolls to its last item, and there's no Help confirm values page", async ({ page }) => {
+  await page.setViewportSize({ width: 1000, height: 560 });
+  await page.goto("/#runewords");
+  const side = page.locator(".sidebar");
+  await expect(side).not.toContainText("Help confirm values");
+  const last = side.locator(".side-collapse");
+  await last.scrollIntoViewIfNeeded();
+  await expect(last).toBeInViewport();
+  expect(await side.evaluate((el) => el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY === "auto")).toBe(true);
+  // The tablet rail too.
+  await page.setViewportSize({ width: 800, height: 520 });
+  expect(await side.evaluate((el) => getComputedStyle(el).overflowY)).toBe("auto");
+});

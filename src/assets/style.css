@@ -2262,35 +2262,8 @@ svg.item-art {
   overflow: hidden;
 }
 
-/* ---------- Help confirm values */
-.confirm-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 980px; }
 /* Wide tables scroll inside their box instead of widening the page. */
-.confirm-page > * { min-width: 0; }
-.confirm-all { overflow-x: auto; }
-.confirm-intro { display: grid; gap: 10px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
-.confirm-intro h2 { font-size: 1rem; margin: 6px 0 0; }
-.confirm-intro ol { margin: 0; padding-left: 20px; line-height: 1.7; }
-.confirm-intro p { margin: 0; line-height: 1.6; }
-.confirm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.confirm-card { display: grid; gap: 8px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
-.confirm-card p { margin: 0; }
-.confirm-card ul { margin: 0; padding-left: 20px; line-height: 1.6; }
-.confirm-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.confirm-head > div { flex: 1 1 200px; min-width: 0; }
-.confirm-head h3 { margin: 0; font-size: 1.05rem; }
-.confirm-head p { font-size: 0.8125rem; }
-.confirm-rank { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--border); color: var(--gold); font-size: 0.8125rem; flex: none; }
-.confirm-all summary { cursor: pointer; padding: 6px 0; }
-.confirm-all table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.875rem; }
-.confirm-all th, .confirm-all td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
-.confirm-all .num { text-align: right; white-space: nowrap; }
 .sidebar-bottom .report-link[aria-current="page"] { color: var(--gold); }
-@media (max-width: 640px) {
-  .confirm-head .btn { width: 100%; justify-content: center; }
-}
-.confirm-all h3 { font-size: 0.95rem; margin: 18px 0 4px; }
-.confirm-all > p { margin: 0 0 6px; }
-.confirm-lines { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.8125rem; }
 
 .class-picker { position: relative; min-width: 170px; }
 .class-picker-trigger, .class-picker-options button {
@@ -2311,12 +2284,6 @@ svg.item-art {
 .rune-card h2 {
   overflow-wrap: anywhere;
 }
-.confirm-questions { display: grid; gap: 8px; }
-.confirm-questions h2, .confirm-subhead { font-size: 1.05rem; margin: 8px 0 0; }
-.confirm-questions .confirm-head h3 { font-size: 0.95rem; }
-.confirm-skill-of { margin: 2px 0 0; color: var(--gold); font-size: 0.8125rem; }
-.confirm-skill-of a { color: inherit; }
-.confirm-line { display: block; color: var(--gold); font-size: 0.75rem; }
 /* Base Items: what a Superior version adds (BaseItems.vue). */
 .superior-lines { border-top: 1px solid var(--soft-border); padding-top: 8px; margin-top: 8px; color: var(--muted); font-size: 0.8125rem; }
 /* ---------- Hover and press feedback for every control (links styled as buttons too).
@@ -2383,7 +2350,7 @@ a.btn { border: 1px solid var(--border); border-radius: 5px; text-decoration: no
 
 /* Phones: the sidebar gives way to a bottom bar (AppSidebar.vue): four named pages and
    "More", which opens a sheet listing every page. The content takes the full width. */
-.mobile-bar,
+.mobile-top,
 .mobile-sheet {
   display: none;
 }
@@ -2391,66 +2358,70 @@ a.btn { border: 1px solid var(--border); border-radius: 5px; text-decoration: no
   .sidebar {
     display: none;
   }
-  .mobile-bar {
-    position: fixed;
-    inset: auto 0 0 0;
+  /* The top bar: menu, the current page's name, search. */
+  .mobile-top {
+    position: sticky;
+    top: 0;
     z-index: 40;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    padding: 0 4px env(safe-area-inset-bottom);
-    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
+    border-bottom: 1px solid var(--border);
     background: var(--nav);
   }
-  .mobile-bar button {
-    display: grid;
-    justify-items: center;
-    gap: 3px;
-    min-height: 58px;
-    padding: 8px 2px 6px;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--muted);
-    font-size: 0.6875rem;
-    line-height: 1.1;
+  .mobile-top .icon-btn {
+    width: 44px;
+    height: 44px;
+    flex: none;
   }
-  .mobile-bar button svg {
-    width: 20px;
-    height: 20px;
+  .mobile-top .icon-btn svg {
+    width: 22px;
+    height: 22px;
   }
-  .mobile-bar button span {
-    display: block;
-    max-width: 100%;
+  .mobile-brand {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    text-decoration: none;
+  }
+  .mobile-brand .brand-mark {
+    flex: none;
+  }
+  .mobile-brand > span:last-child {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .mobile-bar button.selected {
-    color: var(--gold);
-    box-shadow: inset 0 2px var(--gold);
-    background: var(--gold-bg);
-  }
+  /* The menu: a drawer from the left, the full height of the screen. */
   .mobile-sheet[open] {
     display: block;
     position: fixed;
-    inset: auto 0 0 0;
-    width: 100%;
+    inset: 0 auto 0 0;
+    width: min(86vw, 340px);
     max-width: 100%;
-    max-height: 85dvh;
+    height: 100dvh;
+    max-height: 100dvh;
     margin: 0;
     padding: 0;
     border: 0;
-    border-top: 1px solid var(--border);
-    border-radius: 14px 14px 0 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0 14px 14px 0;
     background: var(--panel);
     color: var(--text);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .mobile-sheet::backdrop {
     background: var(--shade);
   }
   .mobile-sheet-body {
-    padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+    padding: calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
   }
   .mobile-sheet header {
     display: flex;
@@ -2531,7 +2502,7 @@ a.btn { border: 1px solid var(--border); border-radius: 5px; text-decoration: no
   }
   main {
     margin-left: 0;
-    padding: 18px 14px calc(76px + env(safe-area-inset-bottom));
+    padding: 18px 14px calc(18px + env(safe-area-inset-bottom));
   }
   /* Card headers: the tier squares and recipe button go on their own row under the name. */
   .card-head:has(> .card-head-side) {
@@ -2940,4 +2911,15 @@ main article.found {
   .sidebar.collapsed .side-link { min-height: 32px; }
   .sidebar.collapsed .brand { margin-bottom: 14px; }
   .sidebar.collapsed .brand-mark svg { width: 30px; height: 36px; }
+}
+
+/* A short screen: the sidebar, expanded or as an icon rail, scrolls rather than cutting off
+   its foot. (A rail's hover names are clipped while it scrolls; each button keeps its name.) */
+@media (min-width: 601px) and (max-height: 820px) {
+  .sidebar,
+  .sidebar.collapsed {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
 }

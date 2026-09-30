@@ -54,12 +54,11 @@ export const PAGES = [
   ["planner", "Character Planner", "tree", "Attributes, skills, equipment and stats in one build.", "https://github.com/azadix/medianxl-db"],
   ["builds", "Builds", "builds", "Your saved snapshots and starter builds for every class.", "https://github.com/azadix/medianxl-db"],
   ["filters", "Loot Filters", "filter", "Community loot filters, and your own.", "https://www.median-xl.com/filters/index.php"],
-  ["confirm", "Help confirm values", "check", "Send in-game skill screenshots so the planner's numbers can be checked against the game.", "https://github.com/azadix/medianxl-db", true],
 ];
 // Bug reports and confirmation screenshots go to this repository's GitHub issues.
 export const ISSUES_REPO = "https://github.com/DanielHuntr/median-xl-runetool";
 // Pages whose data is the planner's (skill data from MedianDB and the game files).
-export const SKILL_PAGES = ["planner", "confirm", "builds"];
+export const SKILL_PAGES = ["planner", "builds"];
 const pageFromHash = () => {
   let h = window.location.hash.slice(1).split("?")[0];
   if (h === "skill-planner") h = "planner"; // links from the earlier skill-only planner

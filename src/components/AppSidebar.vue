@@ -10,12 +10,11 @@ watch(collapsed, (v) => {
   try { localStorage.setItem("mxlrw2:nav-collapsed", v ? "1" : "0"); } catch {}
   if (typeof document !== "undefined") document.documentElement.classList?.toggle("nav-collapsed", v);
 }, { immediate: true });
-// Phones: a bottom bar with the four most used pages, named, and "More" for the rest (a
-// sheet listing every page with what it's for, and the links from the sidebar's foot).
-const docsLabel = computed(() => (page.value === "filters" ? "Filter Exchange" : ["planner", "confirm", "builds"].includes(page.value) ? "Skill data source" : "Game documentation"));
-const BAR = [["runewords", "Runewords"], ["uniques", "Uniques"], ["cube", "Cube"], ["planner", "Planner"]];
-const onBar = computed(() => BAR.some(([id]) => id === page.value));
+// Phones: a slim top bar (brand, search, and a menu button) instead of the sidebar. The menu
+// is a drawer listing every page with what it's for, and the links from the sidebar's foot.
+const docsLabel = computed(() => (page.value === "filters" ? "Filter Exchange" : ["planner", "builds"].includes(page.value) ? "Skill data source" : "Game documentation"));
 const sheet = ref(null);
+const menuOpen = ref(false);
 const backup = ref(null);
 const openSearch = () => {
   closeMore();
@@ -26,7 +25,7 @@ function openBackup() {
   closeMore();
   backup.value?.open();
 }
-const openMore = () => sheet.value?.showModal();
+const openMore = () => { sheet.value?.showModal(); menuOpen.value = true; };
 const closeMore = () => sheet.value?.close();
 function go(id) {
   closeMore();
@@ -82,7 +81,6 @@ function reportHref() {
       </div>
       <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Report a bug or issue" @click="(e) => (e.currentTarget.href = reportHref())"><Icon name="bug" /><span>Report a bug or issue</span></a>
       <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Suggest an idea" @click="(e) => (e.currentTarget.href = suggestHref())"><Icon name="idea" /><span>Suggest an idea</span></a>
-      <a class="side-link" href="#confirm" :aria-current="page === 'confirm' ? 'page' : undefined" data-tip="Help confirm values" @click.prevent="nav('confirm')"><Icon name="camera" /><span>Help confirm values</span></a>
       <button type="button" class="side-link" data-tip="Back up &amp; restore" @click="openBackup"><Icon name="backup" /><span>Back up &amp; restore</span></button>
       <a class="side-link" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" :data-tip="docsLabel"><Icon name="docs" /><span>{{ docsLabel }}</span></a>
       <button type="button" class="side-link side-collapse" :aria-pressed="collapsed" :data-tip="collapsed ? 'Expand the menu' : 'Collapse the menu'" @click="collapsed = !collapsed">
@@ -90,25 +88,20 @@ function reportHref() {
       </button>
     </div>
   </aside>
-  <nav class="mobile-bar" aria-label="Main navigation">
-    <button
-      v-for="[id, label] in BAR"
-      :key="id"
-      type="button"
-      :class="{ selected: page === id }"
-      :aria-current="page === id ? 'page' : undefined"
-      @click="nav(id)"
+  <header class="mobile-top">
+    <button type="button" class="icon-btn mobile-menu" aria-label="Menu" aria-haspopup="dialog" :aria-expanded="menuOpen" @click="openMore">
+      <Icon name="menu" />
+    </button>
+    <a class="mobile-brand" href="#runewords" @click.prevent="nav('runewords')"
+      ><span class="brand-mark"><Icon name="rune" /></span
+      ><span>{{ PAGES.find((p) => p[0] === page)?.[1] || "Median XL Runetool" }}</span></a
     >
-      <Icon :name="PAGES.find((p) => p[0] === id)[2]" /><span>{{ label }}</span>
-    </button>
-    <button type="button" :class="{ selected: !onBar }" aria-haspopup="dialog" @click="openMore">
-      <Icon name="grid" /><span>{{ onBar ? "More" : PAGES.find((p) => p[0] === page)?.[1].split(" ")[0] || "More" }}</span>
-    </button>
-  </nav>
-  <dialog ref="sheet" class="mobile-sheet" aria-labelledby="mobile-sheet-title" @click="(e) => { if (e.target === sheet) closeMore(); }">
+    <button type="button" class="icon-btn" aria-label="Search the site" @click="openSearch"><Icon name="search" /></button>
+  </header>
+  <dialog ref="sheet" class="mobile-sheet" aria-labelledby="mobile-sheet-title" @close="menuOpen = false" @click="(e) => { if (e.target === sheet) closeMore(); }">
     <div class="mobile-sheet-body">
       <header>
-        <b id="mobile-sheet-title">All pages</b>
+        <b id="mobile-sheet-title">Median XL Runetool</b>
         <button type="button" class="icon-btn" aria-label="Search the site" @click="openSearch"><Icon name="search" /></button>
         <button type="button" class="icon-btn" aria-label="Close" @click="closeMore"><Icon name="close" /></button>
       </header>
@@ -121,7 +114,6 @@ function reportHref() {
         </li>
       </ul>
       <div class="mobile-sheet-links">
-        <a href="#confirm" @click.prevent="go('confirm')">Help confirm values <Icon name="check" /></a>
         <a href="#" @click.prevent="openBackup">Back up &amp; restore <Icon name="backup" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = reportHref())">Report a bug or issue <Icon name="arrow" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = suggestHref())">Suggest an idea <Icon name="arrow" /></a>

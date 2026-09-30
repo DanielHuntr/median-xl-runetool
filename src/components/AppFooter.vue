@@ -12,7 +12,7 @@ const { page, PAGES } = useRunetool();
       items. Extra sockets can be filled with jewels before adding the runes.
     </p>
     <div>
-      <span v-if="page === 'planner' || page === 'confirm'"
+      <span v-if="page === 'planner'"
         >Skill data from
         <a :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener"
           >medianxl-db (MIT) <Icon name="arrow" /></a
@@ -26,7 +26,7 @@ const { page, PAGES } = useRunetool();
           >Median XL documentation <Icon name="arrow" /></a
         >.</span
       ><span v-if="LIVE.includes(page)"><DataStatus /></span
-      ><span v-else-if="page !== 'planner' && page !== 'confirm'"
+      ><span v-else-if="page !== 'planner'"
         >Item data refreshed from the official documentation · 25 September
         2026.</span
       >

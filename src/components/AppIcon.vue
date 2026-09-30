@@ -3,6 +3,7 @@ const props = defineProps({ name: { type: String, default: "rune" } });
 const paths = {
   rune: "M12 3 20 12 12 21 4 12Z M12 7v10 M8 10l8 4",
   grid: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
+  menu: "M4 6h16 M4 12h16 M4 18h16",
   book: "M12 5v16 M12 5C9 3 5 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z",
   search: "m21 21-5-5 M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0",
   filter: "M4 7h16 M4 17h16 M8 4v6 M16 14v6",
@@ -28,7 +29,6 @@ const paths = {
   pencil: "M4 20h4L19 9l-4-4L4 16Z M13 7l4 4",
   bug: "M9 7a3 3 0 0 1 6 0 M7 9h10v5a5 5 0 0 1-10 0Z M12 9v10 M4 12h3 M17 12h3 M5 7l2 2 M19 7l-2 2 M5 19l2-2 M19 19l-2-2",
   idea: "M9 18h6 M10 21h4 M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3",
-  camera: "M4 8h3l2-3h6l2 3h3v11H4Z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7",
   docs: "M3 5h6a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2H3Z M21 5h-6a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2H21Z",
   // A panel with its left column (the sidebar), and which way it's going.
   collapse: "M4 4h16v16H4Z M9 4v16 M15 9l-3 3 3 3",
