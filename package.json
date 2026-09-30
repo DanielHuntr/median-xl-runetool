@@ -18,12 +18,7 @@
     "test:e2e": "playwright test",
     "extract": "node scripts/extract-all.mjs",
     "check-patch": "node scripts/check-patch.mjs",
-    "presets": "node scripts/build-presets-parallel.mjs",
-    "presets:fast": "node scripts/build-presets-parallel.mjs --fast 8",
-    "sync-fixtures": "node scripts/sync-fixtures.mjs",
-    "rate-presets": "node scripts/rate-presets.mjs",
-    "audit": "node scripts/audit-builds.mjs --stages",
-    "audit:presets": "node scripts/audit-preset-consistency.mjs"
+    "sync-fixtures": "node scripts/sync-fixtures.mjs"
   },
   "dependencies": {
     "vue": "^3.5.0"

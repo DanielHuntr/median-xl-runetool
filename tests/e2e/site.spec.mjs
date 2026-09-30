@@ -1,5 +1,6 @@
 // The main pages in a real browser: they load, and their key actions work end to end.
 import { test, expect } from "@playwright/test";
+import { openBuild } from "./fixtures/builds.mjs";
 
 test("runeword filters narrow the list", async ({ page }) => {
   await page.goto("/#runewords");
@@ -44,29 +45,14 @@ test("the theme picker switches the theme", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("data-theme", "hell");
 });
 
-test("a starter build opens with its levelling stages", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
-  const stages = page.getByRole("group", { name: "Levelling stage" });
-  await expect(stages.getByRole("button", { name: "Endgame" })).toHaveAttribute("aria-pressed", "true");
-  await expect(stages.getByRole("button", { name: "Normal" })).toHaveClass(/filled/);
-  await stages.getByRole("button", { name: "Normal" }).click();
-  await expect(page.locator(".planner-toolbar").getByLabel("Character level")).toHaveValue("50");
-  await page.getByRole("button", { name: /Where to level/ }).click();
-  await expect(page.getByRole("dialog", { name: "Where to level" }).locator("li").first()).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog", { name: "Where to level" })).toHaveCount(0);
-});
-
-test("opening a starter build keeps your own build to go back to", async ({ page }) => {
+test("opening a shared build keeps your own build to go back to", async ({ page }) => {
   await page.goto("/#planner");
   await page.getByRole("button", { name: "Amazon" }).first().click();
   const level = page.locator(".planner-toolbar").getByLabel("Character level");
   await level.fill("77");
   await level.press("Enter");
   await page.getByRole("button", { name: /^Add a point to Strength/ }).click();
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Stormcall");
   const bar = page.getByRole("region", { name: "Opened build" });
   await expect(bar).toContainText("Stormcall");
   await expect(level).toHaveValue("150");
@@ -100,18 +86,6 @@ test("a cube recipe link loads that recipe, ready to transmute", async ({ page }
   await expect(page.getByText("Loaded: Book of Cain: Item Design + Oil of Craft → Book of Cain: Cube Reagent.", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "Transmute" }).click();
   await expect(page.getByText("Nothing happens")).toHaveCount(0);
-});
-
-test("starter builds show tiers, and the tier filter narrows them", async ({ page }) => {
-  await page.goto("/#builds");
-  await expect(page.locator(".starter-card .tier-badge").first()).toBeVisible();
-  await page.getByLabel("Starter tier").selectOption("S");
-  const cards = page.locator(".starter-card");
-  await expect(cards.first()).toBeVisible();
-  const n = await cards.count();
-  for (let i = 0; i < n; i++) await expect(cards.nth(i).locator(".tier-badge")).toHaveText("S");
-  await page.getByLabel("Starter tier").selectOption("unrated");
-  await expect(cards.first().locator(".tier-unrated")).toBeVisible();
 });
 
 test("the character planner loads", async ({ page }) => {
@@ -212,8 +186,7 @@ test("a unique amulet's Show recipe loads the random-unique recipe", async ({ pa
 });
 
 test("an item's unused lines are grouped at the bottom, shown with why on a sheet pinned with Alt", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Stormcall");
   const tip = page.locator("#planner-tip");
   // The first equipped item with a line the build can't use.
   const slots = page.locator("button.doll-slot.filled");
@@ -239,28 +212,13 @@ test("an item's unused lines are grouped at the bottom, shown with why on a shee
   await page.mouse.wheel(0, 200);
   await expect(tip).toBeVisible();
   const box = await tip.boundingBox();
-  await page.mouse.move(box.x + box.width + 150, box.y + box.height / 2);
+  // Anywhere outside the sheet closes it (the page's top-left corner is clear of other tooltips).
+  await page.mouse.move(2, 2);
   await expect(tip).toHaveCount(0);
 });
 
-test("the stage switch shows each starter build's levelling stage, and opens the planner on it", async ({ page }) => {
-  await page.goto("/#builds");
-  const card = page.locator(".starter-wrap", { hasText: "Stormcall" }).first();
-  await expect(card.locator(".tier-criteria")).toBeVisible();
-  await page.getByLabel("Stage").selectOption("Nightmare");
-  await expect(card.locator(".stage-gear")).toContainText("Gear:");
-  await expect(card).toContainText("Level 100 · Nightmare");
-  // The stage has its own tier, among the builds at the same stage, and the same card parts.
-  await expect(card.locator(".tier-criteria")).toBeVisible();
-  await expect(card.locator(".build-skills")).toBeVisible();
-  await expect(card.locator("a.starter-card")).toHaveAttribute("href", /&stage=Nightmare/);
-  await card.locator("a.starter-card").click();
-  await expect(page.getByRole("spinbutton", { name: /level/i }).first()).toHaveValue("100");
-});
-
 test("the charm list shows its count, scrolls within the equipment column, and folds from its heading", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Hammer of Zerae" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Hammer of Zerae");
   const charms = page.locator(".charms");
   const toggle = charms.getByRole("button", { name: /Charms & relics/ });
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
@@ -273,8 +231,7 @@ test("the charm list shows its count, scrolls within the equipment column, and f
 });
 
 test("the skill summary opens from the skill points counter, and a skill in it opens its tree", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Snake Bite");
   await page.getByRole("button", { name: "Summary" }).click();
   const dialog = page.getByRole("dialog", { name: /Skill summary/ });
   await expect(dialog).toBeVisible();
@@ -285,8 +242,7 @@ test("the skill summary opens from the skill points counter, and a skill in it o
 });
 
 test("a build's author sets its tiers in the planner, and its saved card shows them", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Snake Bite" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Snake Bite");
   await page.getByRole("button", { name: "Rate this build" }).click();
   const tiers = page.getByRole("dialog", { name: "Your tiers for this build" });
   await tiers.getByRole("group", { name: "Overall tier" }).getByRole("button", { name: "A" }).click();
@@ -306,9 +262,8 @@ test("a build's author sets its tiers in the planner, and its saved card shows t
   await expect(card.locator(".mine-tiers")).not.toContainText("Clearing");
 });
 
-test("a saved build opened, then a starter build, goes back to the saved build by its name", async ({ page }) => {
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Hammer of Zerae" }).first().locator("a.starter-card").click();
+test("a saved build opened, then a shared build, goes back to the saved build by its name", async ({ page }) => {
+  await openBuild(page, "Hammer of Zerae");
   await page.getByRole("button", { name: "Save build" }).click();
   const dialog = page.getByRole("dialog", { name: "Save build" });
   await dialog.getByLabel("Name").fill("My Hammer");
@@ -316,16 +271,14 @@ test("a saved build opened, then a starter build, goes back to the saved build b
   // Something else of the player's first (unsaved), so opening the saved build sets that aside.
   page.once("dialog", (d) => d.accept());
   await page.getByRole("button", { name: "Reset" }).click();
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Spear: Fend" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Spear: Fend");
   await expect(page.locator(".build-name")).toHaveText("Spear: Fend");
   await page.goto("/#builds");
   await page.locator("article.build-card.mine", { hasText: "My Hammer" }).getByRole("link", { name: "Open build" }).click();
   await expect(page.locator(".build-name")).toHaveText("My Hammer");
   await page.reload();
   await expect(page.locator(".build-name"), "the name survives a reload").toHaveText("My Hammer");
-  await page.goto("/#builds");
-  await page.locator(".starter-wrap", { hasText: "Stormcall" }).first().locator("a.starter-card").click();
+  await openBuild(page, "Stormcall");
   await expect(page.locator(".build-name")).toHaveText("Stormcall");
   await page.getByRole("button", { name: "Back to my build" }).click();
   await expect(page.locator(".build-name")).toHaveText("My Hammer");

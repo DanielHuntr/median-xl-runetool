@@ -43,17 +43,6 @@ function start(data) {
   proxy.game = data.game || null;
   proxy.importFromHash();
   planner.value = proxy;
-  fillPresetStages();
-}
-// A starter build opened from the Builds page (&preset=<id>) brings its levelling guide's
-// stages (scripts/build-presets.mjs): level 50 as Normal, 100 as Nightmare, 125 as Hell.
-async function fillPresetStages(hash = window.location.hash) {
-  const id = /[?&]preset=([a-z0-9-]+)/.exec(hash)?.[1];
-  if (!id || !planner.value) return;
-  const cls = planner.value.state.cls;
-  const list = (await import("../../data/preset-stages.json")).default.stages?.[id] || [];
-  const at = (level) => list.find((s) => s.level === level && s.build)?.build;
-  planner.value.fillStages(cls, { Normal: at(50), Nightmare: at(100), Hell: at(125) });
 }
 
 // The Mercenary tab's choices, grouped by act.
@@ -122,7 +111,6 @@ async function load() {
 if (props.data) start(props.data);
 const onHash = () => {
   planner.value?.importFromHash();
-  fillPresetStages();
 };
 onMounted(() => {
   if (!props.data) load();
