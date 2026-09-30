@@ -3785,14 +3785,7 @@
     "+2% Fire Spell Damage and Fire Pierce per Base Level",
     "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
    ],
-   "independentChecks": "Nothing is inferred from the shown values.",
-   "knownDifferences": [
-    {
-     "game": "Cooldown: 2.4 seconds",
-     "planner": "Cooldown: 2 seconds",
-     "why": "Cooldown is (10 − Unstable Essence's clc2 − syn1) × Spirits frames, and Spirits is min(4 + level, 10): 5 at level 1, so 2 seconds. The game shows 2.4 (6 Spirits' worth) at level 1, but 2 at First Level (unlearned) and 4 from level 10. Working the Cooldown line out one level ahead once learned fits all of them, but would also change Black Wind, Doom, Mana Pulse, Jinn and Ward of Fate, which no screenshot covers yet, so the planner doesn't do it. A screenshot at level 2-5 settles it (one level ahead: 2.8 at level 2, 4 from level 5)."
-    }
-   ]
+   "independentChecks": "The Cooldown (2.4 seconds, 6 Spirits' worth) is the extra block worked out one level ahead once learned; Mana Pulse at 1/1 (+50 cold, its level-2 value) confirms the rule."
   },
   {
    "id": "fire-elementals-level-10",
@@ -4343,6 +4336,39 @@
     "Infected Roots: +30% Harvest Damage per Base Level"
    ],
    "independentChecks": "Nothing further is inferred; life, damage, attack rating and the harvester count all follow from the same two inputs."
+  },
+  {
+   "id": "mana-pulse-level-1",
+   "skill": "mana_pulse",
+   "source": "In-game Mana Pulse tooltip screenshot (1/1 points) supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: 1/1 points"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: 1/1 points, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "assumed: the bonus cold damage doesn't depend on Character Level (edmx from the skill's own table)"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no +skills"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "125% Weapon Damage",
+    "+50 bonus cold damage to attack",
+    "Grants exceptional Mana and Stamina Recovery",
+    "Duration: 1.8 seconds"
+   ],
+   "independentChecks": "The deciding screenshot for the extra-block rule: level 1's table value is +28, level 2's is +50, and the game shows +50 at 1/1."
   }
  ]
 }

@@ -505,6 +505,16 @@ export function createEngine(data) {
     if (!g || !game) return null;
     return evalRecord(g, b, blvl, levelOf(b, id, blvl), 0);
   }
+  // A tooltip line's evaluator. Once the skill is learned, the game works out its "extra"
+  // block (the lines above Current Skill Level) one level ahead: Mana Pulse at 1/1 shows
+  // "+50 bonus cold damage to attack", its level-2 value (level 1 is 28), and Fire
+  // Elementals at level 1 shows the Cooldown of 6 Spirits (2.4 seconds; level 1 has 5),
+  // while its unlearned First Level shows 2 seconds (GitHub issue #30).
+  function lineEval(b, id, blvl, block) {
+    const g = skills[id]?.game;
+    if (!g || !game) return null;
+    return evalRecord(g, b, blvl, levelOf(b, id, blvl) + (block === "extra" && blvl > 0 ? 1 : 0), 0);
+  }
   // Effective Level. An unlearned skill's tooltip ("First Level") is Base Level 0 at
   // level 1: the game shows Askari Lightning's (299 + lvl) × (100 + blvl) / 100 as 300%.
   const levelOf = (b, id, blvl) => (blvl > 0 ? blvl + (b.soft?.[id] || 0) : 1);
@@ -698,7 +708,7 @@ export function createEngine(data) {
         },
       };
     }
-    const e = gameEval(b, id, blvl);
+    const e = lineEval(b, id, blvl, line.block);
     const a = e.calc(line.calcA), c = line.calcB ? e.calc(line.calcB) : { ok: true, value: null };
     const bad = [a, c].find((r) => !r.ok);
     if (bad) return { failed: bad.reason };
@@ -763,7 +773,7 @@ export function createEngine(data) {
     const lines = [];
     for (const l of (g?.lines || []).filter((x) => x.block === block)) {
       // One evaluator per line, so each line lists only its own inputs and assumptions.
-      const e = gameEval(b, id, blvl);
+      const e = lineEval(b, id, blvl, l.block);
       const value = (c) => {
         if (!c) return { value: null };
         const r = e.calc(c);
