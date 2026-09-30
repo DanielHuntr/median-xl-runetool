@@ -5282,6 +5282,307 @@
     "Hit Recovery: +8%"
    ],
    "independentChecks": "Nothing is inferred from the shown values."
+  },
+  {
+   "id": "defender-spirit-first-level",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: First Level"
+    },
+    "blvl": {
+     "value": 0,
+     "how": "shown: First Level of an unlearned skill is Base Level 0 at level 1"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 444 hit points",
+    "Damage: 4",
+    "Attack Rating: 200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
+  },
+  {
+   "id": "defender-spirit-level-1",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 1,
+     "how": "shown: Current Skill Level 1"
+    },
+    "blvl": {
+     "value": 1,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 532 hit points",
+    "Damage: 4",
+    "Attack Rating: 200",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 708 hit points",
+    "Damage: 6",
+    "Attack Rating: 300",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
+  },
+  {
+   "id": "defender-spirit-level-5",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 5,
+     "how": "shown: Current Skill Level 5"
+    },
+    "blvl": {
+     "value": 5,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 2068 hit points",
+    "Damage: 16",
+    "Attack Rating: 600",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 2360 hit points",
+    "Damage: 18",
+    "Attack Rating: 700",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
+  },
+  {
+   "id": "defender-spirit-level-10",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 10,
+     "how": "shown: Current Skill Level 10"
+    },
+    "blvl": {
+     "value": 10,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 5308 hit points",
+    "Damage: 32",
+    "Attack Rating: 1100",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 5752 hit points",
+    "Damage: 36",
+    "Attack Rating: 1200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
+  },
+  {
+   "id": "defender-spirit-level-15",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 15,
+     "how": "shown: Current Skill Level 15"
+    },
+    "blvl": {
+     "value": 15,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 10020 hit points",
+    "Damage: 53",
+    "Attack Rating: 1600",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 10608 hit points",
+    "Damage: 58",
+    "Attack Rating: 1700",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
+  },
+  {
+   "id": "defender-spirit-level-20",
+   "skill": "defender_spirit",
+   "source": "In-game Defender Spirit tooltip screenshot supplied by the project owner, 2026-09-30 (Median XL 2.14.4)",
+   "inputs": {
+    "lvl": {
+     "value": 20,
+     "how": "shown: Current Skill Level 20"
+    },
+    "blvl": {
+     "value": 20,
+     "how": "shown: points spent, no +skills"
+    },
+    "ulvl": {
+     "value": 150,
+     "how": "inferred: not stated; minion life grows with Character Level ÷ 2, and 150 gives all eleven life readings"
+    },
+    "conditions": {
+     "value": {},
+     "how": "stated: no gear or other skills adding levels"
+    }
+   },
+   "nextLevel": {
+    "blvl": 0,
+    "lvl": 1,
+    "how": "level + 1 with Base Level unchanged"
+   },
+   "observed": {
+    "current": {}
+   },
+   "otherLines": [
+    "Uses Retaliate",
+    "Ancient Spirits: 2",
+    "Cooldown: 2.4 seconds",
+    "Life: 16200 hit points",
+    "Damage: 78",
+    "Attack Rating: 2100",
+    "Mana Cost: 1"
+   ],
+   "nextLines": [
+    "Life: 16940 hit points",
+    "Damage: 83",
+    "Attack Rating: 2200",
+    "Mana Cost: 1"
+   ],
+   "synergyText": [
+    "+20% Minion Life per Base Level",
+    "+3% Minion Damage per Base Level",
+    "Minions inherit 25% of your on Attack/Kill/Death Blow triggers (Min 1%)"
+   ],
+   "independentChecks": "Damage and attack rating use no inferred input."
   }
  ]
 }
