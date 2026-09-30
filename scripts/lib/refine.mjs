@@ -39,7 +39,20 @@ export function refineBuild(p, ctx) {
   // upgrade it, runes that don't drop yet, set pieces that are luck), most at low levels: a
   // runeword a player can make wins over a drop that's only a little better. Not the swap.
   const easeCost = (b) => (ease ? Object.entries(b.gear).reduce((n, [slot, st]) => n + (/2$/.test(slot) ? 0 : ease(st)), 0) : 0);
-  const score = (b) => rawScore(b) - WASTE * waste(b) - easeCost(b);
+  // A build that doesn't attack gets nothing from its weapon's damage, so the weapon's +levels to
+  // its own skills (All Skills, its class, or a skill it has points in) count for more than the
+  // measured damage alone: about 2% more damage a level (WASTE), so a caster weapon with +skills
+  // beats a stat stick unless the stat stick is clearly better (Stormcall's Gnarled Root).
+  const casterSkills = (b) => {
+    if (!use || use.attack || !(use.spell || use.summon) || !b.gear.weapon) return 0;
+    let n = 0;
+    for (const p of catalog.resolve(b.gear.weapon, b.level)?.parsed || []) {
+      if (p.kind === "stats") for (const [k, v] of p.effects) { if (k === "all_skills" || k === `class_skills:${b.cls}`) n += v; }
+      else if (p.kind === "skill" && (b.points[p.id] || 0) > 0) n += p.value;
+    }
+    return n;
+  };
+  const score = (b) => rawScore(b) - WASTE * waste(b) - easeCost(b) + WASTE * casterSkills(b);
   // Items worn mostly for nothing (relevance.js mostlyWasted) aren't candidates, and one worn
   // (Suggest gear's, or kept from the stage before) needn't be beaten to be replaced.
   const wastedItem = (st) => !!(mostlyWasted && use && st && mostlyWasted(catalog.resolve(st, level), use));

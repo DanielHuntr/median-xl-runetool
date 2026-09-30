@@ -371,7 +371,16 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     // A small fallback for useful effects the damage model cannot yet evaluate.
     // Known damage and durability dominate; +skills are valued through their actual effects.
     const fallback = Math.min(outcome.knownDamage ? 2 : 15, score * (outcome.knownDamage ? 0.02 : 0.15));
-    score = outcome.score - baseline.score + fallback;
+    // A build that doesn't attack gets nothing from its weapon's damage: the weapon's +levels to
+    // its own skills count for more (as refine.mjs casterSkills), so caster weapons with +skills
+    // make the shortlist instead of stat sticks (Stormcall's Gnarled Root at level 50).
+    let casterLevels = 0;
+    if (isWeapon && !((profile.roles.attack || 0) > 0.2) && ((profile.roles.spell || 0) + (profile.roles.summon || 0)) > 0)
+      for (const p of r.parsed) {
+        if (p.kind === "stats") for (const [key, value] of p.effects) { if (key === "all_skills" || key === `class_skills:${build.cls}`) casterLevels += value; }
+        else if (p.kind === "skill" && profile.skills[p.id]) casterLevels += p.value;
+      }
+    score = outcome.score - baseline.score + fallback + 1.2 * casterLevels;
     const comparisons = combatReasons(baseline, outcome);
     // r.def carries the runeword's base (name and icon).
     out.push({ def: r.def, state, attrs: outcome.attrs, score, improvement: outcome.score - baseline.score,
