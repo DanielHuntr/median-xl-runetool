@@ -918,9 +918,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 15
+      "energy": 15,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -974,9 +975,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 15
+      "energy": 15,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1040,9 +1042,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 15
+      "energy": 15,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line"
+     "how": "stated: no attributes spent, so the Paladin's starting Energy of 15; checked by the +8% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1241,9 +1244,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 37
+      "energy": 37,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 37 Energy; checked by the +13% Energy synergy line"
+     "how": "stated: 37 Energy; checked by the +13% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1289,9 +1293,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 37
+      "energy": 37,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 37 Energy; checked by the +13% Energy synergy line"
+     "how": "stated: 37 Energy; checked by the +13% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1348,9 +1353,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 37
+      "energy": 37,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 37 Energy; checked by the +13% Energy synergy line"
+     "how": "stated: 37 Energy; checked by the +13% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1386,14 +1392,7 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": [],
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 10",
-     "planner": "Mana Cost: 11",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    }
-   ]
+   "independentChecks": []
   },
   {
    "id": "mind-flay-level-8-char-16",
@@ -1414,9 +1413,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 37
+      "energy": 37,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 37 Energy; checked by the +13% Energy synergy line"
+     "how": "stated: 37 Energy; checked by the +13% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1452,19 +1452,7 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": [],
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 16",
-     "planner": "Mana Cost: 17",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    },
-    {
-     "game": "Mana Cost: 18",
-     "planner": "Mana Cost: 20",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    }
-   ]
+   "independentChecks": []
   },
   {
    "id": "mind-flay-level-16-char-16",
@@ -1485,9 +1473,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 37
+      "energy": 37,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 37 Energy; checked by the +13% Energy synergy line"
+     "how": "stated: 37 Energy; checked by the +13% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1523,19 +1512,7 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +13% Increased Damage"
    ],
-   "independentChecks": [],
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 32",
-     "planner": "Mana Cost: 35",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    },
-    {
-     "game": "Mana Cost: 34",
-     "planner": "Mana Cost: 38",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    }
-   ]
+   "independentChecks": []
   },
   {
    "id": "mind-flay-level-16-energy-112",
@@ -1556,9 +1533,10 @@
     },
     "charStats": {
      "value": {
-      "energy": 112
+      "energy": 112,
+      "mana_cost_of_skills": -10
      },
-     "how": "stated: 112 Energy; checked by the +28% Energy synergy line"
+     "how": "stated: 112 Energy; checked by the +28% Energy synergy line; mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -1594,19 +1572,7 @@
     "+1 Beam per 15 Base Levels",
     "Energy: +28% Increased Damage"
    ],
-   "independentChecks": [],
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 32",
-     "planner": "Mana Cost: 35",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    },
-    {
-     "game": "Mana Cost: 34",
-     "planner": "Mana Cost: 38",
-     "why": "The standard mana formula ((16 + 18 × (level − 1)) × 2^5 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, gives more from level 5; Mind Flay shows exactly 2 × level. Why isn't known (its mana modifier is 0 here: no Specialization, no other devotion)."
-    }
-   ]
+   "independentChecks": []
   },
   {
    "id": "protector-spirit-level-1-char-150",
@@ -2276,9 +2242,10 @@
     },
     "charStats": {
      "value": {
-      "summoned_minion_damage": 10
+      "summoned_minion_damage": 10,
+      "mana_cost_of_skills": -10
      },
-     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that)"
+     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that); mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -2307,14 +2274,7 @@
     "Life: +325%",
     "Mana Cost: 92"
    ],
-   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points.",
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 92",
-     "planner": "Mana Cost: 93",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    }
-   ]
+   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points."
   },
   {
    "id": "resurrect-level-5",
@@ -2342,9 +2302,10 @@
     },
     "charStats": {
      "value": {
-      "summoned_minion_damage": 10
+      "summoned_minion_damage": 10,
+      "mana_cost_of_skills": -10
      },
-     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that)"
+     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that); mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -2373,19 +2334,7 @@
     "Life: +345%",
     "Mana Cost: 131"
    ],
-   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points.",
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 121",
-     "planner": "Mana Cost: 126",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    },
-    {
-     "game": "Mana Cost: 131",
-     "planner": "Mana Cost: 137",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    }
-   ]
+   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points."
   },
   {
    "id": "resurrect-level-10",
@@ -2413,9 +2362,10 @@
     },
     "charStats": {
      "value": {
-      "summoned_minion_damage": 10
+      "summoned_minion_damage": 10,
+      "mana_cost_of_skills": -10
      },
-     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that)"
+     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that); mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -2444,19 +2394,7 @@
     "Life: +370%",
     "Mana Cost: 180"
    ],
-   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points.",
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 170",
-     "planner": "Mana Cost: 181",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    },
-    {
-     "game": "Mana Cost: 180",
-     "planner": "Mana Cost: 192",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    }
-   ]
+   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points."
   },
   {
    "id": "resurrect-level-15",
@@ -2484,9 +2422,10 @@
     },
     "charStats": {
      "value": {
-      "summoned_minion_damage": 10
+      "summoned_minion_damage": 10,
+      "mana_cost_of_skills": -10
      },
-     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that)"
+     "how": "Fervor's summon damage on the character sheet (character.js adds it; tests/planner.test.mjs checks that); mana_cost_of_skills −10 inferred: not stated; the game's mana routine (D2Sigma.dll 0x100A1DC0) scales the per-level cost by (100 + Mana Cost of Skills) ÷ 100, and −10 or −11 gives every mana reading (−9 misses six); −10 assumed, the round value items give. Where it came from (gear, a charm) isn't known"
     },
     "conditions": {
      "value": {},
@@ -2515,19 +2454,7 @@
     "Life: +395%",
     "Mana Cost: 228"
    ],
-   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points.",
-   "knownDifferences": [
-    {
-     "game": "Mana Cost: 219",
-     "planner": "Mana Cost: 236",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    },
-    {
-     "game": "Mana Cost: 228",
-     "planner": "Mana Cost: 247",
-     "why": "The standard mana formula ((330 + 44 × (level − 1)) × 2^6 / 256, rounded down once), which matches Anathema, Psionic Storm and Snake Bite in game, rises 11 a level; the game rises 9.75 (39 in the file's units). Mind Flay (also a Paladin skill) shows the same kind of gap. Both have a mana modifier that isn't 0 here: Resurrect's is −999 while Servants of Valor has under 10 points (its requirement is shown unmet); Mind Flay's is a devotion lock. How the game applies the modifier isn't known, so the planner doesn't apply it."
-    }
-   ]
+   "independentChecks": "Spell Damage uses no inferred input; Life and Physical Damage at the other three levels check the inferred Conclave and Fervor points."
   },
   {
    "id": "egg-trap-level-1",

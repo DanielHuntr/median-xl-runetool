@@ -233,7 +233,7 @@ export function createGameEval(skill, names, inputs) {
       v = Math.trunc(((base * (100 + p(1)) * (100 + bonus) * (100 + extra)) / 1000000) * 1.0001);
     } else if (["len", "rng", "skcd", "pets"].includes(name)) v = field(skill.vars?.[name], name);
     else if (name === "mana") {
-      // Mana cost, as Diablo II works it out: (mana + lvlmana × (lvl − 1)) × 2^ManaShift / 256,
+      // Mana cost: (mana + lvlmana × (lvl − 1)) × 2^ManaShift / 256,
       // rounded down once. In game: Anathema (110, 22, shift 6) 27, 33, 77, 82, 132, 137 at
       // levels 1, 2, 10, 11, 20, 21; Psionic Storm (20, 42, shift 5) 2, 7, 49, 55, 128, 133;
       // Snake Bite (9, 29, shift 5) 70, 73 at 20, 21. Rounding each part on its own gives
@@ -244,10 +244,19 @@ export function createGameEval(skill, names, inputs) {
       // the maximum-level formula (engine.js gameMaxLevel); skills.bin's own mana fields are 0.
       const m = skill.mana;
       if (!m) throw new Error("skill has no mana data");
-      const base = field(m.base, "mana"), per = field(m.perLevel, "lvlmana");
-      // Falling per-level costs cannot grant mana. Apply the same zero floor as
-      // the community-data path, including references to another skill's cost.
-      v = Math.max(0, Math.trunc(((base + per * (Math.max(1, inputs.lvl) - 1)) * 2 ** m.shift) / 256));
+      // Median XL's mana routine (D2Sigma.dll 0x100A1CF7, per-level part 0x100A1DC0): the
+      // per-level formula × (100 + Mana Cost of Skills, stat 228) ÷ 100, rounded down, then
+      // (base + per-level × (level − 1)) << ManaShift, no lower than MinMana, ÷ 256. Resurrect's
+      // and Mind Flay's in-game costs are this with −10% Mana Cost of Skills (44 → 39, 18 → 16).
+      const base = field(m.base, "mana");
+      let per = field(m.perLevel, "lvlmana");
+      const r = inputs.resolve?.("stat", 228, 0);
+      const reduction = r ? r.value : 0;
+      if (r && r.value) resolved.set("stat228", r);
+      per = Math.trunc((per * (100 + reduction)) / 100);
+      const cost = Math.trunc(((base + per * (Math.max(1, inputs.lvl) - 1)) * 2 ** m.shift) / 256);
+      // Falling per-level costs cannot grant mana (the same zero floor as the community path).
+      v = Math.max(0, m.min ?? 0, cost);
     } else if (name === "wdm") v = Math.trunc(((skill.srcDam ?? 0) * 100) / 128);
     // toht: attack rating bonus %, ToHit + LevToHit × (level − 1) (D2 1.13c), 0 at level 0.
     else if (name === "toht") v = inputs.lvl > 0 ? (skill.toHit?.[0] ?? 0) + (inputs.lvl - 1) * (skill.toHit?.[1] ?? 0) : 0;

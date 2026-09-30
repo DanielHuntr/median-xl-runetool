@@ -1,6 +1,6 @@
 {
  "patch": "2.14.4",
- "extractedAt": "2026-09-30T18:34:59.573Z",
+ "extractedAt": "2026-09-30T18:46:49.557Z",
  "source": {
   "game": "Median XL (installed files)",
   "files": {
@@ -301,6 +301,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -390,6 +391,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -479,6 +481,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -568,6 +571,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -657,6 +661,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -746,6 +751,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -840,6 +846,7 @@
    "vars": {},
    "mana": {
     "shift": 1,
+    "min": 2,
     "base": {
      "code": "08a60100",
      "text": "422"
@@ -942,6 +949,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -1081,6 +1089,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -1226,6 +1235,7 @@
    "vars": {},
    "mana": {
     "shift": 4,
+    "min": 2,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -1343,6 +1353,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -1532,6 +1543,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08260200",
      "text": "550"
@@ -1691,6 +1703,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -1843,6 +1856,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 2,
     "base": {
      "code": "071200",
      "text": "18"
@@ -1992,6 +2006,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -2168,6 +2183,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -2329,6 +2345,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -2478,6 +2495,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071800",
      "text": "24"
@@ -2632,6 +2650,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -2807,6 +2826,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -3030,6 +3050,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -3241,6 +3262,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 10,
     "base": {
      "code": "08260200",
      "text": "550"
@@ -3428,6 +3450,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -3568,6 +3591,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -3731,6 +3755,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070c00",
      "text": "12"
@@ -3895,6 +3920,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08260200",
      "text": "550"
@@ -4099,6 +4125,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072d00",
      "text": "45"
@@ -4262,6 +4289,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -4423,6 +4451,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -4610,6 +4639,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071800",
      "text": "24"
@@ -4831,6 +4861,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -5017,6 +5048,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072000",
      "text": "32"
@@ -5195,6 +5227,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "077800",
      "text": "120"
@@ -5380,6 +5413,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08f00000",
      "text": "240"
@@ -5554,6 +5588,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -5714,6 +5749,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -5871,6 +5907,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b90000",
      "text": "185"
@@ -6027,6 +6064,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070300",
      "text": "3"
@@ -6209,6 +6247,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072e00",
      "text": "46"
@@ -6373,6 +6412,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -6566,6 +6606,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -6747,6 +6788,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -6868,6 +6910,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -6976,6 +7019,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -7151,6 +7195,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -7376,6 +7421,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -7575,6 +7621,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -7728,6 +7775,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08a40600",
      "text": "1700"
@@ -7906,6 +7954,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -8076,6 +8125,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -8302,6 +8352,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -8522,6 +8573,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -8737,6 +8789,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071000",
      "text": "16"
@@ -9007,6 +9060,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -9201,6 +9255,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -9407,6 +9462,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "070000",
      "text": "0"
@@ -9563,6 +9619,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -9735,6 +9792,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -9978,6 +10036,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -10217,6 +10276,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -10409,6 +10469,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -10587,6 +10648,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -10784,6 +10846,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -10934,6 +10997,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -11111,6 +11175,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -11260,6 +11325,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 750,
     "base": {
      "code": "08e80300",
      "text": "1000"
@@ -11467,6 +11533,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -11627,6 +11694,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073e00",
      "text": "62"
@@ -11788,6 +11856,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -11921,6 +11990,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -12054,6 +12124,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08ac0000",
      "text": "172"
@@ -12177,6 +12248,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -12277,6 +12349,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 4000,
     "base": {
      "code": "08a00f00",
      "text": "4000"
@@ -12403,6 +12476,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -12581,6 +12655,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 15,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -12709,6 +12784,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -12838,6 +12914,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -12960,6 +13037,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -13097,6 +13175,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071c00",
      "text": "28"
@@ -13264,6 +13343,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -13363,6 +13443,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -13528,6 +13609,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "082c0100",
      "text": "300"
@@ -13686,6 +13768,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "077d00",
      "text": "125"
@@ -13806,6 +13889,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -13918,6 +14002,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074f00",
      "text": "79"
@@ -14046,6 +14131,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -14164,6 +14250,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -14311,6 +14398,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -14445,6 +14533,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -14598,6 +14687,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 250,
     "base": {
      "code": "08fa0000",
      "text": "250"
@@ -14751,6 +14841,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08840300",
      "text": "900"
@@ -14876,6 +14967,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -14970,6 +15062,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -15134,6 +15227,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -15246,6 +15340,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08ed0100",
      "text": "493"
@@ -15382,6 +15477,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -15512,6 +15608,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "083d0100",
      "text": "317"
@@ -15685,6 +15782,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -15853,6 +15951,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -16034,6 +16133,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -16169,6 +16269,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08680200",
      "text": "616"
@@ -16345,6 +16446,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -16508,6 +16610,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -16664,6 +16767,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -16818,6 +16922,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -16965,6 +17070,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -17125,6 +17231,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "083c0200",
      "text": "572"
@@ -17301,6 +17408,7 @@
    "vars": {},
    "mana": {
     "shift": 3,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -17456,6 +17564,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08e80300",
      "text": "1000"
@@ -17585,6 +17694,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -17730,6 +17840,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -17868,6 +17979,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -18032,6 +18144,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -18177,6 +18290,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075c00",
      "text": "92"
@@ -18305,6 +18419,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -18418,6 +18533,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -18570,6 +18686,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -18692,6 +18809,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -18841,6 +18959,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -18930,6 +19049,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -19019,6 +19139,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -19150,6 +19271,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -19248,6 +19370,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -19392,6 +19515,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089a0000",
      "text": "154"
@@ -19531,6 +19655,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073e00",
      "text": "62"
@@ -19673,6 +19798,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071f00",
      "text": "31"
@@ -19839,6 +19965,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08ee0200",
      "text": "750"
@@ -19958,6 +20085,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -20102,6 +20230,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -20289,6 +20418,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -20435,6 +20565,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -20568,6 +20699,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -20706,6 +20838,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -20834,6 +20967,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -20985,6 +21119,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -21108,6 +21243,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -21236,6 +21372,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -21377,6 +21514,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -21514,6 +21652,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -21702,6 +21841,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08520300",
      "text": "850"
@@ -21856,6 +21996,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 5,
     "base": {
      "code": "071200",
      "text": "18"
@@ -22006,6 +22147,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070200",
      "text": "2"
@@ -22206,6 +22348,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -22412,6 +22555,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -22592,6 +22736,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071f00",
      "text": "31"
@@ -22791,6 +22936,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -22934,6 +23080,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -23067,6 +23214,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -23247,6 +23395,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -23376,6 +23525,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -23492,6 +23642,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -23647,6 +23798,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "071600",
      "text": "22"
@@ -23799,6 +23951,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075600",
      "text": "86"
@@ -23988,6 +24141,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -24128,6 +24282,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -24301,6 +24456,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -24443,6 +24599,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -24572,6 +24729,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 6,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -24666,6 +24824,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -24799,6 +24958,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -24957,6 +25117,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "083d0100",
      "text": "317"
@@ -25095,6 +25256,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -25255,6 +25417,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08100200",
      "text": "528"
@@ -25352,6 +25515,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -25479,6 +25643,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -25683,6 +25848,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -25835,6 +26001,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -25961,6 +26128,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -26108,6 +26276,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08520300",
      "text": "850"
@@ -26265,6 +26434,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -26359,6 +26529,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075c00",
      "text": "92"
@@ -26487,6 +26658,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -26631,6 +26803,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -26740,6 +26913,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -26895,6 +27069,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -27020,6 +27195,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -27177,6 +27353,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -27280,6 +27457,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -27386,6 +27564,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -27490,6 +27669,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -27663,6 +27843,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b90000",
      "text": "185"
@@ -27810,6 +27991,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -27899,6 +28081,7 @@
    "vars": {},
    "mana": {
     "shift": 4,
+    "min": 0,
     "base": {
      "code": "073000",
      "text": "48"
@@ -28034,6 +28217,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -28165,6 +28349,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08da0300",
      "text": "986"
@@ -28292,6 +28477,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -28390,6 +28576,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -28523,6 +28710,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -28649,6 +28837,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -28781,6 +28970,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -28924,6 +29114,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -29052,6 +29243,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29167,6 +29359,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29304,6 +29497,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29402,6 +29596,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29505,6 +29700,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29648,6 +29844,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29786,6 +29983,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -29902,6 +30100,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -30005,6 +30204,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -30120,6 +30320,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -30209,6 +30410,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08c80000",
      "text": "200"
@@ -30309,6 +30511,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073e00",
      "text": "62"
@@ -30418,6 +30621,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -30539,6 +30743,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08020300",
      "text": "770"
@@ -30739,6 +30944,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -30908,6 +31114,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -31097,6 +31304,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 10,
     "base": {
      "code": "08260200",
      "text": "550"
@@ -31267,6 +31475,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -31455,6 +31664,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -31596,6 +31806,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "08ee0000",
      "text": "238"
@@ -31685,6 +31896,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -31837,6 +32049,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0500",
      "text": "1500"
@@ -31971,6 +32184,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08450200",
      "text": "581"
@@ -32094,6 +32308,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -32212,6 +32427,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08910000",
      "text": "145"
@@ -32339,6 +32555,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -32485,6 +32702,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -32651,6 +32869,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -32786,6 +33005,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08ee0200",
      "text": "750"
@@ -32961,6 +33181,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -33101,6 +33322,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -33277,6 +33499,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -33466,6 +33689,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -33573,6 +33797,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -33725,6 +33950,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -33883,6 +34109,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "071600",
      "text": "22"
@@ -34038,6 +34265,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -34127,6 +34355,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -34229,6 +34458,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -34376,6 +34606,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -34510,6 +34741,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08ae0200",
      "text": "686"
@@ -34652,6 +34884,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -34860,6 +35093,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -35016,6 +35250,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "074b00",
      "text": "75"
@@ -35213,6 +35448,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070a00",
      "text": "10"
@@ -35360,6 +35596,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -35508,6 +35745,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -35641,6 +35879,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -35798,6 +36037,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -35942,6 +36182,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -36111,6 +36352,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -36282,6 +36524,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -36392,6 +36635,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -36492,6 +36736,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -36620,6 +36865,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070100",
      "text": "1"
@@ -36734,6 +36980,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070600",
      "text": "6"
@@ -36949,6 +37196,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08960000",
      "text": "150"
@@ -37133,6 +37381,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37222,6 +37471,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37350,6 +37600,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37508,6 +37759,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -37625,6 +37877,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37740,6 +37993,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37847,6 +38101,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -37954,6 +38209,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38086,6 +38342,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38255,6 +38512,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38344,6 +38602,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -38454,6 +38713,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38552,6 +38812,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -38675,6 +38936,7 @@
    "vars": {},
    "mana": {
     "shift": 3,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38845,6 +39107,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -38942,6 +39205,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073000",
      "text": "48"
@@ -39073,6 +39337,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -39238,6 +39503,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 2,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -39346,6 +39612,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -39521,6 +39788,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -39686,6 +39954,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -39859,6 +40128,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -40029,6 +40299,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -40219,6 +40490,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070f00",
      "text": "15"
@@ -40374,6 +40646,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -40575,6 +40848,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -40789,6 +41063,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -40936,6 +41211,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -41148,6 +41424,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -41321,6 +41598,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -41496,6 +41774,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -41661,6 +41940,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -41838,6 +42118,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -42026,6 +42307,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -42179,6 +42461,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -42344,6 +42627,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -42586,6 +42870,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070d00",
      "text": "13"
@@ -42735,6 +43020,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -42890,6 +43176,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 5,
     "base": {
      "code": "072200",
      "text": "34"
@@ -43097,6 +43384,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -43289,6 +43577,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -43463,6 +43752,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -43698,6 +43988,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -43912,6 +44203,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -44085,6 +44377,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -44271,6 +44564,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -44462,6 +44756,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -44618,6 +44913,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -44827,6 +45123,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0500",
      "text": "1500"
@@ -45006,6 +45303,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08d00700",
      "text": "2000"
@@ -45232,6 +45530,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -45385,6 +45684,7 @@
    "vars": {},
    "mana": {
     "shift": 4,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -45594,6 +45894,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -45806,6 +46107,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -45956,6 +46258,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 2,
     "base": {
      "code": "072800",
      "text": "40"
@@ -46118,6 +46421,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -46298,6 +46602,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -46455,6 +46760,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -46599,6 +46905,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -46766,6 +47073,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -46936,6 +47244,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -47054,6 +47363,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -47221,6 +47531,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -47379,6 +47690,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -47554,6 +47866,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -47742,6 +48055,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -47900,6 +48214,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08f00000",
      "text": "240"
@@ -48076,6 +48391,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -48193,6 +48509,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -48356,6 +48673,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -48526,6 +48844,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -48756,6 +49075,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -48915,6 +49235,7 @@
    "vars": {},
    "mana": {
     "shift": 4,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -49040,6 +49361,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -49182,6 +49504,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -49338,6 +49661,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -49512,6 +49836,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -49708,6 +50033,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -49890,6 +50216,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -50066,6 +50393,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073400",
      "text": "52"
@@ -50257,6 +50585,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "083c0200",
      "text": "572"
@@ -50442,6 +50771,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -50576,6 +50906,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -50735,6 +51066,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -50863,6 +51195,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51023,6 +51356,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51199,6 +51533,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51363,6 +51698,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51524,6 +51860,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51684,6 +52021,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -51861,6 +52199,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52032,6 +52371,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52198,6 +52538,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52334,6 +52675,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52432,6 +52774,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52530,6 +52873,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52628,6 +52972,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52749,6 +53094,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -52907,6 +53253,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 1,
     "base": {
      "code": "070500",
      "text": "5"
@@ -53060,6 +53407,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -53259,6 +53607,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -53445,6 +53794,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070f00",
      "text": "15"
@@ -53636,6 +53986,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -53825,6 +54176,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08960000",
      "text": "150"
@@ -53994,6 +54346,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -54170,6 +54523,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -54366,6 +54720,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073200",
      "text": "50"
@@ -54526,6 +54881,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 1,
     "base": {
      "code": "070500",
      "text": "5"
@@ -54693,6 +55049,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072d00",
      "text": "45"
@@ -54837,6 +55194,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -55055,6 +55413,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -55244,6 +55603,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -55447,6 +55807,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -55696,6 +56057,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074d00",
      "text": "77"
@@ -55880,6 +56242,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -56045,6 +56408,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -56231,6 +56595,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -56448,6 +56813,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073900",
      "text": "57"
@@ -56633,6 +56999,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -56852,6 +57219,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -57059,6 +57427,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -57223,6 +57592,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -57389,6 +57759,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dd0200",
      "text": "733"
@@ -57571,6 +57942,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08ee0200",
      "text": "750"
@@ -57783,6 +58155,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -57984,6 +58357,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -58176,6 +58550,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -58388,6 +58763,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -58552,6 +58928,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -58683,6 +59060,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -58811,6 +59189,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -59060,6 +59439,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -59253,6 +59633,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -59418,6 +59799,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -59578,6 +59960,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -59724,6 +60107,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -59876,6 +60260,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -60094,6 +60479,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -60280,6 +60666,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -60467,6 +60854,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -60690,6 +61078,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -60885,6 +61274,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -61087,6 +61477,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -61234,6 +61625,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -61393,6 +61785,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 1,
     "base": {
      "code": "075000",
      "text": "80"
@@ -61554,6 +61947,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 1,
     "base": {
      "code": "075000",
      "text": "80"
@@ -61707,6 +62101,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -61866,6 +62261,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -61994,6 +62390,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62154,6 +62551,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62330,6 +62728,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62494,6 +62893,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62655,6 +63055,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62815,6 +63216,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -62992,6 +63394,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63163,6 +63566,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63329,6 +63733,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63465,6 +63870,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63563,6 +63969,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63661,6 +64068,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63759,6 +64167,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -63866,6 +64275,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -64065,6 +64475,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070600",
      "text": "6"
@@ -64277,6 +64688,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070900",
      "text": "9"
@@ -64448,6 +64860,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -64625,6 +65038,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08a00000",
      "text": "160"
@@ -64807,6 +65221,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "074b00",
      "text": "75"
@@ -65030,6 +65445,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -65238,6 +65654,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -65447,6 +65864,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -65676,6 +66094,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -65896,6 +66315,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -66074,6 +66494,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -66246,6 +66667,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -66450,6 +66872,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -66690,6 +67113,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -66974,6 +67398,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -67173,6 +67598,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08340100",
      "text": "308"
@@ -67347,6 +67773,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -67636,6 +68063,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -67877,6 +68305,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -68024,6 +68453,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070a00",
      "text": "10"
@@ -68251,6 +68681,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -68484,6 +68915,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -68645,6 +69077,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -68792,6 +69225,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -68993,6 +69427,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -69162,6 +69597,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070900",
      "text": "9"
@@ -69372,6 +69808,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070c00",
      "text": "12"
@@ -69620,6 +70057,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072b00",
      "text": "43"
@@ -69823,6 +70261,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -70006,6 +70445,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08ee0200",
      "text": "750"
@@ -70250,6 +70690,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -70452,6 +70893,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -70678,6 +71120,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -70893,6 +71336,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 1,
     "base": {
      "code": "070400",
      "text": "4"
@@ -71087,6 +71531,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -71203,6 +71648,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -71389,6 +71835,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -71577,6 +72024,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -71747,6 +72195,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -71881,6 +72330,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72010,6 +72460,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72139,6 +72590,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72274,6 +72726,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72421,6 +72874,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72581,6 +73035,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72732,6 +73187,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -72884,6 +73340,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -73035,6 +73492,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 75,
     "base": {
      "code": "074b00",
      "text": "75"
@@ -73215,6 +73673,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -73378,6 +73837,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -73526,6 +73986,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -73666,6 +74127,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -73865,6 +74327,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74029,6 +74492,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74154,6 +74618,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74299,6 +74764,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74434,6 +74900,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74580,6 +75047,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74766,6 +75234,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -74906,6 +75375,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75020,6 +75490,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75171,6 +75642,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75327,6 +75799,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75482,6 +75955,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75641,6 +76115,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75769,6 +76244,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -75929,6 +76405,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76105,6 +76582,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76269,6 +76747,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76430,6 +76909,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76590,6 +77070,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76767,6 +77248,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -76938,6 +77420,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77104,6 +77587,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77240,6 +77724,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77338,6 +77823,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77436,6 +77922,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77534,6 +78021,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77667,6 +78155,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -77847,6 +78336,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -78031,6 +78521,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -78188,6 +78679,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070c00",
      "text": "12"
@@ -78348,6 +78840,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -78555,6 +79048,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -78807,6 +79301,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -79003,6 +79498,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -79205,6 +79701,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -79412,6 +79909,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -79573,6 +80071,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070500",
      "text": "5"
@@ -79740,6 +80239,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -79884,6 +80384,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071100",
      "text": "17"
@@ -80056,6 +80557,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -80282,6 +80784,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -80479,6 +80982,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -80634,6 +81138,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -80824,6 +81329,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -81007,6 +81513,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -81175,6 +81682,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089e0000",
      "text": "158"
@@ -81347,6 +81855,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -81595,6 +82104,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -81819,6 +82329,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -81948,6 +82459,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08020300",
      "text": "770"
@@ -82143,6 +82655,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -82343,6 +82856,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -82555,6 +83069,7 @@
    "vars": {},
    "mana": {
     "shift": 1,
+    "min": 0,
     "base": {
      "code": "08e80300",
      "text": "1000"
@@ -82722,6 +83237,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08840300",
      "text": "900"
@@ -82880,6 +83396,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83015,6 +83532,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83230,6 +83748,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83381,6 +83900,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83549,6 +84069,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83727,6 +84248,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -83872,6 +84394,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -84056,6 +84579,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -84208,6 +84732,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -84379,6 +84904,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -84523,6 +85049,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -84693,6 +85220,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -84854,6 +85382,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -85078,6 +85607,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -85282,6 +85812,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -85382,6 +85913,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -85536,6 +86068,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -85681,6 +86214,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -85848,6 +86382,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070500",
      "text": "5"
@@ -86054,6 +86589,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -86217,6 +86753,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -86376,6 +86913,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -86504,6 +87042,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -86664,6 +87203,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -86840,6 +87380,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87004,6 +87545,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87165,6 +87707,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87325,6 +87868,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87502,6 +88046,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87673,6 +88218,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87839,6 +88385,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -87975,6 +88522,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -88073,6 +88621,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -88171,6 +88720,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -88269,6 +88819,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -88385,6 +88936,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -88531,6 +89083,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -88676,6 +89229,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -88808,6 +89362,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08960000",
      "text": "150"
@@ -89021,6 +89576,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -89193,6 +89749,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -89355,6 +89912,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071f00",
      "text": "31"
@@ -89562,6 +90120,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -89752,6 +90311,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -89963,6 +90523,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08e80300",
      "text": "1000"
@@ -90120,6 +90681,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -90294,6 +90856,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -90480,6 +91043,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -90711,6 +91275,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -90931,6 +91496,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -91184,6 +91750,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -91385,6 +91952,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -91604,6 +92172,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -91834,6 +92403,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -91994,6 +92564,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -92142,6 +92713,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -92413,6 +92985,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -92593,6 +93166,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -92767,6 +93341,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -92937,6 +93512,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -93101,6 +93677,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -93269,6 +93846,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "08260200",
      "text": "550"
@@ -93538,6 +94116,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -93727,6 +94306,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -93894,6 +94474,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94052,6 +94633,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94182,6 +94764,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94344,6 +94927,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94495,6 +95079,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94641,6 +95226,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94773,6 +95359,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -94907,6 +95494,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95058,6 +95646,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -95224,6 +95813,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95351,6 +95941,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95493,6 +96084,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95658,6 +96250,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95830,6 +96423,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -95983,6 +96577,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -96209,6 +96804,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -96457,6 +97053,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -96679,6 +97276,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -96876,6 +97474,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -97112,6 +97711,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "073200",
      "text": "50"
@@ -97260,6 +97860,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -97417,6 +98018,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -97563,6 +98165,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -97789,6 +98392,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -97987,6 +98591,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08e40c00",
      "text": "3300"
@@ -98201,6 +98806,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -98360,6 +98966,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -98488,6 +99095,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -98648,6 +99256,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -98824,6 +99433,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -98988,6 +99598,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99149,6 +99760,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99309,6 +99921,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99486,6 +100099,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99657,6 +100271,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99823,6 +100438,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -99959,6 +100575,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -100057,6 +100674,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -100155,6 +100773,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -100253,6 +100872,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -100362,6 +100982,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -100514,6 +101135,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -100669,6 +101291,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -100873,6 +101496,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -101047,6 +101671,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "083d0100",
      "text": "317"
@@ -101273,6 +101898,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -101481,6 +102107,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072100",
      "text": "33"
@@ -101705,6 +102332,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -101891,6 +102519,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -102045,6 +102674,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -102211,6 +102841,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -102426,6 +103057,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -102623,6 +103255,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -102830,6 +103463,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -102975,6 +103609,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -103177,6 +103812,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -103360,6 +103996,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -103540,6 +104177,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -103704,6 +104342,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -103858,6 +104497,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -104074,6 +104714,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -104271,6 +104912,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -104472,6 +105114,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "073200",
      "text": "50"
@@ -104738,6 +105381,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -104953,6 +105597,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -105123,6 +105768,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -105315,6 +105961,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -105571,6 +106218,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -105794,6 +106442,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0500",
      "text": "1500"
@@ -106010,6 +106659,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -106167,6 +106817,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -106367,6 +107018,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -106528,6 +107180,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -106673,6 +107326,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -106833,6 +107487,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -107086,6 +107741,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -107274,6 +107930,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -107408,6 +108065,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -107545,6 +108203,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -107655,6 +108314,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -107812,6 +108472,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -108017,6 +108678,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -108211,6 +108873,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -108372,6 +109035,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -108527,6 +109191,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -108642,6 +109307,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -108811,6 +109477,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -108981,6 +109648,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08c80000",
      "text": "200"
@@ -109129,6 +109797,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08a00000",
      "text": "160"
@@ -109311,6 +109980,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -109490,6 +110160,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -109649,6 +110320,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -109777,6 +110449,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -109937,6 +110610,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110113,6 +110787,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110277,6 +110952,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110438,6 +111114,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110598,6 +111275,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110775,6 +111453,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -110946,6 +111625,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111112,6 +111792,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111248,6 +111929,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111346,6 +112028,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111444,6 +112127,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111542,6 +112226,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111648,6 +112333,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111827,6 +112513,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -111999,6 +112686,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -112203,6 +112891,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -112408,6 +113097,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -112615,6 +113305,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -112784,6 +113475,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -113043,6 +113735,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -113240,6 +113933,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -113470,6 +114164,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070d00",
      "text": "13"
@@ -113677,6 +114372,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -113881,6 +114577,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -114043,6 +114740,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070900",
      "text": "9"
@@ -114220,6 +114918,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "077800",
      "text": "120"
@@ -114399,6 +115098,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -114595,6 +115295,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -114779,6 +115480,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -114962,6 +115664,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "08840300",
      "text": "900"
@@ -115133,6 +115836,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -115317,6 +116021,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "084c0400",
      "text": "1100"
@@ -115526,6 +116231,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -115714,6 +116420,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071400",
      "text": "20"
@@ -115970,6 +116677,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 250,
     "base": {
      "code": "08fa0000",
      "text": "250"
@@ -116125,6 +116833,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -116307,6 +117016,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08960000",
      "text": "150"
@@ -116497,6 +117207,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -116656,6 +117367,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -116791,6 +117503,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -116931,6 +117644,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117105,6 +117819,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117263,6 +117978,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117409,6 +118125,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117578,6 +118295,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117726,6 +118444,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117837,6 +118556,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -117962,6 +118682,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118083,6 +118804,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118198,6 +118920,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118333,6 +119056,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118505,6 +119229,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08f40100",
      "text": "500"
@@ -118671,6 +119396,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118821,6 +119547,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -118989,6 +119716,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -119186,6 +119914,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -119416,6 +120145,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -119576,6 +120306,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -119708,6 +120439,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -119885,6 +120617,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120036,6 +120769,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120195,6 +120929,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120323,6 +121058,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120483,6 +121219,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120659,6 +121396,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120823,6 +121561,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -120984,6 +121723,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121144,6 +121884,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121321,6 +122062,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121492,6 +122234,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121658,6 +122401,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121794,6 +122538,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121892,6 +122637,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -121990,6 +122736,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -122088,6 +122835,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -122177,6 +122925,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -122277,6 +123026,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -122446,6 +123196,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -122633,6 +123384,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "08910000",
      "text": "145"
@@ -122761,6 +123513,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -122866,6 +123619,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08450200",
      "text": "581"
@@ -122994,6 +123748,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -123165,6 +123920,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "076400",
      "text": "100"
@@ -123349,6 +124105,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -123474,6 +124231,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 350,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -123622,6 +124380,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -123742,6 +124501,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -123913,6 +124673,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -124033,6 +124794,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -124179,6 +124941,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -124313,6 +125076,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -124455,6 +125219,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071f00",
      "text": "31"
@@ -124595,6 +125360,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "08e00600",
      "text": "1760"
@@ -124785,6 +125551,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -124954,6 +125721,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 175,
     "base": {
      "code": "08020300",
      "text": "770"
@@ -125144,6 +125912,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 10,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -125280,6 +126049,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -125414,6 +126184,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 12,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -125556,6 +126327,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -125741,6 +126513,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -125897,6 +126670,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -126012,6 +126786,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -126152,6 +126927,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "084a0100",
      "text": "330"
@@ -126285,6 +127061,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -126429,6 +127206,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -126567,6 +127345,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -126730,6 +127509,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -126858,6 +127638,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073000",
      "text": "48"
@@ -126988,6 +127769,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08180300",
      "text": "792"
@@ -127156,6 +127938,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -127341,6 +128124,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073500",
      "text": "53"
@@ -127573,6 +128357,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08db0100",
      "text": "475"
@@ -127792,6 +128577,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "088a0200",
      "text": "650"
@@ -127962,6 +128748,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073200",
      "text": "50"
@@ -128184,6 +128971,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074f00",
      "text": "79"
@@ -128322,6 +129110,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -128443,6 +129232,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070b00",
      "text": "11"
@@ -128559,6 +129349,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -128693,6 +129484,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070b00",
      "text": "11"
@@ -128822,6 +129614,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -128958,6 +129751,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -129101,6 +129895,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -129229,6 +130024,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -129352,6 +130148,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -129486,6 +130283,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -129649,6 +130447,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -129783,6 +130582,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -129909,6 +130709,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -130048,6 +130849,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08e40c00",
      "text": "3300"
@@ -130220,6 +131022,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "087c1500",
      "text": "5500"
@@ -130410,6 +131213,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -130564,6 +131368,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -130718,6 +131523,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -130887,6 +131693,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08080100",
      "text": "264"
@@ -131077,6 +131884,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08f90200",
      "text": "761"
@@ -131235,6 +132043,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -131361,6 +132170,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -131493,6 +132303,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -131617,6 +132428,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -131821,6 +132633,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08840300",
      "text": "900"
@@ -131969,6 +132782,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -132107,6 +132921,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -132269,6 +133084,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073e00",
      "text": "62"
@@ -132412,6 +133228,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -132561,6 +133378,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -132668,6 +133486,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089e0000",
      "text": "158"
@@ -132775,6 +133594,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08d30000",
      "text": "211"
@@ -132921,6 +133741,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -133063,6 +133884,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071a00",
      "text": "26"
@@ -133175,6 +133997,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08e40100",
      "text": "484"
@@ -133343,6 +134166,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08f60000",
      "text": "246"
@@ -133489,6 +134313,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -133637,6 +134462,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -133749,6 +134575,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074600",
      "text": "70"
@@ -133887,6 +134714,7 @@
    "vars": {},
    "mana": {
     "shift": 4,
+    "min": 0,
     "base": {
      "code": "089d0200",
      "text": "669"
@@ -134047,6 +134875,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b90000",
      "text": "185"
@@ -134177,6 +135006,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -134380,6 +135210,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 4,
     "base": {
      "code": "08c10100",
      "text": "449"
@@ -134534,6 +135365,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075a00",
      "text": "90"
@@ -134685,6 +135517,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08a60100",
      "text": "422"
@@ -134826,6 +135659,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 5,
     "base": {
      "code": "071600",
      "text": "22"
@@ -134967,6 +135801,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -135123,6 +135958,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088c0000",
      "text": "140"
@@ -135314,6 +136150,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "089a0200",
      "text": "666"
@@ -135458,6 +136295,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -135644,6 +136482,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -135788,6 +136627,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -135929,6 +136769,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -136080,6 +136921,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08340100",
      "text": "308"
@@ -136235,6 +137077,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -136397,6 +137240,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -136531,6 +137375,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -136680,6 +137525,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -136848,6 +137694,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -137006,6 +137853,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -137139,6 +137987,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -137288,6 +138137,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -137400,6 +138250,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089a0000",
      "text": "154"
@@ -137577,6 +138428,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "073c00",
      "text": "60"
@@ -137753,6 +138605,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -137937,6 +138790,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -138102,6 +138956,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -138250,6 +139105,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b00000",
      "text": "176"
@@ -138388,6 +139244,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -138519,6 +139376,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 15,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -138646,6 +139504,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 15,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -138798,6 +139657,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "074b00",
      "text": "75"
@@ -138931,6 +139791,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -139073,6 +139934,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072d00",
      "text": "45"
@@ -139214,6 +140076,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -139365,6 +140228,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -139512,6 +140376,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -139670,6 +140535,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -139836,6 +140702,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -139985,6 +140852,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -140140,6 +141008,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08980800",
      "text": "2200"
@@ -140257,6 +141126,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b90000",
      "text": "185"
@@ -140395,6 +141265,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070d00",
      "text": "13"
@@ -140518,6 +141389,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 400,
     "base": {
      "code": "08980800",
      "text": "2200"
@@ -140648,6 +141520,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08140500",
      "text": "1300"
@@ -140790,6 +141663,7 @@
    },
    "mana": {
     "shift": 3,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -140907,6 +141781,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -141067,6 +141942,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -141214,6 +142090,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 50,
     "base": {
      "code": "082c0100",
      "text": "300"
@@ -141355,6 +142232,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 5,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -141550,6 +142428,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -141743,6 +142622,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -141882,6 +142762,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -142100,6 +142981,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08d30000",
      "text": "211"
@@ -142264,6 +143146,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "089d0300",
      "text": "925"
@@ -142452,6 +143335,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -142616,6 +143500,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -142775,6 +143660,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -142961,6 +143847,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -143177,6 +144064,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -143393,6 +144281,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -143578,6 +144467,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "080b0200",
      "text": "523"
@@ -143762,6 +144652,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -143930,6 +144821,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -144165,6 +145057,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -144363,6 +145256,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -144571,6 +145465,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -144760,6 +145655,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08540b00",
      "text": "2900"
@@ -144909,6 +145805,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 5,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -145059,6 +145956,7 @@
    "vars": {},
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "071900",
      "text": "25"
@@ -145192,6 +146090,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "077d00",
      "text": "125"
@@ -145317,6 +146216,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -145452,6 +146352,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -145636,6 +146537,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073300",
      "text": "51"
@@ -145782,6 +146684,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -145925,6 +146828,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -146074,6 +146978,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -146212,6 +147117,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 6,
     "base": {
      "code": "071e00",
      "text": "30"
@@ -146458,6 +147364,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -146699,6 +147606,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073300",
      "text": "51"
@@ -146847,6 +147755,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -147009,6 +147918,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "084c0400",
      "text": "1100"
@@ -147159,6 +148069,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147281,6 +148192,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147381,6 +148293,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -147478,6 +148391,7 @@
    "vars": {},
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147637,6 +148551,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147758,6 +148673,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147855,6 +148771,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -147981,6 +148898,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148116,6 +149034,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148239,6 +149158,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148403,6 +149323,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148563,6 +149484,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148700,6 +149622,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148850,6 +149773,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -148981,6 +149905,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149108,6 +150033,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149303,6 +150229,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149515,6 +150442,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149665,6 +150593,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149796,6 +150725,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -149937,6 +150867,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150053,6 +150984,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150226,6 +151158,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150393,6 +151326,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150526,6 +151460,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150659,6 +151594,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150807,6 +151743,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -150950,6 +151887,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151117,6 +152055,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151242,6 +152181,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151395,6 +152335,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151554,6 +152495,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151716,6 +152658,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -151833,6 +152776,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152007,6 +152951,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 750,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152210,6 +153155,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152385,6 +153331,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152524,6 +153471,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 5,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152660,6 +153608,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152796,6 +153745,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -152945,6 +153895,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -153125,6 +154076,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -153354,6 +154306,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -153544,6 +154497,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -153761,6 +154715,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -153911,6 +154866,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154086,6 +155042,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154252,6 +155209,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154427,6 +155385,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154569,6 +155528,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154721,6 +155681,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -154867,6 +155828,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155039,6 +156001,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155191,6 +156154,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155367,6 +156331,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155530,6 +156495,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155688,6 +156654,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -155857,6 +156824,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08f60000",
      "text": "246"
@@ -156029,6 +156997,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08f60000",
      "text": "246"
@@ -156190,6 +157159,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156341,6 +157311,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156484,6 +157455,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156596,6 +157568,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156734,6 +157707,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156859,6 +157833,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -156970,6 +157945,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -157117,6 +158093,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -157268,6 +158245,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -157413,6 +158391,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -157555,6 +158534,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -157740,6 +158720,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -157905,6 +158886,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -158052,6 +159034,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -158191,6 +159174,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "088d0000",
      "text": "141"
@@ -158332,6 +159316,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -158464,6 +159449,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -158587,6 +159573,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -158759,6 +159746,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 1,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -158916,6 +159904,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -159053,6 +160042,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08940200",
      "text": "660"
@@ -159199,6 +160189,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "075800",
      "text": "88"
@@ -159362,6 +160353,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -159516,6 +160508,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -159666,6 +160659,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -159801,6 +160795,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -159969,6 +160964,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -160108,6 +161104,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076a00",
      "text": "106"
@@ -160249,6 +161246,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074b00",
      "text": "75"
@@ -160430,6 +161428,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -160620,6 +161619,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -160709,6 +161709,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089e0000",
      "text": "158"
@@ -160814,6 +161815,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -160903,6 +161905,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -160997,6 +162000,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076e00",
      "text": "110"
@@ -161131,6 +162135,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -161225,6 +162230,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08340100",
      "text": "308"
@@ -161380,6 +162386,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -161528,6 +162535,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08da0200",
      "text": "730"
@@ -161738,6 +162746,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08540b00",
      "text": "2900"
@@ -161904,6 +162913,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08ec0200",
      "text": "748"
@@ -162027,6 +163037,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -162147,6 +163158,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08dc0000",
      "text": "220"
@@ -162284,6 +163296,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -162407,6 +163420,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -162556,6 +163570,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -162650,6 +163665,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -162765,6 +163781,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08700300",
      "text": "880"
@@ -162906,6 +163923,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 15,
     "base": {
      "code": "08b80100",
      "text": "440"
@@ -163047,6 +164065,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -163208,6 +164227,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "074200",
      "text": "66"
@@ -163382,6 +164402,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071200",
      "text": "18"
@@ -163522,6 +164543,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -163657,6 +164679,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -163796,6 +164819,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "073700",
      "text": "55"
@@ -163915,6 +164939,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -164041,6 +165066,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -164193,6 +165219,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "076300",
      "text": "99"
@@ -164308,6 +165335,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070d00",
      "text": "13"
@@ -164452,6 +165480,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "073e00",
      "text": "62"
@@ -164645,6 +165674,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08d00700",
      "text": "2000"
@@ -164857,6 +165887,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -164975,6 +166006,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072800",
      "text": "40"
@@ -165089,6 +166121,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -165242,6 +166275,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089d0200",
      "text": "669"
@@ -165395,6 +166429,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089d0200",
      "text": "669"
@@ -165539,6 +166574,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -165666,6 +166702,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -165824,6 +166861,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "082b0100",
      "text": "299"
@@ -165972,6 +167010,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089d0200",
      "text": "669"
@@ -166122,6 +167161,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -166255,6 +167295,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -166434,6 +167475,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08d00700",
      "text": "2000"
@@ -166578,6 +167620,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -166694,6 +167737,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -166855,6 +167899,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -167044,6 +168089,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 8,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -167208,6 +168254,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -167321,6 +168368,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -167426,6 +168474,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "089d0200",
      "text": "669"
@@ -167611,6 +168660,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -167760,6 +168810,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08520300",
      "text": "850"
@@ -167926,6 +168977,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 2,
     "base": {
      "code": "073500",
      "text": "53"
@@ -168064,6 +169116,7 @@
    "vars": {},
    "mana": {
     "shift": 6,
+    "min": 400,
     "base": {
      "code": "08980800",
      "text": "2200"
@@ -168217,6 +169270,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -168319,6 +169373,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "072c00",
      "text": "44"
@@ -168494,6 +169549,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -168667,6 +169723,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -168900,6 +169957,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 1,
     "base": {
      "code": "070100",
      "text": "1"
@@ -169097,6 +170155,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -169301,6 +170360,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -169455,6 +170515,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -169609,6 +170670,7 @@
    },
    "mana": {
     "shift": 7,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -169799,6 +170861,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "075000",
      "text": "80"
@@ -169956,6 +171019,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "08900100",
      "text": "400"
@@ -170079,6 +171143,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -170221,6 +171286,7 @@
    "vars": {},
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08840000",
      "text": "132"
@@ -170460,6 +171526,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -170606,6 +171673,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -170723,6 +171791,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "08600100",
      "text": "352"
@@ -170900,6 +171969,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171012,6 +172082,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 2,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171124,6 +172195,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171237,6 +172309,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171419,6 +172492,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171515,6 +172589,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -171619,6 +172694,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171746,6 +172822,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171859,6 +172936,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -171997,6 +173075,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172157,6 +173236,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -172278,6 +173358,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172393,6 +173474,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172504,6 +173586,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172645,6 +173728,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172767,6 +173851,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172875,6 +173960,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -172992,6 +174078,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -173108,6 +174195,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -173217,6 +174305,7 @@
    },
    "mana": {
     "shift": 5,
+    "min": 0,
     "base": {
      "code": "071600",
      "text": "22"
@@ -173329,6 +174418,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -173503,6 +174593,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -173608,6 +174699,7 @@
    },
    "mana": {
     "shift": 6,
+    "min": 0,
     "base": {
      "code": "070800",
      "text": "8"
@@ -173722,6 +174814,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -173833,6 +174926,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": null,
     "perLevel": null
    },
@@ -173923,6 +175017,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174038,6 +175133,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174144,6 +175240,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174256,6 +175353,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174395,6 +175493,7 @@
    },
    "mana": {
     "shift": 8,
+    "min": 0,
     "base": {
      "code": "072300",
      "text": "35"
@@ -174536,6 +175635,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174656,6 +175756,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174795,6 +175896,7 @@
    },
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174906,6 +176008,7 @@
    "vars": {},
    "mana": {
     "shift": 0,
+    "min": 0,
     "base": {
      "code": "070000",
      "text": "0"
@@ -174996,6 +176099,7 @@
    "vars": {},
    "mana": {
     "shift": 3,
+    "min": 2,
     "base": {
      "code": "081a0100",
      "text": "282"

@@ -187,6 +187,8 @@ function record(id, name, d) {
     // skills.bin 0x188. 0x3e is a modifier formula whose meaning isn't confirmed.
     mana: {
       shift: r[0x188],
+      // MinMana (skills.bin 0x186): the cost never goes below it (D2Sigma.dll 0x100A1D21).
+      min: r.readUInt16LE(0x186),
       base: calcAt(skills2.record(id).readInt32LE(0x36), skills2Code),
       perLevel: calcAt(skills2.record(id).readInt32LE(0x3a), skills2Code),
 

@@ -388,6 +388,7 @@ export function createEngine(data) {
     60: 'life_stolen_per_hit', 187: 'stance', 409: 'skill_duration',
     25: 'enhanced_weapon_damage', 27: 'regenerate_mana', 110: 'poison_length_reduction',
     136: 'chance_of_crushing_blow', 470: 'summoned_minion_damage', 487: 'summoned_minion_resistances',
+    228: 'mana_cost_of_skills',
   };
   const ELEMENT_KEYS = {
     fire_damage: "fire", cold_damage: "cold", lightning_damage: "lightning", magic_damage: "magic", poison_damage: "poison",
