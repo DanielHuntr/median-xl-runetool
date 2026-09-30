@@ -109,7 +109,7 @@ function debuffsOf(b, sb, env) {
     if (!kind || (kind === "buff" && alreadyApplied(id, env))) continue;
     const cut = Object.fromEntries(RESISTS.map((e) => [e, 0]));
     let lines = [];
-    try { lines = engine.describe(sb, id, pts).effect.map((l) => l.text || ""); } catch { continue; }
+    try { lines = engine.describe(sb, id, pts, { asShown: false }).effect.map((l) => l.text || ""); } catch { continue; }
     for (const t of lines) {
       if (!/Enemy/i.test(t) || !/Resist/i.test(t) || /Pierces|Damage Taken/i.test(t)) continue;
       const n = Number(/-\s*(\d+)%/.exec(t)?.[1] || 0);
@@ -244,7 +244,7 @@ export function buildMetrics(b, env) {
     if (!d || !["attack", "spell"].includes(d.kind) || !(d.total?.[1] > 0)) return null;
     const fx = itemEffectsOn(id, d.kind, c, engine);
     if (fx.nullified) return null;
-    const lines = engine.describe(sb, id, b.points[id] || 0).effect.map((l) => l.text || "");
+    const lines = engine.describe(sb, id, b.points[id] || 0, { asShown: false }).effect.map((l) => l.text || "");
     // "Deal no Elemental Damage" (Echoing Fury): fire, cold, lightning and poison are lost, and a
     // skill's conversion of physical damage to them (Hammer of Zerae's 25% to lightning) is
     // assumed not to happen, so its physical part is whole.

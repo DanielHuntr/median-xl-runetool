@@ -149,7 +149,7 @@ try {
       // targets" at 1 point, 15 at 25): that responds to the player's choice too.
       const reach = (n) => {
         const c = computeCharacter({ ...b, points: { ...b.points, [id]: n } }, { engine, catalog, planner });
-        const text = engine.describe({ ...b, points: { ...b.points, [id]: n }, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, id, n).effect.map((l) => l.text).join(" ");
+        const text = engine.describe({ ...b, points: { ...b.points, [id]: n }, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, id, n, { asShown: false }).effect.map((l) => l.text).join(" ");
         return Number(/up to (\d+) (?:targets|enemies|monsters)/i.exec(text)?.[1] || 0);
       };
       // Or how many hits a cast makes (Magic Missiles' bolts): per-hit damage stays put.

@@ -505,15 +505,17 @@ export function createEngine(data) {
     if (!g || !game) return null;
     return evalRecord(g, b, blvl, levelOf(b, id, blvl), 0);
   }
-  // A tooltip line's evaluator. Once the skill is learned, the game works out its "extra"
-  // block (the lines above Current Skill Level) one level ahead: Mana Pulse at 1/1 shows
-  // "+50 bonus cold damage to attack", its level-2 value (level 1 is 28), and Fire
-  // Elementals at level 1 shows the Cooldown of 6 Spirits (2.4 seconds; level 1 has 5),
-  // while its unlearned First Level shows 2 seconds (GitHub issue #30).
+  // A tooltip line's evaluator. Once the skill is learned, the game's tooltip works out its
+  // "extra" block (the lines above Current Skill Level) one level ahead: Mana Pulse at 1/1
+  // shows "+50 bonus cold damage to attack", its level-2 value (level 1 is 28), and Fire
+  // Elementals at level 1 shows the Cooldown of 6 Spirits (2.4 seconds) under "Spirits: 5",
+  // while its unlearned First Level shows 2 seconds (GitHub issue #30). That's how the
+  // tooltip is drawn, not what the skill does, so only a tooltip as shown (b.asShown, set by
+  // describe) reads it; every calculation reads the current level.
   function lineEval(b, id, blvl, block) {
     const g = skills[id]?.game;
     if (!g || !game) return null;
-    return evalRecord(g, b, blvl, levelOf(b, id, blvl) + (block === "extra" && blvl > 0 ? 1 : 0), 0);
+    return evalRecord(g, b, blvl, levelOf(b, id, blvl) + (b.asShown && block === "extra" && blvl > 0 ? 1 : 0), 0);
   }
   // Effective Level. An unlearned skill's tooltip ("First Level") is Base Level 0 at
   // level 1: the game shows Askari Lightning's (299 + lvl) × (100 + blvl) / 100 as 300%.
@@ -1223,7 +1225,10 @@ export function createEngine(data) {
     }
     return out;
   }
-  function describe(b, id, blvl) {
+  // asShown: the tooltip as the game draws it (the default, for pages and in-game checks);
+  // false for calculations, which need what the skill does at its level (see lineEval).
+  function describe(b, id, blvl, { asShown = true } = {}) {
+    if (asShown && !b.asShown) b = { ...b, asShown: true };
     const s = skills[id];
     const block = (lines) => {
       const counters = {};

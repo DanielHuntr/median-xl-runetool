@@ -499,3 +499,13 @@ test("element tags follow the game files: the damage table's element, never one 
     if (own) assert.ok(s.tags.includes(own), `${id}: ${own}`);
   }
 });
+
+test("the tooltip's extra block is drawn one level ahead once learned; calculations use the skill's own level", () => {
+  const b = { cls: "Druid", level: 150, points: { mana_pulse: 1 }, soft: {}, quests: {}, buffs: [] };
+  const cold = (opts) => engine.describe(b, "mana_pulse", 1, opts).effect.map((l) => l.text).find((t) => /cold/.test(t));
+  assert.equal(cold(), "+50 bonus cold damage to attack", "as the game shows it at 1/1");
+  assert.equal(cold({ asShown: false }), "+28 bonus cold damage to attack", "what level 1 does");
+  assert.equal(engine.skillValues(b, "mana_pulse").bonus_cold_damage_to_weapons[0], 28);
+  // Unlearned (First Level): the current level either way.
+  assert.equal(engine.describe({ ...b, points: {} }, "mana_pulse", 0).effect.map((l) => l.text).find((t) => /cold/.test(t)), "+28 bonus cold damage to attack");
+});

@@ -123,13 +123,13 @@ export function skillDamage(id, { engine, build, skillBuild, character }) {
   const { values, from: upgrades } = withUpgrades(engine, skillBuild, id, engine.skillValues(skillBuild, id));
   const weaponPct = num(values.weapon_damage?.[0]);
   if (weaponPct) {
-    const d = attack({ id, name: s.name, pct: weaponPct, values }, c, engine.describe(skillBuild, id, build.points[id] || 0));
+    const d = attack({ id, name: s.name, pct: weaponPct, values }, c, engine.describe(skillBuild, id, build.points[id] || 0, { asShown: false }));
     if (upgrades.length) d.notes.push(`Includes ${upgrades.join(" and ")} (upgrade${upgrades.length > 1 ? "s" : ""} of this skill).`);
     return d;
   }
 
   const tags = s.tags || [];
-  const describe = engine.describe(skillBuild, id, build.points[id] || 0);
+  const describe = engine.describe(skillBuild, id, build.points[id] || 0, { asShown: false });
   // "Deals 150% of your vessel skill damage per hit" (Absolution, Sentence): that share of the
   // stronger Vessel the build has points in (its spell damage already applied), split by the
   // skill's "Converts 50% Physical Damage to Magic".
