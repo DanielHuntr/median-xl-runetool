@@ -24,7 +24,7 @@ const RIMG = catalog.images;
 const dialog = ref(null);
 const search = ref(null);
 const q = ref("");
-// Gear slots open on "Best for build" once the build has skills to go on.
+// Gear slots open on suggested picks once the build has skills to go on.
 const kind = ref(props.mode === "slot" && !profileSummary.value.empty ? "best" : "");
 const usable = ref(true);
 const limit = ref(80);
@@ -49,7 +49,7 @@ const KINDS = computed(() =>
       ? [["", "All"], ["charm", "Charms"], ["relic", "Relics"]]
       : merc
         ? [["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"]]
-        : [...(profileSummary.value.empty ? [] : [["best", "Best for build"]]), ["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"], ["custom", "Custom"]],
+        : [...(profileSummary.value.empty ? [] : [["best", "Suggested picks"]]), ["", "All"], ["unique", "Tiered uniques"], ["sacred", "Sacred uniques"], ["set", "Sets"], ["runeword", "Runewords"], ["base", "Base items"], ["custom", "Custom"]],
 );
 const carried = computed(() => new Set((build.value.inventory || []).map((x) => x.ref)));
 const relicsFull = computed(() => (build.value.inventory || []).filter((x) => catalog.get(x.ref)?.kind === "relic").length >= 3);
@@ -101,6 +101,20 @@ const recList = computed(() => {
   const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
   return (recs.value || []).filter((x) => words.every((w) => x.def.search.includes(w)));
 });
+function cleanSuggestedState(st) {
+  const out = {
+    ref: st.ref,
+    variant: st.variant,
+    base: st.base,
+    baseVariant: st.baseVariant,
+    custom: st.custom,
+  };
+  for (const k of Object.keys(out)) if (out[k] === undefined) delete out[k];
+  return out;
+}
+function chooseSuggested(x) {
+  emit("pick", { ...cleanSuggestedState(x.state), suggested: true });
+}
 function choose(d) {
   if (d.kind === "runeword") return (runeword.value = d);
   if (props.mode === "socket") return emit("pick", { ref: d.key, fillAll: fillAll.value && otherEmpty.value > 0 });
@@ -201,11 +215,10 @@ onMounted(async () => {
           </p>
           <ul class="picker-list recs">
             <li v-for="x in recList" :key="x.def.key">
-              <button v-on="tipOn({ kind: 'item', item: x.state })" @click="emit('pick', { ...x.state, suggested: true })">
+              <button v-on="tipOn({ kind: 'item', item: cleanSuggestedState(x.state) })" @click="chooseSuggested(x)">
                 <ItemIcon :icon="x.def.icon" /><span
                   ><b :class="'q-' + x.def.kind">{{ x.def.name }}</b
                   ><small>{{ x.def.kindLabel }}<template v-if="x.def.base && x.def.base !== x.def.name"> · {{ x.def.base }}</template></small
-                  ><small class="rec-reasons">{{ x.reasons.join(" · ") }}</small
                   ><small v-if="x.warnings.length" class="warning">{{ x.warnings.join(", ") }}</small></span
                 >
               </button>

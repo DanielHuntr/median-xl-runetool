@@ -154,6 +154,12 @@ test("character sheet: attributes, life, resist penalty, set bonuses, gear skill
   const sh = catalog.forSlot("offhand", "Amazon").find((d) => d.slotType === "shield");
   const w = computeCharacter(build("Amazon", { level: 90, gear: { weapon: { ref: bow.key }, offhand: { ref: sh.key } } }), { engine, catalog, planner });
   assert.ok(w.warnings.some((x) => /two-handed/.test(x)));
+  // A Barbarian can put a weapon in the off-hand slot. If the main hand is empty, the damage
+  // sheet should still treat that off-hand item as the active weapon, including on set II.
+  const offhandOnly = build("Barbarian", { level: 90, swap: true, gear: {
+    offhand2: { ref: "custom", custom: { name: "Off-hand axe", slotType: "weapon", text: "One-Hand Damage: 10 to 20\nRequired Level: 1" } },
+  } });
+  assert.equal(computeCharacter(offhandOnly, { engine, catalog, planner }).damage.hasWeapon, true);
 });
 
 test("recommendations follow the build's skills", async () => {
@@ -882,7 +888,7 @@ test('automatic enhancements reject damage bonuses that create attribute shortag
   } finally { ORBS.splice(ORBS.indexOf(badOrb), 1); jewel.variants = variants; }
 });
 
-test('enhancement toggle controls suggested picks and uses switch controls in the dialog', async () => {
+test('single suggested picks stay clean while the gear dialog controls bulk enhancements', async () => {
   const { engine, catalog } = await env();
   const { createPlanner, PlannerKey } = await load('/src/planner/usePlanner.js');
   const { default: SuggestGear } = await load('/src/components/planner/SuggestGear.vue');
@@ -892,16 +898,15 @@ test('enhancement toggle controls suggested picks and uses switch controls in th
     const p = scope.run(() => createPlanner(engine, catalog, planner));
     p.setClass('Amazon'); p.setLevel(30); p.build.value.points.stormcall = 1;
     const item = { ref: 'custom', suggested: true, custom: { name: 'Test helm', slotType: 'helm', text: 'Required Level: 1\nSocketed (1)' }, socketCount: 1 };
-    p.state.suggestEnhancements = false;
+    p.state.suggestEnhancements = true;
     p.openPicker({ mode: 'slot', slot: 'helm' }); p.pick(item);
     assert.equal(p.build.value.gear.helm.orbs.length, 0);
     assert.equal((p.build.value.gear.helm.sockets || []).filter(Boolean).length, 0);
+    assert.equal(p.build.value.gear.helm.socketCount, undefined);
     const html = await renderToString(createSSRApp({ setup() { provide(PlannerKey, p); return () => h(SuggestGear); } }));
     assert.match(html, /role="switch"[^>]*aria-describedby="enhancement-help"/);
-    assert.match(html, /role="switch"[^>]*disabled/);
     assert.doesNotMatch(html, />\s*Fill empty sockets\s*</);
-    p.state.suggestEnhancements = true;
-    p.openPicker({ mode: 'slot', slot: 'helm' }); p.pick(item);
+    p.enhance('helm');
     assert.ok(p.build.value.gear.helm.orbs.length + (p.build.value.gear.helm.sockets || []).filter(Boolean).length > 0);
     const beforeToggle = JSON.stringify(p.build.value);
     p.state.suggestEnhancements = false;

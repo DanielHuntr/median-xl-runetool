@@ -79,8 +79,8 @@ export function computeCharacter(b, { engine, catalog, planner }) {
     if (st) equipped[id] = catalog.resolve(st, b.level);
   }
   const inventory = (b.inventory || []).map((st) => catalog.resolve(st, b.level)).filter(Boolean);
-  const weapon = equipped.weapon2 || equipped.weapon;
   const offhand = equipped.offhand2 || equipped.offhand;
+  const weapon = equipped.weapon2 || equipped.weapon || (offhand?.def.slotType === "weapon" ? offhand : null);
   const hasBuiltInHead = (r) => ["unique", "sacred", "set"].includes(r.def.kind);
 
   const itemDefense = [];
