@@ -297,3 +297,15 @@ test("on a short screen the sidebar scrolls to its last item, and there's no Hel
   await page.setViewportSize({ width: 800, height: 520 });
   expect(await side.evaluate((el) => getComputedStyle(el).overflowY)).toBe("auto");
 });
+
+test("the sidebar's Sign in opens the account dialog, which asks for a valid email", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.locator(".sidebar").getByRole("button", { name: "Sign in" }).click();
+  const dialog = page.getByRole("dialog", { name: "Sign in" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByLabel("Email").fill("not-an-email");
+  await dialog.getByRole("button", { name: "Email me a sign-in link" }).click();
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+});

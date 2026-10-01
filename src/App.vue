@@ -17,6 +17,8 @@ const CharacterPlanner = defineAsyncComponent(() => import("./components/planner
 const BuildsBrowser = defineAsyncComponent(() => import("./components/BuildsBrowser.vue"));
 const LootFilters = defineAsyncComponent(() => import("./components/LootFilters.vue"));
 const CubeRecipes = defineAsyncComponent(() => import("./components/CubeRecipes.vue"));
+const AccountPage = defineAsyncComponent(() => import("./components/AccountPage.vue"));
+const PrivacyPage = defineAsyncComponent(() => import("./components/PrivacyPage.vue"));
 const state = createRunetool();
 provide(RunetoolKey, state);
 const { page } = state;
@@ -29,6 +31,8 @@ const { page } = state;
       <AppHeader />
       <RunewordFinder v-if="page === 'runewords'" />
       <TieredUniques v-else-if="page === 'uniques'" />
+      <AccountPage v-else-if="page === 'account'" />
+      <PrivacyPage v-else-if="page === 'privacy'" />
       <SacredUniques v-else-if="page === 'sacred-uniques'" />
       <SetsBrowser v-else-if="page === 'sets'" />
       <SocketablesList v-else-if="page === 'socketables'" />

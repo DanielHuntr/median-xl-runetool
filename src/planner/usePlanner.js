@@ -19,6 +19,8 @@ export const PlannerKey = Symbol("Planner");
 // attributes), so a player makes their own levelling guide by filling them in. An empty stage
 // starts at its level and difficulty; Endgame is the finished build.
 export const STAGES = ["Normal", "Nightmare", "Hell", "Endgame"];
+// The most stages a build can have (the defaults and the player's own).
+export const MAX_STAGES = 12;
 export const STAGE_START = { Normal: [50, "Normal"], Nightmare: [100, "Nightmare"], Hell: [125, "Hell"] };
 const STORAGE_KEY = "mxlrw2:planner";
 const RECENT_SOCKETS = 8;
@@ -82,6 +84,18 @@ function cleanItem(st, catalog) {
   if (st.honorific === true && catalog.get(st.ref)?.kind === "base") out.honorific = true;
   // Superior quality: a variant id from superior-items.json (items.js ignores one that doesn't fit).
   if (Number.isInteger(st.superior) && st.superior >= 0 && st.superior < 16) out.superior = st.superior;
+  return out;
+}
+
+function cleanPickerItem(st) {
+  const out = {
+    ref: st.ref,
+    variant: st.variant,
+    base: st.base,
+    baseVariant: st.baseVariant,
+    custom: st.custom,
+  };
+  for (const k of Object.keys(out)) if (out[k] === undefined) delete out[k];
   return out;
 }
 
@@ -181,34 +195,55 @@ export function createPlanner(engine, catalog, planner) {
     openedName: {},
     // Per class: true when the build was opened from the player's saved builds (it's theirs).
     mine: {},
+    // Per class: the saved build it is ({ id } in this browser, { accountId } in the account),
+    // so saving again updates that build, whatever its name, instead of adding another.
+    savedAs: {},
     // The planner's tab: your character or your mercenary.
     view: saved.view === "merc" ? "merc" : "character",
     // Per class: the stage being edited, and the other stages' builds.
     stage: {},
     stages: {},
+    // Per class: the stages in the player's order (default STAGES; they can add, rename, move
+    // and delete them). Stage names are the keys of stages.
+    stageOrder: {},
     // Per class: the player's own build, set aside while they look at one they opened (a
     // starter build, a shared link, a saved build): { name, build, stage, stages }.
     kept: {},
   });
   for (const cls of engine.classNames) {
     state.builds[cls] = cleanBuild(saved.builds?.[cls], cls, engine, catalog, planner);
-    state.stage[cls] = STAGES.includes(saved.stage?.[cls]) ? saved.stage[cls] : "Endgame";
+    state.stageOrder[cls] = cleanOrder(saved.stageOrder?.[cls]);
+    state.stage[cls] = state.stageOrder[cls].includes(saved.stage?.[cls]) ? saved.stage[cls] : state.stageOrder[cls].at(-1);
     state.stages[cls] = cleanStages(saved.stages?.[cls], cls, state.stage[cls]);
     if (typeof saved.openedName?.[cls] === "string") state.openedName[cls] = saved.openedName[cls].slice(0, 80);
     if (saved.mine?.[cls] === true) state.mine[cls] = true;
+    state.savedAs[cls] = cleanSavedAs(saved.savedAs?.[cls]);
     const k = saved.kept?.[cls];
     if (k && typeof k === "object" && k.build) {
-      const stage = STAGES.includes(k.stage) ? k.stage : "Endgame";
-      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", mine: k.mine === true, stage,
-        build: cleanBuild(k.build, cls, engine, catalog, planner), stages: cleanStages(k.stages, cls, stage) };
+      const stageOrder = cleanOrder(k.stageOrder);
+      const stage = stageOrder.includes(k.stage) ? k.stage : stageOrder.at(-1);
+      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", mine: k.mine === true, savedAs: cleanSavedAs(k.savedAs), stage, stageOrder,
+        build: cleanBuild(k.build, cls, engine, catalog, planner), stages: cleanStages(k.stages, cls, stage, stageOrder) };
     }
   }
+  // Which saved build this is: ids of up to 40 letters, numbers and dashes.
+  function cleanSavedAs(raw) {
+    const id = (v) => (typeof v === "string" && /^[A-Za-z0-9-]{1,40}$/.test(v) ? v : "");
+    return { id: id(raw?.id), accountId: id(raw?.accountId) };
+  }
+  // A stored or shared stage order: unique names of 1 to 30 characters, at most 12; the
+  // default stages when there's none.
+  function cleanOrder(raw) {
+    const names = Array.isArray(raw) ? [...new Set(raw.filter((n) => typeof n === "string").map((n) => n.trim().slice(0, 30)).filter(Boolean))].slice(0, MAX_STAGES) : [];
+    return names.length ? names : [...STAGES];
+  }
   // Stored or shared stages: well-formed builds of this class, never the active stage's slot.
-  function cleanStages(raw, cls, active) {
+  function cleanStages(raw, cls, active, order = state.stageOrder[cls] || STAGES) {
     const out = {};
-    for (const name of STAGES) if (name !== active && raw?.[name] && typeof raw[name] === "object") out[name] = cleanBuild({ ...raw[name], cls }, cls, engine, catalog, planner);
+    for (const name of order) if (name !== active && raw?.[name] && typeof raw[name] === "object") out[name] = cleanBuild({ ...raw[name], cls }, cls, engine, catalog, planner);
     return out;
   }
+  const stagesOf = (cls = state.cls) => state.stageOrder[cls] || STAGES;
   const stageStart = (cls, name) => {
     const [level, difficulty] = STAGE_START[name] || [1, "Hell"];
     return { ...emptyBuild(cls), level, difficulty };
@@ -216,7 +251,7 @@ export function createPlanner(engine, catalog, planner) {
   /** Edit another stage: the current one is kept, the chosen one loaded (or started empty). */
   function setStage(name) {
     const cls = state.cls, cur = state.stage[cls];
-    if (!STAGES.includes(name) || name === cur) return;
+    if (!stagesOf(cls).includes(name) || name === cur) return;
     const { [name]: next, ...rest } = state.stages[cls];
     state.stages[cls] = { ...rest, [cur]: state.builds[cls] };
     state.builds[cls] = next || stageStart(cls, name);
@@ -233,6 +268,57 @@ export function createPlanner(engine, catalog, planner) {
     const [level, difficulty] = STAGE_START[cur] || [src.level, src.difficulty];
     state.builds[cls] = { ...JSON.parse(JSON.stringify(src)), level, difficulty };
     say(`Copied the ${from} stage. Check what the planner flags at level ${level}.`, "info");
+  }
+  // ---------- The player's own stages: add, rename, move, delete.
+  const stageError = (name, except) => {
+    const n = String(name || "").trim();
+    if (!n) return "Give the stage a name.";
+    if (n.length > 30) return "Keep the name to 30 characters.";
+    if (stagesOf().some((x) => x !== except && x.toLowerCase() === n.toLowerCase())) return "There's already a stage with that name.";
+    return null;
+  };
+  /** A new stage after the current one, starting as a copy of it; it opens. */
+  function addStage(name) {
+    const cls = state.cls, n = String(name || "").trim(), err = stageError(n);
+    if (err) return { ok: false, reason: err };
+    if (stagesOf(cls).length >= MAX_STAGES) return { ok: false, reason: `Up to ${MAX_STAGES} stages.` };
+    const order = [...stagesOf(cls)], at = order.indexOf(state.stage[cls]) + 1;
+    order.splice(at, 0, n);
+    state.stageOrder[cls] = order;
+    state.stages[cls] = { ...state.stages[cls], [n]: JSON.parse(JSON.stringify(state.builds[cls])) };
+    setStage(n);
+    return { ok: true };
+  }
+  function renameStage(from, to) {
+    const cls = state.cls, n = String(to || "").trim(), err = stageError(n, from);
+    if (err) return { ok: false, reason: err };
+    state.stageOrder[cls] = stagesOf(cls).map((x) => (x === from ? n : x));
+    if (state.stage[cls] === from) state.stage[cls] = n;
+    else if (state.stages[cls][from]) { const { [from]: b, ...rest } = state.stages[cls]; state.stages[cls] = { ...rest, [n]: b }; }
+    return { ok: true };
+  }
+  /** Moves a stage one place earlier (-1) or later (+1). */
+  function moveStage(name, dir) {
+    const order = [...stagesOf()], i = order.indexOf(name), j = i + dir;
+    if (i < 0 || j < 0 || j >= order.length) return;
+    [order[i], order[j]] = [order[j], order[i]];
+    state.stageOrder[state.cls] = order;
+  }
+  /** Puts a stage at a place in the order (dragging it there). */
+  function placeStage(name, at) {
+    const order = stagesOf().filter((x) => x !== name);
+    if (order.length === stagesOf().length) return;
+    order.splice(Math.max(0, Math.min(at, order.length)), 0, name);
+    state.stageOrder[state.cls] = order;
+  }
+  /** Deletes a stage and its build; the last one can't go. Deleting the open one opens a neighbour. */
+  function removeStage(name) {
+    const cls = state.cls, order = stagesOf(cls);
+    if (order.length < 2 || !order.includes(name)) return;
+    if (state.stage[cls] === name) setStage(order[order.indexOf(name) + 1] ?? order[order.indexOf(name) - 1]);
+    const { [name]: _gone, ...rest } = state.stages[cls];
+    state.stages[cls] = rest;
+    state.stageOrder[cls] = order.filter((x) => x !== name);
   }
   /** Stages worked out elsewhere (a starter build's levelling guide), put in the empty stages. */
   // A stage only counts as made once it has skill points or gear: an empty one (opened before
@@ -730,9 +816,7 @@ export function createPlanner(engine, catalog, planner) {
     const p = state.picker;
     if (!p) return;
     if (p.mode === "slot") {
-      equip(p.slot, item);
-      // Picked from the build's suggestions: its sockets come filled too.
-      if (item.suggested && state.suggestEnhancements) enhance(p.slot);
+      equip(p.slot, item.suggested ? cleanPickerItem(item) : item);
     }
     else if (p.mode === "socket") {
       const it = gearItem(p.slot);
@@ -827,8 +911,10 @@ export function createPlanner(engine, catalog, planner) {
     state.builds[state.cls] = emptyBuild(state.cls);
     state.stage[state.cls] = "Endgame";
     state.stages[state.cls] = {};
+    state.stageOrder[state.cls] = [...STAGES];
     state.openedName[state.cls] = "";
     delete state.mine[state.cls];
+    state.savedAs[state.cls] = cleanSavedAs();
     delete state.kept[state.cls];
     state.selected = null;
     state.slot = null;
@@ -841,10 +927,12 @@ export function createPlanner(engine, catalog, planner) {
     const cls = state.cls, k = state.kept[cls];
     if (!k) return;
     state.builds[cls] = k.build;
+    state.stageOrder[cls] = k.stageOrder || [...STAGES];
     state.stage[cls] = k.stage;
     state.stages[cls] = k.stages;
     state.openedName[cls] = k.name;
     state.mine[cls] = !!k.mine;
+    state.savedAs[cls] = cleanSavedAs(k.savedAs);
     delete state.kept[cls];
     state.selected = state.slot = state.editing = null;
     say(`Back to your own ${cls} build.`, "info");
@@ -859,8 +947,9 @@ export function createPlanner(engine, catalog, planner) {
   // The code carries every stage: the one being edited, and the others under "stages". It
   // opens on the stage being edited (a Normal build shared from Normal opens on Normal).
   const buildCode = () => {
-    const others = state.stages[state.cls], stage = state.stage[state.cls];
-    return encodeBuild(Object.keys(others).length || stage !== "Endgame" ? { ...build.value, stage, stages: others } : build.value);
+    const others = state.stages[state.cls], stage = state.stage[state.cls], order = stagesOf();
+    const custom = order.join("|") !== STAGES.join("|");
+    return encodeBuild(Object.keys(others).length || stage !== "Endgame" || custom ? { ...build.value, stage, stages: others, ...(custom ? { stageOrder: order } : {}) } : build.value);
   };
   // "&stage=Normal" is also written out, readable in the link, and works on its own (a
   // starter build's link to one of its stages).
@@ -900,13 +989,17 @@ export function createPlanner(engine, catalog, planner) {
       // one being looked at), unless the one being looked at is theirs, opened from their saved
       // builds (&mine=1): then it's the one to go back to. An empty build isn't worth keeping.
       const mine = /[?&]mine=1(?:&|$)/.test(hash);
-      const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls] };
+      const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], savedAs: state.savedAs[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls], stageOrder: stagesOf(b.cls) };
       const made = (x) => x && (!emptyStage(x) || Object.values(x.attrs || {}).some((v) => v > 0) || x.inventory?.length || x.merc);
-      const blank = !STAGES.some((n) => made(n === own.stage ? own.build : own.stages[n]));
+      const blank = !own.stageOrder.some((n) => made(n === own.stage ? own.build : own.stages[n]));
       if ((!state.kept[b.cls] || own.mine) && !blank && JSON.stringify(own.build) !== JSON.stringify(b)) state.kept[b.cls] = own;
       state.mine[b.cls] = mine;
+      // A saved build opened from the Builds page carries its ids (&id=… here, &aid=… account).
+      const param = (k) => new RegExp(`[?&]${k}=([A-Za-z0-9-]{1,40})(?:&|$)`).exec(hash)?.[1];
+      state.savedAs[b.cls] = cleanSavedAs(mine ? { id: param("id"), accountId: param("aid") } : null);
       state.builds[b.cls] = b;
-      state.stage[b.cls] = STAGES.includes(raw.stage) ? raw.stage : "Endgame";
+      state.stageOrder[b.cls] = cleanOrder(raw.stageOrder);
+      state.stage[b.cls] = state.stageOrder[b.cls].includes(raw.stage) ? raw.stage : state.stageOrder[b.cls].at(-1);
       state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
       setClass(b.cls);
       state.tab[b.cls] = engine
@@ -915,7 +1008,7 @@ export function createPlanner(engine, catalog, planner) {
       state.openedName[b.cls] = title;
       // "&stage=Nightmare": open on that stage (a starter build's is filled in afterwards).
       const want = /[?&]stage=([A-Za-z]+)/.exec(hash)?.[1];
-      const stage = STAGES.find((n) => n.toLowerCase() === want?.toLowerCase());
+      const stage = stagesOf(b.cls).find((n) => n.toLowerCase() === want?.toLowerCase());
       if (stage && stage !== state.stage[b.cls]) setStage(stage);
       say(`${title ? `Opened "${title}"` : `Opened a shared ${b.cls} build`}.${state.kept[b.cls] ? ` Your own ${b.cls} build is kept.` : ""}`, "info");
       return true;
@@ -941,9 +1034,11 @@ export function createPlanner(engine, catalog, planner) {
       builds: state.builds,
       stage: state.stage,
       stages: state.stages,
+      stageOrder: state.stageOrder,
       kept: state.kept,
       openedName: state.openedName,
       mine: state.mine,
+      savedAs: state.savedAs,
       view: state.view,
     }),
     (v) => {
@@ -959,6 +1054,7 @@ export function createPlanner(engine, catalog, planner) {
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
+    stagesOf, addStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,

@@ -1,7 +1,9 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted, onBeforeUnmount } from "vue";
 import Icon from "./AppIcon.vue";
 import BackupDialog from "./BackupDialog.vue";
+import AccountDialog from "./AccountDialog.vue";
+import { useAuth } from "../composables/useAuth.js";
 import { useRunetool, ISSUES_REPO } from "../composables/useRunetool.js";
 const { page, nav, PAGES } = useRunetool();
 // The sidebar can be collapsed to icons (remembered); icons then show their names on hover.
@@ -15,6 +17,28 @@ watch(collapsed, (v) => {
 const docsLabel = computed(() => (page.value === "filters" ? "Filter Exchange" : ["planner", "builds"].includes(page.value) ? "Skill data source" : "Game documentation"));
 const sheet = ref(null);
 const menuOpen = ref(false);
+// The account: "Sign in", or the signed-in player's name.
+const { user, name: accountName } = useAuth();
+const account = ref(null);
+function openAccount() {
+  closeMore();
+  account.value?.open();
+}
+// The foot's "More": the less used links in a small pop-out beside the button. Placed on the
+// page (fixed), not inside the sidebar, which scrolls on short screens and would clip it.
+const moreBtn = ref(null), moreOpen = ref(false), morePos = ref({});
+function toggleMoreLinks() {
+  if (moreOpen.value) return (moreOpen.value = false);
+  const r = moreBtn.value.getBoundingClientRect();
+  morePos.value = { left: `${r.right + 8}px`, bottom: `${Math.max(8, window.innerHeight - r.bottom)}px` };
+  moreOpen.value = true;
+}
+const closeMoreLinks = (e) => {
+  if (!moreOpen.value) return;
+  if (e.type === "keydown" ? e.key === "Escape" : !e.target.closest?.(".more-pop, .side-more")) moreOpen.value = false;
+};
+onMounted(() => { document.addEventListener("click", closeMoreLinks); document.addEventListener("keydown", closeMoreLinks); window.addEventListener("account-open", openAccount); });
+onBeforeUnmount(() => { document.removeEventListener("click", closeMoreLinks); document.removeEventListener("keydown", closeMoreLinks); window.removeEventListener("account-open", openAccount); });
 const backup = ref(null);
 const openSearch = () => {
   closeMore();
@@ -23,6 +47,7 @@ const openSearch = () => {
 const searchKey = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform || "") ? "⌘K" : "Ctrl K";
 function openBackup() {
   closeMore();
+  moreOpen.value = false;
   backup.value?.open();
 }
 const openMore = () => { sheet.value?.showModal(); menuOpen.value = true; };
@@ -79,15 +104,20 @@ function reportHref() {
       <div class="version" data-tip="Median XL 2.14 · supplied data version">
         Σ <span>Median XL 2.14<small>Supplied data version</small></span>
       </div>
-      <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Report a bug or issue" @click="(e) => (e.currentTarget.href = reportHref())"><Icon name="bug" /><span>Report a bug or issue</span></a>
-      <a class="side-link" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" data-tip="Suggest an idea" @click="(e) => (e.currentTarget.href = suggestHref())"><Icon name="idea" /><span>Suggest an idea</span></a>
-      <button type="button" class="side-link" data-tip="Back up &amp; restore" @click="openBackup"><Icon name="backup" /><span>Back up &amp; restore</span></button>
-      <a class="side-link" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" :data-tip="docsLabel"><Icon name="docs" /><span>{{ docsLabel }}</span></a>
+      <button type="button" class="side-account" :class="{ signed: user }" :data-tip="user ? accountName : 'Sign in'" @click="openAccount"><span>{{ user ? accountName : "Sign in" }}</span><Icon :name="user ? 'user' : 'login'" /></button>
+      <button ref="moreBtn" type="button" class="side-link side-more" aria-haspopup="menu" :aria-expanded="moreOpen" data-tip="More" @click="toggleMoreLinks"><Icon name="grid" /><span>More</span></button>
       <button type="button" class="side-link side-collapse" :aria-pressed="collapsed" :data-tip="collapsed ? 'Expand the menu' : 'Collapse the menu'" @click="collapsed = !collapsed">
         <Icon :name="collapsed ? 'expand' : 'collapse'" /><span>Collapse menu</span>
       </button>
     </div>
   </aside>
+  <div v-if="moreOpen" class="more-pop" role="menu" aria-label="More" :style="morePos">
+    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = reportHref(); moreOpen = false; }"><Icon name="bug" />Report a bug or issue</a>
+    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = suggestHref(); moreOpen = false; }"><Icon name="idea" />Suggest an idea</a>
+    <button role="menuitem" type="button" @click="openBackup"><Icon name="backup" />Back up &amp; restore</button>
+    <a role="menuitem" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" @click="moreOpen = false"><Icon name="docs" />{{ docsLabel }}</a>
+    <a role="menuitem" href="#privacy" @click.prevent="moreOpen = false; nav('privacy')"><Icon name="docs" />Privacy</a>
+  </div>
   <header class="mobile-top">
     <button type="button" class="icon-btn mobile-menu" aria-label="Menu" aria-haspopup="dialog" :aria-expanded="menuOpen" @click="openMore">
       <Icon name="menu" />
@@ -113,6 +143,7 @@ function reportHref() {
           </button>
         </li>
       </ul>
+      <button type="button" class="side-account mobile-account" :class="{ signed: user }" @click="openAccount"><span>{{ user ? accountName : "Sign in" }}</span><Icon :name="user ? 'user' : 'login'" /></button>
       <div class="mobile-sheet-links">
         <a href="#" @click.prevent="openBackup">Back up &amp; restore <Icon name="backup" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = reportHref())">Report a bug or issue <Icon name="arrow" /></a>
@@ -122,4 +153,5 @@ function reportHref() {
     </div>
   </dialog>
   <BackupDialog ref="backup" />
+  <AccountDialog ref="account" />
 </template>

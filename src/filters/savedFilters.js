@@ -12,14 +12,21 @@ function read() {
     const raw = JSON.parse(localStorage.getItem(KEY));
     return (Array.isArray(raw) ? raw : []).slice(0, MAX_FILTERS)
       .filter((e) => e && typeof e.id === "string" && e.filter)
-      .map((e) => ({ id: e.id.slice(0, 40), from: typeof e.from === "string" ? e.from.slice(0, 120) : "", filter: cleanFilter(e.filter) }));
+      .map((e) => ({
+        id: e.id.slice(0, 40),
+        from: typeof e.from === "string" ? e.from.slice(0, 120) : "",
+        filter: cleanFilter(e.filter),
+        // Saved to the signed-in account too (filterSync.js), and edited since it was last sent.
+        accountId: typeof e.accountId === "string" ? e.accountId.slice(0, 40) : "",
+        dirty: e.dirty === true,
+      }));
   } catch {
     return [];
   }
 }
 
 let list = null;
-/** Shared, reactive list of { id, from, filter }; saved on every change (errors ignored). */
+/** Shared, reactive list of { id, from, filter, accountId, dirty }; saved on every change (errors ignored). */
 export function useSavedFilters() {
   if (!list) {
     list = ref(read());
@@ -27,7 +34,7 @@ export function useSavedFilters() {
   }
   const add = (filter, from = "") => {
     if (list.value.length >= MAX_FILTERS) return null;
-    const entry = { id: newId(), from, filter: cleanFilter(filter) };
+    const entry = { id: newId(), from, filter: cleanFilter(filter), accountId: "", dirty: false };
     list.value.unshift(entry);
     return entry;
   };

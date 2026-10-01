@@ -2330,33 +2330,116 @@
   color: var(--muted);
   font-size: 0.8125rem;
 }
-.stage-switch button {
+/* A stage chip: its name, and on the open stage a menu button. Dragging one shows a gold line
+   where it would land. */
+.stage-chip {
   position: relative;
+  display: flex;
+  align-items: stretch;
   min-height: 36px;
-  padding: 0 14px;
   border: 1px solid var(--border);
   border-radius: 4px;
   background: var(--field);
+}
+.stage-chip:hover { border-color: var(--gold); }
+.stage-chip.active { background: var(--gold-bg); border-color: var(--gold); }
+.stage-chip.dragging { opacity: 0.4; }
+.stage-chip.drop-before::after,
+.stage-chip.drop-after::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: -4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--gold);
+}
+.stage-chip.drop-after::after { left: auto; right: -4px; }
+.stage-btn {
+  padding: 0 14px;
+  border: 0;
+  background: none;
   color: var(--muted);
   font-family: var(--serif);
   font-size: 0.9375rem;
+  cursor: pointer;
 }
-.stage-switch button:hover { color: var(--text); border-color: var(--gold); }
-.stage-switch button[aria-pressed="true"] {
-  color: var(--gold);
-  background: var(--gold-bg);
-  border-color: var(--gold);
-}
-.stage-switch button.filled::before {
+.stage-chip:hover .stage-btn { color: var(--text); }
+.stage-chip.active .stage-btn { color: var(--gold); padding-right: 8px; }
+.stage-chip.filled::before {
   content: "";
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 4px;
+  left: 4px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: var(--gold);
 }
+.stage-chip .stage-pop-wrap { display: flex; }
+.stage-menu-btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  border-radius: 0 3px 3px 0;
+  background: none;
+  color: var(--gold);
+  cursor: pointer;
+}
+.stage-menu-btn svg { width: 13px; height: 13px; transform: rotate(90deg); transition: transform 0.15s; }
+.stage-menu-btn[aria-expanded="true"] svg { transform: rotate(-90deg); }
+.stage-menu-btn:hover { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+.stage-chip.editing { border-color: var(--gold); }
+.stage-chip.editing input {
+  width: 17ch;
+  padding: 0 12px;
+  border: 0;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+}
+.stage-add {
+  width: 36px;
+  min-height: 36px;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.stage-add:hover, .stage-add:focus-visible { color: var(--gold); border-color: var(--gold); border-style: solid; }
+/* The open stage's menu. */
+.stage-pop.stage-menu { min-width: 180px; padding: 4px; }
+.stage-menu > button {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+}
+.stage-menu > button:hover:not(:disabled) { background: var(--gold-bg); color: var(--gold); }
+.stage-menu > button:disabled { opacity: 0.4; cursor: default; }
+.stage-menu > button.danger { color: var(--red, #c0584f); }
+.stage-menu > button.danger:hover:not(:disabled) { background: color-mix(in srgb, var(--red, #c0584f) 14%, transparent); color: var(--red, #c0584f); }
+.stage-menu hr { margin: 4px 2px; border: 0; border-top: 1px solid var(--border); }
+.stage-menu-confirm { display: grid; gap: 8px; padding: 6px; font-size: 0.8125rem; }
+.stage-menu-confirm p { margin: 0; }
+.stage-menu-confirm div { display: flex; gap: 6px; }
+.stage-menu-confirm .btn.danger { border-color: var(--red, #c0584f); color: var(--red, #c0584f); }
+.stage-err { flex-basis: 100%; margin: 0; color: var(--warn); font-size: 0.8125rem; }
 .stage-hint {
   flex: 1 1 320px;
   margin: 0;
@@ -2394,7 +2477,8 @@
 .stage-hint .text-btn { margin-left: 8px; }
 @media (max-width: 600px) {
   .stage-switch { flex-wrap: wrap; }
-  .stage-switch button { flex: 1 1 auto; padding: 0 8px; }
+  .stage-chip { flex: 1 1 auto; }
+  .stage-btn { flex: 1; padding: 0 8px; }
   .stage-label { flex-basis: 100%; }
 }
 
@@ -2511,3 +2595,4 @@
 .charm-filters {
   margin: 0 0 8px;
 }
+

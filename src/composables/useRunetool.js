@@ -52,8 +52,11 @@ export const PAGES = [
   ["base-items", "Base Items", "shield", "Every base item, from Tier 1 to Sacred.", DOCS + "baseitems"],
   ["cube", "Cube Recipes", "cube", "Put items in the Horadric Cube and see what the game makes of them, from its own recipe table.", DOCS + "cube"],
   ["planner", "Character Planner", "tree", "Attributes, skills, equipment and stats in one build.", "https://github.com/azadix/medianxl-db"],
-  ["builds", "Builds", "builds", "Your saved snapshots and starter builds for every class.", "https://github.com/azadix/medianxl-db"],
+  ["builds", "Builds", "builds", "Your saved builds, to open, rename and share.", "https://github.com/azadix/medianxl-db"],
   ["filters", "Loot Filters", "filter", "Community loot filters, and your own.", "https://www.median-xl.com/filters/index.php"],
+  // Not in the navigation: opened from the account dialog.
+  ["privacy", "Privacy", "docs", "What the site keeps, where, and how to remove it.", DOCS, true],
+  ["account", "Your account", "user", "Your display name, the builds in your account, and your account itself.", DOCS, true],
 ];
 // Bug reports and confirmation screenshots go to this repository's GitHub issues.
 export const ISSUES_REPO = "https://github.com/DanielHuntr/median-xl-runetool";

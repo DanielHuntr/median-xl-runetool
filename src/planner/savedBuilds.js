@@ -63,13 +63,17 @@ export function useSavedBuilds() {
   };
   const byName = (name) => builds.value.find((b) => b.name.toLowerCase() === text(name, MAX_NAME).toLowerCase()) || null;
   /**
-   * Saves a build under a name; a build already saved under that name is replaced.
+   * Saves a build. With the id of a saved build, that one is updated (and renamed); otherwise a
+   * build already saved under that name is replaced, or a new one is added.
    * @returns {{ ok: boolean, entry?, replaced?: boolean, reason?: string }}
    */
-  function save({ name, code, cls, level, skills = [], preset }) {
-    const entry = clean({ id: byName(name)?.id || newId(), name, code, cls, level, skills, preset, savedAt: new Date().toISOString() });
+  function save({ id, name, code, cls, level, skills = [], preset }) {
+    const same = id ? builds.value.find((b) => b.id === id) : null;
+    const clash = byName(name);
+    if (same && clash && clash.id !== same.id) return { ok: false, reason: `Another saved build is already called "${clash.name}".` };
+    const entry = clean({ id: same?.id || clash?.id || newId(), name, code, cls, level, skills, preset, savedAt: new Date().toISOString() });
     if (!entry) return { ok: false, reason: "That build can't be saved." };
-    const replaced = !!byName(name);
+    const replaced = !!(same || clash);
     const rest = builds.value.filter((b) => b.id !== entry.id);
     if (!replaced && rest.length >= MAX_SAVED) return { ok: false, reason: `You can keep up to ${MAX_SAVED} saved builds. Delete one first.` };
     if (!commit([entry, ...rest])) return { ok: false, reason: "Your browser didn't let the build be saved (storage is full or blocked)." };

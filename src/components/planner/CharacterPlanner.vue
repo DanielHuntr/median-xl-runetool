@@ -19,7 +19,7 @@ import { MERC_ACTS, mercSpecs } from "../../planner/mercs.js";
 import { tabKeys } from "../../tabKeys.js";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
 import { createCatalog } from "../../planner/items.js";
-import { createPlanner, PlannerKey, STAGES, STAGE_START } from "../../planner/usePlanner.js";
+import { createPlanner, PlannerKey, STAGE_START, MAX_STAGES } from "../../planner/usePlanner.js";
 import { areasNear, gearCats, runewordsBetween } from "../../levelling.js";
 import { OTHER_QUESTS, otherQuestDone } from "../../planner/character.js";
 import { DIFFICULTIES } from "../../planner/rules.js";
@@ -76,19 +76,75 @@ const mercHint = computed(() => {
 const areas = shallowRef(null);
 import("../../data/areas.json").then((m) => (areas.value = m.default.areas)).catch(() => {});
 const stageName = computed(() => planner.value?.state.stage[planner.value.state.cls] ?? "Endgame");
-const stageTip = (name) => {
-  const [level, diff] = STAGE_START[name] || [];
-  const filled = planner.value.stageFilled(name);
-  return name === "Endgame" ? `The finished build${filled ? "" : " (empty)"}` : `From level ${level}, ${diff}${filled ? "" : " (empty: starts at that level)"}`;
+// A stage's level and difficulty: its own build's (the open one, or one already made), else
+// where a default stage starts when first opened.
+const stageAt = (name) => {
+  const p = planner.value, cls = p.state.cls;
+  const b = name === p.state.stage[cls] ? p.build.value : p.state.stages[cls][name];
+  if (b) return { level: b.level, difficulty: b.difficulty };
+  return STAGE_START[name] ? { level: STAGE_START[name][0], difficulty: STAGE_START[name][1] } : null;
 };
+const stageTip = (name) => {
+  const p = planner.value, at = stageAt(name);
+  const made = name === p.state.stage[p.state.cls] || p.state.stages[p.state.cls][name];
+  if (!at) return name;
+  if (!made) return `Empty: starts at level ${at.level}, ${at.difficulty}`;
+  return `Level ${at.level}, ${at.difficulty}${p.stageFilled(name) ? "" : " (empty)"}`;
+};
+// The player's own stages. The open stage's chip has a menu (move, rename, delete); a new
+// stage or a new name is typed into a chip in place; chips can be dragged into order.
+const stageList = computed(() => planner.value?.stagesOf() ?? []);
+const stageEdit = ref(null), stageText = ref(""), stageErr = ref(""), stageDeleting = ref(false);
+const vFocus = { mounted: (el) => { el.focus(); el.select(); } };
+function editStage(mode) {
+  stagePop.value = null;
+  stageEdit.value = mode;
+  stageErr.value = "";
+  stageText.value = mode === "rename" ? stageName.value : "";
+}
+function cancelStageEdit() { stageEdit.value = null; stageErr.value = ""; }
+function commitStage() {
+  if (!stageEdit.value) return;
+  const p = planner.value, text = stageText.value.trim();
+  if (!text || (stageEdit.value === "rename" && text === stageName.value)) return cancelStageEdit();
+  const r = stageEdit.value === "rename" ? p.renameStage(stageName.value, text) : p.addStage(text);
+  if (!r.ok) return (stageErr.value = r.reason);
+  cancelStageEdit();
+}
+function stageMenu(fn) { stagePop.value = null; fn(); }
+function deleteStage() {
+  stagePop.value = null;
+  stageDeleting.value = false;
+  planner.value.removeStage(stageName.value);
+}
+watch(stagePop, (v) => { if (v !== "menu") stageDeleting.value = false; });
+// Dragging a chip: where it would land shows as a gold line before or after a chip.
+const dragStage = ref(null), dropAt = ref(null);
+function onStageDragStart(e, n) {
+  dragStage.value = n;
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", n);
+}
+function onStageDragOver(e, i) {
+  if (!dragStage.value) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  dropAt.value = e.clientX > r.left + r.width / 2 ? i + 1 : i;
+}
+function onStageDrop() {
+  const n = dragStage.value, at = dropAt.value;
+  if (n != null && at != null) planner.value.placeStage(n, at > stageList.value.indexOf(n) ? at - 1 : at);
+  onStageDragEnd();
+}
+function onStageDragEnd() { dragStage.value = dropAt.value = null; }
 const stageHelp = computed(() => {
   const p = planner.value;
   if (!p) return null;
   const b = p.build.value, name = stageName.value;
-  const copyFrom = STAGES.filter((n) => n !== name && p.stageFilled(n));
+  const order = p.stagesOf();
+  const copyFrom = order.filter((n) => n !== name && p.stageFilled(n));
   const empty = !Object.keys(b.points).length && !Object.keys(b.gear).length;
-  const i = STAGES.indexOf(name);
-  const prevLevel = i > 0 ? (STAGE_START[STAGES[i - 1]]?.[0] ?? 0) : 0;
+  const i = order.indexOf(name);
+  const prevLevel = i > 0 ? (stageAt(order[i - 1])?.level ?? 0) : 0;
   const c = { TUD, SUD, SETD, BASED };
   const cats = gearCats(b.gear, c);
   return {
@@ -253,18 +309,53 @@ const questsOpen = ref(false);
       </div>
 
       <div class="planner-stages">
-        <div class="stage-switch" role="group" aria-label="Levelling stage">
+        <div class="stage-switch" role="group" aria-label="Levelling stage" @dragover.prevent @drop.prevent="onStageDrop">
           <span class="stage-label">Stage</span>
+          <template v-for="(n, i) in stageList" :key="n">
+            <div v-if="stageEdit === 'rename' && n === stageName" class="stage-chip editing active">
+              <input v-model="stageText" v-focus maxlength="30" :aria-label="`Rename the ${n} stage`" @keydown.enter.prevent="commitStage" @keydown.esc="cancelStageEdit" @blur="commitStage" />
+            </div>
+            <div
+              v-else
+              class="stage-chip"
+              :class="{ active: stageName === n, filled: planner.stageFilled(n), dragging: dragStage === n, 'drop-before': dropAt === i && dragStage !== n, 'drop-after': dropAt === i + 1 && i === stageList.length - 1 && dragStage !== n }"
+              draggable="true"
+              @dragstart="onStageDragStart($event, n)"
+              @dragover.prevent="onStageDragOver($event, i)"
+              @dragend="onStageDragEnd"
+            >
+              <button type="button" class="stage-btn" :aria-pressed="stageName === n" :data-tip="stageTip(n)" @click="planner.setStage(n)" @dblclick="stageName === n && editStage('rename')">{{ n }}</button>
+              <div v-if="stageName === n" class="stage-pop-wrap">
+                <button type="button" class="stage-menu-btn" aria-haspopup="menu" :aria-expanded="stagePop === 'menu'" :aria-label="`${n} stage options`" @click="toggleStagePop('menu')"><Icon name="chevron" /></button>
+                <div v-if="stagePop === 'menu'" class="stage-pop stage-menu" role="menu" :aria-label="`${n} stage`">
+                  <template v-if="!stageDeleting">
+                    <button type="button" role="menuitem" :disabled="i === 0" @click="stageMenu(() => planner.moveStage(n, -1))">Move earlier</button>
+                    <button type="button" role="menuitem" :disabled="i === stageList.length - 1" @click="stageMenu(() => planner.moveStage(n, 1))">Move later</button>
+                    <button type="button" role="menuitem" @click="editStage('rename')">Rename</button>
+                    <hr />
+                    <button type="button" role="menuitem" class="danger" :disabled="stageList.length < 2" @click="stageDeleting = true">Delete stage</button>
+                  </template>
+                  <div v-else class="stage-menu-confirm">
+                    <p>Delete <b>{{ n }}</b> and its build?</p>
+                    <div><button type="button" class="btn danger" @click="deleteStage">Delete</button><button type="button" class="btn" @click="stageDeleting = false">Cancel</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="stageEdit === 'add' && n === stageName" class="stage-chip editing">
+              <input v-model="stageText" v-focus maxlength="30" placeholder="Stage name" aria-label="New stage name" @keydown.enter.prevent="commitStage" @keydown.esc="cancelStageEdit" @blur="commitStage" />
+            </div>
+          </template>
           <button
-            v-for="n in STAGES"
-            :key="n"
+            v-if="stageList.length < MAX_STAGES && stageEdit !== 'add'"
             type="button"
-            :aria-pressed="stageName === n"
-            :class="{ filled: planner.stageFilled(n) }"
-            :data-tip="stageTip(n)"
-            @click="planner.setStage(n)"
-          >{{ n }}</button>
+            class="stage-add"
+            aria-label="Add a stage"
+            :data-tip="`Add a stage after ${stageName}, starting as a copy of it`"
+            @click="editStage('add')"
+          >+</button>
         </div>
+        <p v-if="stageErr" class="stage-err" role="alert">{{ stageErr }}</p>
         <p v-if="stageHelp?.empty && stageHelp.copyFrom.length" class="stage-hint">
           This stage is empty.
           <button v-for="n in stageHelp.copyFrom" :key="n" type="button" class="text-btn" @click="planner.copyStage(n)">Copy {{ n }}</button>

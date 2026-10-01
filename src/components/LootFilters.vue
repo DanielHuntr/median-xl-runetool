@@ -8,6 +8,8 @@ import Icon from "./AppIcon.vue";
 import FD from "../data/filter-data.json";
 import { QUALITIES, ETHEREAL, MAX_RULES, newRule, cleanFilter, exportFilter, importFilter, describeRule } from "../filters/lootFilter.js";
 import { useSavedFilters, MAX_FILTERS } from "../filters/savedFilters.js";
+import { useFilterSync } from "../filters/filterSync.js";
+import { useAuth } from "../composables/useAuth.js";
 
 const SITE = "https://www.median-xl.com/filters/index.php";
 const CLASSES = FD.classes;
@@ -67,6 +69,20 @@ const { filters, add, remove } = useSavedFilters();
 const selectedId = ref(filters.value[0]?.id ?? null);
 watch(selectedId, () => (expanded.value = null));
 const current = computed(() => filters.value.find((f) => f.id === selectedId.value) || null);
+// Filters saved to the account too: edits to the open one are sent along (filterSync.js).
+const { user } = useAuth();
+const sync = useFilterSync();
+watch(() => current.value && [current.value.id, JSON.stringify(current.value.filter)], (now, before) => {
+  if (now && before && now[0] === before[0] && now[1] !== before[1]) sync.changed(now[0]);
+});
+const savingToAccount = ref(false);
+async function saveCurrentToAccount() {
+  savingToAccount.value = true;
+  const r = await sync.saveToAccount(current.value.id);
+  savingToAccount.value = false;
+  if (r.ok) say(`Saved "${current.value.filter.name}" to your account.`);
+}
+const signIn = () => window.dispatchEvent(new Event("account-open"));
 function create(filter, from = "") {
   const entry = add(filter, from);
   if (!entry) return say(`You can keep up to ${MAX_FILTERS} filters. Delete one first.`, "warn");
@@ -96,9 +112,13 @@ async function importFile(e) {
   if (file) doImport(await file.text());
   e.target.value = "";
 }
-function deleteCurrent() {
-  if (!current.value || !window.confirm(`Delete "${current.value.filter.name}"?`)) return;
-  remove(current.value.id);
+async function deleteCurrent() {
+  const c = current.value;
+  if (!c) return;
+  const note = c.accountId ? (user.value ? " It's removed from your account too." : " It stays in your account; sign in to delete it there.") : "";
+  if (!window.confirm(`Delete "${c.filter.name}"?${note}`)) return;
+  if (c.accountId && user.value && !(await sync.removeFromAccount(c.id)).ok) return say("Couldn't delete it from your account. Please try again.", "warn");
+  remove(c.id);
   selectedId.value = filters.value[0]?.id ?? null;
 }
 async function copyJson() {
@@ -242,11 +262,13 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
         </div>
         <ul v-if="filters.length">
           <li v-for="f in filters" :key="f.id">
-            <button :aria-current="f.id === selectedId" @click="selectedId = f.id"><b>{{ f.filter.name }}</b><small>{{ f.filter.rules.length }} rules</small></button>
+            <button :aria-current="f.id === selectedId" @click="selectedId = f.id"><b>{{ f.filter.name }}</b><small>{{ f.filter.rules.length }} rules<span v-if="f.accountId" class="lf-in-account"> · In your account</span></small></button>
           </li>
         </ul>
         <p v-else class="muted lf-empty">No filters yet. Start a new one, import one, or edit a copy of a community filter.</p>
-        <p class="lf-hint">Saved in this browser.</p>
+        <p v-if="user" class="lf-hint">Saved in this browser. Filters in your account follow you to any device.</p>
+        <p v-else class="lf-hint">Saved in this browser. <button type="button" class="text-btn lf-signin" @click="signIn">Sign in</button> to keep them on any device.</p>
+        <p v-if="sync.syncError.value" class="lf-hint lf-sync-error" role="alert">Account: {{ sync.syncError.value }}</p>
       </aside>
 
       <div v-if="current" class="lf-editor">
@@ -259,6 +281,8 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
           <div class="lf-row lf-head-actions">
             <button class="btn gold" @click="copyJson">Copy JSON</button>
             <button class="btn" @click="download">Download .json</button>
+            <button v-if="user && !current.accountId" class="btn" :disabled="savingToAccount" @click="saveCurrentToAccount">{{ savingToAccount ? "Saving…" : "Save to account" }}</button>
+            <span v-else-if="current.accountId" class="lf-sync" :class="{ pending: current.dirty }">{{ current.dirty ? (user ? "Saving to your account…" : "Changes not in your account yet: sign in to send them") : "Saved to your account" }}</span>
             <span class="lf-spacer"></span>
             <button class="btn" @click="create({ ...current.filter, name: `${current.filter.name} (copy)`.slice(0, 60) }, current.from)">Duplicate</button>
             <button class="btn lf-danger" @click="deleteCurrent">Delete</button>
@@ -362,6 +386,11 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
 .lf-list li button[aria-current="true"] { border-color: var(--gold); background: var(--gold-bg); }
 .lf-list li button:hover:not([aria-current="true"]) { border-color: var(--gold); background: var(--raised); }
 .lf-hint { margin: 0; color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
+.lf-in-account { color: var(--good); }
+.lf-sync { color: var(--good); font-size: 0.8125rem; }
+.lf-sync.pending { color: var(--muted); }
+.lf-sync-error { color: var(--warn); }
+.lf-signin { margin: 0; font-size: inherit; }
 .lf-empty { margin: 0; padding: 16px; border: 1px dashed var(--border); border-radius: 8px; text-align: center; }
 .lf-import { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
 .lf-import textarea { font-family: ui-monospace, monospace; font-size: 0.75rem; }
