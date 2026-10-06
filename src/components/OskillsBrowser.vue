@@ -29,6 +29,7 @@ const sourceKinds = [
   ["relic", "Relics"],
   ["charm", "Charms"],
   ["scroll", "Scrolls of enchantment"],
+  ["echo", "Echo Sabre"],
 ];
 // Relics and charms come from the planner's data (fetched on arrival, as site search does), with
 // its skill names: from these sources only lines naming a real skill count.
@@ -45,7 +46,16 @@ async function loadInventory() {
   } catch {
     inventoryNote.value = "Relics and charms couldn't be loaded, so they aren't listed.";
   }
+  // Echo Sabre (Mastercrafted) rolls procs only, from the game's rare affixes that fit it
+  // (src/data/affixes.json, loaded only here and in the planner).
+  try {
+    const A = (await import("../data/affixes.json")).default;
+    const types = A.bases["Echo Sabre (Mastercrafted)"]?.Mastercrafted || [];
+    echoProcs.value = A.affixes.filter((a) => a.rare && a.types.some((t) => types.includes(t)) && !(a.not || []).some((t) => types.includes(t)))
+      .flatMap((a) => a.lines.filter((l) => PROC.test(l)));
+  } catch {}
 }
+const echoProcs = ref([]);
 const indexedSources = new Set(INDEX.sources);
 
 function rangeHigh(text) {
@@ -104,6 +114,8 @@ const entries = computed(() => {
   const known = skillNames.value;
   for (const c of inventory.value) for (const line of c.lines)
     addLine(out, line, { source: c.kind === "relic" ? "relic" : "charm", item: c.name, sub: c.kind === "relic" ? "Relic · up to 3 carried" : "Charm", req: c.reqLevel ?? null, link: null }, { known });
+  for (const line of new Set(echoProcs.value))
+    addLine(out, line, { source: "echo", item: "Echo Sabre", sub: "Mastercrafted · procs only, can repeat", req: null, link: itemLink("base-items", "Echo Sabre (Mastercrafted)") }, { known });
   for (const sc of BONUSES.scrolls) for (const line of sc.lines)
     addLine(out, line, { source: "scroll", item: sc.name, sub: sc.slot ? `Cubed with ${sc.slot === "body" ? "body armor" : sc.slot}` : `Cubed with ${sc.cat.toLowerCase()}`, req: null, link: null }, { known });
   return out;
@@ -194,7 +206,7 @@ onUnmounted(() => window.removeEventListener("hashchange", applyLink));
       <button class="btn" @click="clear">Clear filters</button>
     </div>
     <p class="coverage">
-      Built from {{ INDEX.sources.length }} source names in the community Oskill Index, matched to runewords, tiered uniques, sacred uniques and sets, plus the {{ SOULBINDER.rolls.length }} oskill rolls of Soulbinder Gloves and the scrolls of enchantment from the game files, and relics and charms from the planner's data. <template v-if="inventoryNote">{{ inventoryNote }}</template> <DataStatus />
+      Built from {{ INDEX.sources.length }} source names in the community Oskill Index, matched to runewords, tiered uniques, sacred uniques and sets, plus the {{ SOULBINDER.rolls.length }} oskill rolls of Soulbinder Gloves, the procs Echo Sabre can roll, and the scrolls of enchantment from the game files, and relics and charms from the planner's data. <template v-if="inventoryNote">{{ inventoryNote }}</template> <DataStatus />
     </p>
   </section>
 </template>

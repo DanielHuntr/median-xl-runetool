@@ -37,7 +37,8 @@ const t = X("magicsuffix.bin");
 const rolls = [], nameless = [];
 for (let i = 0; i < t.count; i++) {
   const r = t.record(i);
-  if (r.readUInt16LE(0x5C) !== GROUP || r.readInt32LE(0x24) !== OSKILL || !onGloves(r)) continue;
+  // Spawnable (u16 0x54): 50 of the gloves' rolls are switched off and never roll.
+  if (r.readUInt16LE(0x5C) !== GROUP || r.readInt32LE(0x24) !== OSKILL || !onGloves(r) || r.readUInt16LE(0x54) !== 1) continue;
   const skill = skillName(r.readInt32LE(0x28));
   if (!skill) { nameless.push(r.readInt32LE(0x28)); continue; }
   rolls.push({ skill, min: r.readInt32LE(0x2C), max: r.readInt32LE(0x30) });

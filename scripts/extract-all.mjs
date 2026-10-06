@@ -30,6 +30,7 @@ const STEPS = [
   ["extract-item-bonuses.mjs"],
   ["extract-soulbinder.mjs", dir],
   ["extract-mastercrafted.mjs", dir],
+  ["extract-affixes.mjs", dir],
   ["check-patch.mjs"],
 ];
 

@@ -5,6 +5,7 @@ import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import ItemBonuses from "./ItemBonuses.vue";
+import ItemAffixes from "./ItemAffixes.vue";
 import { SLOTS } from "../../planner/items.js";
 import { MERC_SLOTS } from "../../planner/mercs.js";
 import { pointsFor } from "../../planner/character.js";
@@ -69,12 +70,14 @@ const setQuality = (v) => {
   updateItem(props.slot, { superior: v === "" ? undefined : Number(v), rolls: (item.value.rolls || []).slice(0, own) });
 };
 const names = computed(() => superiorNames(r.value));
-// Added bonuses' ranges follow the item's own, so changing them keeps only the item's own rolls.
-function setAddons(addons) {
-  const added = new Set((r.value.addons || []).flatMap((b) => b.lines));
-  const own = r.value.ranges.filter((x) => !added.has(x.line)).length;
-  updateItem(props.slot, { addons, rolls: (item.value.rolls || []).slice(0, own) });
+// Affixes' and added bonuses' ranges follow the item's own, so changing either keeps only the
+// item's own rolls.
+function ownRolls() {
+  const added = new Set([...(r.value.addons || []), ...(r.value.affixes?.picked || [])].flatMap((b) => b.lines));
+  return (item.value.rolls || []).slice(0, r.value.ranges.filter((x) => !added.has(x.line)).length);
 }
+const setAddons = (addons) => updateItem(props.slot, { addons, rolls: ownRolls() });
+const setAffixes = ({ affixes, magic }) => updateItem(props.slot, { affixes: affixes.length ? affixes : undefined, magic: magic || undefined, rolls: ownRolls() });
 const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.kind) && !r.value.mastercrafted);
 const setSocketCount = (n) => updateItem(props.slot, { socketCount: Number(n) });
 // Empty sockets left on this item, for "Fill empty" on a filled socket.
@@ -203,6 +206,7 @@ const cubeLink = computed(() => {
       </div>
       </template>
     </div>
+    <ItemAffixes v-if="r.def.kind === 'custom'" :item="r" @update="setAffixes" />
     <ItemBonuses v-if="!mercKey" :item="r" :addons="item.addons || []" @update="setAddons" />
     <div v-if="r.socketCount" class="sockets">
       <h3>

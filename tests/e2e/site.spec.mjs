@@ -86,10 +86,10 @@ test("the oskills browser reverse-searches item skill sources", async ({ page })
   await expect(page.getByRole("heading", { name: "Flamefront" }).first()).toBeVisible();
   await expect(page.locator(".oskill-sources li").first()).toContainText(/Chance to cast|to Flamefront/);
   // Soulbinder Gloves rolls, from the game's affix table: a skill with two ranges is one source.
-  await page.goto("/#oskills?name=Charm");
+  await page.goto("/#oskills?name=Tantrum");
   const gloves = page.locator(".oskill-sources li", { hasText: "Soulbinder Gloves" });
   await expect(gloves).toHaveCount(1);
-  await expect(gloves).toContainText("+(2 to 6) or (8 to 29) to Charm");
+  await expect(gloves).toContainText("+(9 to 13) or (18 to 26) to Tantrum");
   await gloves.getByRole("link").click();
   await expect(page.getByRole("heading", { name: "Soulbinder Gloves (Mastercrafted)" }).first()).toBeVisible();
   await expect(page.getByText("Can spawn any oSkill from Rare Affixes").first()).toBeVisible();
@@ -258,6 +258,22 @@ test("a charm takes its trophy bonus, once", async ({ page }) => {
   await lies.getByRole("button", { name: "Add" }).click();
   await expect(lies.getByRole("button", { name: /Remove Lord of Lies Trophy/ })).toBeVisible();
   await expect(lies.getByRole("combobox", { name: "Trophy" })).toHaveCount(0);
+});
+
+test("a rare item on a mastercrafted base takes affixes from the game's tables", async ({ page }) => {
+  // Custom Soulbinder Gloves (base:9005, the sixth mastercrafted base) on a level-120 Sorceress.
+  const build = { v: 2, cls: "Sorceress", level: 120, gear: { gloves: { ref: "custom", custom: { name: "My gloves", slotType: "gloves", text: "" }, base: "base:9005", baseVariant: 0 } } };
+  const code = Buffer.from(JSON.stringify(build)).toString("base64url");
+  await page.goto(`/#planner?b=${code}&name=Affixes`);
+  await page.getByRole("button", { name: /^Gloves: / }).first().click();
+  const affixes = page.locator(".item-editor .item-affixes");
+  await expect(affixes).toContainText("3 prefixes and 3 suffixes");
+  await affixes.getByLabel("Filter affixes").fill("Tantrum");
+  const suffix = affixes.getByRole("combobox", { name: /Suffixes/ });
+  await suffix.selectOption({ index: 1 });
+  await affixes.getByRole("button", { name: "Add" }).nth(1).click();
+  await expect(affixes.getByRole("button", { name: /Remove .*Tantrum/ })).toBeVisible();
+  await expect(page.locator(".item-editor")).toContainText(/to Tantrum/);
 });
 
 test("the skill summary opens from the skill points counter, and a skill in it opens its tree", async ({ page }) => {

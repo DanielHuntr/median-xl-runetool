@@ -189,6 +189,37 @@ test("mastercrafted bases from the game files: fully socketed, never runeword ba
   assert.equal(c.stats.maximum_lightning_damage.sources.find((x) => x.source === kukri.name).value, 40);
 });
 
+test("affixes from the game's tables on a custom item: those that fit its base, three of each on a rare, one per group", async () => {
+  const { catalog } = await env();
+  const A = JSON.parse(await readFile(new URL("../src/data/affixes.json", import.meta.url), "utf8"));
+  const base = (name) => catalog.all().find((d) => d.kind === "base" && d.name === name);
+  const custom = (b, extra = {}) => ({ ref: "custom", custom: { name: "Mine", slotType: b.slotType, text: "" }, base: b.key, baseVariant: 0, ...extra });
+  // Soulbinder Gloves take its oskill suffixes; gauntlets don't.
+  const soul = base("Soulbinder Gloves (Mastercrafted)");
+  const flame = A.affixes.find((a) => a.kind === "s" && a.group === 217 && a.types.includes("mw21") && !a.types.includes("glov"));
+  assert.ok(flame, "an oskill roll only the gloves take");
+  assert.deepEqual(catalog.resolve(custom(soul, { affixes: [flame.id] }), 120).affixes.picked.map((a) => a.id), [flame.id]);
+  assert.equal(catalog.resolve(custom(base("Gauntlets"), { affixes: [flame.id] }), 120).affixes.picked.length, 0);
+  // One per group, three suffixes at most; a magic item takes one.
+  const suffixes = A.affixes.filter((a) => a.kind === "s" && a.rare && a.types.includes("mw21"));
+  const sameGroup = suffixes.filter((a) => a.group === flame.group).slice(0, 2).map((a) => a.id);
+  assert.equal(catalog.resolve(custom(soul, { affixes: sameGroup }), 120).affixes.picked.length, 1);
+  const groups = [...new Map(suffixes.map((a) => [a.group, a.id])).values()];
+  if (groups.length >= 4) assert.equal(catalog.resolve(custom(soul, { affixes: groups.slice(0, 4) }), 120).affixes.picked.length, 3);
+  const r = catalog.resolve(custom(soul, { affixes: [flame.id], magic: true }), 120);
+  assert.ok(flame.lines.every((l) => r.lines.includes(l) || r.ranges.some((x) => x.line === l)), "its lines join the item's, with roll sliders");
+  assert.ok(r.head.reqLevel >= flame.req, "its required level counts");
+  // Echo Sabre: procs only, and the same proc again.
+  const sabre = base("Echo Sabre (Mastercrafted)");
+  const fits = catalog.resolve(custom(sabre), 120).affixes;
+  const proc = A.affixes.find((a) => a.rare && /Chance to cast level/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
+  const plain = A.affixes.find((a) => a.rare && !/Chance to cast/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
+  assert.equal(catalog.resolve(custom(sabre, { affixes: [proc.id, proc.id, plain.id] }), 120).affixes.picked.length, 2);
+  // A custom ring with no base uses the game's ring types.
+  const ringAffix = A.affixes.find((a) => a.rare && a.types.includes("ring"));
+  assert.equal(catalog.resolve({ ref: "custom", custom: { name: "Ring", slotType: "ring", text: "" }, affixes: [ringAffix.id] }, 120).affixes.picked.length, 1);
+});
+
 test("character sheet: attributes, life, resist penalty, set bonuses, gear skills, passives", async () => {
   const { engine, catalog } = await env();
   const { computeCharacter } = await load("/src/planner/character.js");
@@ -372,6 +403,9 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   const scroll = JSON.parse(await readFile(new URL("../src/data/item-bonuses.json", import.meta.url), "utf8")).scrolls.find((x) => x.slot === "helm");
   p.equip("helm", { ...p.build.value.gear.helm, addons: [scroll.id, "scroll:made-up", 7] });
   assert.deepEqual(p.build.value.gear.helm.addons, [scroll.id]);
+  const ringAffix = JSON.parse(await readFile(new URL("../src/data/affixes.json", import.meta.url), "utf8")).affixes.find((a) => a.types.includes("ring"));
+  p.equip("ring1", { ref: "custom", custom: { name: "Ring", slotType: "ring", text: "" }, affixes: [ringAffix.id, "p-none"], magic: true });
+  assert.deepEqual([p.build.value.gear.ring1.affixes, p.build.value.gear.ring1.magic], [[ringAffix.id], true]);
   p.equip("boots", { ref: "does-not-exist" });
   assert.equal(p.build.value.gear.boots, undefined);
   const url = p.shareUrl();
@@ -383,6 +417,7 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   assert.equal(p.build.value.attrs.strength, 50);
   assert.equal(p.build.value.gear.helm.ref, helm.key);
   assert.deepEqual(p.build.value.gear.helm.addons, [scroll.id], "added bonuses survive a share link");
+  assert.deepEqual(p.build.value.gear.ring1.affixes, [ringAffix.id], "affixes survive a share link");
   assert.equal(p.importFromHash("#planner?b=bm90LWEtYnVpbGQ"), false);
   // Skill slots and bar survive sharing; unknown skills are dropped.
   p.setClass("Amazon");

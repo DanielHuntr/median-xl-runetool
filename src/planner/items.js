@@ -5,6 +5,7 @@ import { applyRolls, parseLine, parseSpan } from "./statparse.js";
 import { superiorOf } from "./superior.js";
 import { cleanOrbs, orbById, orbFits, orbMultiplier } from './orbs.js';
 import BONUSES from "../data/item-bonuses.json" with { type: "json" };
+import AFFIXES from "../data/affixes.json" with { type: "json" };
 
 // Equipment slots, laid out like the in-game inventory screen.
 export const SLOTS = [
@@ -74,6 +75,41 @@ export function bonusFits(b, def, { twoHanded = false, honorific = false } = {})
     return !!mine && b.category.includes(mine);
   }
   return false;
+}
+
+// Magic and rare affixes (scripts/extract-affixes.mjs, the game's magicprefix/magicsuffix.bin)
+// for a custom item: state.affixes lists their ids, state.magic picks a magic item (one prefix,
+// one suffix, any affix) over a rare or crafted one (three of each, rare affixes). One affix per
+// group, except where the base says otherwise (Echo Sabre: procs only, the same one again).
+const AFFIX_BY_ID = new Map(AFFIXES.affixes.map((a) => [a.id, a]));
+export const affixById = (id) => AFFIX_BY_ID.get(id);
+export const AFFIX_LIMIT = { rare: 3, magic: 1 };
+const PROC = /Chance to cast level/;
+// The game's item types for a custom item: its base at its tier, or the plain ring/amulet/jewel.
+export const affixTypes = (baseDef, label, slotType) =>
+  (baseDef ? AFFIXES.bases[baseDef.name]?.[label] : AFFIXES.jewellery[slotType]) || null;
+export function affixRules(baseLines = []) {
+  return { procsOnly: baseLines.includes("Can only spawn Procs"), repeatProcs: baseLines.includes("Can spawn same Proc multiple times") };
+}
+export function affixFits(a, types, { magic = false, procsOnly = false } = {}) {
+  if (!types || (!magic && !a.rare)) return false;
+  if (procsOnly && !a.lines.some((l) => PROC.test(l))) return false;
+  return a.types.some((t) => types.includes(t)) && !(a.not || []).some((t) => types.includes(t));
+}
+export const affixesFor = (types, opts) => (types ? AFFIXES.affixes.filter((a) => affixFits(a, types, opts)) : []);
+// The affixes that count, in order: fitting, within the limit per kind, one per group.
+export function chosenAffixes(ids, types, { magic = false, procsOnly = false, repeatProcs = false } = {}) {
+  const count = { p: 0, s: 0 }, groups = new Set(), out = [];
+  for (const a of (ids || []).map(affixById)) {
+    if (!a || !affixFits(a, types, { magic, procsOnly })) continue;
+    if (count[a.kind] >= AFFIX_LIMIT[magic ? "magic" : "rare"]) continue;
+    const repeat = repeatProcs && a.lines.some((l) => PROC.test(l));
+    if (groups.has(a.group) && !repeat) continue;
+    groups.add(a.group);
+    count[a.kind]++;
+    out.push(a);
+  }
+  return out;
 }
 
 /**
@@ -306,7 +342,7 @@ export function createCatalog(app, planner) {
   }
   function resolveFresh(state, level) {
     if (!state) return null;
-    let def, lines, label = "", baseDef = null;
+    let def, lines, label = "", baseDef = null, affixes = null;
     if (state.ref === "custom") {
       const c = state.custom || {};
       def = { key: "custom", kind: "custom", kindLabel: "Custom item", name: c.name || "Custom item", slotType: c.slotType || "weapon", icon: "" };
@@ -319,6 +355,11 @@ export function createCatalog(app, planner) {
         lines = [...v.lines, ...lines];
         def = { ...def, slotType: baseDef.slotType, cat: baseDef.cat, base: baseDef.name, icon: baseArt(baseDef.name, v.label) ?? baseDef.icon };
       }
+      // Its affixes, after the base's lines and the player's own.
+      const types = affixTypes(baseDef, label, def.slotType);
+      const picked = chosenAffixes(state.affixes, types, { magic: !!state.magic, ...affixRules(lines) });
+      affixes = { types, picked, rules: affixRules(lines) };
+      for (const a of picked) lines = [...lines, ...a.lines];
     } else if (state.ref?.startsWith("rw:")) {
       def = get(state.ref);
       baseDef = get(state.base);
@@ -430,9 +471,11 @@ export function createCatalog(app, planner) {
       head.reqLevel = Math.max(head.reqLevel, required);
       s.lines.forEach(addReq);
     }
+    // An affix's required level raises the item's (magicprefix/suffix.bin 0x65).
+    for (const a of affixes?.picked || []) head.reqLevel = Math.max(head.reqLevel, a.req);
     head.reqLevel += reqAdd;
     head.reqLevel += orbs.reduce((n, o) => n + o.def.reqLevel, 0);
-    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded, addons, cls: lineClass(lines), superior, canBeSuperior, honorific, mastercrafted };
+    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded, addons, cls: lineClass(lines), superior, canBeSuperior, honorific, mastercrafted, affixes };
   }
 
   const setById = (id) => app.SETD.find((s) => s.id === id);

@@ -3,7 +3,7 @@ import { MAX_LEVEL } from "./engine.js";
 import { isToggleSkill } from './skillEffects.js';
 import { spendRemaining, wearableBothSets, releaseUnusedRequirements, fundLoadout } from './attributeAllocation.js';
 import { computeCharacter, ATTRIBUTES, activeSlots } from "./character.js";
-import { SLOTS, bonusById } from "./items.js";
+import { SLOTS, bonusById, affixById } from "./items.js";
 import { cleanOrbs, orbById, orbFits } from './orbs.js';
 import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
@@ -89,6 +89,12 @@ function cleanItem(st, catalog) {
     const addons = st.addons.filter((id) => typeof id === "string" && bonusById(id)).slice(0, 30);
     if (addons.length) out.addons = addons;
   }
+  // A custom item's magic or rare affixes (items.js keeps those that fit its base).
+  if (st.ref === "custom" && Array.isArray(st.affixes)) {
+    const affixes = st.affixes.filter((id) => typeof id === "string" && affixById(id)).slice(0, 12);
+    if (affixes.length) out.affixes = affixes;
+  }
+  if (st.ref === "custom" && st.magic === true) out.magic = true;
   return out;
 }
 
