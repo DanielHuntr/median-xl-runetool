@@ -21,9 +21,10 @@
   --life: #b3312b;
   --mana: #2c4fb0;
 }
-/* Light Diablo II themes (parchment, heavens): darker still, for their darker backgrounds. */
+/* Light Diablo II themes (parchment, heavens) and Watchpoint: darker still, for their darker backgrounds. */
 :root[data-theme="parchment"],
-:root[data-theme="heavens"] {
+:root[data-theme="heavens"],
+:root[data-theme="watchpoint"] {
   --fire: #9c3b1b;
   --cold: #295b9b;
   --lightning: #6c5a00;

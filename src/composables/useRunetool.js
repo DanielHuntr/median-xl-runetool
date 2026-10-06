@@ -96,7 +96,8 @@ const defaults = () => ({
 
 // Colour themes, as [value, label, group, preview colours [background, panel, accent, text]]
 // (the preview is drawn by the theme picker; auto follows the system: light or Classic).
-// The Diablo II ones are named after places in the game.
+// The Diablo II ones are named after places in the game; Blizzard's other games' after their
+// places and factions.
 export const THEMES = [
   ["auto", "Auto", "Standard", null],
   ["light", "Light", "Standard", ["#e7e3dc", "#fbfaf7", "#795815", "#2c2922"]],
@@ -110,6 +111,16 @@ export const THEMES = [
   ["worldstone", "Worldstone", "Diablo II", ["#0f0d18", "#17142a", "#c7a6ff", "#e7e3f5"]],
   ["parchment", "Parchment (light)", "Diablo II", ["#e9dfc9", "#f7efdd", "#7a1f1f", "#2b2016"]],
   ["heavens", "Heavens (light)", "Diablo II", ["#e8edf3", "#fbfcfe", "#6f5410", "#1d2533"]],
+  ["stormwind", "Stormwind", "Warcraft", ["#0b1120", "#111a2d", "#ecc45c", "#e6ebf5"]],
+  ["orgrimmar", "Orgrimmar", "Warcraft", ["#130f0e", "#1c1715", "#ff6a55", "#efe4dc"]],
+  ["fel", "Fel", "Warcraft", ["#0a0e09", "#11170f", "#8cf04f", "#e3eedd"]],
+  ["terran", "Terran", "StarCraft", ["#0f1113", "#171a1d", "#ffb52e", "#e5e8eb"]],
+  ["protoss", "Protoss", "StarCraft", ["#0d0e1f", "#14162b", "#ffd166", "#e6e7f6"]],
+  ["zerg", "Zerg", "StarCraft", ["#130a13", "#1d111d", "#b8e43c", "#efe1ee"]],
+  ["talon", "Talon", "Overwatch", ["#0e0e10", "#17171a", "#ff5468", "#ececf0"]],
+  ["watchpoint", "Watchpoint (light)", "Overwatch", ["#e9edf2", "#fcfdfe", "#a14e00", "#1c2430"]],
+  ["tavern", "Tavern", "Hearthstone", ["#1a0f0a", "#24160e", "#ffcf5c", "#f3e6d6"]],
+  ["nexus", "Nexus", "Heroes of the Storm", ["#0e0a1a", "#161126", "#ff7bd8", "#ebe6f7"]],
 ];
 // "classic" was its own theme before it became the default dark one.
 const knownTheme = (v) => (v === "classic" ? "dark" : THEMES.some(([t]) => t === v) ? v : "dark");

@@ -194,7 +194,8 @@
 /* Light Diablo II themes: darker item colours than the plain light theme, since paper and
    marble are darker than white (each checked at 4.6:1 or better on every background). */
 :root[data-theme="parchment"],
-:root[data-theme="heavens"] {
+:root[data-theme="heavens"],
+:root[data-theme="watchpoint"] {
   color-scheme: light;
   --d2-white: #2c2922; --d2-red: #b3261e; --d2-green: #186c18; --d2-blue: #3a3ab5;
   --d2-gold: #705811; --d2-grey: #5a5a5a; --d2-black: #222222; --d2-tan: #6a5a36;
@@ -237,6 +238,208 @@
   --warn: #8f4415;
   --bad: #b22a22;
   --shade: #1d253366;
+}
+/* Blizzard's other worlds, named after their places and factions. Every text, accent and status
+   colour reads at 4.5:1 or better on its panel. */
+/* Stormwind: the Alliance capital, royal blue and gold. (Warcraft) */
+:root[data-theme="stormwind"] {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --nav: #080d19;
+  --panel: #111a2d;
+  --field: #0e1626;
+  --raised: #18233b;
+  --border: #2c3d62;
+  --soft-border: #1d2a44;
+  --text: #e6ebf5;
+  --muted: #a3afc7;
+  --gold: #ecc45c;
+  --gold-bg: #2b2a1d;
+  --stats: #b7b9ff;
+  --good: #97d6a4;
+  --warn: #f3b46e;
+  --bad: #ff8278;
+  --shade: #000b;
+}
+/* Orgrimmar: the Horde's city, dark iron and blood red. (Warcraft) */
+:root[data-theme="orgrimmar"] {
+  color-scheme: dark;
+  --bg: #130f0e;
+  --nav: #0e0b0a;
+  --panel: #1c1715;
+  --field: #171312;
+  --raised: #272019;
+  --border: #4d3b33;
+  --soft-border: #32271f;
+  --text: #efe4dc;
+  --muted: #bba69a;
+  --gold: #ff6a55;
+  --gold-bg: #3a1712;
+  --stats: #c0b4ff;
+  --good: #a6d48e;
+  --warn: #f6c065;
+  --bad: #ff7f8a;
+  --shade: #000b;
+}
+/* Fel: the Burning Legion's green fire on black. (Warcraft) */
+:root[data-theme="fel"] {
+  color-scheme: dark;
+  --bg: #0a0e09;
+  --nav: #070a06;
+  --panel: #11170f;
+  --field: #0d120b;
+  --raised: #182016;
+  --border: #304428;
+  --soft-border: #1f2c1a;
+  --text: #e3eedd;
+  --muted: #9fb394;
+  --gold: #8cf04f;
+  --gold-bg: #1d3312;
+  --stats: #c4b2ff;
+  --good: #7fdcb4;
+  --warn: #f2c36a;
+  --bad: #ff7f78;
+  --shade: #000b;
+}
+/* Terran: gunmetal plating with hazard amber. (StarCraft) */
+:root[data-theme="terran"] {
+  color-scheme: dark;
+  --bg: #0f1113;
+  --nav: #0b0c0e;
+  --panel: #171a1d;
+  --field: #131517;
+  --raised: #1f2327;
+  --border: #3a4148;
+  --soft-border: #262b30;
+  --text: #e5e8eb;
+  --muted: #a3abb3;
+  --gold: #ffb52e;
+  --gold-bg: #33270f;
+  --stats: #b4bcff;
+  --good: #95d39f;
+  --warn: #ff9f5a;
+  --bad: #ff7a72;
+  --shade: #000b;
+}
+/* Protoss: Aiur's gold on deep psionic indigo. (StarCraft) */
+:root[data-theme="protoss"] {
+  color-scheme: dark;
+  --bg: #0d0e1f;
+  --nav: #0a0a18;
+  --panel: #14162b;
+  --field: #101225;
+  --raised: #1c1f3a;
+  --border: #353a66;
+  --soft-border: #242847;
+  --text: #e6e7f6;
+  --muted: #a7a9cc;
+  --gold: #ffd166;
+  --gold-bg: #2e2a1c;
+  --stats: #8fd3ff;
+  --good: #94d8b0;
+  --warn: #ffb37a;
+  --bad: #ff8088;
+  --shade: #000b;
+}
+/* Zerg: creep purple with acid green. (StarCraft) */
+:root[data-theme="zerg"] {
+  color-scheme: dark;
+  --bg: #130a13;
+  --nav: #0e070e;
+  --panel: #1d111d;
+  --field: #180d18;
+  --raised: #28182a;
+  --border: #4f2f50;
+  --soft-border: #341f35;
+  --text: #efe1ee;
+  --muted: #bba1b8;
+  --gold: #b8e43c;
+  --gold-bg: #29300f;
+  --stats: #d0a8ff;
+  --good: #8ad8a8;
+  --warn: #f5b86c;
+  --bad: #ff7f8f;
+  --shade: #000b;
+}
+/* Talon: black with crimson. (Overwatch) */
+:root[data-theme="talon"] {
+  color-scheme: dark;
+  --bg: #0e0e10;
+  --nav: #0a0a0c;
+  --panel: #17171a;
+  --field: #121215;
+  --raised: #202024;
+  --border: #3d3c44;
+  --soft-border: #29282e;
+  --text: #ececf0;
+  --muted: #aaa9b3;
+  --gold: #ff5468;
+  --gold-bg: #3a1219;
+  --stats: #b8b6ff;
+  --good: #94d6a2;
+  --warn: #f6b56c;
+  --bad: #ff8a7a;
+  --shade: #000b;
+}
+/* Watchpoint: clean white and grey with orange. (Overwatch) */
+:root[data-theme="watchpoint"] {
+  color-scheme: light;
+  --bg: #e9edf2;
+  --nav: #f6f8fa;
+  --panel: #fcfdfe;
+  --field: #eef1f5;
+  --raised: #dfe5ec;
+  --border: #b3bdc9;
+  --soft-border: #d3dae3;
+  --text: #1c2430;
+  --muted: #4d5a6b;
+  --gold: #a14e00;
+  --gold-bg: #fbe3cc;
+  --stats: #3644a3;
+  --good: #25693a;
+  --warn: #8f4415;
+  --bad: #b22a22;
+  --shade: #1c243066;
+}
+/* The tavern: warm hearth wood, gold and mana blue. (Hearthstone) */
+:root[data-theme="tavern"] {
+  color-scheme: dark;
+  --bg: #1a0f0a;
+  --nav: #140b07;
+  --panel: #24160e;
+  --field: #1f130c;
+  --raised: #301e13;
+  --border: #5a3a24;
+  --soft-border: #3d2717;
+  --text: #f3e6d6;
+  --muted: #c3a88c;
+  --gold: #ffcf5c;
+  --gold-bg: #3a2a10;
+  --stats: #86baff;
+  --good: #a6d48e;
+  --warn: #ffaa66;
+  --bad: #ff7f73;
+  --shade: #000b;
+}
+/* The Nexus: storm violet with magenta. (Heroes of the Storm) */
+:root[data-theme="nexus"] {
+  color-scheme: dark;
+  --bg: #0e0a1a;
+  --nav: #0a0714;
+  --panel: #161126;
+  --field: #120e20;
+  --raised: #1f1834;
+  --border: #3d3260;
+  --soft-border: #2a2244;
+  --text: #ebe6f7;
+  --muted: #aaa0c8;
+  --gold: #ff7bd8;
+  --gold-bg: #3a1736;
+  --stats: #8fd0ff;
+  --good: #90d8b0;
+  --warn: #f7b871;
+  --bad: #ff8378;
+  --shade: #000b;
 }
 * {
   box-sizing: border-box;
