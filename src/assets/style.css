@@ -2420,6 +2420,19 @@ select optgroup {
   right: 0;
   transform: none;
 }
+/* Near the card's edges a centred rune tooltip would be cut off: the first two runes'
+   open rightwards from the rune, the fifth and sixth leftwards (third and fourth stay centred). */
+.rune-sequence .rune-unit:nth-child(-n + 2) [data-tip]:hover::after,
+.rune-sequence .rune-unit:nth-child(-n + 2) [data-tip]:focus-visible::after {
+  left: 0;
+  transform: none;
+}
+.rune-sequence .rune-unit:nth-child(n + 5) [data-tip]:hover::after,
+.rune-sequence .rune-unit:nth-child(n + 5) [data-tip]:focus-visible::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}
 .item-art {
   flex: none;
   max-width: 40px;
