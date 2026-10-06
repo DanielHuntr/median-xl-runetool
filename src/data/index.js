@@ -9,6 +9,7 @@ import BASE from "./base-items.json";
 import MASTERCRAFTED from "./mastercrafted.json";
 import META from "./catalog-meta.json";
 import RW_BASES from "./runeword-bases.json";
+import CATALOGUE_FIXES from "./catalogue-fixes.json";
 const RIMG = { ...RUNE_IMG, ...SOCK_IMG };
 const STD =
   "El Eld Tir Nef Eth Ith Tal Ral Ort Thul Amn Sol Shael Dol Hel Io Lum Ko Fal Lem Pul Um Mal Ist Gul Vex Ohm Lo Sur Ber Jah Cham Zod".split(
@@ -207,9 +208,16 @@ function fitsBase(r, base) {
   );
 }
 
+// Where the docs' text disagrees with the game files on a value, the game's value
+// (scripts/extract-catalogue-fixes.mjs): [docs line, game line] pairs, applied to the bundled
+// catalogue and to a live one alike.
+const FIX = CATALOGUE_FIXES.fixes;
+const fixLines = (str, pairs) => (pairs ? str.split("|").map((l) => pairs.find(([from]) => from === l)?.[1] ?? l).join("|") : str);
+
 const HEAD =
   /^(One-Hand|Two-Hand|Throw) Damage|^Required|^Item Level|Damage Bonus:|^Socketed/;
-const TUD = TU.map(([name, base, cat, tiers], i) => {
+const TUD = TU.map(([name, base, cat, rawTiers], i) => {
+  const tiers = rawTiers.map((str, k) => fixLines(str, FIX.uniques[name]?.[k]));
   const t = tiers.map((str) => {
     const l = str.split("|");
     const g = (re) => {
@@ -323,9 +331,11 @@ const mastercraftedOf = (rows) => rows.map((b, n) => ({
 // Raw catalogue (bundled JSON or the /api/catalog response) → display records.
 function normalizeCatalog(c) {
   const SOCKD = socketablesOf(c.socketables);
+  const sacred = c.sacredUniques.map(([name, base, cat, stats, ...rest]) => [name, base, cat, fixLines(stats, FIX.sacred[name]), ...rest]);
+  const sets = c.sets.map(([name, a, b, bonus, items, ...rest]) => [name, a, b, bonus, items.map(([item, base, stats, ...more]) => [item, base, fixLines(stats, FIX.sets[`${item}|${name}`]), ...more]), ...rest]);
   return {
-    SUD: sacredOf(c.sacredUniques),
-    SETD: setsOf(c.sets),
+    SUD: sacredOf(sacred),
+    SETD: setsOf(sets),
     SOCKD,
     SOCK_GROUPS: [...new Set(SOCKD.map((s) => s.group))],
     BASED: [...basesOf(c.baseItems), ...mastercraftedOf(MASTERCRAFTED.bases)],

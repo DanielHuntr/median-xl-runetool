@@ -27,8 +27,8 @@ test("cast breakpoints match the official calculator for every class and weapon 
   assert.equal(checked, 57); // 7 classes × 8 weapon kinds, and Assassin claws
 });
 
-test("the game data is the 2.14.4 animdata the calculator uses", () => {
-  assert.equal(data.patch, "2.14.4");
+test("the game data is the installed patch's animdata the calculator uses", () => {
+  assert.equal(data.patch, "2.14.6");
   assert.deepEqual(data.anims.Amazon.A11HS, [16, 256]);
   assert.deepEqual(data.anims.Assassin.A1HT1, [11, 320]);
   assert.deepEqual(data.weapons["Short Sword"], ["1hs", -20]);

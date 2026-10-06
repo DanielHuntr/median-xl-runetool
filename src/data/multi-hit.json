@@ -1,5 +1,5 @@
 {
- "patch": "2.14.4",
+ "patch": "2.14.6",
  "source": "missiles.bin (life 0x96, velocity 0x9A, hit again 0x188/0x189, size 0x18A, skill 0x194)",
  "skills": {
   "retaliate": {

@@ -276,15 +276,21 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   if (statPoints.spent > statPoints.available)
     warn(`${statPoints.spent} stat points spent but only ${statPoints.available} available.`);
   const STR = attributes.strength.total, DEX = attributes.dexterity.total;
-  // Mastercrafted abilities that grow with other stats (the game's tooltip text; a hidden skill
-  // carries each out, so whole steps are assumed): Maiden Bow, Kukri, Flying Kinzhal.
+  // Mastercrafted abilities that grow with other stats, as the hidden skill carrying each one
+  // out computes them (skills.bin passive stats and their formulas, whole numbers as the game's
+  // formulas are): Maiden Bow (skill 2031) max(1, Dexterity / 500)% avoid; Kukri (2032)
+  // 14 × Dexterity / 100 + weapon physical damage % + defense bonus % lightning damage, one more
+  // at the maximum (its tooltip leaves the Dexterity out); Flying Kinzhal (2043) Movement Speed / 7
+  // Deadly Strike.
+  const kukri = new Set();
   for (const r of Object.values(equipped)) for (const l of r.lines) {
-    if (l === "+1% Chance to Avoid Damage per 500 Dexterity") add("avoid_chance", Math.floor(DEX / 500), r.def.name);
+    if (l === "+1% Chance to Avoid Damage per 500 Dexterity") add("avoid_chance", Math.max(1, Math.floor(DEX / 500)), r.def.name);
     else if (l === "1% Deadly Strike per 7% Movement Speed") add("deadly_strike", Math.floor(s("movement_speed") / 7), r.def.name);
-    else if (/^\+1 Lightning Damage per 1% (Bonus to Defense|Total Physical Weapon Damage Bonus)$/.test(l)) {
-      const n = Math.floor(s(l.endsWith("Defense") ? "defense_bonus_multiplier" : "enhanced_weapon_damage"));
+    else if (/^\+1 Lightning Damage per 1% (Bonus to Defense|Total Physical Weapon Damage Bonus)$/.test(l) && !kukri.has(r)) {
+      kukri.add(r);
+      const n = Math.floor((14 * DEX) / 100) + Math.floor(s("enhanced_weapon_damage")) + Math.floor(s("defense_bonus_multiplier"));
       add("minimum_lightning_damage", n, r.def.name);
-      add("maximum_lightning_damage", n, r.def.name);
+      add("maximum_lightning_damage", n + 1, r.def.name);
     }
   }
   // Gear that takes an attribute below zero ("-75 to Vitality"): say which, and offer the points.

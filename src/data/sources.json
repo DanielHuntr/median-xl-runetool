@@ -13,7 +13,7 @@
   "liveCatalog": "Sacred uniques, sets, socketables and base items are refreshed at build time (prebuild) and fetched live at runtime from /api/catalog. The bundled snapshot date is in catalog-meta.json.",
   "planner": "Skills, trees, class stats, charms, relics and icons: azadix/medianxl-db (MIT), commit recorded in public/planner/data.json (dataset 2.14). Game rules: Median XL patch notes and docs (see src/planner/rules.js).",
   "gameFiles": {
-    "patch": "2.14.4",
+    "patch": "2.14.6",
     "files": [
       "medianxl-YmludGJsdHh0.mpq (game tables: skills.bin, skills2.bin, skilldesc.bin, skillscode.bin, skilldesccode.bin, skillcalc.bin, string tables)",
       "medianxl-version.mpq (version.mxl)"

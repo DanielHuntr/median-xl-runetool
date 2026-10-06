@@ -161,14 +161,28 @@ function build({ versions, gameMeta, skills, trees, stats, items }) {
   const baseIcons = {};
   for (const b of items.baseitems) baseIcons[b.name.replace(/\s*\((\d|Sacred)\)$/, "")] ??= b.icon;
   for (const o of items.other) baseIcons[o.name] ??= o.icon;
+  // MedianDB marks some lines with a colour ("{orange}+1 Extra Abyss Knight", added upstream in
+  // October 2026); the game shows the text, so the colour tag is dropped.
+  const COLOUR = /{(orange|grey|gray|red|green|blue|gold|white|yellow|purple|tan|black|darkgreen)}/gi;
+  const uncolour = (l) => (typeof l === "string" ? l.replace(COLOUR, "").trim() : l);
+  // MedianDB also describes choices now ({ label, oneOf: [...] }): one of several bonuses (Bone
+  // Chimes' version, Lylia's Curse's maximum resist) as its first option, as before; optional
+  // ones that start with "(none)" (Dulra Aegis's gems) left out, so nothing is credited unasked.
+  const lineText = (l) => {
+    if (typeof l === "string") return uncolour(l);
+    const options = Array.isArray(l?.oneOf) ? l.oneOf : [];
+    if (!options.length || options[0] === "(none)") return null;
+    const first = options[0];
+    return uncolour(typeof first === "string" ? first : first?.low ?? first?.high ?? null);
+  };
   const inventory = [...items.charms, ...items.relics].map((c) => ({
     id: c.id,
     name: c.name,
     kind: c.rarity === "relic" ? "relic" : "charm",
     icon: c.icon || "",
     reqLevel: c.reqLevel || 0,
-    lines: c.modifiers || [],
-    trophy: c.trophy || [],
+    lines: (c.modifiers || []).map(lineText).filter(Boolean),
+    trophy: (c.trophy || []).map(lineText).filter(Boolean),
   }));
   // Every skill's name, so item lines such as "+2 to Spiral Dance" resolve to oskills.
   const skillNames = Object.fromEntries(

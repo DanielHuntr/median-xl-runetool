@@ -1,5 +1,5 @@
 {
- "patch": "2.14.4",
+ "patch": "2.14.6",
  "source": "cubemain.bin (via src/data/cube-main.json)",
  "trophies": [
   {
@@ -290,11 +290,11 @@
    ]
   },
   {
-   "id": "scroll:gloves-1000-life-regenerated-per-second",
+   "id": "scroll:gloves-100-life-regenerated-per-second",
    "slot": "gloves",
    "name": "Scroll of Enchantment: Gloves",
    "lines": [
-    "+1000 Life Regenerated per Second"
+    "+100 Life Regenerated per Second"
    ]
   },
   {
@@ -633,7 +633,7 @@
    "name": "Scroll of Enchantment: Staff",
    "lines": [
     "30% Movement Speed",
-    "+2000 Life Regenerated per Second"
+    "+200 Life Regenerated per Second"
    ]
   },
   {
@@ -889,7 +889,7 @@
    "shrine": "Hidden",
    "category": "one-handed weapon, shield or small armor",
    "lines": [
-    "1% Reanimate as: a random monster"
+    "1% Reanimate as: Random Monster"
    ]
   },
   {
@@ -897,7 +897,7 @@
    "shrine": "Hidden",
    "category": "two-handed weapon or body armor",
    "lines": [
-    "1% Reanimate as: a random monster"
+    "1% Reanimate as: Random Monster"
    ]
   },
   {
@@ -989,7 +989,7 @@
    "lines": [
     "+(4 to 20) to Vitality",
     "(4 to 5)% to Vitality",
-    "+(10 to 100) Life Regenerated per Second"
+    "+(1 to 10) Life Regenerated per Second"
    ]
   },
   {
@@ -999,7 +999,7 @@
    "lines": [
     "+(6 to 28) to Vitality",
     "(6 to 12)% to Vitality",
-    "+(30 to 150) Life Regenerated per Second"
+    "+(3 to 15) Life Regenerated per Second"
    ]
   },
   {

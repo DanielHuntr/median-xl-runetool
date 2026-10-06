@@ -180,13 +180,15 @@ test("mastercrafted bases from the game files: fully socketed, never runeword ba
   assert.equal(r.canBeSuperior, false);
   assert.ok(!catalog.all().some((d) => d.kind === "runeword" && catalog.runewordBases(d).some((b) => b.mastercrafted)));
   assert.ok(r.parsed.every((p) => p.kind !== "unknown"), JSON.stringify(r.parsed.filter((p) => p.kind === "unknown")));
-  // +1% Chance to Avoid Damage per 500 Dexterity.
+  // Avoid: max(1, Dexterity / 500), as skill 2031's formula has it.
   const avoid = (dexterity) => computeCharacter(build("Amazon", { level: 120, attrs: { dexterity }, gear: { weapon: { ref: bow.key } } }), { engine, catalog, planner }).stats.avoid_chance?.sources.find((x) => x.source === bow.name)?.value || 0;
-  assert.equal(avoid(1000) - avoid(0), 2);
-  // The Kukri: +1 lightning damage per 1% Bonus to Defense.
+  assert.equal(avoid(1000), 2);
+  assert.equal(avoid(0), 1, "at least 1%");
+  // The Kukri (skill 2032): 14 × Dexterity / 100 + weapon damage % + defense bonus %, one more at the maximum.
   const kukri = catalog.all().find((d) => d.name === "Kukri (Mastercrafted)");
   const c = computeCharacter(build("Assassin", { level: 120, gear: { weapon: { ref: kukri.key }, amulet: { ref: "custom", custom: { name: "Def", slotType: "amulet", text: "40% Bonus to Defense" } } } }), { engine, catalog, planner });
-  assert.equal(c.stats.maximum_lightning_damage.sources.find((x) => x.source === kukri.name).value, 40);
+  const dex = c.attributes.dexterity.total;
+  assert.equal(c.stats.maximum_lightning_damage.sources.find((x) => x.source === kukri.name).value, Math.floor((14 * dex) / 100) + c.s("enhanced_weapon_damage") + 40 + 1);
 });
 
 test("affixes from the game's tables on a custom item: those that fit its base, three of each on a rare, one per group", async () => {
@@ -261,6 +263,10 @@ test("summon damage: each minion's tooltip damage, your summon damage on top, ev
   assert.equal(harvesters.all[1], harvesters.total[1] * harvesters.count.n);
   const boosted = dmg("harvesters", "+100% to Summon Damage");
   assert.ok(Math.abs(boosted.total[1] - harvesters.total[1] * 2) <= 1, `${boosted.total} vs ${harvesters.total}`);
+  // Blood Skeleton's own formula reads summon damage (stat 470): counted once, not again on top.
+  const skeleton = dmg("blood_skeleton"), skeletonBoosted = dmg("blood_skeleton", "+100% to Summon Damage");
+  assert.ok(skeletonBoosted.notes[0].includes("already includes"), skeletonBoosted.notes[0]);
+  assert.ok(skeletonBoosted.total[1] < skeleton.total[1] * 2 * 1.5, "not multiplied a second time");
   // Iron Golem doesn't take your pierce; other minions do (no override).
   assert.equal(dmg("iron_golem").pierce?.fire, 0);
   assert.equal(harvesters.pierce, undefined);
@@ -277,6 +283,13 @@ test("multi-hit skills: about N hits on a monster, counted in the total", async 
   const d = skillDamage("frigid_nova", { engine, build: b, skillBuild: { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, character: c });
   assert.equal(d.multiHit, 3);
   assert.equal(d.all[1], d.total[1] * 3);
+});
+
+test("relics and charms are plain item text: no MedianDB colour tags or choice objects", () => {
+  for (const c of Object.values(planner.inventory)) for (const l of [...c.lines, ...(c.trophy || [])]) {
+    assert.equal(typeof l, "string", c.name);
+    assert.doesNotMatch(l, /{(orange|grey)}/, c.name);
+  }
 });
 
 test("character sheet: attributes, life, resist penalty, set bonuses, gear skills, passives", async () => {
@@ -2001,7 +2014,11 @@ test("where MedianDB and the game files disagree, the game's value is used", asy
   for (const x of planner.game.report.formulaDiffers) {
     const s = planner.skills[x.id];
     const b = build(s.class, { level: Math.max(x.ulvl, 1), points: { [x.id]: x.blvl } });
-    const line = engine.describe(b, x.id, x.blvl).effect.find((l) => l.text && l.text.includes(`${x.game}%`));
+    const effect = engine.describe(b, x.id, x.blvl).effect;
+    // The game's number shown, or the game's own tooltip formula built on it (2.14.6's
+    // Annihilation writes max(10, pst1): its stat is 1 at level 1, its tooltip 10%).
+    const line = effect.find((l) => l.text && l.text.includes(`${x.game}%`))
+      || effect.find((l) => l.trust === "game" && (l.parts || []).some((pt) => (pt.source?.formula || []).some((f) => /\bpst\d\b/.test(f))));
     assert.ok(line, `${x.name}: the game's ${x.game} shown, not MedianDB's ${x.medianDb}`);
   }
   // Caps and required levels: the game's (level-grown caps aside, which follow what the game shows).

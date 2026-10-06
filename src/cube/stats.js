@@ -3,10 +3,12 @@
 
 export const CLASSES = ["Amazon", "Sorceress", "Necromancer", "Paladin", "Barbarian", "Druid", "Assassin"];
 
-const num = (min, max) => (min === max ? `${Math.abs(min)}` : `(${Math.abs(min)}-${Math.abs(max)})`);
+// A range stored high to low (Fangspear's life: 100 to 0) is written low to high, as the game does.
+const num = (min, max) => (min === max ? `${Math.abs(min)}` : Math.abs(min) <= Math.abs(max) || (min < 0) !== (max < 0) ? `(${Math.abs(min)}-${Math.abs(max)})` : `(${Math.abs(max)}-${Math.abs(min)})`);
 // "+5", "-(3-5)", "(6-28)"; a range that crosses zero is written as it is.
 function signed(min, max, plus = true) {
-  if (min < 0 && max < 0) return `-${num(min, max)}`;
+  // Both negative: the smaller amount first ("-(25-30)%", stored as -30 to -25).
+  if (min < 0 && max < 0) return `-${Math.abs(min) <= Math.abs(max) ? num(min, max) : num(max, min)}`;
   if (min < 0) return `(${min} to ${max})`;
   return `${plus ? "+" : ""}${num(min, max)}`;
 }
@@ -18,17 +20,27 @@ const sprintf = (s, args) => {
 
 // One stat at a value (min to max) with a parameter → its item line, or null when the game
 // doesn't show it.
-function statLine(data, stat, param, min, max) {
+export function statLine(data, stat, param, min, max) {
   const d = data.stats[stat];
   if (!d) return null;
-  const [func, pos, strPos, strNeg, str2] = d;
+  const [func, pos, strPos, strNeg, str2, op, opParam] = d;
+  // "(Based on Character Level)" stats (functions 6-9) store the value per level in steps:
+  // Median XL's operator 12 in 32nds (Shark's 4 is "+0.125 to Maximum Damage"), Diablo II's
+  // per-level operators in 2^param ("op param", itemstatcost.bin 0x57).
+  // Median XL's per-level stats written with function 32 (life regenerated per level) too.
+  if (((func >= 6 && func <= 9) || (func === 32 && op === 12)) && op != null) {
+    const step = op === 12 ? 32 : 2 ** (opParam || 0);
+    if (step > 1) { min /= step; max /= step; }
+  }
   const s = (min < 0 && strNeg ? strNeg : strPos) || "";
   const v = signed(min, max, false), pv = signed(min, max);
   const place = (value) => (pos === 0 ? s : pos === 2 ? `${s} ${value}` : `${value} ${s}`);
   if (/%\+?d|%s|%\.\d[fg]/.test(s) && ![15, 24].includes(func)) return sprintf(s, [min === max ? min : num(min, max), data.skills[param] ?? ""]);
   switch (func) {
     case 0: return null;
-    case 1: case 12: case 32: case 33: case 35: case 36: case 38: return place(pv);
+    case 1: case 12: case 33: case 35: case 36: case 38: return place(pv);
+    // Median XL's function 32 shows tenths (Life Regenerated per Second: 400 is "+40").
+    case 32: return place(signed(min / 10, max / 10));
     case 2: return place(`${v}%`);
     case 3: return place(v);
     case 4: return place(`${pv}%`);
@@ -43,7 +55,7 @@ function statLine(data, stat, param, min, max) {
     case 20: return place(`${min < 0 ? "+" : "-"}${num(min, max)}%`);
     case 21: return place(`${min < 0 ? "+" : "-"}${num(min, max)}`);
     // Median XL also writes a range of monsters (min to max) with the chance as the parameter.
-    case 22: case 23: return min > 100 ? `${param}% ${s} a random monster` : `${v}% ${s} ${data.monsters[param] ?? "a monster"}`;
+    case 22: case 23: return min > 100 ? `${param}% ${s} Random Monster` : `${v}% ${s} ${data.monsters[param] ?? "a monster"}`;
     case 24: return `Level ${max} ${data.skills[param] ?? "Skill"} (${min} Charges)`;
     case 27: return `${pv} to ${data.skills[param] ?? "a skill"}`;
     case 28: return `${pv} to ${data.skills[param] ?? "a skill"}`;

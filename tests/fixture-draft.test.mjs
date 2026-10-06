@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const script = fileURLToPath(new URL("../scripts/dev/fixture-draft.mjs", import.meta.url));
-const { fixtures } = JSON.parse(readFileSync(new URL("../data/game/2.14.4/fixtures.json", import.meta.url), "utf8"));
+const { fixtures } = JSON.parse(readFileSync(new URL("../data/game/2.14.6/fixtures.json", import.meta.url), "utf8"));
 
 test("a confirmation report becomes a fixture draft that matches a confirmed one", () => {
   // Issue #2's Mind Flay report, as the issue form writes it.

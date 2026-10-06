@@ -16,7 +16,7 @@ const json = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url),
 const data = await json("../public/planner/data.json");
 const engine = createEngine(data);
 const patch = data.game.patch;
-const { fixtures } = await json(`../data/game/${patch}/fixtures.json`);
+const { fixtures, observedIn } = await json(`../data/game/${patch}/fixtures.json`);
 const WOTS = "way_of_the_spider";
 const wots = fixtures.find((f) => f.skill === WOTS);
 const input = (k) => wots.inputs[k].value;
@@ -40,7 +40,8 @@ test("datasets are one patch, and the version is exposed for the UI", () => {
   assert.ok(patch.startsWith(`${data.gameVersion}.`), `game files ${patch} vs MedianDB ${data.gameVersion}`);
   assert.equal(engine.datasets.game.patch, patch);
   assert.equal(engine.datasets.medianDb.patch, data.gameVersion);
-  assert.equal(wots.id && fixtures.every((f) => f.source.includes(patch)), true, "fixtures name their patch");
+  // Fixtures carried over from an earlier patch name the one they were seen in (observedIn).
+  assert.equal(wots.id && fixtures.every((f) => f.source.includes(observedIn || patch)), true, "fixtures name their patch");
 });
 
 test("merging refuses game files from a different patch", async () => {

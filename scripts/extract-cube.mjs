@@ -190,7 +190,7 @@ for (const [, , , op] of recipes) if (op && op[0] >= 15 && op[0] <= 18) usedStat
 const statOut = {};
 for (const s of usedStats) {
   const r = isc.record(s);
-  statOut[s] = [r[0x36], r[0x37], strText(r.readUInt16LE(0x38)), strText(r.readUInt16LE(0x3a)), strText(r.readUInt16LE(0x3c))];
+  statOut[s] = [r[0x36], r[0x37], strText(r.readUInt16LE(0x38)), strText(r.readUInt16LE(0x3a)), strText(r.readUInt16LE(0x3c)), r[0x56], r[0x57]];
 }
 // Parameters that name something: skills (functions 15, 24, 27, 28), monsters (22, 23) and
 // whole strings (Median XL's function 31, e.g. a shrine vessel's "Shrine stats:" block).

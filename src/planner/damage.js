@@ -203,17 +203,24 @@ function skillDamageOf(id, { engine, build, skillBuild, character }) {
     if (c.s("summoned_minion_damage")) extra.push(`+${c.s("summoned_minion_damage")}% summon damage`);
     if (c.s("summoned_minion_life")) extra.push(`+${c.s("summoned_minion_life")}% summon life`);
     // Its minions' damage, an estimate: the tooltip's damage for one minion ("Damage: 266-276"
-    // is physical; "Magic Damage", a poison's total over its duration), times your summon
-    // damage (assumed to apply on top, as the tooltip doesn't move with it), for each minion.
+    // is physical; "Magic Damage", a poison's total over its duration), for each minion, with
+    // your summon damage: some summons' own formulas already read it (stat 470, Blood Skeleton,
+    // Night Hawks, Guardian Spirit), the rest's tooltips don't move with it (Harvesters, Fire
+    // Elementals), so it's added on top only for those (assumed: the game applies it to them).
     // How often minions attack isn't known (the docs: minion speeds are unknown).
     const n = typeof m?.[0] === "number" ? m[0] : typeof m?.[1] === "number" ? m[1] : 1;
     const mult = Math.max(0, 1 + c.s("summoned_minion_damage") / 100);
+    const readsSummonDamage = (p) => Object.values(p.source?.resolved || {}).some((r) => /^summoned_minion_damage\b/.test(r.label || ""));
+    let alreadyIn = false;
     const parts = describe.effect.flatMap((l) => l.status === "unknown" ? [] : (l.parts || [])
       .filter((p) => typeof p.values?.[0] === "number" && (p.key === "damage" || p.key === "poison_dot" || TOOLTIP_DAMAGE.test(p.key)))
-      .map((p) => ({
-        element: p.key === "damage" ? "physical" : p.key === "poison_dot" ? "poison" : p.key.split("_")[0],
-        range: pair(p.values[0] * mult, (typeof p.values[1] === "number" ? p.values[1] : p.values[0]) * mult),
-      })));
+      .map((p) => {
+        const m = readsSummonDamage(p) ? ((alreadyIn = true), 1) : mult;
+        return {
+          element: p.key === "damage" ? "physical" : p.key === "poison_dot" ? "poison" : p.key.split("_")[0],
+          range: pair(p.values[0] * m, (typeof p.values[1] === "number" ? p.values[1] : p.values[0]) * m),
+        };
+      }));
     if (!parts.length) return { id, name: s.name, kind: "summon", parts: [], lines: [...lines, ...extra], notes: [], formula: "" };
     const total = pair(parts.reduce((x, p) => x + p.range[0], 0), parts.reduce((x, p) => x + p.range[1], 0));
     const count = n > 1 ? { n, text: `${n} minions` } : null;
@@ -225,7 +232,7 @@ function skillDamageOf(id, { engine, build, skillBuild, character }) {
       ...(count ? { count, allParts, all: [0, 1].map((i) => allParts.reduce((x, p) => x + p.range[i], 0)) } : {}),
       ...(noPierce ? { pierce: Object.fromEntries(ELEMENTS.map((e) => [e, 0])) } : {}),
       notes: [
-        `Estimated: each minion's damage from the skill's tooltip${mult !== 1 ? `, with your +${c.s("summoned_minion_damage")}% summon damage on top` : ""}${count ? `; the total is for all ${n} if each lands a hit` : ""}. How often minions attack isn't known.`,
+        `Estimated: each minion's damage from the skill's tooltip${mult !== 1 ? (alreadyIn ? `, which already includes your +${c.s("summoned_minion_damage")}% summon damage` : `, with your +${c.s("summoned_minion_damage")}% summon damage on top`) : ""}${count ? `; the total is for all ${n} if each lands a hit` : ""}. How often minions attack isn't known.`,
         ...(noPierce ? [`${s.name} doesn't use your pierce (the docs' Minion Mechanics page).`] : []),
       ],
       formula: "",

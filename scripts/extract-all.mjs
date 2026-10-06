@@ -18,6 +18,8 @@ const STEPS = [
   ["extract-mercs.mjs", dir],
   ["extract-item-art.mjs", dir],
   ["build-item-atlas.mjs"],
+  // Areas before the planner import, which reads them (Hell-only areas, for unlockable skills).
+  ["extract-areas.mjs", dir],
   ["import-skills.mjs"],
   // Straight into src/data/.
   ["import-orbs.mjs", dir],
@@ -25,13 +27,14 @@ const STEPS = [
   ["extract-runeword-bases.mjs", dir],
   ["extract-superior.mjs", dir],
   ["extract-speed.mjs", dir],
-  ["extract-areas.mjs", dir],
   ["extract-cube.mjs", dir],
   ["extract-item-bonuses.mjs"],
   ["extract-soulbinder.mjs", dir],
   ["extract-mastercrafted.mjs", dir],
   ["extract-affixes.mjs", dir],
   ["extract-multi-hit.mjs", dir],
+  // The docs' catalogue against these tables: the game's value where they disagree.
+  ["extract-catalogue-fixes.mjs", dir],
   ["check-patch.mjs"],
 ];
 

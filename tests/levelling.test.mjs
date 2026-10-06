@@ -6,7 +6,7 @@ import { areasNear, experienceShare, gearCats, runewordsBetween } from "../src/l
 const { areas, patch } = JSON.parse(readFileSync(new URL("../src/data/areas.json", import.meta.url), "utf8"));
 
 test("areas come from the game's levels.bin", () => {
-  assert.equal(patch, "2.14.4");
+  assert.equal(patch, "2.14.6");
   const moor = areas.find((a) => a.name === "Blood Moor");
   assert.deepEqual([moor.act, ...moor.mlvl], [1, 1, 51, 100]);
   assert.ok(!areas.some((a) => a.name === "Rogue Encampment"), "towns have no monsters");

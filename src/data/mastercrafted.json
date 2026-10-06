@@ -1,5 +1,5 @@
 {
- "patch": "2.14.4",
+ "patch": "2.14.6",
  "source": "weapons.bin/armor.bin (via cube-main.json), speed.json, automagic.bin groups 801-808, string tables",
  "bases": [
   {

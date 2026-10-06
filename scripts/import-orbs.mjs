@@ -1,4 +1,4 @@
-// Ordinary orb values from the installed 2.14.4 mysticorbs.bin; unique orbs from docs.
+// Ordinary orb values from the installed game's mysticorbs.bin; unique orbs from docs.
 // node scripts/import-orbs.mjs [game directory]
 import { writeFile } from 'node:fs/promises';
 import { openMpq } from './lib/mpq.mjs';
@@ -6,7 +6,9 @@ import { readBin } from './lib/d2tables.mjs';
 import { parseUniqueOrbs, UMO_URL } from '../lib/mystic-orbs.mjs';
 const dir = process.argv[2] || 'C:/games/median-xl';
 const version = openMpq(`${dir}/medianxl-version.mpq`).read('version.mxl')?.toString('latin1').trim();
-if (version !== '2.14.4') throw new Error(`Orb table mapping is verified for 2.14.4, found ${version}`);
+// The row-to-stat mapping below is checked per patch: 2.14.6's table gives the same 85 orbs as 2.14.4's.
+const VERIFIED = ['2.14.4', '2.14.6'];
+if (!VERIFIED.includes(version)) throw new Error(`Orb table mapping is verified for ${VERIFIED.join(', ')}, found ${version}`);
 const mpq = openMpq(`${dir}/medianxl-YmludGJsdHh0.mpq`);
 const table = readBin(mpq.read('data/global/excel/mysticorbs.bin'.replaceAll('/', String.fromCharCode(92))));
 if (table.size !== 143) throw new Error('Unrecognized mystic orb table');
@@ -34,5 +36,5 @@ const response = await fetch(UMO_URL);
 if (!response.ok) throw new Error(`Docs returned ${response.status}`);
 const unique = parseUniqueOrbs(await response.text()).map(o => ({ ...o, id: `umo-${o.id}`, unique: true, minLevel: 0 }));
 if (unique.length < 25) throw new Error('Incomplete unique orb catalogue');
-await writeFile(new URL('../src/data/mystic-orbs.json', import.meta.url), JSON.stringify({ source: ['Median XL 2.14.4 mysticorbs.bin', UMO_URL], orbs: [...ordinary, ...unique] }, null, 2) + '\n');
+await writeFile(new URL('../src/data/mystic-orbs.json', import.meta.url), JSON.stringify({ source: [`Median XL ${version} mysticorbs.bin`, UMO_URL], orbs: [...ordinary, ...unique] }, null, 2) + '\n');
 console.log(`Imported ${ordinary.length} ordinary and ${unique.length} unique orbs`);

@@ -1,0 +1,84 @@
+{
+ "patch": "2.14.6",
+ "source": "uniqueitems.bin, setitems.bin (scripts/lib/catalogue-audit.mjs)",
+ "fixes": {
+  "uniques": {
+   "Blackheart": {
+    "0": [
+     [
+      "+1 Life Regenerated per Second (Based on Character Level)",
+      "+0.0875 Life Regenerated per Second (Based on Character Level)"
+     ]
+    ],
+    "1": [
+     [
+      "+1 Life Regenerated per Second (Based on Character Level)",
+      "+0.1125 Life Regenerated per Second (Based on Character Level)"
+     ]
+    ],
+    "2": [
+     [
+      "+1 Life Regenerated per Second (Based on Character Level)",
+      "+0.1375 Life Regenerated per Second (Based on Character Level)"
+     ]
+    ],
+    "3": [
+     [
+      "+1 Life Regenerated per Second (Based on Character Level)",
+      "+0.15 Life Regenerated per Second (Based on Character Level)"
+     ]
+    ]
+   }
+  },
+  "sacred": {
+   "Firequeen": [
+    [
+     "+2 Life Regenerated per Second (Based on Character Level)",
+     "+1.5 Life Regenerated per Second (Based on Character Level)"
+    ]
+   ],
+   "Darkfeast": [
+    [
+     "+(50 to 200) Spell Focus",
+     "+(100 to 200) Spell Focus"
+    ],
+    [
+     "+(30 to 50)% to Cold Spell Damage",
+     "+(40 to 50)% to Cold Spell Damage"
+    ],
+    [
+     "-(10 to 25)% to Enemy Cold Resistance",
+     "-(20 to 25)% to Enemy Cold Resistance"
+    ],
+    [
+     "+(18 to 30) to Hunting Banshee",
+     "+(24 to 30) to Hunting Banshee"
+    ],
+    [
+     "+50 Life Regenerated per Second",
+     "+75 Life Regenerated per Second"
+    ]
+   ],
+   "Gaze of the Dead": [
+    [
+     "+2 Life Regenerated per Second (Based on Character Level)",
+     "+1.5 Life Regenerated per Second (Based on Character Level)"
+    ]
+   ],
+   "Athulua's Blessing": [
+    [
+     "+(75 to 113) Life Regenerated per Second",
+     "+(75 to 112.5) Life Regenerated per Second"
+    ]
+   ]
+  },
+  "sets": {
+   "Fangskin Scales|Henchmen Trophies": [
+    [
+     "Adds 6-8 Poison Damage over 1 seconds",
+     "Adds 6-8 Poison Damage over 0.2 seconds"
+    ]
+   ]
+  }
+ }
+}
