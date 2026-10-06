@@ -302,6 +302,14 @@ export function createPlanner(engine, catalog, planner) {
     setStage(n);
     return { ok: true };
   }
+  /** A copy of a stage, after it, named "<name> copy" (then "copy 2"...); it opens. */
+  function duplicateStage(name) {
+    const base = `${name.slice(0, 25)} copy`;
+    let n = base;
+    for (let k = 2; stageError(n); k++) n = `${base} ${k}`;
+    if (state.stage[state.cls] !== name) setStage(name);
+    return addStage(n);
+  }
   function renameStage(from, to) {
     const cls = state.cls, n = String(to || "").trim(), err = stageError(n, from);
     if (err) return { ok: false, reason: err };
@@ -1067,7 +1075,7 @@ export function createPlanner(engine, catalog, planner) {
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
-    stagesOf, addStage, renameStage, moveStage, placeStage, removeStage,
+    stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
     damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,

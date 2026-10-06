@@ -91,7 +91,7 @@ const stageTip = (name) => {
   if (!made) return `Empty: starts at level ${at.level}, ${at.difficulty}`;
   return `Level ${at.level}, ${at.difficulty}${p.stageFilled(name) ? "" : " (empty)"}`;
 };
-// The player's own stages. The open stage's chip has a menu (move, rename, delete); a new
+// The player's own stages. The open stage's chip has a menu (move, rename, duplicate, delete); a new
 // stage or a new name is typed into a chip in place; chips can be dragged into order.
 const stageList = computed(() => planner.value?.stagesOf() ?? []);
 const stageEdit = ref(null), stageText = ref(""), stageErr = ref(""), stageDeleting = ref(false);
@@ -141,14 +141,11 @@ const stageHelp = computed(() => {
   if (!p) return null;
   const b = p.build.value, name = stageName.value;
   const order = p.stagesOf();
-  const copyFrom = order.filter((n) => n !== name && p.stageFilled(n));
-  const empty = !Object.keys(b.points).length && !Object.keys(b.gear).length;
   const i = order.indexOf(name);
   const prevLevel = i > 0 ? (stageAt(order[i - 1])?.level ?? 0) : 0;
   const c = { TUD, SUD, SETD, BASED };
   const cats = gearCats(b.gear, c);
   return {
-    empty, copyFrom,
     areas: areas.value ? areasNear(areas.value, b.level, b.difficulty, 4) : [],
     runewords: runewordsBetween(RW, fitsBase, cats, name === "Endgame" ? 0 : prevLevel, b.level).slice(0, 6),
     cats, prevLevel,
@@ -332,6 +329,7 @@ const questsOpen = ref(false);
                     <button type="button" role="menuitem" :disabled="i === 0" @click="stageMenu(() => planner.moveStage(n, -1))">Move earlier</button>
                     <button type="button" role="menuitem" :disabled="i === stageList.length - 1" @click="stageMenu(() => planner.moveStage(n, 1))">Move later</button>
                     <button type="button" role="menuitem" @click="editStage('rename')">Rename</button>
+                    <button type="button" role="menuitem" :disabled="stageList.length >= MAX_STAGES" @click="stageMenu(() => planner.duplicateStage(n))">Duplicate</button>
                     <hr />
                     <button type="button" role="menuitem" class="danger" :disabled="stageList.length < 2" @click="stageDeleting = true">Delete stage</button>
                   </template>
@@ -356,11 +354,7 @@ const questsOpen = ref(false);
           >+</button>
         </div>
         <p v-if="stageErr" class="stage-err" role="alert">{{ stageErr }}</p>
-        <p v-if="stageHelp?.empty && stageHelp.copyFrom.length" class="stage-hint">
-          This stage is empty.
-          <button v-for="n in stageHelp.copyFrom" :key="n" type="button" class="text-btn" @click="planner.copyStage(n)">Copy {{ n }}</button>
-        </p>
-        <div v-else-if="stageName !== 'Endgame' && stageHelp && (stageHelp.areas.length || stageHelp.runewords.length)" class="stage-hint stage-pops">
+        <div v-if="stageName !== 'Endgame' && stageHelp && (stageHelp.areas.length || stageHelp.runewords.length)" class="stage-hint stage-pops">
           <div v-if="stageHelp.areas.length" class="stage-pop-wrap">
             <button type="button" class="text-btn" :aria-expanded="stagePop === 'areas'" aria-controls="stage-pop-areas" @click="toggleStagePop('areas')">
               Where to level <small>({{ stageHelp.areas.length }})</small>

@@ -1958,6 +1958,13 @@ test("levelling stages: each is its own build, carried by save codes and share l
   q.add(engine.skillIds().find((id) => engine.skill(id).class === "Sorceress" && engine.canAdd(q.build.value, id).ok));
   q.fillStages("Sorceress", { Normal: { level: 30 } });
   assert.equal(q.build.value.level, 60, "a stage with points isn't replaced");
+  // Duplicate: a copy after the stage, opened, named "<name> copy" (then "copy 2").
+  assert.equal(q.duplicateStage("Normal").ok, true);
+  assert.equal(q.state.stage.Sorceress, "Normal copy");
+  assert.equal(q.build.value.level, 60);
+  assert.equal(q.stagesOf()[q.stagesOf().indexOf("Normal") + 1], "Normal copy");
+  q.duplicateStage("Normal");
+  assert.equal(q.state.stage.Sorceress, "Normal copy 2");
   p.reset();
   assert.equal(p.stageFilled("Normal"), false, "reset clears every stage");
   scope.stop();
