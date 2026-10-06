@@ -34,7 +34,7 @@ function toggle(stat) {
 }
 // The item takes its base's name; a stats-only item is just "Custom item".
 const item = computed(() => ({ ref: 'custom', ...(base.value ? { base: base.value, baseVariant: variant.value } : {}),
-  socketCount: Math.min(maxSockets.value, Math.max(0, Number(sockets.value) || 0)),
+  socketCount: baseDef.value?.mastercrafted ? maxSockets.value : Math.min(maxSockets.value, Math.max(0, Number(sockets.value) || 0)),
   custom: { name: baseDef.value?.name || 'Custom item', slotType: baseDef.value?.slotType || SLOTS.find(s => s.id === props.slot)?.accepts[0] || 'weapon',
     text: [customStatText(selected.value), extra.value].filter(Boolean).join('\n') } }));
 const preview = computed(() => catalog.resolve(item.value, build.value.level));
@@ -64,7 +64,8 @@ const preview = computed(() => catalog.resolve(item.value, build.value.level));
     </div>
     <div v-if="variants.length > 1 || maxSockets" class="custom-base-opts">
       <div v-if="variants.length > 1" class="field"><span>Base tier</span><div class="picker-filters"><button v-for="(v, i) in variants" :key="i" :aria-pressed="variant === i" @click="variant = i">{{ v.label }}</button></div></div>
-      <label v-if="maxSockets" class="field">Sockets <select v-model.number="sockets"><option v-for="n in maxSockets + 1" :key="n" :value="n - 1">{{ n - 1 }}</option></select></label>
+      <p v-if="baseDef?.mastercrafted && maxSockets" class="field muted">Sockets: {{ maxSockets }}, always (mastercrafted items are fully socketed). Add its affixes in the item editor once it's equipped.</p>
+      <label v-else-if="maxSockets" class="field">Sockets <select v-model.number="sockets"><option v-for="n in maxSockets + 1" :key="n" :value="n - 1">{{ n - 1 }}</option></select></label>
     </div>
     <h3>Selected modifiers</h3>
     <p v-if="!selected.length" class="muted">Pick modifiers on the right to set their values here.</p>
