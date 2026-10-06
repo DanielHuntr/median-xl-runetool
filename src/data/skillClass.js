@@ -17,7 +17,7 @@ export function skillClass(line) {
   if (cls)
     return {
       tag: cls,
-      tip: `${name}: ${cls} skill. Any class can use it from this item; a ${cls}'s own skill levels from items add up to +3 at most`,
+      tip: `${name}: ${cls} skill. Any class can use it from this item; ${/^[AEIOU]/.test(cls) ? "an" : "a"} ${cls}'s own skill levels from items add up to +3 at most`,
     };
   return { tag: "Item skill", tip: `${name}: no class has this skill; any class can use it from this item` };
 }
