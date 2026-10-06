@@ -54,9 +54,12 @@ const mercActs = computed(() => {
 // Esc, a click elsewhere or changing stage.
 const stagePop = ref(null);
 const toggleStagePop = (name) => (stagePop.value = stagePop.value === name ? null : name);
+// The click's path as it was dispatched: a menu item the click itself replaced (Delete stage
+// swapping to its confirmation) is no longer in the page, but the click was still inside.
 const closeStagePop = (e) => {
   if (!stagePop.value) return;
-  if (e.type === "keydown" ? e.key === "Escape" : !e.target.closest?.(".stage-pop-wrap")) stagePop.value = null;
+  const inside = e.composedPath?.().some((el) => el.classList?.contains("stage-pop-wrap"));
+  if (e.type === "keydown" ? e.key === "Escape" : !inside) stagePop.value = null;
 };
 watch(() => planner.value && [planner.value.state.cls, stageName.value], () => (stagePop.value = null));
 // Why the mercenary's level can't go higher: it's never above the character's, and a
