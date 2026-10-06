@@ -129,6 +129,9 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     assert.equal(scope.run(() => createRunetool()).theme.value, "dark");
     state.theme.value = "hc";
     await nextTick();
+    // The tiered search is kept across a refresh; cleared here so the page shows every card.
+    assert.equal(JSON.parse(memory.get("mxlrw2:tuQuery")), "Grim Fang");
+    memory.delete("mxlrw2:tuQuery");
     window.location.hash = "#uniques";
     const uniqueHtml = await renderToString(createSSRApp(App));
     assert.equal((uniqueHtml.match(/class="unique-card"/g) || []).length, 255);
@@ -172,6 +175,11 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     assert.equal(state.tier(sword).label, "Sacred");
     state.st.lvl = 120;
     await nextTick();
+    // The catalogue pages' filters are kept across a refresh.
+    const savedBrowse = JSON.parse(memory.get("mxlrw2:browse"));
+    assert.equal(savedBrowse.sacred.q, "Xiphos");
+    assert.equal(savedBrowse.bases.tier, "Sacred");
+    assert.equal(scope.run(() => createRunetool()).browse.sets.cls, "Amazon");
     for (const [hash, cls, min] of [
       ["#sacred-uniques", "unique-card", 1],
       ["#sets", "set-card", 1],
