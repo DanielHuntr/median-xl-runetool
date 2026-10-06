@@ -100,6 +100,12 @@ test("the oskills browser reverse-searches item skill sources", async ({ page })
   await expect(page.locator(".oskill-sources li", { hasText: "Scroll of Enchantment: Gloves" })).toContainText("Chance to cast level 5 Life Spark");
 });
 
+test("a rune in a runeword links to the cube recipe that makes it", async ({ page }) => {
+  await page.goto("/#runewords?name=Shark");
+  await page.locator(".rune-card", { hasText: "Shark" }).first().getByRole("link", { name: /Eld Rune, show its cube recipe/ }).click();
+  await expect(page.getByText("Loaded the recipe that makes Eld", { exact: false })).toBeVisible();
+});
+
 test("a cube recipe link loads that recipe, ready to transmute", async ({ page }) => {
   await page.goto("/#cube?recipe=4792");
   await expect(page.getByText("Loaded: Book of Cain: Item Design + Oil of Craft → Book of Cain: Cube Reagent.", { exact: false })).toBeVisible();

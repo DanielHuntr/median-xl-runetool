@@ -21,8 +21,12 @@ const {
   SHORT,
 } = useRunetool();
 import { computed } from "vue";
+import MADE from "../data/cube-made.json";
 const props = defineProps({ r: { type: Object, required: true } });
 // Categories the game allows beyond the docs' list ("Weapons" already covers class weapons).
+// A rune the Horadric Cube makes (two Ith make a Tal; an elemental rune from a Runestone and an
+// essence) links to the Cube page with that recipe loaded (cube-made.json); great runes drop only.
+const runeRecipe = (rune) => (MADE.items[`${label(rune)} Rune`] ? `#cube?make=item:${encodeURIComponent(label(rune))}` : null);
 const alsoFits = computed(() =>
   props.r.allowed && !props.r.bases.includes("Weapons") ? props.r.allowed.filter((c) => !props.r.bases.includes(c)) : [],
 );
@@ -59,13 +63,15 @@ const alsoFits = computed(() =>
     </div>
     <div class="rune-sequence">
       <div v-for="(rune, i) in r.runes" class="rune-unit">
-        <span
+        <component
+          :is="runeRecipe(rune) ? 'a' : 'span'"
           class="socket"
-          :class="{ owned: isOwned(r, i) }"
-          tabindex="0"
-          :title="runeName(rune)"
-          :aria-label="runeName(rune) + (isOwned(r, i) ? ', owned' : '')"
-          ><img :src="RIMG[rune]" :alt="runeName(rune)" /></span
+          :class="{ owned: isOwned(r, i), 'has-recipe': !!runeRecipe(rune) }"
+          :href="runeRecipe(rune) || undefined"
+          :tabindex="runeRecipe(rune) ? undefined : 0"
+          :data-tip="runeRecipe(rune) ? `${runeName(rune)}: show its cube recipe` : runeName(rune)"
+          :aria-label="runeName(rune) + (isOwned(r, i) ? ', owned' : '') + (runeRecipe(rune) ? ', show its cube recipe' : '')"
+          ><img :src="RIMG[rune]" :alt="runeName(rune)" /></component
         ><span>{{ label(rune) }}</span>
       </div>
     </div>
