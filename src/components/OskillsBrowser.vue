@@ -6,7 +6,7 @@ import DataStatus from "./DataStatus.vue";
 import CatalogFilters from "./CatalogFilters.vue";
 import FilterPills from "./FilterPills.vue";
 import { useRunetool } from "../composables/useRunetool.js";
-import INDEX from "../data/oskill-index-sources.json";
+import SKILL_NAMES from "../data/skill-names.json";
 import SOULBINDER from "../data/soulbinder.json";
 import BONUSES from "../data/item-bonuses.json";
 
@@ -31,17 +31,17 @@ const sourceKinds = [
   ["scroll", "Scrolls of enchantment"],
   ["echo", "Echo Sabre"],
 ];
-// Relics and charms come from the planner's data (fetched on arrival, as site search does), with
-// its skill names: from these sources only lines naming a real skill count.
+// Every item's "+N to Skill" and chance-to-cast lines that name a real skill (the game's own
+// skill names, scripts/extract-affixes.mjs), so "+3 to Fire Skills" or "+20 to Strength" don't.
+const KNOWN = new Set(SKILL_NAMES.names);
+// Relics and charms come from the planner's data (fetched on arrival, as site search does).
 const inventory = ref([]);
-const skillNames = ref(new Set());
 const inventoryNote = ref("");
 async function loadInventory() {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}planner/data.json?v=${__BUILD_ID__}`);
     if (!res.ok) throw new Error();
     const data = await res.json();
-    skillNames.value = new Set(Object.values(data.skillNames || {}));
     inventory.value = data.inventory || [];
   } catch {
     inventoryNote.value = "Relics and charms couldn't be loaded, so they aren't listed.";
@@ -56,7 +56,6 @@ async function loadInventory() {
   } catch {}
 }
 const echoProcs = ref([]);
-const indexedSources = new Set(INDEX.sources);
 
 function rangeHigh(text) {
   const m = /^\((\d+) to (\d+)\)$/.exec(text);
@@ -66,16 +65,15 @@ function reqOf(lines) {
   const l = lines.find((x) => /^Required Level: /.test(x));
   return l ? Number(l.split(": ")[1]) || null : null;
 }
-function addLine(out, line, src, { known = null } = {}) {
-  if (!known && !indexedSources.has(src.item)) return;
+function addLine(out, line, src) {
   let m = OSKILL.exec(line);
-  if (m && !SKILL_LEVELS.test(m[1]) && !NOT_SKILL.test(m[1]) && (!known || known.has(m[1]))) {
+  if (m && !SKILL_LEVELS.test(m[1]) && !NOT_SKILL.test(m[1]) && KNOWN.has(m[1])) {
     const amount = /^\+(.+?) to /.exec(line)?.[1] || "0";
     out.push({ kind: "oskill", skill: m[1], value: rangeHigh(amount), line, ...src });
     return;
   }
   m = PROC.exec(line);
-  if (m && (!known || known.has(m[3]))) out.push({ kind: "proc", skill: m[3], chance: Number(m[1]), level: Number(m[2]), trigger: m[4], line, ...src });
+  if (m && KNOWN.has(m[3])) out.push({ kind: "proc", skill: m[3], chance: Number(m[1]), level: Number(m[2]), trigger: m[4], line, ...src });
 }
 function itemLink(source, name) {
   return `${source}?name=${encodeURIComponent(name)}`;
@@ -111,13 +109,12 @@ const entries = computed(() => {
   }
   // Relics and charms (the planner's data) and scrolls of enchantment (the game's cube recipes):
   // no page shows them on their own, so no link.
-  const known = skillNames.value;
   for (const c of inventory.value) for (const line of c.lines)
-    addLine(out, line, { source: c.kind === "relic" ? "relic" : "charm", item: c.name, sub: c.kind === "relic" ? "Relic · up to 3 carried" : "Charm", req: c.reqLevel ?? null, link: null }, { known });
+    addLine(out, line, { source: c.kind === "relic" ? "relic" : "charm", item: c.name, sub: c.kind === "relic" ? "Relic · up to 3 carried" : "Charm", req: c.reqLevel ?? null, link: null });
   for (const line of new Set(echoProcs.value))
-    addLine(out, line, { source: "echo", item: "Echo Sabre", sub: "Mastercrafted · procs only, can repeat", req: null, link: itemLink("base-items", "Echo Sabre (Mastercrafted)") }, { known });
+    addLine(out, line, { source: "echo", item: "Echo Sabre", sub: "Mastercrafted · procs only, can repeat", req: null, link: itemLink("base-items", "Echo Sabre (Mastercrafted)") });
   for (const sc of BONUSES.scrolls) for (const line of sc.lines)
-    addLine(out, line, { source: "scroll", item: sc.name, sub: sc.slot ? `Cubed with ${sc.slot === "body" ? "body armor" : sc.slot}` : `Cubed with ${sc.cat.toLowerCase()}`, req: null, link: null }, { known });
+    addLine(out, line, { source: "scroll", item: sc.name, sub: sc.slot ? `Cubed with ${sc.slot === "body" ? "body armor" : sc.slot}` : `Cubed with ${sc.cat.toLowerCase()}`, req: null, link: null });
   return out;
 });
 const grouped = computed(() => {
@@ -165,8 +162,8 @@ onUnmounted(() => window.removeEventListener("hashchange", applyLink));
     <div class="upgrade-note">
       <Icon name="info" />
       <p>
-        Reverse lookup for item-granted skills and chance-to-cast effects listed in the community Oskill Index.
-        <span>Item stats come from the app catalogue; sources not named in that forum index are left out. Soulbinder Gloves rolls come straight from the game's affix table.</span>
+        Find every item that grants a skill (oskill) or casts one by chance (proc), by skill, item or trigger.
+        <span>Runewords, uniques, sacred uniques, sets, relics, charms, scrolls of enchantment, and the rolls of Soulbinder Gloves and Echo Sabre.</span>
       </p>
     </div>
     <div class="toolbar">
@@ -206,7 +203,7 @@ onUnmounted(() => window.removeEventListener("hashchange", applyLink));
       <button class="btn" @click="clear">Clear filters</button>
     </div>
     <p class="coverage">
-      Built from {{ INDEX.sources.length }} source names in the community Oskill Index, matched to runewords, tiered uniques, sacred uniques and sets, plus the {{ SOULBINDER.rolls.length }} oskill rolls of Soulbinder Gloves, the procs Echo Sabre can roll, and the scrolls of enchantment from the game files, and relics and charms from the planner's data. <template v-if="inventoryNote">{{ inventoryNote }}</template> <DataStatus />
+      Every runeword, tiered unique, sacred unique and set item line that grants a skill or casts one, checked against the game's {{ KNOWN.size }} skill names; the {{ SOULBINDER.rolls.length }} oskill rolls of Soulbinder Gloves, the procs Echo Sabre can roll and the scrolls of enchantment from the game files; relics and charms from the planner's data. <template v-if="inventoryNote">{{ inventoryNote }}</template> <DataStatus />
     </p>
   </section>
 </template>

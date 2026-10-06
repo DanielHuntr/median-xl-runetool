@@ -69,7 +69,7 @@ export function typicalTarget(monsters, difficulty) {
 /**
  * The typical boss of a difficulty: the median of the monsters the game files flag as bosses.
  * In Hell they resist about 60% of each element (ordinary monsters 35%) and 30% physical, which
- * is why the build guides aim their pierce at bosses (rating.js measures bossing against this).
+ * is why the build guides aim their pierce at bosses.
  */
 export function typicalBoss(monsters, difficulty) {
   const d = DIFFICULTY_INDEX[difficulty] ?? 2;
@@ -85,9 +85,9 @@ function typicalOf(pool, difficulty, id, name) {
   const res = Object.fromEntries(ELEMENTS.map((e) => [e, [0, 1, 2].map((k) => (k === d ? median(pool.map((m) => m.res[e][d])) : 0))]));
   const third = (f) => [0, 1, 2].map((k) => (k === d ? median(pool.map(f)) : 0));
   // Its first attack's to-hit and average damage per hit (extract-monsters.mjs), for how much
-  // of a hit gets through a character's defense and damage reduction (rating.js).
+  // of a hit gets through a character's defense and damage reduction.
   const withHit = pool.some((m) => m.toHit) ? { toHit: third((m) => m.toHit?.[d] ?? 0), hit: third((m) => (m.damage?.[d] ? (m.damage[d][0] + m.damage[d][1]) / 2 : 0)) } : {};
-  // Its life (extract-monsters.mjs), for crushing blow's share of current life (rating.js).
+  // Its life (extract-monsters.mjs), for crushing blow's share of current life.
   const life = pool.some((m) => m.life) ? { life: third((m) => m.life?.[d] ?? 0) } : {};
   return { id, name, typical: true, count: pool.length, ...life, levels: third((m) => m.levels[d]), res, ...(pool.some((m) => m.def) ? { def: third((m) => m.def?.[d] ?? 0) } : {}), ...withHit };
 }

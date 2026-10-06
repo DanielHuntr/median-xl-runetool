@@ -1,5 +1,5 @@
-// Skills whose missile hits the same monster more than once as it passes through it, for the
-// build ratings (src/planner/rating.js TRAVEL_HITS): src/data/multi-hit.json.
+// Skills whose missile hits the same monster more than once as it passes through it, for skill
+// damage and gear suggestions (src/planner/damage.js MULTI_HIT): src/data/multi-hit.json.
 //   node scripts/extract-multi-hit.mjs [game dir]   (default: $MXL_DIR or C:/games/median-xl)
 //
 // missiles.bin (D2 1.13c, 420-byte records): life in frames u16 0x96, velocity u8 0x9A, "can hit

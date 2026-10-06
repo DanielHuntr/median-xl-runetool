@@ -1980,17 +1980,6 @@ test("tooltip lines worth 0 are hidden where the game hides them (Warmth's First
   assert.deepEqual(first, ["Mana Regeneration Rate: 3%"]);
 });
 
-test("tier explanations name the strength and what holds a build back (tierWhy.js)", async () => {
-  const { tierWhy, fieldOf } = await load("/src/planner/tierWhy.js");
-  const typical = { bossTier: "B", clearTier: "B", surviveTier: "B", life: 13000, resist: 90, hitChance: 26, perAction: 24000, rate: 3.5, boss: 100000, clear: 140000, ehp: 300000, avoid: 0, block: 0, sustain: 100, hit: 95 };
-  const field = fieldOf([typical, typical, typical]);
-  const glass = { ...typical, bossTier: "S", clearTier: "A", surviveTier: "F", life: 7000, resist: 50, hitChance: 60 };
-  assert.equal(tierWhy(glass, field), "Best at bossing (S). Held back by survival (F): hit 60% of the time, less life than most (7,000).");
-  assert.equal(tierWhy({ ...typical, bossTier: "A", surviveTier: "B" }, field), "Best at bossing (A). Weakest at clearing and survival (B).");
-  assert.equal(tierWhy({ ...typical, bossTier: "D", clearTier: "D", surviveTier: "D", sustain: 60 }, field), "Even across bossing, clearing and survival (D): mana for 60% of its casting.");
-  assert.equal(tierWhy({ unrated: "summons" }, field), null);
-});
-
 test("a skill an item grants from outside the class works at the item's level, and its buff can be switched on", async () => {
   const { engine, catalog } = await env();
   const { computeCharacter } = await load("/src/planner/character.js");

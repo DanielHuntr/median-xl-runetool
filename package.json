@@ -13,7 +13,6 @@
     "preview": "vite preview",
     "test": "node --test --test-force-exit tests/*.test.mjs",
     "import-docs": "node scripts/import-docs.mjs",
-    "import-oskill-index": "node scripts/import-oskill-index.mjs",
     "import-skills": "node scripts/import-skills.mjs",
     "import-data": "node scripts/import-docs.mjs && node scripts/import-skills.mjs && node scripts/build-item-atlas.mjs",
     "test:e2e": "playwright test",

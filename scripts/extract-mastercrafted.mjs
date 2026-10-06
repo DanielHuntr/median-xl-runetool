@@ -7,8 +7,9 @@
 //     affix (group 801-808; Cincture's is on its quality type, qblt): property 3 its sockets, property 157 a string id whose text is the
 //     ability ("+1% Chance to Avoid Damage per 500 Dexterity"); a hidden skill carries it out.
 //     The "Cannot be Renewed" line is left out, and so is the text of the two Pandemonium-season
-//     bases, which says they no longer work.
-// Assumed: the Strength/Dexterity damage bonus line is the sacred base's of the same category.
+//     bases, which says they no longer work;
+//   - the Strength/Dexterity damage bonus: weapons.bin u16 0x106 / 0x108, per 100 points (matches
+//     the docs' "(0.11 per Strength)%" on all 635 tiered weapons).
 //   node scripts/extract-mastercrafted.mjs [game dir]   (default: $MXL_DIR or C:/games/median-xl)
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -23,7 +24,15 @@ const X = (n) => readBin(mpq.read(`data/global/excel/${n}`));
 const tbls = ["string.tbl", "patchstring.tbl", "expansionstring.tbl"].map((n) => readTbl(mpq.read(`data/local/lng/eng/${n}`)));
 const str = stringIndex({ base: tbls[0], patch: tbls[1], expansion: tbls[2] });
 const read = (f) => JSON.parse(readFileSync(new URL(`../src/data/${f}`, import.meta.url), "utf8"));
-const cube = read("cube-main.json"), speed = read("speed.json"), bases = read("base-items.json");
+const cube = read("cube-main.json"), speed = read("speed.json");
+const weapons = X("weapons.bin");
+const weaponRow = new Map(Array.from({ length: weapons.count }, (_, i) => weapons.record(i)).map((r) => [r.toString("latin1", 0x80, 0x84).replace(/\0/g, "").trim(), r]));
+const perPoint = (code) => {
+  const r = weaponRow.get(code);
+  if (!r) return [];
+  const line = (v, stat) => (v ? [`${stat} Damage Bonus: (${v / 100} per ${stat})%`] : []);
+  return [...line(r.readUInt16LE(0x106), "Strength"), ...line(r.readUInt16LE(0x108), "Dexterity")];
+};
 
 // The game's item code → its category among the app's base categories.
 const CATEGORY = { mz01: "Bows", mz02: "Daggers", mz03: "Staves", mz04: "Belts", mz05: "Throwing Knives", mz21: "Gloves", mz22: "One-Handed Swords" };
@@ -42,10 +51,6 @@ const affixOf = (type) => {
 };
 // A tooltip string's lines, top first (D2 stores them bottom-up), without colour codes.
 const tooltip = (id) => (str(id) || "").replace(/(?:ÿ|Ã¿)c./g, "").split("\n").map((l) => l.trim()).filter(Boolean).reverse();
-const sacredLine = (cat, re) => {
-  for (const [, c, tiers] of bases) if (c === cat) for (const [, stats] of [...tiers].reverse()) { const l = stats.split("|").find((x) => re.test(x)); if (l) return l; }
-  return null;
-};
 
 const out = [];
 for (const [code, cat] of Object.entries(CATEGORY)) {
@@ -67,7 +72,7 @@ for (const [code, cat] of Object.entries(CATEGORY)) {
     ...(reqStr ? [`Required Strength: ${reqStr}`] : []),
     ...(reqDex ? [`Required Dexterity: ${reqDex}`] : []),
     ...(speed.weapons[name] ? [`Attack Speed Modifier: ${speed.weapons[name][1]}`] : []),
-    ...[sacredLine(cat, /^Strength Damage Bonus/), sacredLine(cat, /^Dexterity Damage Bonus/)].filter((l) => l && (oneMax || twoMax || throwMax)),
+    ...perPoint(code),
     ...(sockets ? [`Socketed (${sockets})`] : []),
   ];
   out.push({ code, name, cat, lines, ability: retired ? [] : ability, ...(retired ? { retired: true } : {}) });

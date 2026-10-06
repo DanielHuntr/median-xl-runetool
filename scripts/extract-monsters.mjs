@@ -61,7 +61,7 @@ for (let id = 0; id < ms.count; id++) {
   const toHit = levels.map((l, k) => Math.floor((thPct[k] * levelColumn(l, 6, k)) / 100));
   const damage = levels.map((l, k) => [Math.floor((minPct[k] * levelColumn(l, 18, k)) / 100), Math.floor((maxPct[k] * levelColumn(l, 18, k)) / 100)]);
   // Life the same way: monstats 0xB0/0xB6 (MinHP/MaxHP) ×3, percentages of monlvl.bin's life
-  // (int32 columns 12-14), the middle of the range; one player. For crushing blow (rating.js),
+  // (int32 columns 12-14), the middle of the range; one player. For crushing blow,
   // which takes a share of a monster's current life.
   const minHp = three(r, 0xb0), maxHp = three(r, 0xb6);
   const life = levels.map((l, k) => Math.floor((((minHp[k] + maxHp[k]) / 2) * levelColumn(l, 12, k)) / 100));

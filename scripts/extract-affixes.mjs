@@ -9,6 +9,8 @@
 // kept. Lines are written by the cube's stat formatter (src/cube/stats.js, the game's
 // ItemStatCost descriptions) with every skill named from skills.bin/skilldesc.bin, and "(a-b)"
 // ranges as the item text's "(a to b)".
+// It also writes every skill's name (src/data/skill-names.json), which the Oskills & Procs page
+// checks item lines against.
 // Each base item's types per tier (its game item and that item's parent types, from
 // src/data/cube-main.json; run scripts/extract-cube.mjs first) say which affixes fit it.
 import { readFileSync, writeFileSync } from "node:fs";
@@ -78,4 +80,5 @@ if (missing.length) throw new Error(`No game item for: ${missing.join(", ")}`);
 const jewellery = { ring: byName.get("Ring"), amulet: byName.get("Amulet"), jewel: byName.get("Jewel") };
 
 writeFileSync(new URL("../src/data/affixes.json", import.meta.url), JSON.stringify({ patch, source: "magicprefix.bin, magicsuffix.bin, itemtypes.bin (item types via cube-main.json)", bases, jewellery, affixes }) + "\n");
+writeFileSync(new URL("../src/data/skill-names.json", import.meta.url), JSON.stringify({ patch, source: "skills.bin 0x194 → skilldesc.bin 0x08 → string tables", names: [...new Set(Object.values(names))].sort() }) + "\n");
 console.log(`extract-affixes: ${affixes.filter((a) => a.kind === "p").length} prefixes, ${affixes.filter((a) => a.kind === "s").length} suffixes (${affixes.filter((a) => a.rare).length} can roll on rares); ${skipped} with no visible line left out`);

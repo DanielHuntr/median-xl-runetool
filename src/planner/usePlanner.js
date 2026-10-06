@@ -148,7 +148,7 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   return b;
 }
 export const AUTHOR_TIERS = ["S", "A", "B", "C", "D", "F"];
-// Overall, then the three criteria the starter builds' tiers are split into (rating.js).
+// Overall, then the three criteria a build's author rates it on (bossing, clearing, survival).
 export const AUTHOR_TIER_KEYS = ["tier", "bossTier", "clearTier", "surviveTier"];
 
 // One saved character per class, so switching class never loses work.

@@ -11,7 +11,7 @@
     "Required Level: 30",
     "Required Dexterity: 750",
     "Attack Speed Modifier: 20",
-    "Dexterity Damage Bonus: (0.13 per Dexterity)%",
+    "Dexterity Damage Bonus: (0.18 per Dexterity)%",
     "Socketed (6)"
    ],
    "ability": [
@@ -27,7 +27,7 @@
     "Required Level: 30",
     "Required Dexterity: 550",
     "Attack Speed Modifier: 0",
-    "Dexterity Damage Bonus: (0.11 per Dexterity)%",
+    "Dexterity Damage Bonus: (0.14 per Dexterity)%",
     "Socketed (3)"
    ],
    "ability": [
@@ -73,7 +73,7 @@
     "Required Level: 30",
     "Required Dexterity: 519",
     "Attack Speed Modifier: -20",
-    "Dexterity Damage Bonus: (0.11 per Dexterity)%"
+    "Dexterity Damage Bonus: (0.13 per Dexterity)%"
    ],
    "ability": [
     "1% Deadly Strike per 7% Movement Speed"

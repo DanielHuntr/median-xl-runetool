@@ -1,7 +1,7 @@
 // A skill's missiles from the installed game's missiles.bin (Diablo II 1.13c layout, 420-byte
 // records), for how a skill deals its damage: its missile's life in frames, what it drops as it
 // travels and how often (sub-missile and Param1), and whether it hits the same monster again.
-// rating.js TRAVEL_HITS takes Hammer of Zerae's numbers from this.
+// damage.js MULTI_HIT takes Hammer of Zerae's numbers from this; scripts/extract-multi-hit.mjs the rest.
 //   node scripts/dev/decode-missiles.mjs <skill game id> [game dir]
 //   e.g. node scripts/dev/decode-missiles.mjs 1054        (Hammer of Zerae)
 import { openMpq } from "../lib/mpq.mjs";
