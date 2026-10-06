@@ -193,31 +193,90 @@ test("affixes from the game's tables on a custom item: those that fit its base, 
   const { catalog } = await env();
   const A = JSON.parse(await readFile(new URL("../src/data/affixes.json", import.meta.url), "utf8"));
   const base = (name) => catalog.all().find((d) => d.kind === "base" && d.name === name);
+  // At item level 120 (the character's, by default): the affix's level reached, its maximum not passed.
+  const at120 = (a) => a.level <= 120 && (!a.max || a.max >= 120);
   const custom = (b, extra = {}) => ({ ref: "custom", custom: { name: "Mine", slotType: b.slotType, text: "" }, base: b.key, baseVariant: 0, ...extra });
   // Soulbinder Gloves take its oskill suffixes; gauntlets don't.
   const soul = base("Soulbinder Gloves (Mastercrafted)");
-  const flame = A.affixes.find((a) => a.kind === "s" && a.group === 217 && a.types.includes("mw21") && !a.types.includes("glov"));
+  const flame = A.affixes.find((a) => a.kind === "s" && a.group === 217 && a.types.includes("mw21") && !a.types.includes("glov") && at120(a));
   assert.ok(flame, "an oskill roll only the gloves take");
   assert.deepEqual(catalog.resolve(custom(soul, { affixes: [flame.id] }), 120).affixes.picked.map((a) => a.id), [flame.id]);
   assert.equal(catalog.resolve(custom(base("Gauntlets"), { affixes: [flame.id] }), 120).affixes.picked.length, 0);
   // One per group, three suffixes at most; a magic item takes one.
-  const suffixes = A.affixes.filter((a) => a.kind === "s" && a.rare && a.types.includes("mw21"));
+  const suffixes = A.affixes.filter((a) => a.kind === "s" && a.rare && a.types.includes("mw21") && at120(a));
   const sameGroup = suffixes.filter((a) => a.group === flame.group).slice(0, 2).map((a) => a.id);
   assert.equal(catalog.resolve(custom(soul, { affixes: sameGroup }), 120).affixes.picked.length, 1);
   const groups = [...new Map(suffixes.map((a) => [a.group, a.id])).values()];
   if (groups.length >= 4) assert.equal(catalog.resolve(custom(soul, { affixes: groups.slice(0, 4) }), 120).affixes.picked.length, 3);
+  // A crafted item: four random rare affixes in all, at most three of a kind.
+  const gloveTypes = catalog.resolve(custom(soul), 120).affixes.types;
+  const fitting = (kind) => [...new Map(A.affixes.filter((x) => x.kind === kind && x.rare && at120(x) && x.types.some((t) => gloveTypes.includes(t)) && !(x.not || []).some((t) => gloveTypes.includes(t))).map((x) => [x.group, x.id])).values()].slice(0, 3);
+  const mix = [...fitting("s"), ...fitting("p")];
+  assert.equal(mix.length, 6);
+  assert.equal(catalog.resolve(custom(soul, { affixes: mix }), 120).affixes.picked.length, 6, "a rare: three of each");
+  assert.equal(catalog.resolve(custom(soul, { affixes: mix, crafted: true }), 120).affixes.picked.length, 4, "crafted: four in all");
   const r = catalog.resolve(custom(soul, { affixes: [flame.id], magic: true }), 120);
   assert.ok(flame.lines.every((l) => r.lines.includes(l) || r.ranges.some((x) => x.line === l)), "its lines join the item's, with roll sliders");
   assert.ok(r.head.reqLevel >= flame.req, "its required level counts");
   // Echo Sabre: procs only, and the same proc again.
   const sabre = base("Echo Sabre (Mastercrafted)");
   const fits = catalog.resolve(custom(sabre), 120).affixes;
-  const proc = A.affixes.find((a) => a.rare && /Chance to cast level/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
-  const plain = A.affixes.find((a) => a.rare && !/Chance to cast/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
+  const proc = A.affixes.find((a) => a.rare && at120(a) && /Chance to cast level/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
+  const plain = A.affixes.find((a) => a.rare && at120(a) && !/Chance to cast/.test(a.lines.join()) && a.types.some((t) => fits.types.includes(t)));
   assert.equal(catalog.resolve(custom(sabre, { affixes: [proc.id, proc.id, plain.id] }), 120).affixes.picked.length, 2);
   // A custom ring with no base uses the game's ring types.
-  const ringAffix = A.affixes.find((a) => a.rare && a.types.includes("ring"));
+  const ringAffix = A.affixes.find((a) => a.rare && a.types.includes("ring") && at120(a));
+  // Item level: an affix that stops rolling below 120 counts only on an item of a lower level.
+  const capped = A.affixes.find((a) => a.rare && a.types.includes("ring") && a.max && a.max < 120);
+  const ring = (extra) => catalog.resolve({ ref: "custom", custom: { name: "Ring", slotType: "ring", text: "" }, affixes: [capped.id], ...extra }, 120).affixes.picked.length;
+  assert.deepEqual([ring({}), ring({ ilvl: capped.max })], [0, 1]);
   assert.equal(catalog.resolve({ ref: "custom", custom: { name: "Ring", slotType: "ring", text: "" }, affixes: [ringAffix.id] }, 120).affixes.picked.length, 1);
+});
+
+test("multi-hit skills from missiles.bin: 2 or 3 hits, damage skills only, moving missiles only", async () => {
+  const M = JSON.parse(await readFile(new URL("../src/data/multi-hit.json", import.meta.url), "utf8"));
+  const entries = Object.entries(M.skills);
+  assert.ok(entries.length >= 5);
+  for (const [id, m] of entries) {
+    assert.ok(m.hits >= 2 && m.hits <= 3, id);
+    assert.ok(m.velocity > 0, `${id}: a moving missile`);
+    assert.ok(planner.skills[id]?.tags.some((t) => ["Spell", "Projectile", "Attack", "Weapon Damage", "Melee Spell", "Warp Strike", "AoE"].includes(t)), id);
+  }
+  assert.ok(!M.skills.hammer_of_zerae || M.skills.hammer_of_zerae.hits <= 3);
+});
+
+test("summon damage: each minion's tooltip damage, your summon damage on top, every minion; pierce exceptions", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const { skillDamage } = await load("/src/planner/damage.js");
+  const owner = (id) => Object.entries(planner.trees).find(([, t]) => JSON.stringify(t).includes(`"${id}"`))[0];
+  const dmg = (id, text = "Required Level: 1") => {
+    const b = build(owner(id), { level: 120, points: { [id]: 20 }, gear: { amulet: { ref: "custom", custom: { name: "A", slotType: "amulet", text } } } });
+    const c = computeCharacter(b, { engine, catalog, planner });
+    return skillDamage(id, { engine, build: b, skillBuild: { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, character: c });
+  };
+  const harvesters = dmg("harvesters");
+  assert.equal(harvesters.kind, "summon");
+  assert.ok(harvesters.total[1] > 0 && harvesters.count?.n > 1, JSON.stringify(harvesters.count));
+  assert.equal(harvesters.all[1], harvesters.total[1] * harvesters.count.n);
+  const boosted = dmg("harvesters", "+100% to Summon Damage");
+  assert.ok(Math.abs(boosted.total[1] - harvesters.total[1] * 2) <= 1, `${boosted.total} vs ${harvesters.total}`);
+  // Iron Golem doesn't take your pierce; other minions do (no override).
+  assert.equal(dmg("iron_golem").pierce?.fire, 0);
+  assert.equal(harvesters.pierce, undefined);
+});
+
+test("multi-hit skills: about N hits on a monster, counted in the total", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const { skillDamage } = await load("/src/planner/damage.js");
+  const b = build("Sorceress", { level: 120, points: { frigid_nova: 20 } });
+  const owner = Object.entries(planner.trees).find(([, t]) => JSON.stringify(t).includes('"frigid_nova"'))[0];
+  b.cls = owner;
+  const c = computeCharacter(b, { engine, catalog, planner });
+  const d = skillDamage("frigid_nova", { engine, build: b, skillBuild: { ...b, soft: c.soft, itemSkills: c.itemSkills, charStats: c.charStats }, character: c });
+  assert.equal(d.multiHit, 3);
+  assert.equal(d.all[1], d.total[1] * 3);
 });
 
 test("character sheet: attributes, life, resist penalty, set bonuses, gear skills, passives", async () => {

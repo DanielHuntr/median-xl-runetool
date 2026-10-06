@@ -1,21 +1,22 @@
 <script setup>
-// A custom item's magic or rare affixes, from the game's affix tables (items.js chosenAffixes):
-// the ones that fit its base, three prefixes and three suffixes on a rare or crafted item, one
-// of each on a magic item, one per group. Emits { affixes, magic }.
+// A custom item's magic, rare or crafted affixes, from the game's affix tables (items.js
+// chosenAffixes): the ones that fit its base and item level, within the quality's limits, one
+// per group. Emits the item's new { affixes, magic, crafted, ilvl }.
 import { computed, ref } from "vue";
 import Icon from "../AppIcon.vue";
 import { AFFIX_LIMIT, affixesFor } from "../../planner/items.js";
 
 const props = defineProps({
-  // The resolved item: r.affixes = { types, picked, rules }, r.state = its saved state.
+  // The resolved item: r.affixes = { types, picked, rules, ilvl, quality }, r.state its saved state.
   item: { type: Object, required: true },
 });
 const emit = defineEmits(["update"]);
 
-const magic = computed(() => !!props.item.state.magic);
+const quality = computed(() => props.item.affixes?.quality || "rare");
+const limit = computed(() => AFFIX_LIMIT[quality.value]);
 const picked = computed(() => props.item.affixes?.picked || []);
-const limit = computed(() => AFFIX_LIMIT[magic.value ? "magic" : "rare"]);
-const all = computed(() => affixesFor(props.item.affixes?.types, { magic: magic.value, procsOnly: props.item.affixes?.rules.procsOnly }));
+const ilvl = computed(() => props.item.affixes?.ilvl ?? null);
+const all = computed(() => affixesFor(props.item.affixes?.types, { magic: quality.value === "magic", procsOnly: props.item.affixes?.rules.procsOnly, ilvl: ilvl.value }));
 const query = ref("");
 const label = (a) => `${a.lines.join(", ")}${a.req ? ` (level ${a.req})` : ""}`;
 function options(kind) {
@@ -26,29 +27,44 @@ function options(kind) {
     && words.every((w) => a.lines.join(" ").toLowerCase().includes(w)))
     .sort((a, b) => a.lines[0].localeCompare(b.lines[0]) || a.req - b.req);
 }
-const full = (kind) => picked.value.filter((a) => a.kind === kind).length >= limit.value;
+const full = (kind) => picked.value.length >= limit.value.total || picked.value.filter((a) => a.kind === kind).length >= limit.value.each;
 const choice = ref({ p: "", s: "" });
-const ids = () => picked.value.map((a) => a.id);
+// The saved state, changed: switching quality or item level keeps every chosen affix, and
+// items.js counts those that still fit.
+const send = (patch) => emit("update", {
+  affixes: props.item.state.affixes || [], magic: quality.value === "magic", crafted: quality.value === "crafted", ilvl: props.item.state.ilvl, ...patch,
+});
 function add(kind) {
   if (!choice.value[kind] || full(kind)) return;
-  emit("update", { affixes: [...ids(), choice.value[kind]], magic: magic.value });
+  send({ affixes: [...picked.value.map((a) => a.id), choice.value[kind]] });
   choice.value[kind] = "";
 }
-const remove = (id) => emit("update", { affixes: ids().filter((x) => x !== id), magic: magic.value });
-// Switching quality keeps the affixes that still fit (items.js drops the rest).
-const setMagic = (m) => emit("update", { affixes: ids(), magic: m });
+const remove = (id) => send({ affixes: picked.value.map((a) => a.id).filter((x) => x !== id) });
+const setQuality = (q) => send({ magic: q === "magic", crafted: q === "crafted" });
+function setIlvl(v) {
+  const n = Math.round(Number(v));
+  send({ ilvl: n >= 1 && n <= 150 ? n : undefined });
+}
+const QUALITIES = [["rare", "Rare"], ["crafted", "Crafted"], ["magic", "Magic"]];
 const KINDS = [["p", "Prefixes", "a prefix"], ["s", "Suffixes", "a suffix"]];
+const summary = computed(() => {
+  const { each, total } = limit.value;
+  if (quality.value === "crafted") return `up to ${total} random rare affixes (at most ${each} of a kind) beside the shrine's own bonuses, added under Added bonuses`;
+  return `${each} prefix${each > 1 ? "es" : ""} and ${each} suffix${each > 1 ? "es" : ""}${quality.value === "rare" ? " from the rare affixes" : ""}`;
+});
 </script>
 
 <template>
   <div v-if="item.affixes?.types" class="sockets item-affixes">
     <h3>Affixes</h3>
     <div class="affix-quality" role="group" aria-label="Item quality">
-      <button type="button" :aria-pressed="!magic" @click="setMagic(false)">Rare or crafted</button>
-      <button type="button" :aria-pressed="magic" @click="setMagic(true)">Magic</button>
+      <button v-for="[q, name] in QUALITIES" :key="q" type="button" :aria-pressed="quality === q" @click="setQuality(q)">{{ name }}</button>
     </div>
+    <label class="field-inline affix-ilvl" title="An item's level is the level of the monster or area that dropped it. Affixes need at least their own level, and some stop rolling above a maximum."
+      >Item level <input type="number" min="1" max="150" :value="ilvl" @change="setIlvl($event.target.value)" aria-label="Item level"
+    /></label>
     <p class="muted">
-      From the game's affix tables, those that fit this base: {{ limit }} prefix{{ limit > 1 ? "es" : "" }} and {{ limit }} suffix{{ limit > 1 ? "es" : "" }}, one from each group.
+      From the game's affix tables, those that fit this base at item level {{ ilvl }}: {{ summary }}, one from each group.
       <template v-if="item.affixes.rules.procsOnly"> This base rolls procs only{{ item.affixes.rules.repeatProcs ? ", and the same one more than once" : "" }}.</template>
     </p>
     <ul v-if="picked.length">
@@ -61,7 +77,7 @@ const KINDS = [["p", "Prefixes", "a prefix"], ["s", "Suffixes", "a suffix"]];
     <div v-for="[kind, title, one] in KINDS" :key="kind" class="orb-add-controls">
       <label class="orb-select">{{ title }}
         <select v-model="choice[kind]" :disabled="full(kind)">
-          <option value="">{{ full(kind) ? `${title}: all ${limit} chosen` : `Choose ${one} (${options(kind).length})` }}</option>
+          <option value="">{{ full(kind) ? `${title}: no more on this item` : `Choose ${one} (${options(kind).length})` }}</option>
           <option v-for="a in options(kind)" :key="a.id" :value="a.id">{{ label(a) }}</option>
         </select>
       </label>
@@ -75,5 +91,7 @@ const KINDS = [["p", "Prefixes", "a prefix"], ["s", "Suffixes", "a suffix"]];
 .affix-quality button { padding: 4px 10px; border: 1px solid var(--soft-border); border-radius: 6px; background: var(--field); color: var(--muted); }
 .affix-quality button[aria-pressed="true"] { color: var(--text); border-color: var(--gold); }
 .affix-search { margin: 6px 0; }
+.affix-ilvl { margin-left: 10px; }
+.affix-ilvl input { width: 64px; }
 .item-affixes select { max-width: 100%; }
 </style>

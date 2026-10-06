@@ -5,8 +5,12 @@
 // tooltip formulas plus matching spell damage bonuses; unavailable bases show bonuses only.
 // Summons and buffs show their key effect. Everything here is an estimate.
 
+import MULTI_HIT_DATA from "../data/multi-hit.json" with { type: "json" };
+
 export const BASIC_ATTACK = "attack";
 const ELEMENTS = ["fire", "cold", "lightning", "poison", "magic"];
+// Minions that don't take your pierce (the docs' Minion Mechanics page; traps keep their own, below).
+const NO_INHERITED_PIERCE = new Set(["iron_golem", "jinn", "spirit_of_vengeance", "vine_companion"]);
 const CONVERSIONS = {
   converts_phys_to_fire: ["fire"],
   converts_phys_to_cold: ["cold"],
@@ -115,7 +119,23 @@ function withUpgrades(engine, skillBuild, id, values) {
  *   parts: { element, range: [min,max] }[], lines: string[], notes: string[], formula: string,
  * }}
  */
-export function skillDamage(id, { engine, build, skillBuild, character }) {
+// Skills whose missile hits a monster again as it passes through it: an estimate from the game's
+// missile data (scripts/extract-multi-hit.mjs, at most 3), and Hammer of Zerae's spiral read by
+// hand (missile 2586: a lightning nova every frame for 85 frames; about 3 on a monster in its
+// path, where every nova landing would be 85, which the Sin War ladder doesn't bear out).
+const MULTI_HIT = { ...Object.fromEntries(Object.entries(MULTI_HIT_DATA.skills).map(([id, m]) => [id, m.hits])), hammer_of_zerae: 3 };
+export function skillDamage(id, ctx) {
+  const d = skillDamageOf(id, ctx);
+  const hits = MULTI_HIT[id];
+  if (!d?.parts?.length || !hits || d.count) return d;
+  const count = { n: hits, text: `About ${hits} hits on a monster` };
+  const allParts = repeatedParts(d.parts, count);
+  return {
+    ...d, count, allParts, all: [0, 1].map((i) => allParts.reduce((x, p) => x + p.range[i], 0)), multiHit: hits,
+    notes: [...(d.notes || []), `Its missile hits a monster about ${hits} times as it passes through (estimated from the game's missile data); the total counts each.`],
+  };
+}
+function skillDamageOf(id, { engine, build, skillBuild, character }) {
   const c = character;
   if (id === BASIC_ATTACK) return attack({ id, name: "Attack", pct: 100, values: {} }, c);
   const s = engine.node(build, id) || engine.skill(id);
@@ -182,7 +202,34 @@ export function skillDamage(id, { engine, build, skillBuild, character }) {
     const extra = [];
     if (c.s("summoned_minion_damage")) extra.push(`+${c.s("summoned_minion_damage")}% summon damage`);
     if (c.s("summoned_minion_life")) extra.push(`+${c.s("summoned_minion_life")}% summon life`);
-    return { id, name: s.name, kind: "summon", parts: [], lines: [...lines, ...extra], notes: [], formula: "" };
+    // Its minions' damage, an estimate: the tooltip's damage for one minion ("Damage: 266-276"
+    // is physical; "Magic Damage", a poison's total over its duration), times your summon
+    // damage (assumed to apply on top, as the tooltip doesn't move with it), for each minion.
+    // How often minions attack isn't known (the docs: minion speeds are unknown).
+    const n = typeof m?.[0] === "number" ? m[0] : typeof m?.[1] === "number" ? m[1] : 1;
+    const mult = Math.max(0, 1 + c.s("summoned_minion_damage") / 100);
+    const parts = describe.effect.flatMap((l) => l.status === "unknown" ? [] : (l.parts || [])
+      .filter((p) => typeof p.values?.[0] === "number" && (p.key === "damage" || p.key === "poison_dot" || TOOLTIP_DAMAGE.test(p.key)))
+      .map((p) => ({
+        element: p.key === "damage" ? "physical" : p.key === "poison_dot" ? "poison" : p.key.split("_")[0],
+        range: pair(p.values[0] * mult, (typeof p.values[1] === "number" ? p.values[1] : p.values[0]) * mult),
+      })));
+    if (!parts.length) return { id, name: s.name, kind: "summon", parts: [], lines: [...lines, ...extra], notes: [], formula: "" };
+    const total = pair(parts.reduce((x, p) => x + p.range[0], 0), parts.reduce((x, p) => x + p.range[1], 0));
+    const count = n > 1 ? { n, text: `${n} minions` } : null;
+    const allParts = count ? repeatedParts(parts, count) : null;
+    // Minions take your pierce, except those the docs' Minion Mechanics page names.
+    const noPierce = NO_INHERITED_PIERCE.has(id);
+    return {
+      id, name: s.name, kind: "summon", total, parts, lines: [...lines, ...extra],
+      ...(count ? { count, allParts, all: [0, 1].map((i) => allParts.reduce((x, p) => x + p.range[i], 0)) } : {}),
+      ...(noPierce ? { pierce: Object.fromEntries(ELEMENTS.map((e) => [e, 0])) } : {}),
+      notes: [
+        `Estimated: each minion's damage from the skill's tooltip${mult !== 1 ? `, with your +${c.s("summoned_minion_damage")}% summon damage on top` : ""}${count ? `; the total is for all ${n} if each lands a hit` : ""}. How often minions attack isn't known.`,
+        ...(noPierce ? [`${s.name} doesn't use your pierce (the docs' Minion Mechanics page).`] : []),
+      ],
+      formula: "",
+    };
   }
   if (tags.includes("Spell") || tags.includes("Melee Spell") || tooltipDamage.length) {
     const els = ELEMENTS.filter((e) => tags.map((t) => t.toLowerCase()).includes(e) || tooltipDamage.some((d) => d.element === e));

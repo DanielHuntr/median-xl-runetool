@@ -1,0 +1,86 @@
+{
+ "patch": "2.14.4",
+ "source": "missiles.bin (life 0x96, velocity 0x9A, hit again 0x188/0x189, size 0x18A, skill 0x194)",
+ "skills": {
+  "retaliate": {
+   "hits": 2,
+   "missile": 906,
+   "velocity": 16,
+   "size": 2,
+   "every": 2,
+   "life": 19
+  },
+  "mana_sweep": {
+   "hits": 3,
+   "missile": 962,
+   "velocity": 16,
+   "size": 3,
+   "every": 1,
+   "life": 36
+  },
+  "batstrike": {
+   "hits": 2,
+   "missile": 1169,
+   "velocity": 10,
+   "size": 1,
+   "every": 2,
+   "life": 30
+  },
+  "frigid_nova": {
+   "hits": 3,
+   "missile": 1646,
+   "velocity": 5,
+   "size": 2,
+   "every": 2,
+   "life": 45
+  },
+  "harbinger": {
+   "hits": 2,
+   "missile": 2554,
+   "velocity": 20,
+   "size": 3,
+   "every": 2,
+   "life": 28
+  },
+  "iron_spiral": {
+   "hits": 3,
+   "missile": 2572,
+   "velocity": 20,
+   "size": 3,
+   "every": 1,
+   "life": 14
+  },
+  "eviscerate": {
+   "hits": 2,
+   "missile": 3208,
+   "velocity": 34,
+   "size": 3,
+   "every": 1,
+   "life": 16
+  },
+  "steady_shot": {
+   "hits": 2,
+   "missile": 3647,
+   "velocity": 18,
+   "size": 2,
+   "every": 1,
+   "life": 12
+  },
+  "stormcall": {
+   "hits": 2,
+   "missile": 4506,
+   "velocity": 24,
+   "size": 2,
+   "every": 1,
+   "life": 21
+  },
+  "pounce": {
+   "hits": 2,
+   "missile": 4800,
+   "velocity": 15,
+   "size": 2,
+   "every": 2,
+   "life": 8
+  }
+ }
+}

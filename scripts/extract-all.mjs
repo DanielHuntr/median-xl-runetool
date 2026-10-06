@@ -31,6 +31,7 @@ const STEPS = [
   ["extract-soulbinder.mjs", dir],
   ["extract-mastercrafted.mjs", dir],
   ["extract-affixes.mjs", dir],
+  ["extract-multi-hit.mjs", dir],
   ["check-patch.mjs"],
 ];
 

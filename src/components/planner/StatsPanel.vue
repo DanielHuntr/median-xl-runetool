@@ -329,6 +329,7 @@ function onKey(e) {
               <ul v-if="d.parts.length" class="source-list">
                 <li v-if="d.vs"><span>Before resistance</span><b>{{ fmt(d.total[0]) }}–{{ fmt(d.total[1]) }}</b></li>
                 <li v-for="p in d.parts"><span :class="'el-' + p.element">{{ p.element }}</span><b>{{ fmt(p.range[0]) }}–{{ fmt(p.range[1]) }}</b></li>
+                <li v-if="(d.vs || d).all && d.count"><span>{{ d.count.text }} <em class="est">est.</em></span><b>{{ fmt((d.vs || d).all[0]) }}–{{ fmt((d.vs || d).all[1]) }}</b></li>
                 <li v-if="d.ar"><span>Attack rating</span><b>{{ fmt(d.ar) }}</b></li>
                 <li v-if="d.vs?.hit != null"><span>Chance to hit <em class="est">est.</em></span><b>{{ d.vs.hit }}%</b></li>
               </ul>

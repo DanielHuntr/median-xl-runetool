@@ -80,10 +80,16 @@ export function bonusFits(b, def, { twoHanded = false, honorific = false } = {})
 // Magic and rare affixes (scripts/extract-affixes.mjs, the game's magicprefix/magicsuffix.bin)
 // for a custom item: state.affixes lists their ids, state.magic picks a magic item (one prefix,
 // one suffix, any affix) over a rare or crafted one (three of each, rare affixes). One affix per
-// group, except where the base says otherwise (Echo Sabre: procs only, the same one again).
+// group, except where the base says otherwise (Echo Sabre: procs only, the same one again). The
+// item's level (state.ilvl, else the character's) must reach the affix's level and not pass its
+// maximum, as the game rolls them.
 const AFFIX_BY_ID = new Map(AFFIXES.affixes.map((a) => [a.id, a]));
 export const affixById = (id) => AFFIX_BY_ID.get(id);
-export const AFFIX_LIMIT = { rare: 3, magic: 1 };
+// Per kind (prefixes, suffixes) and in all: a rare 3 + 3; a crafted item (shrine crafting: the
+// shrine's own bonuses, Added bonuses, and 1 to 4 random rare affixes, the docs' Shrine page)
+// 4, at most 3 of a kind (assumed, as a rare); a magic item 1 + 1.
+export const AFFIX_LIMIT = { rare: { each: 3, total: 6 }, crafted: { each: 3, total: 4 }, magic: { each: 1, total: 2 } };
+export const affixQuality = (state) => (state?.magic ? "magic" : state?.crafted ? "crafted" : "rare");
 const PROC = /Chance to cast level/;
 // The game's item types for a custom item: its base at its tier, or the plain ring/amulet/jewel.
 export const affixTypes = (baseDef, label, slotType) =>
@@ -91,18 +97,20 @@ export const affixTypes = (baseDef, label, slotType) =>
 export function affixRules(baseLines = []) {
   return { procsOnly: baseLines.includes("Can only spawn Procs"), repeatProcs: baseLines.includes("Can spawn same Proc multiple times") };
 }
-export function affixFits(a, types, { magic = false, procsOnly = false } = {}) {
+export function affixFits(a, types, { magic = false, procsOnly = false, ilvl = null } = {}) {
   if (!types || (!magic && !a.rare)) return false;
+  if (ilvl != null && (a.level > ilvl || (a.max && a.max < ilvl))) return false;
   if (procsOnly && !a.lines.some((l) => PROC.test(l))) return false;
   return a.types.some((t) => types.includes(t)) && !(a.not || []).some((t) => types.includes(t));
 }
 export const affixesFor = (types, opts) => (types ? AFFIXES.affixes.filter((a) => affixFits(a, types, opts)) : []);
 // The affixes that count, in order: fitting, within the limit per kind, one per group.
-export function chosenAffixes(ids, types, { magic = false, procsOnly = false, repeatProcs = false } = {}) {
+export function chosenAffixes(ids, types, { quality = "rare", procsOnly = false, repeatProcs = false, ilvl = null } = {}) {
+  const magic = quality === "magic", limit = AFFIX_LIMIT[quality];
   const count = { p: 0, s: 0 }, groups = new Set(), out = [];
   for (const a of (ids || []).map(affixById)) {
-    if (!a || !affixFits(a, types, { magic, procsOnly })) continue;
-    if (count[a.kind] >= AFFIX_LIMIT[magic ? "magic" : "rare"]) continue;
+    if (!a || !affixFits(a, types, { magic, procsOnly, ilvl })) continue;
+    if (count[a.kind] >= limit.each || out.length >= limit.total) continue;
     const repeat = repeatProcs && a.lines.some((l) => PROC.test(l));
     if (groups.has(a.group) && !repeat) continue;
     groups.add(a.group);
@@ -357,8 +365,10 @@ export function createCatalog(app, planner) {
       }
       // Its affixes, after the base's lines and the player's own.
       const types = affixTypes(baseDef, label, def.slotType);
-      const picked = chosenAffixes(state.affixes, types, { magic: !!state.magic, ...affixRules(lines) });
-      affixes = { types, picked, rules: affixRules(lines) };
+      const ilvl = state.ilvl ?? level;
+      const quality = affixQuality(state);
+      const picked = chosenAffixes(state.affixes, types, { quality, ilvl, ...affixRules(lines) });
+      affixes = { types, picked, rules: affixRules(lines), ilvl, quality };
       for (const a of picked) lines = [...lines, ...a.lines];
     } else if (state.ref?.startsWith("rw:")) {
       def = get(state.ref);

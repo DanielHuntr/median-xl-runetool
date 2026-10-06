@@ -77,7 +77,7 @@ function ownRolls() {
   return (item.value.rolls || []).slice(0, r.value.ranges.filter((x) => !added.has(x.line)).length);
 }
 const setAddons = (addons) => updateItem(props.slot, { addons, rolls: ownRolls() });
-const setAffixes = ({ affixes, magic }) => updateItem(props.slot, { affixes: affixes.length ? affixes : undefined, magic: magic || undefined, rolls: ownRolls() });
+const setAffixes = ({ affixes, magic, crafted, ilvl }) => updateItem(props.slot, { affixes: affixes.length ? affixes : undefined, magic: magic || undefined, crafted: crafted || undefined, ilvl, rolls: ownRolls() });
 const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.kind) && !r.value.mastercrafted);
 const setSocketCount = (n) => updateItem(props.slot, { socketCount: Number(n) });
 // Empty sockets left on this item, for "Fill empty" on a filled socket.

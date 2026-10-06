@@ -95,6 +95,8 @@ function cleanItem(st, catalog) {
     if (affixes.length) out.affixes = affixes;
   }
   if (st.ref === "custom" && st.magic === true) out.magic = true;
+  else if (st.ref === "custom" && st.crafted === true) out.crafted = true;
+  if (st.ref === "custom" && Number.isInteger(st.ilvl) && st.ilvl >= 1 && st.ilvl <= 150) out.ilvl = st.ilvl;
   return out;
 }
 

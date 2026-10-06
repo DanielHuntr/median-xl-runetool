@@ -3,8 +3,8 @@
 //   node scripts/extract-affixes.mjs [game dir]   (default: $MXL_DIR or C:/games/median-xl)
 //
 // magicprefix.bin / magicsuffix.bin (144-byte rows, D2 1.13c D2MagicAffixTxt): name 0x00, three
-// properties from 0x24 (code, parameter, min, max: i32 each), spawnable u16 0x54, level u32 0x58,
-// group u32 0x5C, rare u8 0x64 (may roll on rare and crafted items), required level u8 0x65,
+// properties from 0x24 (code, parameter, min, max: i32 each), spawnable u16 0x54, level u32 0x58 (the item level it needs),
+// group u32 0x5C, maximum level u32 0x60 (0: none), rare u8 0x64 (may roll on rare and crafted items), required level u8 0x65,
 // item types 7 × u16 from 0x6A, excluded types 5 × u16 from 0x78. Only spawnable affixes are
 // kept. Lines are written by the cube's stat formatter (src/cube/stats.js, the game's
 // ItemStatCost descriptions) with every skill named from skills.bin/skilldesc.bin, and "(a-b)"
@@ -59,7 +59,7 @@ for (const [file, kind] of [["magicprefix.bin", "p"], ["magicsuffix.bin", "s"]])
     if (!shown.length) { skipped++; continue; }
     const types = (o, n) => Array.from({ length: n }, (_, k) => r.readUInt16LE(o + 2 * k)).filter(Boolean).map(typeCode);
     affixes.push({
-      id: `${kind}${i}`, kind, group: r.readUInt16LE(0x5C), level: r.readUInt32LE(0x58), req: r[0x65],
+      id: `${kind}${i}`, kind, group: r.readUInt16LE(0x5C), level: r.readUInt32LE(0x58), ...(r.readUInt32LE(0x60) ? { max: r.readUInt32LE(0x60) } : {}), req: r[0x65],
       ...(r[0x64] ? { rare: 1 } : {}), types: types(0x6A, 7), ...(types(0x78, 5).length ? { not: types(0x78, 5) } : {}), lines: shown,
     });
   }

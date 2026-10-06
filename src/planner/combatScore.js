@@ -17,15 +17,27 @@ export function combatScore(build, character, engine, profile) {
   const skills = Object.keys(build.points).filter(id => build.points[id] > 0 && !engine.skill(id)?.tags.includes('Passive'));
   const attackRate = relativeSpeed(s('attack_speed'), c.weapon?.head.speedMod || 0);
   const castRate = relativeSpeed(s('cast_speed'));
-  let damage = 0, physical = 0, weights = 0, attacks = 0;
+  let damage = 0, physical = 0, weights = 0, attacks = 0, summonDamage = false;
   const skillNames = [];
   const attackHit = clamp(c.ar.total / (c.ar.total + Math.max(100, build.level * 20)), 0.2, 0.95);
   for (const id of skills) {
     const d = skillDamage(id, { engine, build, skillBuild, character: c });
-    if (!d?.total || !['attack', 'spell'].includes(d.kind)) continue;
+    if (!d?.total || !['attack', 'spell', 'summon'].includes(d.kind)) continue;
     skillNames.push(d.name);
     const weight = selected.has(id) ? 3 : 1;
     let value = 0, phys = 0;
+    // Minions (damage.js: their tooltip damage with your summon damage, for each of them) at
+    // an assumed hit a second each, with your pierce unless they don't inherit it.
+    if (d.kind === 'summon') {
+      summonDamage = true;
+      for (const part of d.parts) {
+        const pierce = part.element === 'physical' ? 0 : d.pierce?.[part.element] ?? s(`enemy_${part.element}_resistance`);
+        value += Math.max(0, average(part.range)) * (1 + clamp(pierce, -100, 100) / 100) * (d.count?.n || 1);
+      }
+      damage += value * weight;
+      weights += weight;
+      continue;
+    }
     for (const part of d.parts) {
       let amount = Math.max(0, average(part.range));
       if (part.element === 'physical' && d.kind === 'attack') {
@@ -42,6 +54,8 @@ export function combatScore(build, character, engine, profile) {
         value += amount * (d.kind === 'attack' ? attackRate * attackHit : periodicSpell ? 1 : castRate);
       }
     }
+    // A missile that hits a monster more than once as it passes through it (damage.js multiHit).
+    value *= d.multiHit || 1;
     damage += value * weight;
     physical += phys * weight;
     attacks += (d.kind === 'attack' ? 1 : 0) * weight;
@@ -64,7 +78,8 @@ export function combatScore(build, character, engine, profile) {
   const defense = 4 * Math.log1p(Math.max(0, c.defense.total) / 1000);
   // Crucify's extra spikes improve coverage, not a guarantee that every spike hits one target.
   const coverage = (build.points.crucify || 0) >= 10 && c.weapon?.twoHanded ? 8 * (profile.roles.attack || 0) : 0;
-  const summon = (profile.roles.summon || 0) * (20 * Math.log1p(Math.max(0, s('summoned_minion_damage')) / 100)
+  // Summon damage counts in damage when a summon's damage is known; minion life always here.
+  const summon = (profile.roles.summon || 0) * ((summonDamage ? 0 : 20 * Math.log1p(Math.max(0, s('summoned_minion_damage')) / 100))
     + 10 * Math.log1p(Math.max(0, s('summoned_minion_life')) / 100));
   const offenseScore = 60 * Math.log1p(Math.max(0, damage) / 100) + coverage + summon;
   const defenseScore = 60 * Math.log1p(durability / 500) + defense;
