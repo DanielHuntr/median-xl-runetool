@@ -1,6 +1,7 @@
 <script setup>
 import CopyLink from "./CopyLink.vue";
 import Icon from "./AppIcon.vue";
+import StatLine from "./StatLine.vue";
 import { useRunetool } from "../composables/useRunetool.js";
 const {
   st,
@@ -87,7 +88,7 @@ const alsoFits = computed(() =>
       }}
     </div>
     <ul class="stats">
-      <li v-for="s in stats(r)" :class="{ hit: hit(r, s.i) }">{{ s.text }}</li>
+      <li v-for="s in stats(r)" :class="{ hit: hit(r, s.i) }"><StatLine :text="s.text" /></li>
     </ul>
     <button
       v-if="!st.full && r.stats.length > 4"

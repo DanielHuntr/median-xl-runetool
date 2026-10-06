@@ -8,8 +8,8 @@
 // roll on rare and crafted items), required level u8 0x65, item types 7 × u16 from 0x6A,
 // excluded types 5 × u16 from 0x78. Only spawnable affixes are kept. Lines are written as the
 // game writes them (scripts/lib/item-text.mjs: every property and stat, skills named).
-// It also writes every skill's name (src/data/skill-names.json), which the Oskills & Procs page
-// checks item lines against.
+// It also writes every skill's name and class (src/data/skill-names.json), which the Oskills &
+// Procs page checks item lines against and the item cards name a skill's class from.
 // Each base item's types per tier (its game item and that item's parent types, from
 // src/data/cube-main.json; run scripts/extract-cube.mjs first) say which affixes fit it.
 import { readFileSync, writeFileSync } from "node:fs";
@@ -51,10 +51,20 @@ if (missing.length) throw new Error(`No game item for: ${missing.join(", ")}`);
 // Jewellery has no base items: a custom ring, amulet or jewel uses the plain game item's types.
 const jewellery = { ring: byName.get("Ring"), amulet: byName.get("Amulet"), jewel: byName.get("Jewel") };
 
-// Every skill's name.
-const skills = g.X("skills.bin"), names = new Set();
-for (let id = 0; id < skills.count; id++) { const n = g.skillName(id); if (n) names.add(n); }
+// Every skill's name, and the class of each class skill: skills.bin charclass i8 0x0C (0-6 in the
+// game's class order, -1 none). Helper copies of a class skill share its name with no class, and
+// the shared skills (Meditation, Paragon of Fate...) have a copy for every class: "All".
+const CLASSES = ["Amazon", "Sorceress", "Necromancer", "Paladin", "Barbarian", "Druid", "Assassin"];
+const skills = g.X("skills.bin"), names = new Set(), classOf = new Map();
+for (let id = 0; id < skills.count; id++) {
+  const n = g.skillName(id); if (!n) continue;
+  names.add(n);
+  const c = CLASSES[skills.record(id).readInt8(0x0C)];
+  if (c) classOf.set(n, new Set([...(classOf.get(n) || []), c]));
+}
+const classes = Object.fromEntries([...classOf].sort(([a], [b]) => a.localeCompare(b))
+  .map(([n, s]) => [n, s.size === CLASSES.length ? "All" : [...s].join(", ")]));
 
 writeFileSync(new URL("../src/data/affixes.json", import.meta.url), JSON.stringify({ patch: g.patch, source: "magicprefix.bin, magicsuffix.bin, itemtypes.bin (item types via cube-main.json)", bases, jewellery, affixes }) + "\n");
-writeFileSync(new URL("../src/data/skill-names.json", import.meta.url), JSON.stringify({ patch: g.patch, source: "skills.bin 0x194 → skilldesc.bin 0x08 → string tables", names: [...names].sort() }) + "\n");
+writeFileSync(new URL("../src/data/skill-names.json", import.meta.url), JSON.stringify({ patch: g.patch, source: "skills.bin 0x194 → skilldesc.bin 0x08 → string tables; class: skills.bin 0x0C", names: [...names].sort(), classes }) + "\n");
 console.log(`extract-affixes: ${affixes.filter((a) => a.kind === "p").length} prefixes, ${affixes.filter((a) => a.kind === "s").length} suffixes (${affixes.filter((a) => a.rare).length} can roll on rares); ${skipped} with no visible line left out`);

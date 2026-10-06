@@ -3,6 +3,7 @@ import CopyLink from "./CopyLink.vue";
 import ItemArt from "./ItemArt.vue";
 import CubeLink from "./CubeLink.vue";
 import Icon from "./AppIcon.vue";
+import StatLine from "./StatLine.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 import { computed } from "vue";
@@ -80,7 +81,7 @@ const sections = computed(() => [
           ><span v-if="u.cls" class="class-only">{{ u.cls }} only</span>
         </div>
         <ul class="stats">
-          <li v-for="m in u.lines">{{ m }}</li>
+          <li v-for="m in u.lines"><StatLine :text="m" /></li>
         </ul>
       </article>
     </div>

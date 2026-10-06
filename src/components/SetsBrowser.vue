@@ -3,6 +3,7 @@ import CopyLink from "./CopyLink.vue";
 import ClassPicker from "./ClassPicker.vue";
 import ItemArt from "./ItemArt.vue";
 import Icon from "./AppIcon.vue";
+import StatLine from "./StatLine.vue";
 import DataStatus from "./DataStatus.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 import CatalogFilters from "./CatalogFilters.vue";
@@ -70,7 +71,7 @@ const sections = [{ key: "tags", title: "Stats", note: "Must have all chosen (it
         <div v-for="b in s.bonuses" class="set-bonus">
           <h3>{{ b.when.replace(/:$/, "") }}</h3>
           <ul class="stats">
-            <li v-for="l in b.lines">{{ l }}</li>
+            <li v-for="l in b.lines"><StatLine :text="l" /></li>
           </ul>
         </div>
         <details v-for="it in s.items" class="set-item">
@@ -91,7 +92,7 @@ const sections = [{ key: "tags", title: "Stats", note: "Must have all chosen (it
             ><span v-if="it.cls" class="class-only">{{ it.cls }} only</span>
           </div>
           <ul class="stats">
-            <li v-for="l in it.lines">{{ l }}</li>
+            <li v-for="l in it.lines"><StatLine :text="l" /></li>
           </ul>
         </details>
       </article>

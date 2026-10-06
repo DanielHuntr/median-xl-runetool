@@ -1,6 +1,7 @@
 <script setup>
 import CopyLink from "./CopyLink.vue";
 import Icon from "./AppIcon.vue";
+import StatLine from "./StatLine.vue";
 import ItemArt from "./ItemArt.vue";
 import CubeLink from "./CubeLink.vue";
 import { useRunetool } from "../composables/useRunetool.js";
@@ -73,7 +74,7 @@ defineProps({ u: { type: Object, required: true } });
       </tbody>
     </table>
     <ul v-else class="stats">
-      <li v-for="m in tier(u).mods">{{ m }}</li>
+      <li v-for="m in tier(u).mods"><StatLine :text="m" /></li>
     </ul>
     <div v-if="nextTier(u)" class="upgrade-cost">
       <div>

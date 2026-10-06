@@ -196,3 +196,13 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     await vite.close();
   }
 });
+
+test("item cards name a skill line's class (skills.bin)", async () => {
+  const { skillClass } = await import("../src/data/skillClass.js");
+  assert.equal(skillClass("+(16 to 20) to Arrow Swarm").tag, "Item skill");
+  assert.equal(skillClass("+2 to Whirlwind").tag, "Barbarian");
+  assert.equal(skillClass("+1 to Meditation").tag, "All classes");
+  assert.equal(skillClass("+50 Life Regenerated per Second"), null);
+  assert.equal(skillClass("+2 to Sorceress Skill Levels"), null);
+  assert.equal(skillClass("+3 to Whirlwind (Barbarian Only)"), null);
+});
