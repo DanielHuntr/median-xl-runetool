@@ -100,6 +100,17 @@ test("the oskills browser reverse-searches item skill sources", async ({ page })
   await expect(page.locator(".oskill-sources li", { hasText: "Scroll of Enchantment: Gloves" })).toContainText("Chance to cast level 5 Life Spark");
 });
 
+test("starter runewords: one click, or a link, to those made of common runes, lowest level first", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.getByRole("button", { name: /^Starter runewords/ }).click();
+  await expect(page.locator(".starter-note")).toBeVisible();
+  await expect(page.locator(".rune-card").first()).toContainText(/LEVEL\s*6/i);
+  await expect(page.locator(".active-filters")).toContainText("Starter runewords");
+  await page.goto("/#planner");
+  await page.goto("/#runewords?starter");
+  await expect(page.getByRole("button", { name: /^Starter runewords/ })).toHaveAttribute("aria-pressed", "true");
+});
+
 test("a rune in a runeword links to the cube recipe that makes it", async ({ page }) => {
   await page.goto("/#runewords?name=Shark");
   await page.locator(".rune-card", { hasText: "Shark" }).first().getByRole("link", { name: /Eld Rune, show its cube recipe/ }).click();

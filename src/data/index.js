@@ -142,6 +142,13 @@ function lineValue(line) {
 // Base categories the game allows for each runeword (scripts/extract-runeword-bases.mjs):
 // the docs' base lists leave out inherited types, e.g. class shields for "Shields" runewords.
 const GAME_BASES = RW_BASES.runewords || {};
+// Starter runewords: made only of standard runes up to Ist, the runes a newer player finds while
+// levelling (enchanted, great and elemental runes, and the high standard ones, are rare Hell
+// drops). The planner's "found gear" rule is the same (src/planner/availability.js FOUND).
+export const STARTER_MAX_RUNE = "Ist";
+const STANDARD_RUNE_LEVEL = new Map(SOCK.filter((x) => x[1] === "Standard runes").map((x) => [x[0], x[2]]));
+const isStarterRune = (rune) => STANDARD_RUNE_LEVEL.has(rune) && STANDARD_RUNE_LEVEL.get(rune) <= (STANDARD_RUNE_LEVEL.get(STARTER_MAX_RUNE) ?? 0);
+
 const RW_ALL = RAW.map(([name, lvl, runes, bases, except, stats, subtitle], i) => {
   const r = runes.split(" "),
     b = bases.split(", "),
@@ -172,6 +179,7 @@ const RW_ALL = RAW.map(([name, lvl, runes, bases, except, stats, subtitle], i) =
     ...(subtitle ? { subtitle } : {}),
     lvl,
     runes: r,
+    ...(r.every(isStarterRune) ? { starter: true } : {}),
     bases: b,
     ...(GAME_BASES[name] ? { allowed: GAME_BASES[name] } : {}),
     except,

@@ -90,6 +90,7 @@ const defaults = () => ({
   elems: [],
   pmode: "all",
   starOnly: false,
+  starter: false,
   full: false,
   sort: "level",
 });
@@ -326,6 +327,7 @@ export function createRunetool() {
         st.tags.every((t) => r.tags.includes(t)) &&
         st.elems.every((t) => r.elems.includes(t)) &&
         (!st.starOnly || stars.value.includes(r.name)) &&
+        (!st.starter || r.starter) &&
         (st.pmode !== "make" || missing(r) === 0) &&
         (st.pmode !== "near" || missing(r) <= 1)
       );
@@ -346,6 +348,7 @@ export function createRunetool() {
     if (st.cls) a.push({ label: st.cls, key: "cls" });
     for (const b of st.bases)
       a.push({ label: b === "@weapon" ? "All weapons" : b === "@armor" ? "All armor" : b, key: "bases", value: b });
+    if (st.starter) a.push({ label: "Starter runewords", key: "starter" });
     if (st.lvl < MAX_ITEM_LEVEL) a.push({ label: "Level ≤ " + st.lvl, key: "lvl" });
     for (const key of ["tags", "elems", "sockets"])
       st[key].forEach((v) =>
@@ -507,6 +510,8 @@ export function createRunetool() {
   function applyLink() {
     const [p, qs] = window.location.hash.slice(1).split("?");
     const name = qs && new URLSearchParams(qs).get("name");
+    // #runewords?starter: the finder showing starter runewords, for a newer player.
+    if (p === "runewords" && qs && new URLSearchParams(qs).has("starter")) { Object.assign(st, defaults(), { sort: "level", full: st.full, starter: true }); return; }
     if (!name || !["runewords", "uniques", "sacred-uniques", "sets", "socketables", "base-items"].includes(p)) return;
     const tier = +new URLSearchParams(qs).get("tier");
     const u = p === "uniques" && tier ? TUD.find((x) => x.name === name) : null;

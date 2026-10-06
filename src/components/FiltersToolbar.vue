@@ -4,6 +4,7 @@ import Icon from "./AppIcon.vue";
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
 import FilterPanel from "./FilterPanel.vue";
 import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
+import { STARTER_MAX_RUNE } from "../data/index.js";
 const {
   st,
   stars,
@@ -26,6 +27,13 @@ const {
   CLASSES,
   filtersDocked,
 } = useRunetool();
+// Starter runewords: one click to the runewords a newer player can make while levelling, lowest
+// level first (index.js marks them: standard runes up to Ist).
+const starterCount = RW.filter((r) => r.starter).length;
+function toggleStarter() {
+  st.starter = !st.starter;
+  if (st.starter) st.sort = "level";
+}
 // Wide screens dock the filters beside the results (RunewordFinder.vue); narrower ones slide
 // them out from the right like My Runes (a modal <dialog>).
 const filterDialog = ref(null), filterTrigger = ref(null), root = ref(null);
@@ -98,6 +106,14 @@ onBeforeUnmount(() => ro?.disconnect());
       >
         <Icon name="star" />Starred
         <b v-if="stars.length" class="badge">{{ stars.length }}</b></button
+      ><button
+        class="btn"
+        :class="{ active: st.starter }"
+        :aria-pressed="st.starter"
+        :data-tip="`Runewords made only of common runes, El to ${STARTER_MAX_RUNE}: the ones you can make while levelling`"
+        @click="toggleStarter"
+      >
+        <Icon name="rune" />Starter runewords <b class="badge">{{ starterCount }}</b></button
       ><span class="toolbar-note">{{ RW.length }} runewords in the armory</span>
     </div>
     <div v-if="pills.length" class="active-filters">

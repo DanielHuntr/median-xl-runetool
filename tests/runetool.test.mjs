@@ -41,6 +41,12 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
     assert.equal(data.RW.length, 231);
     assert.equal(new Set(data.RW.map((r) => r.name + "|" + r.runes.join(" "))).size, data.RW.length, "no duplicate runewords");
     assert.equal(data.TUD.length, 255);
+    // Starter runewords: standard runes up to Ist only, so none needs a rare rune.
+    const standard = new Set(data.SOCKD.filter((x) => x.group === "Standard runes" && x.lvl <= data.SOCKD.find((y) => y.name === "Ist").lvl).map((x) => x.name));
+    const starters = data.RW.filter((r) => r.starter);
+    assert.ok(starters.length >= 40, `${starters.length} starter runewords`);
+    assert.ok(starters.every((r) => r.runes.every((x) => standard.has(x))), "only common runes");
+    assert.ok(data.RW.filter((r) => !r.starter).every((r) => r.runes.some((x) => !standard.has(x))), "every runeword of common runes is a starter");
     assert(data.TUD.some((u) => u.cat === "Boots"));
     assert(data.TUD.some((u) => u.cat === "Amulets"));
     assert(data.TUD.some((u) => u.cat === "Body Armors"));
