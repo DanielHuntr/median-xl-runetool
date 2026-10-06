@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { areasNear, gearCats, runewordsBetween } from "../src/levelling.js";
+import { areasNear, experienceShare, gearCats, runewordsBetween } from "../src/levelling.js";
 
 const { areas, patch } = JSON.parse(readFileSync(new URL("../src/data/areas.json", import.meta.url), "utf8"));
 
@@ -12,10 +12,19 @@ test("areas come from the game's levels.bin", () => {
   assert.ok(!areas.some((a) => a.name === "Rogue Encampment"), "towns have no monsters");
 });
 
-test("where to level: nearest monster level in that difficulty, one row per name", () => {
+test("experience by level difference (the docs' Experience page)", () => {
+  assert.equal(experienceShare(80, 85), 1);
+  assert.equal(experienceShare(80, 72), 0.7);
+  assert.equal(experienceShare(80, 95), 0.03);
+  assert.equal(experienceShare(120, 113), 0.6);
+  assert.equal(experienceShare(120, 130), 0.03);
+});
+
+test("where to level: full-experience areas in that difficulty, highest monster level first, one row per name", () => {
   const near = areasNear(areas, 75, "Nightmare");
   assert.equal(near.length, 5);
-  assert.ok(near.every((a) => Math.abs(a.mlvl - 75) <= 3), JSON.stringify(near));
+  assert.ok(near.every((a) => a.xp === 1 && Math.abs(a.mlvl - 75) <= 5), JSON.stringify(near));
+  assert.ok(near.every((a, i) => i === 0 || a.mlvl <= near[i - 1].mlvl), "highest monster level first");
   assert.equal(new Set(near.map((a) => a.name)).size, 5);
   assert.ok(areasNear(areas, 25, "Normal").every((a) => a.mlvl <= 50), "Normal areas only");
 });

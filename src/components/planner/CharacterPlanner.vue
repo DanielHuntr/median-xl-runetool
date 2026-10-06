@@ -366,9 +366,9 @@ const questsOpen = ref(false);
               Where to level <small>({{ stageHelp.areas.length }})</small>
             </button>
             <div v-if="stagePop === 'areas'" id="stage-pop-areas" class="stage-pop" role="dialog" aria-label="Where to level">
-              <p class="stage-pop-title">Areas near level {{ planner.build.value.level }} ({{ planner.build.value.difficulty }})</p>
+              <p class="stage-pop-title">Most experience at level {{ planner.build.value.level }} ({{ planner.build.value.difficulty }})</p>
               <ul>
-                <li v-for="a in stageHelp.areas" :key="a.name"><span>{{ a.name }}</span><small>monster level {{ a.mlvl }}</small></li>
+                <li v-for="a in stageHelp.areas" :key="a.name"><span>{{ a.name }}</span><small>monster level {{ a.mlvl }}<template v-if="a.xp < 1"> · {{ Math.round(a.xp * 100) }}% experience</template></small></li>
               </ul>
             </div>
           </div>

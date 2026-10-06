@@ -200,7 +200,7 @@ const INFO = [
   /^\d+ Yard Radius$/,
 ];
 // Built-in effects shown by name (attack modifiers, auras and similar).
-const FEATURES = /^(Attacker Takes .+|Freezes attacker.*|Unlocks your .+|Area Effect Attack|Thunderfury|Amazing Grace|Mega Impact|Stun Attack|Ignore Target's Defense|Orb Effects Applied to this Item are Doubled|Gematria|Demon Blood Aura|Random Movement Speed Bonus|Cannot Be Frozen|Half Freeze Duration|Total Defense = \d+|You may only use .+)$/;
+const FEATURES = /^(Attacker Takes .+|Freezes attacker.*|Unlocks your .+|Area Effect Attack|Thunderfury|Amazing Grace|Mega Impact|Stun Attack|Ignore Target's Defense|Orb Effects Applied to this Item are Doubled|Gematria|Demon Blood Aura|Random Movement Speed Bonus|Cannot Be Frozen|Half Freeze Duration|Total Defense = \d+|You may only use .+|Can spawn .+|Can only spawn .+|\+1% Chance to Avoid Damage per 500 Dexterity|\+1 Lightning Damage per 1% (?:Bonus to Defense|Total Physical Weapon Damage Bonus)|1% Deadly Strike per 7% Movement Speed)$/;
 
 /**
  * @param {string} text   a rolled line (no "(a to b)" ranges)

@@ -9,6 +9,7 @@ import RunewordFinder from "./components/RunewordFinder.vue";
 import TieredUniques from "./components/TieredUniques.vue";
 import SacredUniques from "./components/SacredUniques.vue";
 import SetsBrowser from "./components/SetsBrowser.vue";
+import OskillsBrowser from "./components/OskillsBrowser.vue";
 import SocketablesList from "./components/SocketablesList.vue";
 import BaseItems from "./components/BaseItems.vue";
 import RuneDrawer from "./components/RuneDrawer.vue";
@@ -35,6 +36,7 @@ const { page } = state;
       <PrivacyPage v-else-if="page === 'privacy'" />
       <SacredUniques v-else-if="page === 'sacred-uniques'" />
       <SetsBrowser v-else-if="page === 'sets'" />
+      <OskillsBrowser v-else-if="page === 'oskills'" />
       <SocketablesList v-else-if="page === 'socketables'" />
       <BaseItems v-else-if="page === 'base-items'" />
       <CubeRecipes v-else-if="page === 'cube'" />

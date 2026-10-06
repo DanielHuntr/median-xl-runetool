@@ -3,7 +3,7 @@ import { MAX_LEVEL } from "./engine.js";
 import { isToggleSkill } from './skillEffects.js';
 import { spendRemaining, wearableBothSets, releaseUnusedRequirements, fundLoadout } from './attributeAllocation.js';
 import { computeCharacter, ATTRIBUTES, activeSlots } from "./character.js";
-import { SLOTS } from "./items.js";
+import { SLOTS, bonusById } from "./items.js";
 import { cleanOrbs, orbById, orbFits } from './orbs.js';
 import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
@@ -84,6 +84,11 @@ function cleanItem(st, catalog) {
   if (st.honorific === true && catalog.get(st.ref)?.kind === "base") out.honorific = true;
   // Superior quality: a variant id from superior-items.json (items.js ignores one that doesn't fit).
   if (Number.isInteger(st.superior) && st.superior >= 0 && st.superior < 16) out.superior = st.superior;
+  // Added bonuses (trophy, scroll, shrines, cycles): ids from item-bonuses.json; items.js keeps those that fit.
+  if (Array.isArray(st.addons)) {
+    const addons = st.addons.filter((id) => typeof id === "string" && bonusById(id)).slice(0, 30);
+    if (addons.length) out.addons = addons;
+  }
   return out;
 }
 

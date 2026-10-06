@@ -81,6 +81,25 @@ test("links open one card: a runeword, a unique at a tier, a sacred unique, a se
   }
 });
 
+test("the oskills browser reverse-searches item skill sources", async ({ page }) => {
+  await page.goto("/#oskills?name=Flamefront");
+  await expect(page.getByRole("heading", { name: "Flamefront" }).first()).toBeVisible();
+  await expect(page.locator(".oskill-sources li").first()).toContainText(/Chance to cast|to Flamefront/);
+  // Soulbinder Gloves rolls, from the game's affix table: a skill with two ranges is one source.
+  await page.goto("/#oskills?name=Charm");
+  const gloves = page.locator(".oskill-sources li", { hasText: "Soulbinder Gloves" });
+  await expect(gloves).toHaveCount(1);
+  await expect(gloves).toContainText("+(2 to 6) or (8 to 29) to Charm");
+  await gloves.getByRole("link").click();
+  await expect(page.getByRole("heading", { name: "Soulbinder Gloves (Mastercrafted)" }).first()).toBeVisible();
+  await expect(page.getByText("Can spawn any oSkill from Rare Affixes").first()).toBeVisible();
+  // Relics (the planner's data) and scrolls of enchantment (the game's cube recipes).
+  await page.goto("/#oskills?name=Abyss%20Knight");
+  await expect(page.locator(".oskill-sources li", { hasText: "Relic (Abyss Knight)" }).first()).toContainText("to Abyss Knight");
+  await page.goto("/#oskills?name=Life%20Spark");
+  await expect(page.locator(".oskill-sources li", { hasText: "Scroll of Enchantment: Gloves" })).toContainText("Chance to cast level 5 Life Spark");
+});
+
 test("a cube recipe link loads that recipe, ready to transmute", async ({ page }) => {
   await page.goto("/#cube?recipe=4792");
   await expect(page.getByText("Loaded: Book of Cain: Item Design + Oil of Craft → Book of Cain: Cube Reagent.", { exact: false })).toBeVisible();
@@ -96,7 +115,9 @@ test("the character planner loads", async ({ page }) => {
 test("a backup downloads and restores", async ({ page }) => {
   await page.goto("/#runewords");
   await page.evaluate(() => localStorage.setItem("mxlrw2:saved-builds", "[]"));
-  await page.getByRole("button", { name: "Back up & restore" }).click();
+  // In the sidebar's More menu.
+  await page.locator(".sidebar").getByRole("button", { name: "More" }).click();
+  await page.getByRole("menuitem", { name: "Back up & restore" }).click();
   const dialog = page.getByRole("dialog", { name: "Back up & restore" });
   const [download] = await Promise.all([page.waitForEvent("download"), dialog.getByRole("button", { name: /Download a backup/ }).click()]);
   expect(download.suggestedFilename()).toMatch(/^runetool-backup-\d{4}-\d{2}-\d{2}\.json$/);
@@ -230,6 +251,15 @@ test("the charm list shows its count, scrolls within the equipment column, and f
   await expect(charms.locator(".charms-summary")).toContainText(/charms?/);
 });
 
+test("a charm takes its trophy bonus, once", async ({ page }) => {
+  await openBuild(page, "Hammer of Zerae");
+  const lies = page.locator("#charm-list li", { hasText: "The Book of Lies" });
+  await lies.getByRole("combobox", { name: "Trophy" }).selectOption({ label: "Lord of Lies Trophy: Weapon Physical Damage +20%" });
+  await lies.getByRole("button", { name: "Add" }).click();
+  await expect(lies.getByRole("button", { name: /Remove Lord of Lies Trophy/ })).toBeVisible();
+  await expect(lies.getByRole("combobox", { name: "Trophy" })).toHaveCount(0);
+});
+
 test("the skill summary opens from the skill points counter, and a skill in it opens its tree", async ({ page }) => {
   await openBuild(page, "Snake Bite");
   await page.getByRole("button", { name: "Summary" }).click();
@@ -298,14 +328,12 @@ test("on a short screen the sidebar scrolls to its last item, and there's no Hel
   expect(await side.evaluate((el) => getComputedStyle(el).overflowY)).toBe("auto");
 });
 
-test("the sidebar's Sign in opens the account dialog, which asks for a valid email", async ({ page }) => {
+test("the sidebar's Sign in opens the account dialog, with Google sign-in", async ({ page }) => {
   await page.goto("/#runewords");
   await page.locator(".sidebar").getByRole("button", { name: "Sign in" }).click();
   const dialog = page.getByRole("dialog", { name: "Sign in" });
   await expect(dialog).toBeVisible();
-  await dialog.getByLabel("Email").fill("not-an-email");
-  await dialog.getByRole("button", { name: "Email me a sign-in link" }).click();
-  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("button", { name: /Google/ })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
 });

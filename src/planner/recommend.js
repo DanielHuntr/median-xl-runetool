@@ -46,6 +46,9 @@ const WEAPON_WORDS = [
   ["wand", (c) => /Wands$/.test(c)],
   ["scythe", (c) => /Scythes$/.test(c)],
 ];
+// Levels an item line gives one of the class's own skills: "(Class Only)" lines in full, plain
+// "+N to Skill" lines at most +3 (the game's cap; character.js ownSkillItemLevels).
+const ownSkillLevels = (p) => (p.cls ? p.value : Math.min(p.value, 3));
 const RANGED = (c) => /Bows$|Crossbows$|Javelins$|Throwing/.test(c);
 export function weaponNeed(restrictions) {
   for (const r of restrictions) {
@@ -348,14 +351,14 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
           else if (want[key] && TYPICAL[key]) v += (value / TYPICAL[key]) * want[key];
         }
       // +levels to a skill the build uses are worth more the more points it has.
-      else if (p.kind === "skill" && profile.skills[p.id]) v = p.value * (4 + 20 * profile.skills[p.id]);
+      else if (p.kind === "skill" && profile.skills[p.id]) v = ownSkillLevels(p) * (4 + 20 * profile.skills[p.id]);
       // +levels to a synergy of the build's skills (Stormcall for Askari Lightning).
       else if (p.kind === "skill" && profile.scaling?.skills[p.id]) {
-        v = p.value * (3 + 15 * profile.scaling.skills[p.id]);
+        v = ownSkillLevels(p) * (3 + 15 * profile.scaling.skills[p.id]);
         text = `${p.text} (synergy for your skills)`;
       }
       // Levels in class skills the build doesn't use are nearly worthless to it.
-      else if (p.kind === "skill" && engine.node(build, p.id)) v = p.value * 0.05;
+      else if (p.kind === "skill" && engine.node(build, p.id)) v = ownSkillLevels(p) * 0.05;
       else if (p.kind === "skillmod" && profile.skills[p.id]) v = 3;
       if (v > 0.05) {
         score += v;
@@ -378,7 +381,7 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     if (isWeapon && !((profile.roles.attack || 0) > 0.2) && ((profile.roles.spell || 0) + (profile.roles.summon || 0)) > 0)
       for (const p of r.parsed) {
         if (p.kind === "stats") for (const [key, value] of p.effects) { if (key === "all_skills" || key === `class_skills:${build.cls}`) casterLevels += value; }
-        else if (p.kind === "skill" && profile.skills[p.id]) casterLevels += p.value;
+        else if (p.kind === "skill" && profile.skills[p.id]) casterLevels += ownSkillLevels(p);
       }
     score = outcome.score - baseline.score + fallback + 1.2 * casterLevels;
     const comparisons = combatReasons(baseline, outcome);
@@ -476,8 +479,8 @@ function socketValue(parsed, want, character, profile, build) {
         } else if (key === `class_skills:${build.cls}`) x += value * 8;
         else if (want[key] && TYPICAL[key]) x += (value / TYPICAL[key]) * want[key];
       }
-    else if (p.kind === "skill" && profile.skills[p.id]) x = p.value * (4 + 20 * profile.skills[p.id]);
-    else if (p.kind === "skill" && profile.scaling?.skills[p.id]) x = p.value * (3 + 15 * profile.scaling.skills[p.id]);
+    else if (p.kind === "skill" && profile.skills[p.id]) x = ownSkillLevels(p) * (4 + 20 * profile.skills[p.id]);
+    else if (p.kind === "skill" && profile.scaling?.skills[p.id]) x = ownSkillLevels(p) * (3 + 15 * profile.scaling.skills[p.id]);
     if (Math.abs(x) > 0.02) {
       v += x;
       parts.push({ x, text: p.text });

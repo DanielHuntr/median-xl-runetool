@@ -140,12 +140,14 @@ test("catalogue, Vue components, filters, inventory, tiers and persistence", asy
       assert(data.RIMG[s.img], `Missing artwork: ${s.name}`);
       assert(s.slots.every((l) => l.length), s.name);
     }
+    // The docs' bases have five tiers; mastercrafted bases (game files) have one.
     for (const b of data.BASED)
       assert.deepEqual(
         b.t.map((t) => t.label),
-        ["Tier 1", "Tier 2", "Tier 3", "Tier 4", "Sacred"],
+        b.mastercrafted ? ["Mastercrafted"] : ["Tier 1", "Tier 2", "Tier 3", "Tier 4", "Sacred"],
         b.name,
       );
+    assert.equal(data.BASED.filter((b) => b.mastercrafted).length, 7, "the seven mastercrafted bases");
     assert(data.SUD.every((u) => u.lines.length && u.cat), "sacred unique stats");
     state.st.lvl = 120;
     state.browse.sacred.q = "Xiphos";

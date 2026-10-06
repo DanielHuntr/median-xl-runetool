@@ -4,7 +4,13 @@
 // { ok: false, reason } with a message fit to show.
 import { supabase } from "../lib/supabase.js";
 
-const fail = (error) => ({ ok: false, reason: error?.message || "Something went wrong. Please try again." });
+const fail = (error) => ({
+  ok: false,
+  // A table the site expects isn't in the database yet (a migration not run): said plainly.
+  reason: error?.code === "PGRST205" || /schema cache/i.test(error?.message || "")
+    ? "Saving this to your account isn't available yet. Please try again later."
+    : error?.message || "Something went wrong. Please try again.",
+});
 export const DISPLAY_NAME = /^[A-Za-z0-9 _-]{3,24}$/;
 
 export async function getProfile(userId) {

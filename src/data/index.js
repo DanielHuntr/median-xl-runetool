@@ -6,6 +6,7 @@ import SU from "./sacred-uniques.json";
 import SETS from "./sets.json";
 import SOCK from "./socketables.json";
 import BASE from "./base-items.json";
+import MASTERCRAFTED from "./mastercrafted.json";
 import META from "./catalog-meta.json";
 import RW_BASES from "./runeword-bases.json";
 const RIMG = { ...RUNE_IMG, ...SOCK_IMG };
@@ -306,6 +307,19 @@ const basesOf = (BASE) => BASE.map(([name, cat, tiers], i) => ({
   text: (name + " " + cat + " " + tiers.flat().join(" ")).toLowerCase(),
 }));
 
+// Mastercrafted bases, from the game files (scripts/extract-mastercrafted.mjs): not in the docs'
+// list, so they come after it with ids of their own (9000 + n) that a live catalogue can't shift.
+// Their ability follows the base stats; they spawn rare, so they take no runewords.
+const mastercraftedOf = (rows) => rows.map((b, n) => ({
+  id: 9000 + n,
+  key: "bi:" + (9000 + n),
+  name: b.name,
+  cat: b.cat,
+  mastercrafted: true,
+  t: [{ label: "Mastercrafted", ...statBlock([...b.lines, ...b.ability].join("|")) }],
+  text: [b.name, b.cat, "mastercrafted", ...b.lines, ...b.ability].join(" ").toLowerCase(),
+}));
+
 // Raw catalogue (bundled JSON or the /api/catalog response) → display records.
 function normalizeCatalog(c) {
   const SOCKD = socketablesOf(c.socketables);
@@ -314,7 +328,7 @@ function normalizeCatalog(c) {
     SETD: setsOf(c.sets),
     SOCKD,
     SOCK_GROUPS: [...new Set(SOCKD.map((s) => s.group))],
-    BASED: basesOf(c.baseItems),
+    BASED: [...basesOf(c.baseItems), ...mastercraftedOf(MASTERCRAFTED.bases)],
   };
 }
 const BUNDLED = { ...META, baseItems: BASE, sacredUniques: SU, sets: SETS, socketables: SOCK };

@@ -75,7 +75,7 @@ const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value
             <h2>{{ b.name }}</h2>
           </div>
         </div>
-        <div class="tier-tabs" role="group" :aria-label="b.name + ' tier'">
+        <div v-if="b.t.length > 1" class="tier-tabs" role="group" :aria-label="b.name + ' tier'">
           <button
             v-for="(t, i) in b.t"
             :class="{ selected: tierIndex(b) === i, over: t.req > st.lvl }"
@@ -106,7 +106,7 @@ const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value
           <li v-for="l in tier(b).lines">{{ l }}</li>
         </ul>
         <!-- What a Superior version adds (game files), on top of the lines above. -->
-        <ul v-if="superiorVariantsForCat(b.cat).length" class="stats superior-lines" aria-label="Superior versions">
+        <ul v-if="!b.mastercrafted && superiorVariantsForCat(b.cat).length" class="stats superior-lines" aria-label="Superior versions">
           <li v-for="v in superiorVariantsForCat(b.cat)" :key="v.id">{{ superiorLabel(v) }}</li>
         </ul>
       </article>
@@ -125,7 +125,7 @@ const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value
       </button>
     </div>
     <p class="coverage">
-      {{ BASED.length }} base items from the official documentation. <DataStatus />
+      {{ BASED.filter((b) => !b.mastercrafted).length }} base items from the official documentation, and {{ BASED.filter((b) => b.mastercrafted).length }} mastercrafted bases from the game files (always rare, fully socketed, each with an ability of its own). <DataStatus />
     </p>
   </section>
 </template>

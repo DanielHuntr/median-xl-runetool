@@ -27,6 +27,9 @@ const STEPS = [
   ["extract-speed.mjs", dir],
   ["extract-areas.mjs", dir],
   ["extract-cube.mjs", dir],
+  ["extract-item-bonuses.mjs"],
+  ["extract-soulbinder.mjs", dir],
+  ["extract-mastercrafted.mjs", dir],
   ["check-patch.mjs"],
 ];
 

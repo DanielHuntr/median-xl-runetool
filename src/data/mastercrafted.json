@@ -1,0 +1,116 @@
+{
+ "patch": "2.14.4",
+ "source": "weapons.bin/armor.bin (via cube-main.json), speed.json, automagic.bin groups 801-808, string tables",
+ "bases": [
+  {
+   "code": "mz01",
+   "name": "Maiden Bow (Mastercrafted)",
+   "cat": "Bows",
+   "lines": [
+    "Two-Hand Damage: 77 to 85",
+    "Required Level: 30",
+    "Required Dexterity: 750",
+    "Attack Speed Modifier: 20",
+    "Dexterity Damage Bonus: (0.13 per Dexterity)%",
+    "Socketed (6)"
+   ],
+   "ability": [
+    "+1% Chance to Avoid Damage per 500 Dexterity"
+   ]
+  },
+  {
+   "code": "mz02",
+   "name": "Kukri (Mastercrafted)",
+   "cat": "Daggers",
+   "lines": [
+    "One-Hand Damage: 45 to 50",
+    "Required Level: 30",
+    "Required Dexterity: 550",
+    "Attack Speed Modifier: 0",
+    "Dexterity Damage Bonus: (0.11 per Dexterity)%",
+    "Socketed (3)"
+   ],
+   "ability": [
+    "+1 Lightning Damage per 1% Bonus to Defense",
+    "+1 Lightning Damage per 1% Total Physical Weapon Damage Bonus"
+   ]
+  },
+  {
+   "code": "mz03",
+   "name": "Gothic Staff (Mastercrafted)",
+   "cat": "Staves",
+   "lines": [
+    "Two-Hand Damage: 63 to 69",
+    "Required Level: 30",
+    "Required Dexterity: 333",
+    "Attack Speed Modifier: 20",
+    "Dexterity Damage Bonus: (0.15 per Dexterity)%",
+    "Socketed (6)"
+   ],
+   "ability": [],
+   "retired": true
+  },
+  {
+   "code": "mz04",
+   "name": "Cincture (Mastercrafted)",
+   "cat": "Belts",
+   "lines": [
+    "Defense: 1187 to 1260",
+    "Required Level: 30",
+    "Required Strength: 575",
+    "Socketed (2)"
+   ],
+   "ability": [],
+   "retired": true
+  },
+  {
+   "code": "mz05",
+   "name": "Flying Kinzhal (Mastercrafted)",
+   "cat": "Throwing Knives",
+   "lines": [
+    "Throw Damage: 68 to 75",
+    "One-Hand Damage: 41 to 45",
+    "Required Level: 30",
+    "Required Dexterity: 519",
+    "Attack Speed Modifier: -20",
+    "Dexterity Damage Bonus: (0.11 per Dexterity)%"
+   ],
+   "ability": [
+    "1% Deadly Strike per 7% Movement Speed"
+   ]
+  },
+  {
+   "code": "mz21",
+   "name": "Soulbinder Gloves (Mastercrafted)",
+   "cat": "Gloves",
+   "lines": [
+    "Defense: 492 to 522",
+    "Required Level: 100",
+    "Required Strength: 350",
+    "Required Dexterity: 350",
+    "Socketed (4)"
+   ],
+   "ability": [
+    "Can spawn any oSkill from Rare Affixes"
+   ]
+  },
+  {
+   "code": "mz22",
+   "name": "Echo Sabre (Mastercrafted)",
+   "cat": "One-Handed Swords",
+   "lines": [
+    "One-Hand Damage: 44 to 55",
+    "Required Level: 30",
+    "Required Strength: 443",
+    "Attack Speed Modifier: -20",
+    "Strength Damage Bonus: (0.11 per Strength)%",
+    "Socketed (3)"
+   ],
+   "ability": [
+    "Can spawn any Proc from Rare Affixes",
+    "Can spawn same Proc multiple times",
+    "Can only spawn Procs"
+   ]
+  }
+ ]
+}

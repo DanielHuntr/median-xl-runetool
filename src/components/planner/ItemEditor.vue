@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
+import ItemBonuses from "./ItemBonuses.vue";
 import { SLOTS } from "../../planner/items.js";
 import { MERC_SLOTS } from "../../planner/mercs.js";
 import { pointsFor } from "../../planner/character.js";
@@ -68,7 +69,13 @@ const setQuality = (v) => {
   updateItem(props.slot, { superior: v === "" ? undefined : Number(v), rolls: (item.value.rolls || []).slice(0, own) });
 };
 const names = computed(() => superiorNames(r.value));
-const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.kind));
+// Added bonuses' ranges follow the item's own, so changing them keeps only the item's own rolls.
+function setAddons(addons) {
+  const added = new Set((r.value.addons || []).flatMap((b) => b.lines));
+  const own = r.value.ranges.filter((x) => !added.has(x.line)).length;
+  updateItem(props.slot, { addons, rolls: (item.value.rolls || []).slice(0, own) });
+}
+const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.kind) && !r.value.mastercrafted);
 const setSocketCount = (n) => updateItem(props.slot, { socketCount: Number(n) });
 // Empty sockets left on this item, for "Fill empty" on a filled socket.
 const empty = computed(() => (r.value?.def.kind === "runeword" ? [] : emptySockets(props.slot)));
@@ -152,7 +159,7 @@ const cubeLink = computed(() => {
           <option v-for="q in qualities" :key="q.id" :value="q.id">{{ superiorLabel(q) }}</option>
         </select></label
       >
-      <label v-if="r.def.kind === 'base'" class="field-inline" title="A magic item cubed with a Mark of Infusion (Shenk, Act 5): mystic orbs count double. Its random magic affixes aren't counted."
+      <label v-if="r.def.kind === 'base' && !r.mastercrafted" class="field-inline" title="A magic item cubed with a Mark of Infusion (Shenk, Act 5): mystic orbs count double. Its random magic affixes aren't counted."
         ><input type="checkbox" :checked="!!r.state.honorific" @change="updateItem(props.slot, { honorific: $event.target.checked || undefined })" /> Honorific</label
       >
       <label v-if="canPickSockets && r.maxSockets" class="field-inline"
@@ -196,6 +203,7 @@ const cubeLink = computed(() => {
       </div>
       </template>
     </div>
+    <ItemBonuses v-if="!mercKey" :item="r" :addons="item.addons || []" @update="setAddons" />
     <div v-if="r.socketCount" class="sockets">
       <h3>
         Sockets

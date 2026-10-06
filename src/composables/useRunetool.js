@@ -48,6 +48,7 @@ export const PAGES = [
   ["uniques", "Tiered Uniques", "book", "Find your unique. See what the next tier brings.", DOCS + "tiereduniques"],
   ["sacred-uniques", "Sacred Uniques", "crown", "Endgame uniques on sacred bases.", DOCS + "sacreduniques"],
   ["sets", "Sets", "link", "Sacred sets, their items and set bonuses.", DOCS + "sets"],
+  ["oskills", "Oskills & Procs", "spark", "Find items that grant skills or cast them automatically.", "https://forum.median-xl.com/viewtopic.php?t=75830"],
   ["socketables", "Gems & Runes", "gem", "What every gem and rune adds to each slot.", DOCS + "socketables"],
   ["base-items", "Base Items", "shield", "Every base item, from Tier 1 to Sacred.", DOCS + "baseitems"],
   ["cube", "Cube Recipes", "cube", "Put items in the Horadric Cube and see what the game makes of them, from its own recipe table.", DOCS + "cube"],

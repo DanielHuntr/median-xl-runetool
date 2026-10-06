@@ -121,6 +121,74 @@ test("items: slots, sockets by slot type, set jewellery and runeword bases", asy
   assert.deepEqual(custom.parsed.map((p) => p.kind), ["stats", "unknown"]);
 });
 
+test("item +levels to the class's own skills: plain lines at most +3 together, (Class Only) lines in full; other classes' skills add up", async () => {
+  // The game's skill level (D2Common 0x6FD9FCB0): stat 97 ("+N to Skill") capped at 3 for the
+  // player's own class, stat 107 ("+N to Skill (Class Only)") not; the docs' Relics page says the same.
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const item = (slotType, text) => ({ ref: "custom", custom: { name: slotType, slotType, text: `Required Level: 1
+${text}` } });
+  const sorc = (gear) => computeCharacter(build("Sorceress", { level: 120, points: { warmth: 1 }, gear }), { engine, catalog, planner });
+  assert.equal(sorc({ ring1: item("ring", "+10 to Warmth"), ring2: item("ring", "+10 to Warmth") }).soft.warmth, 3);
+  assert.equal(sorc({ ring1: item("ring", "+2 to Warmth"), amulet: item("amulet", "+5 to Warmth (Sorceress Only)") }).soft.warmth, 7);
+  const other = Object.entries(planner.skills).find(([id]) => !engine.node(build("Sorceress"), id) && Object.values(planner.trees).some((t) => JSON.stringify(t).includes(`"${id}"`)));
+  assert.ok(other, "a skill from another class's tree");
+  const c = sorc({ ring1: item("ring", `+4 to ${other[1].name}`), ring2: item("ring", `+5 to ${other[1].name}`) });
+  assert.equal(c.itemSkills[other[0]], 9);
+});
+
+test("added bonuses from the game's cube recipes: trophies, scrolls of enchantment, shrines and cycles, each only where it fits", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const B = JSON.parse(await readFile(new URL("../src/data/item-bonuses.json", import.meta.url), "utf8"));
+  const lies = catalog.all().find((d) => d.name === "The Book of Lies");
+  const trophy = B.trophies.find((t) => `inv:${t.charm}` === lies.key);
+  assert.deepEqual(trophy.lines, ["Weapon Physical Damage +20%"], "Lord of Lies Trophy");
+  const wpd = (inventory) => computeCharacter(build("Barbarian", { level: 120, inventory }), { engine, catalog, planner }).s("enhanced_weapon_damage");
+  assert.equal(wpd([{ ref: lies.key, addons: [trophy.id] }]) - wpd([{ ref: lies.key }]), 20);
+  // A trophy for another charm, or a second trophy, adds nothing.
+  const other = B.trophies.find((t) => t.id !== trophy.id);
+  assert.equal(wpd([{ ref: lies.key, addons: [other.id] }]), wpd([{ ref: lies.key }]));
+  // One scroll per item, on its own slot: +2 to All Skills on body armour, not on a helm.
+  const allSkills = B.scrolls.find((x) => x.slot === "body" && x.lines.includes("+2 to All Skills"));
+  const body = { ref: "custom", custom: { name: "Armor", slotType: "body", text: "Required Level: 1" } };
+  const skills = (gear) => computeCharacter(build("Sorceress", { level: 120, gear }), { engine, catalog, planner }).allSkills;
+  assert.equal(skills({ body: { ...body, addons: [allSkills.id] } }) - skills({ body }), 2);
+  assert.equal(skills({ helm: { ref: "custom", custom: { name: "Helm", slotType: "helm", text: "Required Level: 1" }, addons: [allSkills.id] } }), 0);
+  const fire = B.scrolls.find((x) => x.slot === "body" && x !== allSkills);
+  assert.equal(catalog.resolve({ ...body, addons: [allSkills.id, fire.id] }, 120).addons.length, 1, "one scroll per item");
+  // Shrines: a rare/crafted (custom) item or an honorific base, by category; never a unique.
+  const shrine = B.shrines.find((x) => x.category.includes("body armor"));
+  assert.equal(catalog.resolve({ ...body, addons: [shrine.id] }, 120).addons.length, 1);
+  const unique = catalog.all().find((d) => d.kind === "unique" && d.slotType === "body");
+  assert.equal(catalog.resolve({ ref: unique.key, addons: [shrine.id] }, 120).addons.length, 0);
+  // Cycles in the Corrupted Wormhole, each adding its required level.
+  const wormhole = catalog.all().find((d) => d.name === "Corrupted Wormhole");
+  const cycle = B.cycles.find((x) => x.lines.includes("+5 Required Level"));
+  const plain = catalog.resolve({ ref: wormhole.key }, 120);
+  const cycled = catalog.resolve({ ref: wormhole.key, addons: [cycle.id, cycle.id] }, 120);
+  assert.equal(cycled.head.reqLevel - plain.head.reqLevel, 10);
+});
+
+test("mastercrafted bases from the game files: fully socketed, never runeword bases, abilities that grow with stats", async () => {
+  const { engine, catalog } = await env();
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const bow = catalog.all().find((d) => d.name === "Maiden Bow (Mastercrafted)");
+  assert.equal(bow.kindLabel, "Mastercrafted base");
+  const r = catalog.resolve({ ref: bow.key }, 120);
+  assert.equal(r.socketCount, 6, "always fully socketed");
+  assert.equal(r.canBeSuperior, false);
+  assert.ok(!catalog.all().some((d) => d.kind === "runeword" && catalog.runewordBases(d).some((b) => b.mastercrafted)));
+  assert.ok(r.parsed.every((p) => p.kind !== "unknown"), JSON.stringify(r.parsed.filter((p) => p.kind === "unknown")));
+  // +1% Chance to Avoid Damage per 500 Dexterity.
+  const avoid = (dexterity) => computeCharacter(build("Amazon", { level: 120, attrs: { dexterity }, gear: { weapon: { ref: bow.key } } }), { engine, catalog, planner }).stats.avoid_chance?.sources.find((x) => x.source === bow.name)?.value || 0;
+  assert.equal(avoid(1000) - avoid(0), 2);
+  // The Kukri: +1 lightning damage per 1% Bonus to Defense.
+  const kukri = catalog.all().find((d) => d.name === "Kukri (Mastercrafted)");
+  const c = computeCharacter(build("Assassin", { level: 120, gear: { weapon: { ref: kukri.key }, amulet: { ref: "custom", custom: { name: "Def", slotType: "amulet", text: "40% Bonus to Defense" } } } }), { engine, catalog, planner });
+  assert.equal(c.stats.maximum_lightning_damage.sources.find((x) => x.source === kukri.name).value, 40);
+});
+
 test("character sheet: attributes, life, resist penalty, set bonuses, gear skills, passives", async () => {
   const { engine, catalog } = await env();
   const { computeCharacter } = await load("/src/planner/character.js");
@@ -300,6 +368,10 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   const helm = catalog.forSlot("helm", "Paladin").find((d) => d.kind === "sacred");
   p.equip("helm", { ref: helm.key, rolls: [0.5, 2, "x"] });
   assert.deepEqual(p.build.value.gear.helm.rolls, [0.5, 1, 1], "out-of-range rolls are reset");
+  // Added bonuses: known ids only, kept through sharing.
+  const scroll = JSON.parse(await readFile(new URL("../src/data/item-bonuses.json", import.meta.url), "utf8")).scrolls.find((x) => x.slot === "helm");
+  p.equip("helm", { ...p.build.value.gear.helm, addons: [scroll.id, "scroll:made-up", 7] });
+  assert.deepEqual(p.build.value.gear.helm.addons, [scroll.id]);
   p.equip("boots", { ref: "does-not-exist" });
   assert.equal(p.build.value.gear.boots, undefined);
   const url = p.shareUrl();
@@ -310,6 +382,7 @@ test("planner store: saving, sharing and cleaning untrusted builds", async () =>
   assert.ok(p.importFromHash(new URL(url).hash));
   assert.equal(p.build.value.attrs.strength, 50);
   assert.equal(p.build.value.gear.helm.ref, helm.key);
+  assert.deepEqual(p.build.value.gear.helm.addons, [scroll.id], "added bonuses survive a share link");
   assert.equal(p.importFromHash("#planner?b=bm90LWEtYnVpbGQ"), false);
   // Skill slots and bar survive sharing; unknown skills are dropped.
   p.setClass("Amazon");

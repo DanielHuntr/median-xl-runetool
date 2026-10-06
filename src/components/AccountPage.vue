@@ -49,10 +49,13 @@ async function removeFilter(f) {
 const filtersNotUploaded = () => localFilters.value.filter((e) => !e.accountId);
 const filterMsg = ref("");
 async function uploadFilters() {
+  filterMsg.value = filtersError.value = "";
   const list = filtersNotUploaded();
   if (!list.length) return (filterMsg.value = "Every filter in this browser is already in your account.");
   for (const e of list) await filterSync.saveToAccount(e.id);
-  filterMsg.value = filterSync.syncError.value || `Added ${list.length} filter${list.length > 1 ? "s" : ""} to your account.`;
+  filterMsg.value = "";
+  if (filterSync.syncError.value) filtersError.value = filterSync.syncError.value;
+  else filterMsg.value = `Added ${list.length} filter${list.length > 1 ? "s" : ""} to your account.`;
   loadFilters();
 }
 

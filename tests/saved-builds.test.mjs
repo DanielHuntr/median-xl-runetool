@@ -68,7 +68,7 @@ test('named snapshots preserve builds, handle storage failures and render in the
     assert.match(html, /My Assassin/);
     assert.match(html, /#planner\?b=/);
     assert.doesNotMatch(html, /starter-card/, 'no starter builds');
-    assert.match(html, /share-note/);
+    assert.match(html, /community-section/);
     assert.equal(store.remove(first.entry.id), true);
     memory.set('mxlrw2:saved-builds', JSON.stringify([first.entry, first.entry, { bad: true }]));
     storageListener({ key: 'mxlrw2:saved-builds' });

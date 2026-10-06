@@ -4,6 +4,7 @@
 import { applyRolls, parseLine, parseSpan } from "./statparse.js";
 import { superiorOf } from "./superior.js";
 import { cleanOrbs, orbById, orbFits, orbMultiplier } from './orbs.js';
+import BONUSES from "../data/item-bonuses.json" with { type: "json" };
 
 // Equipment slots, laid out like the in-game inventory screen.
 export const SLOTS = [
@@ -45,6 +46,35 @@ const socketsOf = (lines) => {
 };
 const isTwoHanded = (lines) =>
   lines.some((l) => /^Two-Hand Damage:/.test(l)) && !lines.some((l) => /^One-Hand Damage:/.test(l));
+
+// Bonuses the cube adds to a kept item (scripts/extract-item-bonuses.mjs, from the game's
+// recipes): a trophy on its challenge charm, one scroll of enchantment per item, up to two
+// shrines (crafting, then blessing) on a sacred rare, crafted or honorific item, and cycles
+// in the Corrupted Wormhole. state.addons lists their ids; their lines follow the item's own.
+export const BONUS_GROUPS = [
+  { group: "trophy", label: "Trophy", max: 1, list: BONUSES.trophies },
+  { group: "scroll", label: "Scroll of enchantment", max: 1, list: BONUSES.scrolls },
+  { group: "shrine", label: "Shrine", max: 2, list: BONUSES.shrines },
+  { group: "cycle", label: "Cycles", max: 99, list: BONUSES.cycles },
+];
+const BONUS_BY_ID = new Map(BONUS_GROUPS.flatMap((g) => g.list.map((b) => [b.id, { ...b, group: g.group }])));
+export const bonusById = (id) => BONUS_BY_ID.get(id);
+const shrineCategory = (slotType, twoHanded) =>
+  slotType === "weapon" ? (twoHanded ? "two-handed weapon" : "one-handed weapon")
+    : slotType === "body" ? "body armor"
+    : ["shield", "helm", "gloves", "boots", "belt"].includes(slotType) ? "shield or small armor" : null;
+// Whether a bonus can go on this item (def from the catalogue, twoHanded from its lines).
+export function bonusFits(b, def, { twoHanded = false, honorific = false } = {}) {
+  const charm = def.key?.startsWith("inv:") ? def.key.slice(4) : null;
+  if (b.group === "trophy" || b.group === "cycle") return def.kind === "charm" && b.charm === charm;
+  if (b.group === "scroll")
+    return b.slot ? def.slotType === b.slot : def.slotType === "weapon" && !!def.cat && (def.cat === b.cat || def.cat.endsWith(` ${b.cat}`));
+  if (b.group === "shrine") {
+    const mine = (def.kind === "custom" || honorific) && shrineCategory(def.slotType, twoHanded);
+    return !!mine && b.category.includes(mine);
+  }
+  return false;
+}
 
 /**
  * @param {object} app  { TUD, SUD, SETD, RW, BASED, SOCKD, RIMG }
@@ -100,7 +130,8 @@ export function createCatalog(app, planner) {
 
   for (const b of app.BASED)
     add({
-      key: `base:${b.id}`, kind: "base", kindLabel: "Base item", name: b.name, base: b.name, cat: b.cat,
+      key: `base:${b.id}`, kind: "base", kindLabel: b.mastercrafted ? "Mastercrafted base" : "Base item", name: b.name, base: b.name, cat: b.cat,
+      ...(b.mastercrafted ? { mastercrafted: true } : {}),
       variants: b.t.map((t) => ({ label: t.label, lines: t.raw })),
     });
   for (const u of app.TUD)
@@ -203,7 +234,8 @@ export function createCatalog(app, planner) {
     return rw.bases.includes("Weapons") && slotTypeOf(cat) === "weapon" && !String(rw.except || "").split(", ").includes(cat);
   }
   function runewordBases(rw) {
-    return app.BASED.filter((b) => runewordBaseOk(rw, b.cat) && b.t.some((t) => socketsOf(t.raw) >= rw.runes.length)).map(
+    // Mastercrafted bases spawn rare, so they never hold a runeword.
+    return app.BASED.filter((b) => !b.mastercrafted && runewordBaseOk(rw, b.cat) && b.t.some((t) => socketsOf(t.raw) >= rw.runes.length)).map(
       (b) => items.get(`base:${b.id}`),
     );
   }
@@ -307,9 +339,17 @@ export function createCatalog(app, planner) {
 
     // Superior quality (superior.js) for bases and runewords, and custom items on a base. Its
     // lines follow the item's own, so earlier rolls keep their sliders.
-    const canBeSuperior = def.kind === "base" || def.kind === "runeword" || (def.kind === "custom" && !!baseDef);
+    // A mastercrafted base is always rare: never superior or honorific, and always fully socketed.
+    const mastercrafted = !!(def.mastercrafted || baseDef?.mastercrafted);
+    const canBeSuperior = !mastercrafted && (def.kind === "base" || def.kind === "runeword" || (def.kind === "custom" && !!baseDef));
     const superior = canBeSuperior ? superiorOf(state, def.slotType) : null;
     if (superior) lines = [...lines, ...superior.lines];
+    // Added bonuses (trophy, scroll, shrines, cycles): those that fit, at most a group's limit.
+    const twoHanded = isTwoHanded(lines);
+    const taken = {};
+    const addons = (state.addons || []).map(bonusById).filter((b) => b && bonusFits(b, def, { twoHanded, honorific: !!state.honorific && def.kind === "base" && !def.mastercrafted })
+      && (taken[b.group] = (taken[b.group] || 0) + 1) <= BONUS_GROUPS.find((g) => g.group === b.group).max);
+    for (const b of addons) lines = [...lines, ...b.lines];
 
     // Rolls: one slider per "(a to b)" range, in line order.
     const rolled = [];
@@ -351,7 +391,7 @@ export function createCatalog(app, planner) {
 
     // Honorific (a magic base item + a Mark of Infusion, from Shenk): mystic orbs count double
     // (the New Player Guide: "Honorific items receive DOUBLE bonus from mystic orbs").
-    const honorific = !!state.honorific && def.kind === "base";
+    const honorific = !!state.honorific && def.kind === "base" && !mastercrafted;
     const multiplier = orbMultiplier(rolled) * (honorific ? 2 : 1);
     const orbs = cleanOrbs(state.orbs).map(orbById).filter(o => orbFits(o, def, rolled, state)).map(o => {
       const parsed = orbParsed(o, multiplier, level);
@@ -368,7 +408,7 @@ export function createCatalog(app, planner) {
 
     const maxSockets = socketsOf(rolled);
     // Uniques, sets and runewords always have max sockets; base items roll 0 to max.
-    const socketCount = def.kind === "base" || def.kind === "custom" ? Math.min(state.socketCount ?? 0, maxSockets) : maxSockets;
+    const socketCount = !mastercrafted && (def.kind === "base" || def.kind === "custom") ? Math.min(state.socketCount ?? 0, maxSockets) : maxSockets;
     const parsed = rolled.map((l) => parseCached(l, level));
 
     // Socket contents (runewords already include their runes' stats).
@@ -392,7 +432,7 @@ export function createCatalog(app, planner) {
     }
     head.reqLevel += reqAdd;
     head.reqLevel += orbs.reduce((n, o) => n + o.def.reqLevel, 0);
-    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded: isTwoHanded(lines), cls: lineClass(lines), superior, canBeSuperior, honorific };
+    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded, addons, cls: lineClass(lines), superior, canBeSuperior, honorific, mastercrafted };
   }
 
   const setById = (id) => app.SETD.find((s) => s.id === id);

@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import Icon from "../AppIcon.vue";
 import ItemIcon from "./ItemIcon.vue";
 import SuggestGear from "./SuggestGear.vue";
+import ItemBonuses from "./ItemBonuses.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
 import { superiorNames } from "../../planner/superior.js";
@@ -127,6 +128,8 @@ const charmSummary = computed(() => {
             ><ItemIcon :icon="x.def.icon" /><span :class="'q-' + x.def.kind">{{ x.def.name }}</span></span
           >
           <button class="text-btn" :aria-label="`Remove ${x.def.name}`" @click="removeInventory(x.i)">Remove</button>
+          <ItemBonuses v-if="x.def.kind === 'charm'" compact :item="catalog.resolve(build.inventory[x.i], build.level)" :addons="build.inventory[x.i].addons || []"
+            @update="(a) => (build.inventory[x.i].addons = a.length ? a : undefined)" />
         </li>
       </ul>
     </div>

@@ -1,0 +1,1328 @@
+{
+ "patch": "2.14.4",
+ "source": "cubemain.bin (via src/data/cube-main.json)",
+ "trophies": [
+  {
+   "id": "trophy:k@k",
+   "charm": "k@k",
+   "name": "Lord of Lies Trophy",
+   "title": "Demonic Forgery",
+   "lines": [
+    "Weapon Physical Damage +20%"
+   ]
+  },
+  {
+   "id": "trophy:adi",
+   "charm": "adi",
+   "name": "Legacy of Blood Trophy",
+   "title": "Curse of the Warlord",
+   "lines": [
+    "20% Bonus to Defense"
+   ]
+  },
+  {
+   "id": "trophy:lok",
+   "charm": "lok",
+   "name": "Judgement Day Trophy",
+   "title": "Divine Mandate",
+   "lines": [
+    "5% to Strength",
+    "5% to Dexterity",
+    "5% to Energy",
+    "5% to Vitality"
+   ]
+  },
+  {
+   "id": "trophy:|\\\\",
+   "charm": "|\\\\",
+   "name": "Yshari Sanctum Trophy",
+   "title": "Arcane Guidance",
+   "lines": [
+    "Maximum Life +5%",
+    "Maximum Mana +5%"
+   ]
+  },
+  {
+   "id": "trophy:x0x",
+   "charm": "x0x",
+   "name": "Kingdom of Shadow Trophy",
+   "title": "Eternal Reign",
+   "lines": [
+    "10% Movement Speed"
+   ]
+  },
+  {
+   "id": "trophy:t@t",
+   "charm": "t@t",
+   "name": "Duncraig Trophy",
+   "title": "Infernal Blaze",
+   "lines": [
+    "10% Hit Recovery",
+    "10% Block Speed",
+    "10% Cast Speed",
+    "10% Attack Speed"
+   ]
+  },
+  {
+   "id": "trophy:|\\#",
+   "charm": "|\\#",
+   "name": "Xazax Trophy",
+   "title": "Demonic Delirium",
+   "lines": [
+    "+(75 to 125) to Minimum Fire Damage",
+    "+(75 to 125) to Maximum Fire Damage",
+    "+(75 to 125) to Minimum Lightning Damage",
+    "+(75 to 125) to Maximum Lightning Damage",
+    "+(75 to 125) to Minimum Cold Damage",
+    "+(75 to 125) to Maximum Cold Damage"
+   ]
+  },
+  {
+   "id": "trophy:a66",
+   "charm": "a66",
+   "name": "The Veiled Prophet Trophy",
+   "title": "Blighted Grace",
+   "lines": [
+    "+10% to Summon Elemental Resistances",
+    "+20% to Summon Life"
+   ]
+  },
+  {
+   "id": "trophy:x4x",
+   "charm": "x4x",
+   "name": "Tran Athulua Trophy",
+   "title": "Askari Valor",
+   "lines": [
+    "Physical Resist 5%"
+   ]
+  },
+  {
+   "id": "trophy:aq!",
+   "charm": "aq!",
+   "name": "Quov Tsin Trophy",
+   "title": "Virtuosity of the Elements",
+   "lines": [
+    "+10% to Fire Spell Damage",
+    "+10% to Lightning Spell Damage",
+    "+10% to Cold Spell Damage",
+    "+10% to Poison Spell Damage",
+    "+10% to Physical/Magic Spell Damage"
+   ]
+  },
+  {
+   "id": "trophy:ab!",
+   "charm": "ab!",
+   "name": "Astrogha Trophy",
+   "title": "Web of Deception",
+   "lines": [
+    "-5% to Enemy Fire Resistance",
+    "-5% to Enemy Lightning Resistance",
+    "-5% to Enemy Cold Resistance",
+    "-5% to Enemy Poison Resistance"
+   ]
+  },
+  {
+   "id": "trophy:a56",
+   "charm": "a56",
+   "name": "Heart of Sin Trophy",
+   "title": "Vile Dissolution",
+   "lines": [
+    "+150 to Life",
+    "+75 to Mana"
+   ]
+  },
+  {
+   "id": "trophy:w@w",
+   "charm": "w@w",
+   "name": "Viz-jun Trophy",
+   "title": "Power Synthesis",
+   "lines": [
+    "+15 to Strength",
+    "+15 to Energy",
+    "+15 to Dexterity",
+    "+15 to Vitality"
+   ]
+  },
+  {
+   "id": "trophy:x@x",
+   "charm": "x@x",
+   "name": "Archbishop Lazarus Trophy",
+   "title": "Glimmer of Genesis",
+   "lines": [
+    "Maximum Fire Resist +1%",
+    "Maximum Lightning Resist +1%",
+    "Maximum Cold Resist +1%",
+    "Maximum Poison Resist +1%"
+   ]
+  },
+  {
+   "id": "trophy:\\\\8",
+   "charm": "\\\\8",
+   "name": "The Triune Trophy",
+   "title": "Revelations of the Cult",
+   "lines": [
+    "30% Magic Find"
+   ]
+  },
+  {
+   "id": "trophy:##.",
+   "charm": "##.",
+   "name": "Nephalem's Sacrifice Trophy",
+   "title": "Legacy of the Ancients",
+   "lines": [
+    "4% Deadly Strike",
+    "8% Innate Elemental Damage"
+   ]
+  },
+  {
+   "id": "trophy:bxa",
+   "charm": "bxa",
+   "name": "Banisher of Light Trophy",
+   "title": "Shadow's Embrace",
+   "lines": [
+    "+(5 to 10) to Minimum Damage",
+    "+(5 to 10) to Maximum Damage"
+   ]
+  },
+  {
+   "id": "trophy:voXX",
+   "charm": "voXX",
+   "name": "The Void Trophy",
+   "title": "Axioms of Equilibrium",
+   "lines": [
+    "+2 to All Skills"
+   ]
+  },
+  {
+   "id": "trophy:blol",
+   "charm": "blol",
+   "name": "Eve of Destruction Trophy",
+   "title": "Stigma of Excidium",
+   "lines": [
+    "Fire Resist +10%",
+    "Lightning Resist +10%",
+    "Cold Resist +10%",
+    "Poison Resist +10%"
+   ]
+  }
+ ],
+ "scrolls": [
+  {
+   "id": "scroll:body-armor-20-to-fire-spell-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+20% to Fire Spell Damage",
+    "+60 Spell Focus"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-20-to-cold-spell-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+20% to Cold Spell Damage",
+    "+60 Spell Focus"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-20-to-lightning-spell-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+20% to Lightning Spell Damage",
+    "+60 Spell Focus"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-20-to-poison-spell-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+20% to Poison Spell Damage",
+    "+60 Spell Focus"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-20-to-physical-magic-spell-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+20% to Physical/Magic Spell Damage",
+    "+60 Spell Focus"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-10-innate-elemental-damage",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "10% Innate Elemental Damage",
+    "5% to Strength",
+    "5% to Dexterity",
+    "5% to Energy",
+    "5% to Vitality"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-weapon-physical-damage-75",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "Weapon Physical Damage +75%"
+   ]
+  },
+  {
+   "id": "scroll:body-armor-2-to-all-skills",
+   "slot": "body",
+   "name": "Scroll of Enchantment: Body Armor",
+   "lines": [
+    "+2 to All Skills",
+    "Regenerate Mana +15%"
+   ]
+  },
+  {
+   "id": "scroll:gloves-8-life-stolen-per-hit",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "8% Life stolen per Hit"
+   ]
+  },
+  {
+   "id": "scroll:gloves-1000-life-regenerated-per-second",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "+1000 Life Regenerated per Second"
+   ]
+  },
+  {
+   "id": "scroll:gloves-1-chance-to-cast-level-5-life-spark-on-striking",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "1% Chance to cast level 5 Life Spark on Striking"
+   ]
+  },
+  {
+   "id": "scroll:gloves-20-maximum-stamina",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "+20 Maximum Stamina"
+   ]
+  },
+  {
+   "id": "scroll:gloves-60-life-after-each-kill",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "+60 Life after each Kill"
+   ]
+  },
+  {
+   "id": "scroll:gloves-20-mana-cost-of-skills",
+   "slot": "gloves",
+   "name": "Scroll of Enchantment: Gloves",
+   "lines": [
+    "-20% Mana Cost of Skills"
+   ]
+  },
+  {
+   "id": "scroll:boots-50-bonus-to-defense",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "50% Bonus to Defense"
+   ]
+  },
+  {
+   "id": "scroll:boots-2-chance-to-avoid-damage",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "2% Chance to Avoid Damage"
+   ]
+  },
+  {
+   "id": "scroll:boots-physical-damage-taken-reduced-by-70",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "Physical Damage Taken Reduced by 70"
+   ]
+  },
+  {
+   "id": "scroll:boots-elemental-magic-damage-taken-reduced-by-70",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "Elemental/Magic Damage Taken Reduced by 70"
+   ]
+  },
+  {
+   "id": "scroll:boots-fire-absorb-1",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "Fire Absorb 1%",
+    "Lightning Absorb 1%",
+    "Cold Absorb 1%"
+   ]
+  },
+  {
+   "id": "scroll:boots-curse-length-reduction-30",
+   "slot": "boots",
+   "name": "Scroll of Enchantment: Boots",
+   "lines": [
+    "Curse Length Reduction 30%"
+   ]
+  },
+  {
+   "id": "scroll:belt-maximum-fire-resist-1",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Maximum Fire Resist +1%",
+    "Fire Resist +20%"
+   ]
+  },
+  {
+   "id": "scroll:belt-maximum-cold-resist-1",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Maximum Cold Resist +1%",
+    "Cold Resist +20%"
+   ]
+  },
+  {
+   "id": "scroll:belt-maximum-lightning-resist-1",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Maximum Lightning Resist +1%",
+    "Lightning Resist +20%"
+   ]
+  },
+  {
+   "id": "scroll:belt-maximum-poison-resist-2",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Maximum Poison Resist +2%",
+    "Poison Resist +30%"
+   ]
+  },
+  {
+   "id": "scroll:belt-physical-resist-5",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Physical Resist 5%"
+   ]
+  },
+  {
+   "id": "scroll:belt-magic-resist-5",
+   "slot": "belt",
+   "name": "Scroll of Enchantment: Belt",
+   "lines": [
+    "Magic Resist +5%"
+   ]
+  },
+  {
+   "id": "scroll:amulet-30-attack-speed",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "30% Attack Speed"
+   ]
+  },
+  {
+   "id": "scroll:amulet-30-cast-speed",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "30% Cast Speed"
+   ]
+  },
+  {
+   "id": "scroll:amulet-40-hit-recovery",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "40% Hit Recovery"
+   ]
+  },
+  {
+   "id": "scroll:amulet-40-block-speed",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "40% Block Speed"
+   ]
+  },
+  {
+   "id": "scroll:amulet-25-mana-after-each-kill",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "+25 Mana after each Kill"
+   ]
+  },
+  {
+   "id": "scroll:amulet-20-magic-find",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "20% Magic Find"
+   ]
+  },
+  {
+   "id": "scroll:amulet-5-to-10-to-experience-gained",
+   "slot": "amulet",
+   "name": "Scroll of Enchantment: Amulet",
+   "lines": [
+    "+(5 to 10)% to Experience Gained",
+    "+(1 to 5) to Light Radius"
+   ]
+  },
+  {
+   "id": "scroll:ring-30-to-summon-attack-rating",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+30% to Summon Attack Rating",
+    "+15% to Summon Damage"
+   ]
+  },
+  {
+   "id": "scroll:ring-10-to-summon-elemental-resistances",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+10% to Summon Elemental Resistances",
+    "+25% to Summon Life"
+   ]
+  },
+  {
+   "id": "scroll:ring-35-to-strength",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+35 to Strength"
+   ]
+  },
+  {
+   "id": "scroll:ring-35-to-dexterity",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+35 to Dexterity"
+   ]
+  },
+  {
+   "id": "scroll:ring-35-to-vitality",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+35 to Vitality"
+   ]
+  },
+  {
+   "id": "scroll:ring-35-to-energy",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "+35 to Energy"
+   ]
+  },
+  {
+   "id": "scroll:ring-poison-length-reduction-30",
+   "slot": "ring",
+   "name": "Scroll of Enchantment: Ring",
+   "lines": [
+    "Poison Length Reduction 30%"
+   ]
+  },
+  {
+   "id": "scroll:helm-area-effect-attack",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "Area Effect Attack"
+   ]
+  },
+  {
+   "id": "scroll:helm-15-chance-to-cast-level-10-life-spark-on-melee-attack",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "15% Chance to cast level 10 Life Spark on Melee Attack"
+   ]
+  },
+  {
+   "id": "scroll:helm-20-to-lightning-arena",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+20 to Lightning Arena",
+    "Lightning Arena Damage Increased by 2000%"
+   ]
+  },
+  {
+   "id": "scroll:helm-10-to-churel",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+10 to Churel",
+    "Churel Buff Duration Increased by 66%"
+   ]
+  },
+  {
+   "id": "scroll:helm-20-to-path-of-flames",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+20 to Path of Flames",
+    "200% of Deadly Strike added as Fire Pierce",
+    "300% of Deadly Strike added as Damage Multiplier"
+   ]
+  },
+  {
+   "id": "scroll:helm-10-to-dark-power",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+10 to Dark Power",
+    "Dark Power Adds 1% Innate Elemental Damage per Skill Level"
+   ]
+  },
+  {
+   "id": "scroll:helm-10-to-firedance",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+10 to Firedance",
+    "Firedance Does Not Add Spell Damage"
+   ]
+  },
+  {
+   "id": "scroll:helm-15-to-hive",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+15 to Hive",
+    "Hive Adds 1% Poison Spell Damage per Skill Level"
+   ]
+  },
+  {
+   "id": "scroll:helm-28-to-amatoxin",
+   "slot": "helm",
+   "name": "Scroll of Enchantment: Helmet",
+   "lines": [
+    "+28 to Amatoxin",
+    "Disables Ranged Skills",
+    "Amatoxin: 2000% of Innate Elemental Damage bonus added as Damage Multiplier"
+   ]
+  },
+  {
+   "id": "scroll:staff-30-movement-speed",
+   "cat": "Staves",
+   "name": "Scroll of Enchantment: Staff",
+   "lines": [
+    "30% Movement Speed",
+    "+2000 Life Regenerated per Second"
+   ]
+  },
+  {
+   "id": "scroll:mace-5-chance-to-cast-level-30-thunder-hammer-nova-on-melee-attack",
+   "cat": "Maces",
+   "name": "Scroll of Enchantment: Weapon",
+   "lines": [
+    "5% Chance to cast level 30 Thunder Hammer Nova on Melee Attack",
+    "+(25 to 50) to Minimum Damage",
+    "+(25 to 50) to Maximum Damage",
+    "30% Attack Speed",
+    "+200% Damage to Undead"
+   ]
+  },
+  {
+   "id": "scroll:hammer-10-chance-to-cast-level-1-corrupted-vines-on-death-blow",
+   "cat": "Hammers",
+   "name": "Scroll of Enchantment: Weapon",
+   "lines": [
+    "10% Chance to cast level 1 Corrupted Vines on Death Blow",
+    "Slow Target 10%",
+    "Maximum Life -5%"
+   ]
+  },
+  {
+   "id": "scroll:javelin-amazing-grace",
+   "cat": "Javelins",
+   "name": "Scroll of Enchantment: Weapon",
+   "lines": [
+    "Amazing Grace",
+    "15% Chance to cast level 25 Raid on Melee Attack"
+   ]
+  },
+  {
+   "id": "scroll:spear-mega-impact",
+   "cat": "Spears",
+   "name": "Scroll of Enchantment: Weapon",
+   "lines": [
+    "Mega Impact",
+    "22% Chance to cast level 30 ATMG Sentry on Melee Attack"
+   ]
+  }
+ ],
+ "shrines": [
+  {
+   "id": "shrine:abandoned:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Abandoned",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 20) to Dexterity",
+    "(4 to 5)% to Dexterity",
+    "(24 to 120)% Bonus to Attack Rating"
+   ]
+  },
+  {
+   "id": "shrine:abandoned:two-handed-weapon-or-body-armor",
+   "shrine": "Abandoned",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 28) to Dexterity",
+    "(6 to 12)% to Dexterity",
+    "(36 to 170)% Bonus to Attack Rating"
+   ]
+  },
+  {
+   "id": "shrine:weird:shield-or-small-armor",
+   "shrine": "Weird",
+   "category": "shield or small armor",
+   "lines": [
+    "+(1 to 6) to Maximum Damage",
+    "+(1 to 3) to Minimum Damage"
+   ]
+  },
+  {
+   "id": "shrine:weird:body-armor",
+   "shrine": "Weird",
+   "category": "body armor",
+   "lines": [
+    "+(1 to 10) to Maximum Damage",
+    "+(1 to 4) to Minimum Damage"
+   ]
+  },
+  {
+   "id": "shrine:weird:one-handed-weapon",
+   "shrine": "Weird",
+   "category": "one-handed weapon",
+   "lines": [
+    "+(2 to 12) to Maximum Damage",
+    "+(2 to 6) to Minimum Damage",
+    "+(25 to 40)% Enhanced Damage"
+   ]
+  },
+  {
+   "id": "shrine:weird:two-handed-weapon",
+   "shrine": "Weird",
+   "category": "two-handed weapon",
+   "lines": [
+    "+(3 to 18) to Maximum Damage",
+    "+(3 to 9) to Minimum Damage",
+    "+(30 to 55)% Enhanced Damage"
+   ]
+  },
+  {
+   "id": "shrine:tainted:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Tainted",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(8 to 25)% to Summon Damage",
+    "+(16 to 50)% to Summon Attack Rating"
+   ]
+  },
+  {
+   "id": "shrine:tainted:two-handed-weapon-or-body-armor",
+   "shrine": "Tainted",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(15 to 35)% to Summon Damage",
+    "+(30 to 70)% to Summon Attack Rating"
+   ]
+  },
+  {
+   "id": "shrine:eerie:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Eerie",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 20) to Energy",
+    "(4 to 5)% to Energy",
+    "+(20 to 30) Spell Focus"
+   ]
+  },
+  {
+   "id": "shrine:eerie:two-handed-weapon-or-body-armor",
+   "shrine": "Eerie",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 28) to Energy",
+    "(6 to 12)% to Energy",
+    "+(40 to 60) Spell Focus"
+   ]
+  },
+  {
+   "id": "shrine:sacred:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Sacred",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(2 to 8)% to Cold Spell Damage",
+    "-(3 to 5)% to Enemy Cold Resistance"
+   ]
+  },
+  {
+   "id": "shrine:sacred:two-handed-weapon-or-body-armor",
+   "shrine": "Sacred",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(2 to 15)% to Cold Spell Damage",
+    "-(5 to 10)% to Enemy Cold Resistance"
+   ]
+  },
+  {
+   "id": "shrine:fascinating:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Fascinating",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(2 to 8)% to Fire Spell Damage",
+    "-(3 to 5)% to Enemy Fire Resistance"
+   ]
+  },
+  {
+   "id": "shrine:fascinating:two-handed-weapon-or-body-armor",
+   "shrine": "Fascinating",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(2 to 15)% to Fire Spell Damage",
+    "-(5 to 10)% to Enemy Fire Resistance"
+   ]
+  },
+  {
+   "id": "shrine:ornate:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Ornate",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(2 to 8)% to Lightning Spell Damage",
+    "-(3 to 5)% to Enemy Lightning Resistance"
+   ]
+  },
+  {
+   "id": "shrine:ornate:two-handed-weapon-or-body-armor",
+   "shrine": "Ornate",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(2 to 15)% to Lightning Spell Damage",
+    "-(5 to 10)% to Enemy Lightning Resistance"
+   ]
+  },
+  {
+   "id": "shrine:shimmering:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Shimmering",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(2 to 8)% to Poison Spell Damage",
+    "-(3 to 5)% to Enemy Poison Resistance"
+   ]
+  },
+  {
+   "id": "shrine:shimmering:two-handed-weapon-or-body-armor",
+   "shrine": "Shimmering",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(2 to 15)% to Poison Spell Damage",
+    "-(5 to 10)% to Enemy Poison Resistance"
+   ]
+  },
+  {
+   "id": "shrine:spiritual:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Spiritual",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "(5 to 10)% Cast Speed",
+    "Regenerate Mana +(10 to 20)%",
+    "Maximum Mana +4%"
+   ]
+  },
+  {
+   "id": "shrine:spiritual:two-handed-weapon-or-body-armor",
+   "shrine": "Spiritual",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "(10 to 15)% Cast Speed",
+    "Regenerate Mana +(30 to 45)%",
+    "Maximum Mana +12%"
+   ]
+  },
+  {
+   "id": "shrine:magical:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Magical",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 30)% to Summon Life",
+    "+(4 to 15)% to Summon Elemental Resistances"
+   ]
+  },
+  {
+   "id": "shrine:magical:two-handed-weapon-or-body-armor",
+   "shrine": "Magical",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 50)% to Summon Life",
+    "+(6 to 25)% to Summon Elemental Resistances"
+   ]
+  },
+  {
+   "id": "shrine:hidden:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Hidden",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "1% Reanimate as: a random monster"
+   ]
+  },
+  {
+   "id": "shrine:hidden:two-handed-weapon-or-body-armor",
+   "shrine": "Hidden",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "1% Reanimate as: a random monster"
+   ]
+  },
+  {
+   "id": "shrine:trinity:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Trinity",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "(3 to 4)% Innate Elemental Damage",
+    "+(6 to 10) to Strength",
+    "+(6 to 10) to Energy",
+    "+(6 to 10) to Dexterity",
+    "+(6 to 10) to Vitality"
+   ]
+  },
+  {
+   "id": "shrine:trinity:two-handed-weapon-or-body-armor",
+   "shrine": "Trinity",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "(6 to 8)% Innate Elemental Damage",
+    "(2 to 4)% to Strength",
+    "(2 to 4)% to Dexterity",
+    "(2 to 4)% to Energy",
+    "(2 to 4)% to Vitality"
+   ]
+  },
+  {
+   "id": "shrine:creepy:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Creepy",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 20) to Strength",
+    "(4 to 5)% to Strength",
+    "(2 to 4)% Chance of Crushing Blow"
+   ]
+  },
+  {
+   "id": "shrine:creepy:two-handed-weapon-or-body-armor",
+   "shrine": "Creepy",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 28) to Strength",
+    "(6 to 12)% to Strength",
+    "(4 to 7)% Chance of Crushing Blow"
+   ]
+  },
+  {
+   "id": "shrine:intimidating:shield-or-small-armor",
+   "shrine": "Intimidating",
+   "category": "shield or small armor",
+   "lines": [
+    "Physical Resist (0 to 1)%",
+    "+(11 to 30)% Enhanced Defense"
+   ]
+  },
+  {
+   "id": "shrine:intimidating:body-armor",
+   "shrine": "Intimidating",
+   "category": "body armor",
+   "lines": [
+    "Physical Resist (1 to 2)%",
+    "+(21 to 50)% Enhanced Defense"
+   ]
+  },
+  {
+   "id": "shrine:intimidating:one-handed-weapon",
+   "shrine": "Intimidating",
+   "category": "one-handed weapon",
+   "lines": [
+    "(2 to 3)% Deadly Strike",
+    "Requirements +20%",
+    "+(20 to 35)% Enhanced Damage"
+   ]
+  },
+  {
+   "id": "shrine:intimidating:two-handed-weapon",
+   "shrine": "Intimidating",
+   "category": "two-handed weapon",
+   "lines": [
+    "(2 to 4)% Deadly Strike",
+    "Requirements +30%",
+    "+(35 to 50)% Enhanced Damage"
+   ]
+  },
+  {
+   "id": "shrine:quiet:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Quiet",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 20) to Vitality",
+    "(4 to 5)% to Vitality",
+    "+(10 to 100) Life Regenerated per Second"
+   ]
+  },
+  {
+   "id": "shrine:quiet:two-handed-weapon-or-body-armor",
+   "shrine": "Quiet",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 28) to Vitality",
+    "(6 to 12)% to Vitality",
+    "+(30 to 150) Life Regenerated per Second"
+   ]
+  },
+  {
+   "id": "shrine:enchanted:one-handed-weapon-shield-or-small-armor",
+   "shrine": "Enchanted",
+   "category": "one-handed weapon, shield or small armor",
+   "lines": [
+    "+(4 to 10)% to Physical/Magic Spell Damage",
+    "Magic Resist +(1 to 2)%"
+   ]
+  },
+  {
+   "id": "shrine:enchanted:two-handed-weapon-or-body-armor",
+   "shrine": "Enchanted",
+   "category": "two-handed weapon or body armor",
+   "lines": [
+    "+(6 to 20)% to Physical/Magic Spell Damage",
+    "Magic Resist +(2 to 4)%"
+   ]
+  }
+ ],
+ "cycles": [
+  {
+   "id": "cycle:small-cycle-3-to-5-to-strength",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+1 Required Level",
+    "+(3 to 5) to Strength"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-3-to-5-to-dexterity",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+1 Required Level",
+    "+(3 to 5) to Dexterity"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-3-to-5-to-vitality",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+1 Required Level",
+    "+(3 to 5) to Vitality"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-3-to-5-to-energy",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+1 Required Level",
+    "+(3 to 5) to Energy"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-2-to-6-to-strength-1-to-strength",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "+(2 to 6) to Strength",
+    "1% to Strength"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-2-to-6-to-dexterity-1-to-dexterity",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "+(2 to 6) to Dexterity",
+    "1% to Dexterity"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-2-to-6-to-vitality-1-to-vitality",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "+(2 to 6) to Vitality",
+    "1% to Vitality"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-2-to-6-to-energy-1-to-energy",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "+(2 to 6) to Energy",
+    "1% to Energy"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-8-to-12-to-strength-2-to-strength",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+5 Required Level",
+    "+(8 to 12) to Strength",
+    "2% to Strength"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-8-to-12-to-dexterity-2-to-dexterity",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+5 Required Level",
+    "+(8 to 12) to Dexterity",
+    "2% to Dexterity"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-8-to-12-to-vitality-2-to-vitality",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+5 Required Level",
+    "+(8 to 12) to Vitality",
+    "2% to Vitality"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-8-to-12-to-energy-2-to-energy",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+5 Required Level",
+    "+(8 to 12) to Energy",
+    "2% to Energy"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-1-to-4-gold-find",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+2 Required Level",
+    "(1 to 4)% Gold Find"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-3-to-7-gold-find",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "(3 to 7)% Gold Find"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-6-to-10-gold-find",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+4 Required Level",
+    "(6 to 10)% Gold Find"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-1-to-4-magic-find",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+2 Required Level",
+    "(1 to 4)% Magic Find"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-3-to-7-magic-find",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "(3 to 7)% Magic Find"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-6-to-10-magic-find",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+4 Required Level",
+    "(6 to 10)% Magic Find"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-1-to-2-hit-recovery-1-to-2-block-speed-1-to-2-cast-speed-1-to-2-attack-speed",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+2 Required Level",
+    "(1 to 2)% Hit Recovery",
+    "(1 to 2)% Block Speed",
+    "(1 to 2)% Cast Speed",
+    "(1 to 2)% Attack Speed"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-3-to-4-hit-recovery-3-to-4-block-speed-3-to-4-cast-speed-3-to-4-attack-speed",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "(3 to 4)% Hit Recovery",
+    "(3 to 4)% Block Speed",
+    "(3 to 4)% Cast Speed",
+    "(3 to 4)% Attack Speed"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-5-to-6-hit-recovery-5-to-6-block-speed-5-to-6-cast-speed-5-to-6-attack-speed",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+4 Required Level",
+    "(5 to 6)% Hit Recovery",
+    "(5 to 6)% Block Speed",
+    "(5 to 6)% Cast Speed",
+    "(5 to 6)% Attack Speed"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-amazon-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Amazon Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-assassin-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Assassin Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-barbarian-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Barbarian Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-druid-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Druid Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-necromancer-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Necromancer Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-sorceress-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Sorceress Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-1-to-paladin-skill-levels",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+15 Required Level",
+    "+1 to Paladin Skill Levels"
+   ]
+  },
+  {
+   "id": "cycle:small-cycle-0-to-20-to-life-0-to-10-to-mana",
+   "charm": "\\\\8",
+   "name": "Small Cycle",
+   "lines": [
+    "+1 Required Level",
+    "+(0 to 20) to Life",
+    "+(0 to 10) to Mana"
+   ]
+  },
+  {
+   "id": "cycle:medium-cycle-15-to-30-to-life-2-to-15-to-mana-maximum-mana-0-to-2",
+   "charm": "\\\\8",
+   "name": "Medium Cycle",
+   "lines": [
+    "+3 Required Level",
+    "+(15 to 30) to Life",
+    "+(2 to 15) to Mana",
+    "Maximum Mana +(0 to 2)%"
+   ]
+  },
+  {
+   "id": "cycle:large-cycle-25-to-50-to-life-maximum-life-0-to-1-5-to-25-to-mana-maximum-mana-1-to-3",
+   "charm": "\\\\8",
+   "name": "Large Cycle",
+   "lines": [
+    "+5 Required Level",
+    "+(25 to 50) to Life",
+    "Maximum Life +(0 to 1)%",
+    "+(5 to 25) to Mana",
+    "Maximum Mana +(1 to 3)%"
+   ]
+  }
+ ]
+}

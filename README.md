@@ -9,6 +9,7 @@ A companion site for **Median XL 2.14**: look up items, plan a character, and ke
 - **Runeword Finder**: find runewords by name, base or stat. Tell it which runes you own and it shows what you can make now, and what you're one rune away from.
 - **Tiered Uniques**: every tiered unique, with what each tier upgrade brings.
 - **Sacred Uniques** and **Sets**: endgame uniques on sacred bases, and sacred sets with their set bonuses.
+- **Oskills & Procs**: reverse-search item-granted skills and chance-to-cast effects by skill, source item or trigger.
 - **Gems & Runes**: what every gem and rune adds in a weapon, armour or shield.
 - **Base Items**: every base item, from Tier 1 to Sacred.
 - **Cube Recipes**: put items in the Horadric Cube and see what the game makes of them, straight from its recipe table.
@@ -20,7 +21,7 @@ Favourite anything to find it again, and compare tiers side by side.
 The **Character Planner** puts your whole character on one screen, laid out like the game:
 
 - **Attributes and skills**: spend stat points and skill points, with tooltips that read like the in-game ones, at the right level.
-- **Equipment**: fill each slot with uniques, set items, runewords, base items or your own item, with roll sliders, sockets, charms and relics.
+- **Equipment**: fill each slot with uniques, set items, runewords, base items or your own item, with roll sliders, sockets, charms and relics. Add what the cube adds to an item you keep: a scroll of enchantment, shrine bonuses on a crafted item, a charm's trophy bonus, cycles in the Corrupted Wormhole.
 - **Stats**: life, mana, resistances, damage, attack and cast speed breakpoints and more. Select any number to see where it comes from.
 - **Mercenary**: hire one, gear it up and add its auras to your stats.
 - **Suggest gear**: picks items that suit your skills, and explains why.

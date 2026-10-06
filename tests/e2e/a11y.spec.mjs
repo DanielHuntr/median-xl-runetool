@@ -28,7 +28,8 @@ test("dialogs: site search, filters, backup", async ({ page }) => {
   await page.getByRole("main").getByRole("button", { name: /^Filters/ }).click();
   expect(await problems(page, ".filter-drawer[open]")).toEqual([]);
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Back up & restore" }).click();
+  await page.locator(".sidebar").getByRole("button", { name: "More" }).click();
+  await page.getByRole("menuitem", { name: "Back up & restore" }).click();
   expect(await problems(page, ".backup")).toEqual([]);
   await page.keyboard.press("Escape");
 });

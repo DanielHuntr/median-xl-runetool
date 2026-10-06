@@ -1,0 +1,716 @@
+{
+  "patch": "2.14.4",
+  "source": "magicsuffix.bin, affix group 217",
+  "rolls": [
+    {
+      "skill": "Ancients' Hand",
+      "min": 9,
+      "max": 13
+    },
+    {
+      "skill": "APF-20 'Maelstrom' MkI",
+      "min": 6,
+      "max": 12
+    },
+    {
+      "skill": "Apocalypse",
+      "min": 16,
+      "max": 20
+    },
+    {
+      "skill": "Arrow Swarm",
+      "min": 6,
+      "max": 10
+    },
+    {
+      "skill": "ATMG Sentry",
+      "min": 7,
+      "max": 10
+    },
+    {
+      "skill": "Avalanche",
+      "min": 9,
+      "max": 22
+    },
+    {
+      "skill": "Balefire",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Bane",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "skill": "Banish",
+      "min": 8,
+      "max": 12
+    },
+    {
+      "skill": "Barrage",
+      "min": 4,
+      "max": 9
+    },
+    {
+      "skill": "Bend the Shadows",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "skill": "Black Lotus Strike",
+      "min": 10,
+      "max": 18
+    },
+    {
+      "skill": "Blast Wave",
+      "min": 6,
+      "max": 14
+    },
+    {
+      "skill": "Bloodlust",
+      "min": 1,
+      "max": 4
+    },
+    {
+      "skill": "Bloodstar",
+      "min": 4,
+      "max": 6
+    },
+    {
+      "skill": "Brimstone",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Cautious Strike",
+      "min": 4,
+      "max": 12
+    },
+    {
+      "skill": "Chaotic Spark",
+      "min": 14,
+      "max": 24
+    },
+    {
+      "skill": "Charged Strike",
+      "min": 7,
+      "max": 10
+    },
+    {
+      "skill": "Charm",
+      "min": 2,
+      "max": 6
+    },
+    {
+      "skill": "Charm",
+      "min": 8,
+      "max": 29
+    },
+    {
+      "skill": "Cherubim",
+      "min": 3,
+      "max": 7
+    },
+    {
+      "skill": "Churel",
+      "min": 5,
+      "max": 12
+    },
+    {
+      "skill": "Churel",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Clobber",
+      "min": 6,
+      "max": 10
+    },
+    {
+      "skill": "Cold Fear",
+      "min": 9,
+      "max": 13
+    },
+    {
+      "skill": "Colosseum",
+      "min": 5,
+      "max": 15
+    },
+    {
+      "skill": "Cone of Cold",
+      "min": 19,
+      "max": 28
+    },
+    {
+      "skill": "Countdown",
+      "min": 13,
+      "max": 21
+    },
+    {
+      "skill": "Cyclone",
+      "min": 17,
+      "max": 29
+    },
+    {
+      "skill": "Death Blossom",
+      "min": 10,
+      "max": 18
+    },
+    {
+      "skill": "Death Shards",
+      "min": 4,
+      "max": 9
+    },
+    {
+      "skill": "Death Star",
+      "min": 8,
+      "max": 14
+    },
+    {
+      "skill": "Death Star",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Deathstrike",
+      "min": 8,
+      "max": 21
+    },
+    {
+      "skill": "Devouring Cloud",
+      "min": 8,
+      "max": 14
+    },
+    {
+      "skill": "Devouring Cloud",
+      "min": 17,
+      "max": 26
+    },
+    {
+      "skill": "Disintegrate",
+      "min": 12,
+      "max": 15
+    },
+    {
+      "skill": "Dominate",
+      "min": 7,
+      "max": 12
+    },
+    {
+      "skill": "Earthquake",
+      "min": 6,
+      "max": 11
+    },
+    {
+      "skill": "Ecstatic Frenzy",
+      "min": 4,
+      "max": 11
+    },
+    {
+      "skill": "Elemental Totem",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "skill": "Emerald Prison",
+      "min": 4,
+      "max": 15
+    },
+    {
+      "skill": "Emerald Prison",
+      "min": 17,
+      "max": 26
+    },
+    {
+      "skill": "Exorcism",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Fire Cascade",
+      "min": 8,
+      "max": 14
+    },
+    {
+      "skill": "Flametail Shot",
+      "min": 17,
+      "max": 27
+    },
+    {
+      "skill": "Flash",
+      "min": 12,
+      "max": 18
+    },
+    {
+      "skill": "Fortress",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "skill": "Frozen Soul",
+      "min": 4,
+      "max": 6
+    },
+    {
+      "skill": "Funeral Pyre",
+      "min": 11,
+      "max": 18
+    },
+    {
+      "skill": "Gamma Field",
+      "min": 21,
+      "max": 28
+    },
+    {
+      "skill": "Glacial Nova",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Gorefest",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Graveyard",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Guard Tower",
+      "min": 8,
+      "max": 16
+    },
+    {
+      "skill": "Guided Chain",
+      "min": 4,
+      "max": 14
+    },
+    {
+      "skill": "Hailstorm",
+      "min": 22,
+      "max": 30
+    },
+    {
+      "skill": "Harvesters",
+      "min": 16,
+      "max": 19
+    },
+    {
+      "skill": "Hawk Talons",
+      "min": 11,
+      "max": 18
+    },
+    {
+      "skill": "Heartseeker",
+      "min": 2,
+      "max": 10
+    },
+    {
+      "skill": "Hounfor",
+      "min": 11,
+      "max": 17
+    },
+    {
+      "skill": "Ice Bolt Nova",
+      "min": 20,
+      "max": 28
+    },
+    {
+      "skill": "Ice Lance",
+      "min": 21,
+      "max": 35
+    },
+    {
+      "skill": "Ignis Fatuus",
+      "min": 8,
+      "max": 16
+    },
+    {
+      "skill": "Immolation Bomb",
+      "min": 14,
+      "max": 28
+    },
+    {
+      "skill": "Inner Fire",
+      "min": 21,
+      "max": 29
+    },
+    {
+      "skill": "Lightning Arena",
+      "min": 12,
+      "max": 16
+    },
+    {
+      "skill": "Lightning Shield",
+      "min": 11,
+      "max": 22
+    },
+    {
+      "skill": "Lightning Wall",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Limpet Laser",
+      "min": 14,
+      "max": 21
+    },
+    {
+      "skill": "Living Flame",
+      "min": 1,
+      "max": 4
+    },
+    {
+      "skill": "Lorenado",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Mana Sweep",
+      "min": 2,
+      "max": 7
+    },
+    {
+      "skill": "Mana Tide Totem",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "skill": "Mana Tide Totem",
+      "min": 4,
+      "max": 14
+    },
+    {
+      "skill": "Mark of the Wild",
+      "min": 18,
+      "max": 24
+    },
+    {
+      "skill": "Medusa",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Meteor Shower",
+      "min": 13,
+      "max": 21
+    },
+    {
+      "skill": "Nova Bomb",
+      "min": 14,
+      "max": 28
+    },
+    {
+      "skill": "OHMAN",
+      "min": 40,
+      "max": 45
+    },
+    {
+      "skill": "Orb of Annihilation",
+      "min": 18,
+      "max": 25
+    },
+    {
+      "skill": "Overcharged",
+      "min": 11,
+      "max": 16
+    },
+    {
+      "skill": "Overlord",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "skill": "Overpower",
+      "min": 2,
+      "max": 9
+    },
+    {
+      "skill": "Pentagram",
+      "min": 9,
+      "max": 15
+    },
+    {
+      "skill": "Pestilence",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Phalanx",
+      "min": 4,
+      "max": 14
+    },
+    {
+      "skill": "Phoenix Wave",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Powder Keg",
+      "min": 16,
+      "max": 24
+    },
+    {
+      "skill": "Protector Spirit",
+      "min": 7,
+      "max": 16
+    },
+    {
+      "skill": "Psicrown",
+      "min": 10,
+      "max": 16
+    },
+    {
+      "skill": "Psionic Storm",
+      "min": 11,
+      "max": 16
+    },
+    {
+      "skill": "Punishers",
+      "min": 2,
+      "max": 6
+    },
+    {
+      "skill": "Punishers",
+      "min": 6,
+      "max": 13
+    },
+    {
+      "skill": "Pyroclastic Flow",
+      "min": 18,
+      "max": 24
+    },
+    {
+      "skill": "Ring of Light",
+      "min": 9,
+      "max": 15
+    },
+    {
+      "skill": "Rising Dawn",
+      "min": 12,
+      "max": 15
+    },
+    {
+      "skill": "Rock Shock",
+      "min": 7,
+      "max": 14
+    },
+    {
+      "skill": "Rune of Fire",
+      "min": 21,
+      "max": 26
+    },
+    {
+      "skill": "Rune of Ice",
+      "min": 21,
+      "max": 26
+    },
+    {
+      "skill": "Sandstorm",
+      "min": 4,
+      "max": 12
+    },
+    {
+      "skill": "Searing Glow",
+      "min": 14,
+      "max": 21
+    },
+    {
+      "skill": "Searing Orb",
+      "min": 19,
+      "max": 23
+    },
+    {
+      "skill": "Shackles of Ice",
+      "min": 5,
+      "max": 9
+    },
+    {
+      "skill": "Shadow Blade",
+      "min": 18,
+      "max": 24
+    },
+    {
+      "skill": "Shock Flower",
+      "min": 6,
+      "max": 12
+    },
+    {
+      "skill": "Shower of Rocks",
+      "min": 2,
+      "max": 7
+    },
+    {
+      "skill": "Shunpo",
+      "min": 2,
+      "max": 7
+    },
+    {
+      "skill": "Shuriken Flurry",
+      "min": 12,
+      "max": 20
+    },
+    {
+      "skill": "Silver Dart",
+      "min": 3,
+      "max": 7
+    },
+    {
+      "skill": "Slicer Blade",
+      "min": 2,
+      "max": 4
+    },
+    {
+      "skill": "Snake Stance",
+      "min": 18,
+      "max": 24
+    },
+    {
+      "skill": "Spiral Dance",
+      "min": 6,
+      "max": 19
+    },
+    {
+      "skill": "Splitfire",
+      "min": 2,
+      "max": 6
+    },
+    {
+      "skill": "Splitfire",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Squall Gust",
+      "min": 17,
+      "max": 29
+    },
+    {
+      "skill": "Static Spike",
+      "min": 2,
+      "max": 6
+    },
+    {
+      "skill": "Static Spike",
+      "min": 14,
+      "max": 20
+    },
+    {
+      "skill": "Stormcall",
+      "min": 11,
+      "max": 18
+    },
+    {
+      "skill": "Stormclash",
+      "min": 14,
+      "max": 22
+    },
+    {
+      "skill": "Summon Darklings",
+      "min": 19,
+      "max": 28
+    },
+    {
+      "skill": "Summon Frostwalker",
+      "min": 20,
+      "max": 26
+    },
+    {
+      "skill": "Summon Glowing Fungus",
+      "min": 20,
+      "max": 26
+    },
+    {
+      "skill": "Summon Sinner",
+      "min": 10,
+      "max": 16
+    },
+    {
+      "skill": "Tantrum",
+      "min": 9,
+      "max": 13
+    },
+    {
+      "skill": "Tantrum",
+      "min": 18,
+      "max": 26
+    },
+    {
+      "skill": "Tempest",
+      "min": 14,
+      "max": 24
+    },
+    {
+      "skill": "Thunder Slam",
+      "min": 11,
+      "max": 16
+    },
+    {
+      "skill": "Thunderstone",
+      "min": 11,
+      "max": 18
+    },
+    {
+      "skill": "Time Strike",
+      "min": 2,
+      "max": 11
+    },
+    {
+      "skill": "Time Wave",
+      "min": 8,
+      "max": 12
+    },
+    {
+      "skill": "Venomous Spirit",
+      "min": 4,
+      "max": 6
+    },
+    {
+      "skill": "Vessel of Judgement",
+      "min": 16,
+      "max": 28
+    },
+    {
+      "skill": "Vessel of Retribution",
+      "min": 31,
+      "max": 40
+    },
+    {
+      "skill": "Virulence",
+      "min": 20,
+      "max": 28
+    },
+    {
+      "skill": "Vortex",
+      "min": 16,
+      "max": 18
+    },
+    {
+      "skill": "War Cry",
+      "min": 8,
+      "max": 12
+    },
+    {
+      "skill": "Whirlpool",
+      "min": 6,
+      "max": 19
+    },
+    {
+      "skill": "Winter Avatar",
+      "min": 8,
+      "max": 14
+    },
+    {
+      "skill": "Wrath",
+      "min": 14,
+      "max": 19
+    },
+    {
+      "skill": "Wyrd",
+      "min": 8,
+      "max": 15
+    }
+  ]
+}

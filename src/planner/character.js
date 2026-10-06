@@ -111,7 +111,7 @@ export function computeCharacter(b, { engine, catalog, planner }) {
           add(key, value, label);
         }
       } else if (p.kind === "skill") {
-        if (engine.node(b, p.id)) (skillBonus.skill[p.id] ??= []).push({ source: label, value: p.value });
+        if (engine.node(b, p.id)) (skillBonus.skill[p.id] ??= []).push({ source: label, value: p.value, classOnly: !!p.cls });
         else lists.oskills.push({ id: p.id, name: engine.skillName(p.id), value: p.value, source: label });
       } else if (p.kind === "oskill") lists.oskills.push({ name: p.name, value: p.value, source: label });
       else if (p.kind === "proc") lists.procs.push({ text: p.text, source: label });
@@ -157,22 +157,31 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   const gearAllSkills = sum(skillBonus.all);
   let allSkills = gearAllSkills;
   const classSkills = sum(skillBonus.cls);
+  // Item lines for one of the class's own skills, as the game adds them (D2Common 0x6FD9FCB0):
+  // "+N to Skill (Class Only)" (stat 107) counts in full, plain "+N to Skill" (stat 97, summed
+  // over every item first) at most +3. Neither is a base level, so synergies don't read them.
+  const OWN_SKILL_ITEM_CAP = 3;
+  const ownSkillItemLevels = (id) => {
+    const lines = skillBonus.skill[id] || [];
+    return sum(lines.filter((x) => x.classOnly)) + Math.min(OWN_SKILL_ITEM_CAP, sum(lines.filter((x) => !x.classOnly)));
+  };
   // Skills items grant from outside the class's tree ("+3 to Pestilence", "+(6 to 16) to
-  // Bloodlust"): usable at the item's level plus +all skills, with no synergies (the Oskill
-  // Index). The engine reads them as the skill's level (engine.js pts), and a buff among them
+  // Bloodlust"): usable at the items' levels added together (the game sums the stat over every
+  // item, uncapped for another class's skills) plus +all skills, with no synergies. The engine reads them as the skill's level (engine.js pts), and a buff among them
   // can be switched on like a learned one (skillEffects.js activeSkillIds).
   const itemSkills = {};
   const idByName = new Map(Object.entries(planner.skills || {}).map(([id, s]) => [s.name, id]));
   for (const o of lists.oskills) {
     const id = o.id || idByName.get(o.name);
     if (!id || engine.node(b, id) || !(o.value > 0)) continue;
-    itemSkills[id] = Math.max(itemSkills[id] || 0, Math.trunc(o.value) + gearAllSkills);
+    itemSkills[id] = (itemSkills[id] || 0) + Math.trunc(o.value);
   }
+  for (const id in itemSkills) itemSkills[id] += gearAllSkills;
   const soft = {};
   const setSoft = () => { for (const tab of engine.tabs(b.cls))
     for (const n of engine.treeNodes(b.cls, tab)) {
       if (engine.isInnate(n.id)) continue;
-      const v = allSkills + classSkills + sum(skillBonus.skill[n.id] || []);
+      const v = allSkills + classSkills + ownSkillItemLevels(n.id);
       if (v) soft[n.id] = v;
       else delete soft[n.id];
     } };
@@ -267,6 +276,17 @@ export function computeCharacter(b, { engine, catalog, planner }) {
   if (statPoints.spent > statPoints.available)
     warn(`${statPoints.spent} stat points spent but only ${statPoints.available} available.`);
   const STR = attributes.strength.total, DEX = attributes.dexterity.total;
+  // Mastercrafted abilities that grow with other stats (the game's tooltip text; a hidden skill
+  // carries each out, so whole steps are assumed): Maiden Bow, Kukri, Flying Kinzhal.
+  for (const r of Object.values(equipped)) for (const l of r.lines) {
+    if (l === "+1% Chance to Avoid Damage per 500 Dexterity") add("avoid_chance", Math.floor(DEX / 500), r.def.name);
+    else if (l === "1% Deadly Strike per 7% Movement Speed") add("deadly_strike", Math.floor(s("movement_speed") / 7), r.def.name);
+    else if (/^\+1 Lightning Damage per 1% (Bonus to Defense|Total Physical Weapon Damage Bonus)$/.test(l)) {
+      const n = Math.floor(s(l.endsWith("Defense") ? "defense_bonus_multiplier" : "enhanced_weapon_damage"));
+      add("minimum_lightning_damage", n, r.def.name);
+      add("maximum_lightning_damage", n, r.def.name);
+    }
+  }
   // Gear that takes an attribute below zero ("-75 to Vitality"): say which, and offer the points.
   for (const a of ATTRIBUTES) {
     if (attributes[a].total >= 0) continue;

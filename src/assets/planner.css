@@ -743,9 +743,15 @@
 }
 .charms li {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   font-size: 0.875rem;
+}
+/* A charm's trophy and cycles (ItemBonuses.vue) sit on their own row under it. */
+.charms li .item-bonuses {
+  flex-basis: 100%;
+  padding-left: 38px;
 }
 .charms li span {
   flex: 1;
