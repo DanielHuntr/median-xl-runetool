@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import Icon from "./AppIcon.vue";
 import CopyLink from "./CopyLink.vue";
 import DataStatus from "./DataStatus.vue";
@@ -15,6 +15,12 @@ const { RW, TUD, SUD, SETD, st } = useRunetool();
 
 // Filters as on the other catalogue pages (CatalogFilters.vue): a list per key, by label.
 const state = reactive({ q: "", kinds: [], sources: [], triggers: [] });
+// The filters are kept across visits (only the keys the page has, of the same kind).
+try {
+  const saved = JSON.parse(localStorage.getItem("mxlrw2:oskills")) || {};
+  for (const k of Object.keys(state)) if (Array.isArray(state[k]) ? Array.isArray(saved[k]) : typeof saved[k] === "string") state[k] = saved[k];
+} catch {}
+watch(state, () => { try { localStorage.setItem("mxlrw2:oskills", JSON.stringify(state)); } catch {} }, { deep: true });
 const KINDS = [["oskill", "Oskills"], ["proc", "Procs"]];
 const OSKILL = /^\+(?:\d+|\(\d+ to \d+\)) to (.+?)(?: \((\w+) Only\))?$/;
 const PROC = /^(\d+(?:\.\d+)?)% Chance to cast level (\d+) (.+?) (on .+|when .+)$/i;
@@ -149,6 +155,8 @@ function applyLink() {
   if (page !== "oskills" || !qs) return;
   const name = new URLSearchParams(qs).get("name");
   if (name) state.q = name;
+  // Applied once, then dropped from the address, so a refresh keeps filters chosen since.
+  history.replaceState(history.state, "", `${window.location.pathname}${window.location.search}#oskills`);
 }
 onMounted(() => {
   applyLink();

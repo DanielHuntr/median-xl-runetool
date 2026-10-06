@@ -147,7 +147,7 @@ export function createRunetool() {
     panel = ref(filtersDocked.value && get("filtersOpen", false) === true),
     drawer = ref(false),
     expanded = ref([]),
-    tuQuery = ref(""),
+    tuQuery = ref(typeof get("tuQuery", "") === "string" ? get("tuQuery", "") : ""),
     compare = ref(true),
     tiers = reactive({}),
     // The catalogue pages' filters (CatalogFilters.vue): item types, stats and damage types,
@@ -161,6 +161,13 @@ export function createRunetool() {
     }),
     dialog = ref(null),
     runeTrigger = ref(null);
+  // The catalogue pages' saved filters: only the keys each page has, of the same kind.
+  const savedBrowse = get("browse", {});
+  for (const [page, f] of Object.entries(browse))
+    for (const k of Object.keys(f)) {
+      const v = savedBrowse?.[page]?.[k];
+      if (Array.isArray(f[k]) ? Array.isArray(v) : typeof v === "string") f[k] = v;
+    }
   const allBases = [...new Set(RW.flatMap((r) => r.bases))];
   const weaponBases = allBases.filter((b) => !ARMOR.has(b)),
     armorBases = allBases.filter((b) => ARMOR.has(b));
@@ -482,6 +489,8 @@ export function createRunetool() {
   );
   media.addEventListener("change", applyTheme);
   watch(st, () => put("state", st), { deep: true });
+  watch(browse, () => put("browse", browse), { deep: true });
+  watch(tuQuery, (v) => put("tuQuery", v));
   watch(
     () => browse.bases.tier,
     () => Object.keys(tiers).forEach((k) => k.startsWith("bi:") && delete tiers[k]),
@@ -510,8 +519,13 @@ export function createRunetool() {
   function applyLink() {
     const [p, qs] = window.location.hash.slice(1).split("?");
     const name = qs && new URLSearchParams(qs).get("name");
-    // #runewords?starter: the finder showing starter runewords, for a newer player.
-    if (p === "runewords" && qs && new URLSearchParams(qs).has("starter")) { Object.assign(st, defaults(), { sort: "level", full: st.full, starter: true }); return; }
+    // #runewords?starter: the finder showing starter runewords, for a newer player. Applied once,
+    // then dropped from the address (as a card link's is), so a refresh keeps filters chosen since.
+    if (p === "runewords" && qs && new URLSearchParams(qs).has("starter")) {
+      Object.assign(st, defaults(), { sort: "level", full: st.full, starter: true });
+      history.replaceState(history.state, "", `${window.location.pathname}${window.location.search}#runewords`);
+      return;
+    }
     if (!name || !["runewords", "uniques", "sacred-uniques", "sets", "socketables", "base-items"].includes(p)) return;
     const tier = +new URLSearchParams(qs).get("tier");
     const u = p === "uniques" && tier ? TUD.find((x) => x.name === name) : null;
