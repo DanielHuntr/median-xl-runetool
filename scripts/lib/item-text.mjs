@@ -65,6 +65,9 @@ export function gameText(dir = process.env.MXL_DIR || "C:/games/median-xl") {
     monsters: lookup((id) => (id >= 0 && id < monstats.count ? text(str(monstats.record(id).readUInt16LE(6))) || undefined : undefined)),
     strings: lookup((id) => lines(str(id))),
   };
+  // Description functions whose text uses the parameter: class and skill-tab levels, procs,
+  // auras, monsters, charges, skills, whole strings, cooldowns.
+  const PARAM_FUNCS = new Set([13, 14, 15, 16, 22, 23, 24, 27, 28, 31, 33, 34]);
   const perLevel = (stat) => { const d = statOut[stat]; return !!d && ((d[0] >= 6 && d[0] <= 9) || (d[0] === 32 && d[5] === 12)); };
   const tidy = (l) => l.replace(/\((-?[\d.]+)-(-?[\d.]+)\)/g, "($1 to $2)");
   return {
@@ -76,14 +79,16 @@ export function gameText(dir = process.env.MXL_DIR || "C:/games/median-xl") {
      * max) as the item shows them: a minimum and maximum damage pair as "Adds X-Y Damage" and a
      * description group whose stats all share one value as its one line, as the game does.
      */
-    rowText(r, at, n) { return this.rowsText([[r, at, n]]); },
+    rowText(r, at, n, opts) { return this.rowsText([[r, at, n]], opts); },
     /**
      * Several rows' properties as one item (a runeword and its runes' socket bonuses): stats
      * with the same parameter add up before they're written, as the docs show them.
      */
-    rowsText(list) {
+    rowsText(list, { itemName = null } = {}) {
       const entries = [], other = [];
+      let roll = 0;
       for (const [r, at, n] of list) for (let k = 0; k < n; k++) {
+        roll++;
         const o = at + 16 * k, prop = r.readInt32LE(o);
         if (prop < 0) continue;
         const param = r.readInt32LE(o + 4), min = r.readInt32LE(o + 8), max = r.readInt32LE(o + 12);
@@ -98,10 +103,13 @@ export function gameText(dir = process.env.MXL_DIR || "C:/games/median-xl") {
             // (Tailwind's parameter 32 isn't its value; its minimum 20 is: +0.625 per level).
             : func === 17 && (!perLevel(stat) || !min) ? { min: param, max: param } : { min, max };
           // Damage properties without a stat of their own set the minimum or maximum damage.
-          if (stat < 0 && (func === 5 || func === 6)) entries.push({ stat: func === 5 ? 21 : 22, param: 0, ...v });
+          if (stat < 0 && (func === 5 || func === 6)) entries.push({ stat: func === 5 ? 21 : 22, param: 0, roll, ...v });
           // Enhanced damage (function 7) has no stat of its own either.
-          else if (stat < 0 && func === 7) entries.push({ stat: "ed", param: 0, ...v });
-          else if (stat >= 0) entries.push({ stat, param: param || value || 0, ...v });
+          else if (stat < 0 && func === 7) entries.push({ stat: "ed", param: 0, roll, ...v });
+          // The parameter only matters where the stat's text uses it (a skill, a class, a monster,
+          // a string); otherwise two properties setting the same stat add up whatever their
+          // parameters (Ord Rekar's Testament's two lightning damage properties).
+          else if (stat >= 0) entries.push({ stat, param: PARAM_FUNCS.has(statOut[stat]?.[0]) || /%s/.test(statOut[stat]?.[2] || "") ? param || value || 0 : 0, roll, ...v });
         }
         // Lines with no stat to group (sockets, ethereal) as written alone.
         if ((data.props[prop] || []).some(([func, stat]) => stat < 0 && ![5, 6, 7].includes(func))) other.push(...this.propertyText([prop, param, min, max]).filter((l) => !/to M(in|ax)imum Damage$|Enhanced Damage$/.test(l)));
@@ -127,22 +135,43 @@ export function gameText(dir = process.env.MXL_DIR || "C:/games/median-xl") {
         if (lo && hi && len) {
           [lo, hi, len].forEach((e) => used.add(e));
           const f = len.max, dmg = (x) => Math.round((x * f) / 256), sec = Math.round((f / 25) * 100) / 100;
-          const a = { min: dmg(lo.min), max: dmg(lo.max) }, b = { min: dmg(hi.min), max: dmg(hi.max) };
-          out.push(range(a) === range(b) ? `+${range(a)} Poison Damage over ${sec} seconds` : `Adds ${range(a)}-${range(b)} Poison Damage over ${sec} seconds`);
+          // Its lowest minimum to its highest maximum, as the docs list it ("Adds 5-13").
+          const a = dmg(Math.min(lo.min, lo.max)), b = dmg(Math.max(hi.min, hi.max));
+          out.push(a === b ? `+${a} Poison Damage over ${sec} seconds` : `Adds ${a}-${b} Poison Damage over ${sec} seconds`);
         }
       }
       for (const { stats, desc } of groups.values()) {
         const members = stats.map((st) => entries.find((e) => e.stat === st && !used.has(e)));
         if (members.some((m) => !m) || members.some((m) => m.min !== members[0].min || m.max !== members[0].max)) continue;
+        // One roll sets them all ("res-all"), or fixed at one value: stats rolled one by one
+        // (Catechumen's four resists) can come out different, so they're written one by one.
+        if (!members.every((m) => m.roll === members[0].roll) && members[0].min !== members[0].max) continue;
         members.forEach((m) => used.add(m));
+        // Nothing left (a rune's value cancelling the runeword's): no line, as for a single stat.
+        if (members[0].min === 0 && members[0].max === 0) continue;
         const line = statLine({ ...data, stats: { group: desc } }, "group", 0, members[0].min, members[0].max);
         if (line) out.push(tidy(line));
       }
       const ed = entries.find((e) => e.stat === "ed");
       if (ed) { used.add(ed); out.push(`+${range(ed)}% Enhanced Damage`); }
-      for (const e of entries) if (!used.has(e) && !(e.min === 0 && e.max === 0)) { const l = statLine(data, e.stat, e.param, e.min, e.max); if (l) out.push(...l.split("\n").map(tidy)); }
-      // A skill with no name (a hidden helper skill) shows nothing in game.
-      return [...new Set([...out, ...other])].filter((l) => !/\ba skill\b/.test(l));
+      const described = [];
+      for (const e of entries) if (!used.has(e) && !(e.min === 0 && e.max === 0)) {
+        const l = statLine(data, e.stat, e.param, e.min, e.max);
+        if (!l) continue;
+        const ls = l.split("\n").map(tidy);
+        out.push(...ls);
+        if ([31, 34].includes(statOut[e.stat]?.[0])) described.push(...ls);
+      }
+      // A skill with no name (a hidden helper skill) shows nothing in game, and one named after the
+      // item itself (Jerhyn's Tawiz, "Gematria Chillstring") is the skill working its description.
+      const own = itemName ? new RegExp(`^\\+1 to (Gematria )?${itemName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`) : null;
+      // A proc the item's description string writes and a property also sets (Staff of Shadows: its
+      // description "5% Chance to Cast Level 50 Slayer on Death Blow", its property 8%): the
+      // property is what the game rolls, so the description's copy goes.
+      const procKey = (l) => / level (\d+ .+ on .+)$/i.exec(l)?.[1]?.toLowerCase();
+      const propertyProcs = new Set(out.filter((l) => !described.includes(l)).map(procKey).filter(Boolean));
+      return [...new Set([...out, ...other])].filter((l) => !/\ba skill\b/.test(l) && !(own && own.test(l))
+        && !(described.includes(l) && procKey(l) && propertyProcs.has(procKey(l))));
     },
   };
 }

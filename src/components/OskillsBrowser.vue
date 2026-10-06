@@ -9,6 +9,7 @@ import { useRunetool } from "../composables/useRunetool.js";
 import SKILL_NAMES from "../data/skill-names.json";
 import SOULBINDER from "../data/soulbinder.json";
 import BONUSES from "../data/item-bonuses.json";
+import { FIX, fixList } from "../data/fixes.js";
 
 const { RW, TUD, SUD, SETD, st } = useRunetool();
 
@@ -42,7 +43,7 @@ async function loadInventory() {
     const res = await fetch(`${import.meta.env.BASE_URL}planner/data.json?v=${__BUILD_ID__}`);
     if (!res.ok) throw new Error();
     const data = await res.json();
-    inventory.value = data.inventory || [];
+    inventory.value = (data.inventory || []).map((c) => ({ ...c, lines: fixList(c.lines, FIX.inventory?.[c.id]) }));
   } catch {
     inventoryNote.value = "Relics and charms couldn't be loaded, so they aren't listed.";
   }

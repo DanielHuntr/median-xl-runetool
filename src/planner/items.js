@@ -6,6 +6,7 @@ import { superiorOf } from "./superior.js";
 import { cleanOrbs, orbById, orbFits, orbMultiplier } from './orbs.js';
 import BONUSES from "../data/item-bonuses.json" with { type: "json" };
 import AFFIXES from "../data/affixes.json" with { type: "json" };
+import { FIX, fixList } from "../data/fixes.js";
 
 // Equipment slots, laid out like the in-game inventory screen.
 export const SLOTS = [
@@ -207,7 +208,8 @@ export function createCatalog(app, planner) {
       key: `sock:${s.id}`, kind: "socketable", kindLabel: s.group, name: s.name, lvl: s.lvl, img: s.img,
       slotLines: s.slots, search: [s.name, s.group, ...s.slots.flat()].join(" ").toLowerCase(),
     });
-  for (const c of planner.inventory)
+  // Relics and charms (MedianDB), with the game's lines where they differ (src/data/fixes.js).
+  for (const c of planner.inventory.map((x) => ({ ...x, lines: fixList(x.lines, FIX.inventory?.[x.id]) })))
     items.set(`inv:${c.id}`, {
       key: `inv:${c.id}`, kind: c.kind, kindLabel: c.kind === "relic" ? "Relic" : "Charm", name: c.name,
       icon: c.icon, slotType: c.kind, variants: [{ label: "", lines: [`Required Level: ${c.reqLevel}`, ...c.lines] }],

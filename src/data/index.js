@@ -9,7 +9,7 @@ import BASE from "./base-items.json";
 import MASTERCRAFTED from "./mastercrafted.json";
 import META from "./catalog-meta.json";
 import RW_BASES from "./runeword-bases.json";
-import CATALOGUE_FIXES from "./catalogue-fixes.json";
+import { FIX, fixLines } from "./fixes.js";
 const RIMG = { ...RUNE_IMG, ...SOCK_IMG };
 const STD =
   "El Eld Tir Nef Eth Ith Tal Ral Ort Thul Amn Sol Shael Dol Hel Io Lum Ko Fal Lem Pul Um Mal Ist Gul Vex Ohm Lo Sur Ber Jah Cham Zod".split(
@@ -145,7 +145,7 @@ const GAME_BASES = RW_BASES.runewords || {};
 const RW_ALL = RAW.map(([name, lvl, runes, bases, except, stats, subtitle], i) => {
   const r = runes.split(" "),
     b = bases.split(", "),
-    s = stats.split("|");
+    s = fixLines(stats, FIX.runewords[`${name}|${runes}`]).split("|");
   let cls = null;
   for (const c of CLASSES) {
     if (b.some((x) => x.startsWith(c))) cls = c;
@@ -208,11 +208,6 @@ function fitsBase(r, base) {
   );
 }
 
-// Where the docs' text disagrees with the game files on a value, the game's value
-// (scripts/extract-catalogue-fixes.mjs): [docs line, game line] pairs, applied to the bundled
-// catalogue and to a live one alike.
-const FIX = CATALOGUE_FIXES.fixes;
-const fixLines = (str, pairs) => (pairs ? str.split("|").map((l) => pairs.find(([from]) => from === l)?.[1] ?? l).join("|") : str);
 
 const HEAD =
   /^(One-Hand|Two-Hand|Throw) Damage|^Required|^Item Level|Damage Bonus:|^Socketed/;

@@ -1,6 +1,6 @@
 {
  "patch": "2.14.6",
- "source": "uniqueitems.bin, setitems.bin (scripts/lib/catalogue-audit.mjs)",
+ "source": "uniqueitems.bin, setitems.bin, runes.bin, gems.bin (scripts/lib/catalogue-audit.mjs)",
  "fixes": {
   "uniques": {
    "Blackheart": {
@@ -37,10 +37,28 @@
      "+1.5 Life Regenerated per Second (Based on Character Level)"
     ]
    ],
+   "Staff of Shadows": [
+    [
+     "5% Chance to Cast Level 50 Slayer on Death Blow",
+     "8% Chance to cast level 50 Slayer on Death Blow"
+    ],
+    [
+     null,
+     "+1 to Slayer"
+    ]
+   ],
    "Darkfeast": [
+    [
+     "+(2 to 3) Projectile to Hunting Banshee",
+     null
+    ],
     [
      "+(50 to 200) Spell Focus",
      "+(100 to 200) Spell Focus"
+    ],
+    [
+     "+50% Damage to Undead",
+     null
     ],
     [
      "+(30 to 50)% to Cold Spell Damage",
@@ -57,6 +75,18 @@
     [
      "+50 Life Regenerated per Second",
      "+75 Life Regenerated per Second"
+    ],
+    [
+     "Total Character Defense (30 to 60)%",
+     null
+    ],
+    [
+     null,
+     "(30 to 60)% Bonus to Defense"
+    ],
+    [
+     null,
+     "Hunting Banshee: +2 Projectiles"
     ]
    ],
    "Gaze of the Dead": [
@@ -70,6 +100,12 @@
      "+(75 to 113) Life Regenerated per Second",
      "+(75 to 112.5) Life Regenerated per Second"
     ]
+   ],
+   "Signet of the Gladiator": [
+    [
+     "Colosseum Cooldown Reduced by 0 seconds",
+     "Colosseum Cooldown Reduced by (1 to 2) seconds"
+    ]
    ]
   },
   "sets": {
@@ -77,6 +113,230 @@
     [
      "Adds 6-8 Poison Damage over 1 seconds",
      "Adds 6-8 Poison Damage over 0.2 seconds"
+    ]
+   ]
+  },
+  "runewords": {
+   "Hive|Ber Ber Ist": [
+    [
+     "+1 Life Regenerated per Second (Based on Character Level)",
+     "+0.45 Life Regenerated per Second (Based on Character Level)"
+    ]
+   ],
+   "Lunar Fury|Zod Sil Zol": [
+    [
+     "Physical Resist 5%",
+     null
+    ]
+   ],
+   "Stoneharpe|Sil Fel Zur Sil": [
+    [
+     "50% Attack Speed",
+     null
+    ],
+    [
+     "Adds 16-24 Damage",
+     null
+    ]
+   ],
+   "Thunder Talons|Ful Phul": [
+    [
+     "+(8 to 10) to Earth Talons (Druid Only)",
+     null
+    ]
+   ],
+   "Burning Contagion|Ven Ign Vex Tyr": [
+    [
+     null,
+     "12% Chance to cast level 42 Flamefront on Death Blow"
+    ]
+   ],
+   "Prophecy|Ith": [
+    [
+     "+1 Life Regenerated per Second",
+     "+(0.7 to 0.8) Life Regenerated per Second"
+    ]
+   ],
+   "Plagued Mallet|Ven Loz Ful Ol": [
+    [
+     "Physical Resist (10 to 15)%",
+     null
+    ]
+   ],
+   "Shadow Bite|Phul": [
+    [
+     "5% Chance to cast level 24 Hammertime on Kill",
+     null
+    ]
+   ],
+   "Askari Device|Taha Yst": [
+    [
+     "+200 to Life",
+     null
+    ]
+   ],
+   "Anak|Hel Eld Ber": [
+    [
+     "Adds (20 to 40)-45 Damage",
+     "Adds (50 to 70)-45 Damage"
+    ]
+   ],
+   "Glacier|Gla Xeth Ghal": [
+    [
+     "+(18 to 24) to Raven Heart",
+     null
+    ]
+   ],
+   "Lemuria|Ign Lew Fal": [
+    [
+     "+(115 to 165) to Strength",
+     "+40 to Strength"
+    ]
+   ],
+   "Timefather|Sil Ka Sil Iah": [
+    [
+     ": Greatly Increased Radius, Duration, and Effect",
+     null
+    ],
+    [
+     "Adds 16-24 Damage",
+     null
+    ],
+    [
+     null,
+     "Mega Impact: Greatly Increased Radius, Duration, and Effect"
+    ]
+   ],
+   "Obedience|Zur Taha Arc Ist": [
+    [
+     "Physical Resist 10%",
+     null
+    ]
+   ],
+   "Oriflamme|Taha Qor Zod": [
+    [
+     "Adds 400-500 Magic Damage",
+     null
+    ],
+    [
+     null,
+     "+400 to Minimum Magic Damage"
+    ]
+   ],
+   "Eternal|Taha Lew Ghal Fel Qor Ka": [
+    [
+     "Maximum Elemental Resists +1%",
+     null
+    ]
+   ],
+   "Hellfire Plate|Ign Jah Gur Rhal": [
+    [
+     "50% Innate Elemental Damage",
+     null
+    ]
+   ],
+   "Blazing Armament|Ign Ghal Ohn": [
+    [
+     "+(1 to 15)% to Fire Spell Damage",
+     null
+    ]
+   ],
+   "Arcane Protection|Arc Sur": [
+    [
+     "+(5 to 10)% Bonus to Spell Focus",
+     null
+    ]
+   ],
+   "Starlight|Zol Mal Ber": [
+    [
+     "Requirements -15%",
+     null
+    ]
+   ],
+   "Svalinn|Rhal Lo Ohn": [
+    [
+     "Fire Resist +(35 to 40)%",
+     "Fire Resist +(65 to 70)%"
+    ]
+   ],
+   "Duress|Thal": [
+    [
+     null,
+     "7% Chance to cast level 5 Life Spark on Death Blow"
+    ]
+   ],
+   "Enlightenment|El": [
+    [
+     "+(3 to 5) Life Regenerated per Second",
+     "+(3 to 4.5) Life Regenerated per Second"
+    ]
+   ],
+   "Disturbance|Ort Sil Yst": [
+    [
+     "+(200 to 300) to Vitality",
+     null
+    ]
+   ],
+   "A Perfect Storm|Tuul Urt Ful": [
+    [
+     "+(10 to 16) to Overcharged",
+     null
+    ]
+   ],
+   "Ligeia|Ohn Un": [
+    [
+     "+5000 Defense",
+     null
+    ]
+   ],
+   "Titan's Blockade|Um Zol Lew": [
+    [
+     "+15 to Mana",
+     null
+    ]
+   ],
+   "Typhoon|Zol Elq Gla": [
+    [
+     "+15 to Mana",
+     null
+    ]
+   ],
+   "Splintered Soul|Taha Xith Un": [
+    [
+     "+2 to Necromancer Skill Levels",
+     null
+    ]
+   ],
+   "Tranquility|Zol Lew": [
+    [
+     "+(25 to 35)% to Physical/Magic Spell Damage",
+     null
+    ]
+   ],
+   "Vortex|Sur Bur Ful": [
+    [
+     "(5 to 10)% to Vitality",
+     null
+    ]
+   ],
+   "Curandera|Zur Um Taha": [
+    [
+     "+1 Life Regenerated per Second (Based on Character Level)",
+     "+0.478125 Life Regenerated per Second (Based on Character Level)"
+    ]
+   ]
+  },
+  "inventory": {
+   "relic:eldritch-storm": [
+    [
+     null,
+     "2% Chance to cast level 60 Eldritch Storm on Death Blow"
+    ]
+   ],
+   "relic:nova-charge": [
+    [
+     null,
+     "+10 to Frozen Heart"
     ]
    ]
   }

@@ -292,6 +292,17 @@ test("relics and charms are plain item text: no MedianDB colour tags or choice o
   }
 });
 
+test("the catalogue shows the game's text where the docs disagree (catalogue-fixes.json)", async () => {
+  const { catalog } = await env();
+  const lines = (name) => catalog.all().find((d) => d.name === name)?.variants.at(-1).lines || [];
+  const darkfeast = lines("Darkfeast");
+  assert.ok(darkfeast.includes("+(100 to 200) Spell Focus") && !darkfeast.includes("+(50 to 200) Spell Focus"), "Darkfeast: the game's lines");
+  assert.ok(!darkfeast.includes("+50% Damage to Undead"), "a docs line the game doesn't have is dropped");
+  const staff = lines("Staff of Shadows").filter((l) => /Slayer on Death Blow/.test(l));
+  assert.deepEqual(staff, ["8% Chance to cast level 50 Slayer on Death Blow"], "the property's proc, once");
+  assert.ok(lines("Relic (Nova Charge)").includes("+10 to Frozen Heart"), "a relic line MedianDB misses is added");
+});
+
 test("character sheet: attributes, life, resist penalty, set bonuses, gear skills, passives", async () => {
   const { engine, catalog } = await env();
   const { computeCharacter } = await load("/src/planner/character.js");
