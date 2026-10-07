@@ -3,39 +3,90 @@
 // open a page and highlight a control on it; the card says which page the step is about.
 // "Skip this page" jumps to the next page, "Skip tour" stops, and either way the player ends up
 // back on the page they started on.
+// A few steps also show it happening (demo): typing a search, picking a filter, switching a
+// tier, putting two Ith Runes in the cube and transmuting them. Each is undone as the player
+// moves on (the cube's when they leave the cube), so the tour leaves nothing changed. Steps that
+// would change the player's own things (their runes, their build, saving) only explain.
 // It opens by itself for a first-time visitor, on whichever page they arrive (a shared link
 // included): one who hasn't seen it and has none of the site's data in this browser yet.
 // Closing it in any way counts as seen; "Welcome tour" in the More menu opens it again.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRunetool } from "../composables/useRunetool.js";
 
-const { page, nav, PAGES } = useRunetool();
+const { page, nav, PAGES, st } = useRunetool();
 const KEY = "mxlrw2:welcome";
 const MENU = ".mobile-top .mobile-menu";
 // A step: { page, at: selector, has: text the element contains, title, text, phone?: selector
-// on a phone when `at` isn't shown there, phoneText? }. No `at`: a card in the middle.
+// on a phone when `at` isn't shown there, phoneText?, demo? }. No `at`: a card in the middle.
+// A demo runs a moment after its card shows: ({ el, alive }) => { undo, until?: "page", then? }
+// (alive() is false once the player has moved on; then: an element to highlight afterwards).
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const button = (root, label) => [...root.querySelectorAll("button")].find((b) => b.textContent.trim() === label);
+const cubeEmpty = () => { const b = button(document, "Empty the cube"); if (b && !b.disabled) b.click(); };
+async function twoIth(alive) {
+  cubeEmpty();
+  for (let i = 0; i < 2 && alive(); i++) {
+    const tile = [...document.querySelectorAll(".cube-tiles button")].find((b) => b.textContent.trim() === "Ith Rune");
+    if (!tile) return false;
+    tile.click();
+    await sleep(450);
+  }
+  return true;
+}
+const DEMOS = {
+  async search({ alive }) {
+    const before = st.q;
+    for (const ch of "life") { if (!alive()) break; st.q = st.q === before ? ch : st.q + ch; await sleep(160); }
+    return { undo: () => (st.q = before) };
+  },
+  async filter() {
+    const before = [...st.bases];
+    st.bases = ["Bows"];
+    await nextTick();
+    // The toolbar, with the tag the filter added under it, lit.
+    return { undo: () => (st.bases = before), then: document.querySelector(".toolbar") };
+  },
+  async tier({ el }) {
+    const was = el.querySelector("button.selected"), first = el.querySelector("button");
+    if (!first || first === was) return null;
+    first.click();
+    return { undo: () => was?.isConnected && was.click() };
+  },
+  async cubeIn({ alive }) {
+    return (await twoIth(alive)) ? { undo: cubeEmpty, until: "page" } : null;
+  },
+  async transmute({ alive }) {
+    // From two Ith Runes (what Pick items put in, unless the player came back here after).
+    if (document.querySelector(".cube-count")?.textContent.trim() !== "2 items" && !(await twoIth(alive))) return null;
+    if (!alive()) return { undo: cubeEmpty, until: "page" };
+    await sleep(300);
+    document.querySelector(".cube-go:not(:disabled)")?.click();
+    await nextTick();
+    return { undo: cubeEmpty, until: "page", then: document.querySelector(".cube-result") };
+  },
+};
 const STEPS = [
   { title: "Welcome to the Median XL Runetool", text: "A companion for Median XL 2.14: find runewords and uniques, work out cube recipes and plan your character. Item data comes from the game's own files. This tour goes through each page and what its buttons do. It takes a couple of minutes, and you can skip a page or stop at any time." },
 
-  { page: "runewords", at: ".primary-controls .search", title: "Search", text: "Search by a runeword's name, a rune, or a stat. Try \"life\" or \"Ber\" to see every runeword with it." },
+  { page: "runewords", at: ".primary-controls .search", title: "Search", demo: "search", text: "Search by a runeword's name, a rune, or a stat. Watch: typing \"life\" leaves only the runewords that add life." },
   { page: "runewords", at: ".primary-controls .class-picker", title: "Your class", text: "Choose your class to leave out runewords made for other classes." },
-  { page: "runewords", at: ".primary-controls .filters-btn", title: "Filters", text: "Narrow the list by item type (bows, helms, shields…), number of sockets, stats and damage type. Each filter you pick shows as a tag you can click to remove." },
+  { page: "runewords", at: ".primary-controls .filters-btn", title: "Filters", demo: "filter", text: "Narrow the list by item type (bows, helms, shields…), number of sockets, stats and damage type. Watch: picking Bows narrows the list, and the filter shows as a tag you can click to remove." },
   { page: "runewords", at: ".primary-controls .level", title: "Max level", text: "Type your character's level to hide runewords you can't use yet." },
   { page: "runewords", at: ".secondary-controls .btn", has: "My Runes", title: "My Runes", text: "Tell the site which runes you have. The list then shows what you can make right now, and how many runes you're short for the rest." },
   { page: "runewords", at: ".secondary-controls .btn", has: "Starter runewords", title: "Starter runewords", text: "New character? This shows the runewords made only from common runes (El to Ist), lowest level first." },
   { page: "runewords", at: ".rune-card .socket.has-recipe", title: "Runes on a card", text: "A rune you can make in the Horadric Cube links to its recipe. Click it to see what goes in (two Ith make a Tal)." },
   { page: "runewords", at: ".rune-card .card-actions", title: "Star and share", text: "The star saves a runeword to your favourites (the Starred button shows just those). The link icon copies a link to this card to send to someone." },
 
-  { page: "uniques", at: ".unique-card .tier-tabs", title: "Tiers", text: "Most uniques come in four tiers, each stronger than the last. Click I to IV to see each one. A tier marked in red needs a higher level than the Max level you set." },
+  { page: "uniques", at: ".unique-card .tier-tabs", title: "Tiers", demo: "tier", text: "Most uniques come in four tiers, each stronger than the last. Click I to IV to see each one; watch the card switch to tier I. A tier marked in red needs a higher level than the Max level you set." },
   { page: "uniques", at: ".unique-card .cube-link-square", title: "Cube button", text: "Opens the Cube Recipes page with this unique's recipe loaded: how to make it, or how to upgrade it to the next tier." },
   { page: "uniques", at: "label.switch", has: "Compare", title: "Compare with next tier", text: "With this on, each card shows what the next tier changes, so you can see whether upgrading is worth it." },
   { page: "uniques", at: ".unique-card .skill-class", title: "Whose skill is it?", text: "A \"+ to a skill\" line has a tag saying which class the skill belongs to. Point at the tag for more." },
   { page: "uniques", at: ".sidebar nav [data-page='sacred-uniques']", phone: MENU, title: "More to browse", text: "Sacred Uniques, Sets, Gems & Runes and Base Items work the same way: search, filters and Max level.", phoneText: "In the menu: Sacred Uniques, Sets, Gems & Runes and Base Items work the same way, with search, filters and Max level." },
   { page: "uniques", at: ".sidebar nav [data-page='oskills']", phone: MENU, title: "Oskills & Procs", text: "Find items that give you a skill from another class, or cast a skill for you when you attack or get hit.", phoneText: "In the menu: Oskills & Procs finds items that give you a skill from another class, or cast a skill for you when you attack or get hit." },
 
-  { page: "cube", at: ".cube-picker", title: "Pick items", text: "Find an item here and click it to put it in the cube: runes, gems, reagents and gear are all listed." },
+  { page: "cube", at: ".cube-picker", title: "Pick items", demo: "cubeIn", text: "Find an item here and click it to put it in the cube: runes, gems, reagents and gear are all listed. Watch: two Ith Runes go in." },
   { page: "cube", at: ".cube-grid", title: "The cube", text: "What you've put in. Click an item in the cube to change its details, such as quality, level or sockets." },
-  { page: "cube", at: ".cube-go", title: "Transmute", text: "Shows what the game would make from what's in the cube, using the game's own recipe table. If nothing matches, it says what's close and what's missing." },
+  { page: "cube", at: ".cube-go", title: "Transmute", demo: "transmute", text: "Shows what the game would make from what's in the cube, using the game's own recipe table. Watch: two Ith Runes make a Tal Rune. If nothing matches, it says what's close and what's missing." },
   { page: "cube", at: ".cube-char", title: "Your character", text: "A few recipes depend on your class, level or difficulty. Set them here; most recipes ignore them." },
 
   { page: "planner", at: ".planner-toolbar", title: "Class and level", text: "Choose your class and level. With \"Raise level automatically\" on, your level goes up as you spend points." },
@@ -74,6 +125,13 @@ const nextPage = computed(() => {
   return STEPS.findIndex((x, i) => i > step.value && x.page !== s.page);
 });
 let lastFocus = null, startPage = null, token = 0;
+// What the demos changed, to put back: the step's own, and one kept until its page is left.
+let stepUndo = null, pageUndo = null;
+function undoDemos(nextPage) {
+  try { stepUndo?.(); } catch {}
+  stepUndo = null;
+  if (pageUndo && pageUndo.page !== nextPage) { try { pageUndo.undo(); } catch {} pageUndo = null; }
+}
 
 const done = () => { try { localStorage.setItem(KEY, "done"); } catch {} };
 function start() {
@@ -83,6 +141,8 @@ function start() {
   open.value = true;
 }
 function close() {
+  token++;
+  undoDemos(null);
   open.value = false;
   done();
   if (startPage && page.value !== startPage) nav(startPage);
@@ -133,6 +193,7 @@ async function place() {
 }
 async function show() {
   const mine = ++token, s = cur.value;
+  undoDemos(s.page);
   if (s.page && page.value !== s.page) nav(s.page);
   target = null;
   rect.value = null;
@@ -143,6 +204,24 @@ async function show() {
   if (el) el.scrollIntoView({ block: el.getBoundingClientRect().height > window.innerHeight * 0.6 ? "start" : "center" });
   await place();
   card.value?.querySelector(".tour-next")?.focus({ preventScroll: true });
+  // The step's demo, a moment after its card shows (it's the tour doing it, not the player).
+  const demo = el && s.demo && DEMOS[s.demo];
+  if (!demo) return;
+  await sleep(700);
+  const alive = () => mine === token && open.value;
+  if (!alive()) return;
+  let r = null;
+  try { r = await demo({ el, alive }); } catch {}
+  if (!r) return;
+  // Kept to undo later, or (the player closed the tour or moved on meanwhile) undone now.
+  const keep = r.until === "page" ? open.value && page.value === s.page : alive();
+  if (!keep) { try { r.undo(); } catch {} return; }
+  if (r.until === "page") pageUndo = { page: s.page, undo: r.undo };
+  else stepUndo = r.undo;
+  if (!alive()) return;
+  await nextTick();
+  if (r.then) { target = r.then; r.then.scrollIntoView({ block: "nearest" }); }
+  await place();
 }
 watch([open, step], () => open.value && show());
 const onKey = (e) => {

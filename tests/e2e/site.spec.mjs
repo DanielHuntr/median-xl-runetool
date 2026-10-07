@@ -408,6 +408,34 @@ test.describe("a first-time visitor", () => {
     await expect(page.locator(".tour")).toHaveCount(0);
   });
 
+  test("the tour shows a search, a filter and a cube recipe happening, and undoes each", async ({ page }) => {
+    await page.goto("/#runewords");
+    const title = page.locator("#tour-title"), next = page.locator(".tour-next");
+    await next.click();
+    await expect(title).toHaveText("Search");
+    await expect(page.locator(".primary-controls .search input")).toHaveValue("life");
+    await next.click();
+    await expect(page.locator(".primary-controls .search input")).toHaveValue("");
+    await next.click();
+    await expect(title).toHaveText("Filters");
+    await expect(page.locator(".active-filters .pill", { hasText: "Bows" })).toBeVisible();
+    await next.click();
+    await expect(page.locator(".active-filters .pill")).toHaveCount(0);
+    // On to the cube: two Ith Runes go in, and transmute into a Tal Rune.
+    for (let i = 0; i < 12 && (await title.textContent()) !== "Pick items"; i++) await page.getByRole("button", { name: "Skip this page" }).click();
+    await expect(page.locator(".cube-count")).toHaveText("2 items");
+    await next.click();
+    await next.click();
+    await expect(title).toHaveText("Transmute");
+    await expect(page.locator(".cube-result")).toContainText("Tal Rune");
+    await page.getByRole("button", { name: "Skip tour" }).click();
+    await expect(page).toHaveURL(/#runewords$/);
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("mxlrw2:state")));
+    expect([saved.q, saved.bases]).toEqual(["", []]);
+    await page.goto("/#cube");
+    await expect(page.locator(".cube-count")).toHaveText("0 items");
+  });
+
   test("a returning visitor (with saved data) isn't shown it", async ({ page }) => {
     await page.goto("/#runewords");
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem("mxlrw2:owned", JSON.stringify({ Tir: 1 })); });
