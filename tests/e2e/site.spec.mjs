@@ -379,10 +379,25 @@ test.describe("a first-time visitor", () => {
     const tour = page.getByRole("dialog", { name: "Welcome to the Median XL Runetool" });
     await expect(tour).toBeVisible();
     await page.getByRole("button", { name: "Show me around" }).click();
+    // It goes into the pages: the Runeword Finder's search first, highlighted.
+    await expect(page).toHaveURL(/#runewords$/);
+    await expect(page.locator("#tour-title")).toHaveText("Search");
+    await expect(page.locator(".tour-count")).toContainText("Runeword Finder");
     await expect(page.locator(".tour-spot")).toBeVisible();
-    await expect(page.locator("#tour-title")).toHaveText("Runeword Finder");
+    await page.getByRole("button", { name: "Next" }).click();
+    await expect(page.locator("#tour-title")).toHaveText("Your class");
+    // Skip this page: on to the next page's first step.
+    await page.getByRole("button", { name: "Skip this page" }).click();
+    await expect(page).toHaveURL(/#uniques$/);
+    await expect(page.locator("#tour-title")).toHaveText("Tiers");
+    await expect(page.locator(".tour-spot")).toBeVisible();
+    await page.getByRole("button", { name: "Skip this page" }).click();
+    await expect(page).toHaveURL(/#cube$/);
+    await expect(page.locator(".tour-spot")).toBeVisible();
+    // Skip tour: back on the page they started on.
     await page.getByRole("button", { name: "Skip tour" }).click();
     await expect(page.locator(".tour")).toHaveCount(0);
+    await expect(page).toHaveURL(/#uniques$/);
     await page.reload();
     await expect(page.locator(".app-shell")).toBeVisible();
     await expect(page.locator(".tour")).toHaveCount(0);
