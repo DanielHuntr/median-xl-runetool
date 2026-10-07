@@ -469,3 +469,18 @@ test("a link claiming to be one of your saved builds can't aim Save at it; the B
   await page.getByRole("button", { name: "Save build" }).click();
   await expect(page.getByRole("dialog", { name: "Save build" }).getByText(/Updates your saved build "My Hammer"/)).toBeVisible();
 });
+
+test("the tour, replayed over your own search and class, shows its demos on a clear list and gives yours back", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.getByRole("main").getByPlaceholder("Search runewords, runes or stats").fill("Typhoon");
+  await page.locator(".side-more").click();
+  await page.getByRole("menuitem", { name: "Welcome tour" }).click();
+  await page.locator(".tour-next").click();
+  await expect(page.locator("#tour-title")).toHaveText("Search");
+  await expect(page.locator(".primary-controls .search input")).toHaveValue("life");
+  await page.locator(".tour-next").click();
+  await expect(page.locator("#tour-title")).toHaveText("Your class");
+  await expect(page.locator(".result-count strong")).not.toHaveText("0");
+  await page.getByRole("button", { name: "Skip tour" }).click();
+  await expect(page.locator(".primary-controls .search input")).toHaveValue("Typhoon");
+});
