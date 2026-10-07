@@ -1,8 +1,9 @@
 <script setup>
 // A short welcome tour: what each part of the site is for, one step at a time, with the part
 // it's about highlighted (the sidebar on a desktop; the menu or search button on a phone).
-// It opens by itself once, for a first visit to the site's bare address (not a shared link,
-// which goes straight to what was shared); "Welcome tour" in the More menu opens it again.
+// It opens by itself for a first-time visitor, on whichever page they arrive (a shared link
+// included): one who hasn't seen it and has none of the site's data in this browser yet.
+// Closing it in any way counts as seen; "Welcome tour" in the More menu opens it again.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const KEY = "mxlrw2:welcome";
@@ -20,6 +21,13 @@ const STEPS = [
   { at: ".sidebar .side-account", phone: MENU, title: "No account needed", phoneText: "Everything works without signing in, and is kept in this browser. Sign in with Google from the menu if you want your builds and filters on any device.", text: "Everything works without signing in, and is kept in this browser. Sign in with Google if you want your builds and filters on any device." },
   { at: ".sidebar .side-more", phone: MENU, title: "Bugs and ideas", phoneText: "Found a bug or have an idea? The links are at the foot of the menu, along with backups and this tour if you want it again. Good hunting!", text: "Found a bug or have an idea? It's under More, along with backups and this tour if you want it again. Good hunting!" },
 ];
+
+// Read as the page starts, before anything is saved: someone who has used the site has some of
+// this (settings written on every load, such as the theme and the sidebar's, don't count).
+const USED = ["state", "owned", "stars", "planner", "saved-builds", "loot-filters", "browse", "tuQuery", "oskills", "cube-ctx"];
+const firstVisit = (() => {
+  try { return !localStorage.getItem(KEY) && !USED.some((k) => localStorage.getItem(`mxlrw2:${k}`) != null); } catch { return false; }
+})();
 
 const open = ref(false), step = ref(0), rect = ref(null), card = ref(null), cardPos = ref({});
 // Pointing at the phone layout's menu or search button: that step's phone wording.
@@ -90,9 +98,7 @@ onMounted(() => {
   window.addEventListener("welcome-tour", start);
   window.addEventListener("keydown", onKey);
   window.addEventListener("resize", onResize);
-  let seen = true;
-  try { seen = !!localStorage.getItem(KEY) || !!localStorage.getItem("mxlrw2:state"); } catch {}
-  if (!seen && !window.location.hash) setTimeout(start, 400);
+  if (firstVisit) setTimeout(start, 400);
 });
 onBeforeUnmount(() => {
   window.removeEventListener("welcome-tour", start);

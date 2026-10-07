@@ -371,23 +371,36 @@ test("the sidebar's Sign in opens the account dialog, with Google sign-in", asyn
   await expect(dialog).toBeHidden();
 });
 
-test("a first visit to the bare address opens the welcome tour, once; More opens it again", async ({ page }) => {
-  await page.goto("/");
-  const tour = page.getByRole("dialog", { name: "Welcome to the Median XL Runetool" });
-  await expect(tour).toBeVisible();
-  await page.getByRole("button", { name: "Show me around" }).click();
-  await expect(page.locator(".tour-spot")).toBeVisible();
-  await expect(page.locator("#tour-title")).toHaveText("Search everything");
-  await page.getByRole("button", { name: "Skip tour" }).click();
-  await expect(page.locator(".tour")).toHaveCount(0);
-  await page.reload();
-  await expect(page.locator(".app-shell")).toBeVisible();
-  await expect(page.locator(".tour")).toHaveCount(0);
-  await page.locator(".side-more").click();
-  await page.getByRole("menuitem", { name: "Welcome tour" }).click();
-  await expect(page.locator(".tour-card")).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(page.locator(".tour")).toHaveCount(0);
+test.describe("a first-time visitor", () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test("sees the welcome tour on whichever page they arrive, once; More opens it again", async ({ page }) => {
+    await page.goto("/#uniques");
+    const tour = page.getByRole("dialog", { name: "Welcome to the Median XL Runetool" });
+    await expect(tour).toBeVisible();
+    await page.getByRole("button", { name: "Show me around" }).click();
+    await expect(page.locator(".tour-spot")).toBeVisible();
+    await expect(page.locator("#tour-title")).toHaveText("Search everything");
+    await page.getByRole("button", { name: "Skip tour" }).click();
+    await expect(page.locator(".tour")).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator(".app-shell")).toBeVisible();
+    await expect(page.locator(".tour")).toHaveCount(0);
+    await page.locator(".side-more").click();
+    await page.getByRole("menuitem", { name: "Welcome tour" }).click();
+    await expect(page.locator(".tour-card")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.locator(".tour")).toHaveCount(0);
+  });
+
+  test("a returning visitor (with saved data) isn't shown it", async ({ page }) => {
+    await page.goto("/#runewords");
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("mxlrw2:owned", JSON.stringify({ Tir: 1 })); });
+    await page.reload();
+    await expect(page.locator(".app-shell")).toBeVisible();
+    await page.waitForTimeout(800);
+    await expect(page.locator(".tour")).toHaveCount(0);
+  });
 });
 
 test("a link claiming to be one of your saved builds can't aim Save at it; the Builds page's own link can", async ({ page }) => {
