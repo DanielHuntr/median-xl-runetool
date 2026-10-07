@@ -185,7 +185,7 @@ async function setPublished(b, published) {
   </section>
 </template>
 <style scoped>
-.build-library { padding: 0 24px 32px; }
+.build-library { padding: 0 0 32px; }
 .field { display:flex; flex-direction:column; gap:8px; color:var(--muted); font-size:.8125rem; margin:0; }
 .field input { padding:10px 12px; font:inherit; font-size:.875rem; color:var(--text); }
 .build-filters, .build-actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
@@ -246,5 +246,5 @@ async function setPublished(b, published) {
 .build-actions p { flex-basis:100%; margin:0; }
 .build-actions .field { flex-basis:100%; }
 .build-actions a { text-decoration:none; }
-@media(max-width:600px) { .build-library { padding:0 12px 24px; } }
+@media(max-width:600px) { .build-library { padding:0 0 24px; } }
 </style>

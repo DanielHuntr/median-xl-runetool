@@ -720,6 +720,7 @@ input::placeholder {
   white-space: nowrap;
 }
 .level input {
+  flex: none;
   border: 0;
   width: 49px;
   height: 44px;
@@ -1210,7 +1211,8 @@ footer a svg {
 }
 .unique-controls {
   display: grid;
-  grid-template-columns: 1fr 230px 126px;
+  /* The level box takes the width it needs: a fixed column clipped "150" to "15". */
+  grid-template-columns: 1fr 230px auto;
   gap: 12px;
 }
 .unique-grid {
@@ -1501,7 +1503,7 @@ p.warning {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .unique-controls {
-    grid-template-columns: 1fr 185px 115px;
+    grid-template-columns: 1fr 185px auto;
   }
 }
 @media (max-width: 900px) {
@@ -1549,7 +1551,7 @@ p.warning {
     font-size: 2.1rem;
   }
   .unique-controls {
-    grid-template-columns: 1fr 115px;
+    grid-template-columns: 1fr auto;
   }
   .unique-controls .search {
     grid-column: 1/-1;
@@ -1700,7 +1702,7 @@ p.warning {
     font-size: 0.75rem;
   }
   .unique-controls {
-    grid-template-columns: minmax(0, 1fr) 100px;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px;
   }
   .unique-controls select {

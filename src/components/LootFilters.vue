@@ -339,7 +339,7 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
   </section>
 </template>
 <style scoped>
-.loot-filters { padding: 0 24px 32px; }
+.loot-filters { padding: 0 0 32px; }
 .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
 .tabs button { padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--muted); }
 .tabs button[aria-selected="true"] { color: var(--gold); border-color: var(--gold); background: var(--gold-bg); }
