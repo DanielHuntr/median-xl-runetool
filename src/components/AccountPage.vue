@@ -1,7 +1,8 @@
 <script setup>
 // The signed-in player's account: their public display name, the builds saved to their account
 // (private or published), and deleting the account. Signed out, it asks them to sign in.
-import { ref, watch } from "vue";
+import { ref, watch, nextTick } from "vue";
+import { useRunetool } from "../composables/useRunetool.js";
 import { useAuth } from "../composables/useAuth.js";
 import { useSavedBuilds, MAX_NAME } from "../planner/savedBuilds.js";
 import { plannerHash, markOwnOpen } from "../planner/buildCode.js";
@@ -15,6 +16,21 @@ const { filters: localFilters, remove: removeLocalFilter } = useSavedFilters();
 const filterSync = useFilterSync();
 
 const displayName = ref(""), nameInput = ref(""), nameMsg = ref(""), nameError = ref(""), savingName = ref(false);
+// Just signed in for the first time (#account?welcome, from useAuth): a welcome asking for a
+// display name, the name box ready to type in, and once it's saved, a way back to the page they
+// signed in from.
+const { nav, PAGES } = useRunetool();
+const welcome = ref(/[?&]welcome(?:&|$)/.test(window.location.hash));
+if (welcome.value) history.replaceState(history.state, "", "#account");
+const after = (() => { try { return sessionStorage.getItem("runetool-after-name") || ""; } catch { return ""; } })();
+const afterPage = after.slice(1).split("?")[0];
+const afterTitle = PAGES.find((p) => p[0] === afterPage && p[0] !== "account")?.[1] || "";
+const nameField = ref(null), named = ref(false);
+function continueOn() {
+  try { sessionStorage.removeItem("runetool-after-name"); } catch {}
+  if (after && afterPage !== "account") window.location.hash = after;
+  else nav("runewords");
+}
 const builds = ref([]), buildsError = ref(""), loading = ref(false), uploadMsg = ref("");
 const editing = ref(null), editName = ref(""), confirmDelete = ref(null);
 const deleteText = ref(""), deleteError = ref(""), deleting = ref(false);
@@ -66,6 +82,7 @@ async function load() {
   const [p, b] = await Promise.all([getProfile(user.value.id), listMyBuilds(user.value.id)]);
   loading.value = false;
   if (p.ok) nameInput.value = displayName.value = p.displayName;
+  if (welcome.value && !displayName.value) { await nextTick(); nameField.value?.focus(); }
   if (b.ok) { builds.value = b.builds; buildsError.value = ""; } else buildsError.value = b.reason;
 }
 watch(user, load, { immediate: true });
@@ -75,7 +92,7 @@ async function saveName() {
   savingName.value = true;
   const r = await saveDisplayName(user.value.id, nameInput.value);
   savingName.value = false;
-  if (r.ok) { displayName.value = nameInput.value = r.displayName; setDisplayName(r.displayName); nameMsg.value = "Saved."; }
+  if (r.ok) { displayName.value = nameInput.value = r.displayName; setDisplayName(r.displayName); nameMsg.value = "Saved."; if (welcome.value) named.value = true; }
   else nameError.value = r.reason;
 }
 
@@ -121,11 +138,22 @@ const signIn = () => window.dispatchEvent(new Event("account-open"));
       <button type="button" class="btn gold" @click="signIn">Sign in</button>
     </div>
     <template v-else>
+      <section v-if="welcome && (!displayName || named)" class="acct-panel acct-welcome" role="status">
+        <template v-if="!named">
+          <h2>Welcome! One more step</h2>
+          <p>Choose a display name below. It's the name other players see on builds you publish, and you need one before you can publish. Your Google name and email are never shown.</p>
+        </template>
+        <template v-else>
+          <h2>You're all set, {{ displayName }}</h2>
+          <p>You can change your name here at any time.</p>
+          <button type="button" class="btn gold" @click="continueOn">{{ afterTitle ? `Back to ${afterTitle}` : "Continue" }}</button>
+        </template>
+      </section>
       <section class="acct-panel" aria-labelledby="acct-name">
         <h2 id="acct-name">Display name</h2>
         <p class="muted">What other players see on the builds you publish. Your Google name and email are never shown.</p>
         <form class="acct-row" @submit.prevent="saveName">
-          <label class="field">Display name<input v-model="nameInput" maxlength="24" autocomplete="nickname" placeholder="3 to 24 letters or numbers" /></label>
+          <label class="field">Display name<input ref="nameField" v-model="nameInput" maxlength="24" autocomplete="nickname" placeholder="3 to 24 letters or numbers" /></label>
           <button class="btn gold" :disabled="savingName || nameInput.trim() === displayName">{{ savingName ? "Saving…" : "Save" }}</button>
         </form>
         <p v-if="nameMsg" class="acct-ok" role="status">{{ nameMsg }}</p>
@@ -227,6 +255,9 @@ const signIn = () => window.dispatchEvent(new Event("account-open"));
 .acct-ok { color: var(--good); font-size: .8125rem; }
 .acct-bad { color: var(--red, #c0584f); font-size: .8125rem; }
 .acct-hint { color: var(--warn); font-size: .8125rem; }
+.acct-welcome { border-color: var(--gold); background: var(--gold-bg); }
+.acct-welcome h2 { color: var(--gold); }
+.acct-welcome .btn { justify-self: start; }
 .acct-empty { padding: 14px; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); text-align: center; }
 .acct-builds { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .acct-builds li { display: grid; gap: 10px; padding: 12px 14px; border: 1px solid var(--soft-border); border-radius: 8px; background: var(--field); }

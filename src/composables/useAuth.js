@@ -7,14 +7,38 @@ const user = ref(null);
 const ready = ref(false);
 // The display name the player chose (profiles table), shown in place of their Google name.
 const displayName = ref("");
+// Coming back from signing in (Google sends the player to the site's bare address): a player
+// without a display name yet goes to the account page to choose one, since they can't publish
+// a build without it and may not know; then on to the page they signed in from. One who has a
+// name goes straight back to that page. The page is noted as they leave for Google.
+const FROM = "runetool-signin-from", AFTER = "runetool-after-name";
+const store = (k, v) => { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch {} };
+function takeFrom() {
+  try {
+    const v = JSON.parse(sessionStorage.getItem(FROM));
+    sessionStorage.removeItem(FROM);
+    return v && Date.now() - v.at < 15 * 60 * 1000 ? v.hash : null;
+  } catch {
+    return null;
+  }
+}
 watch(user, async (u) => {
   displayName.value = "";
   if (!u) return;
+  const back = takeFrom();
+  let name = "", known = false;
   try {
     const { getProfile } = await import("../planner/accountData.js");
     const p = await getProfile(u.id);
-    if (p.ok && user.value?.id === u.id) displayName.value = p.displayName;
+    if (p.ok && user.value?.id === u.id) { displayName.value = name = p.displayName; known = true; }
   } catch {}
+  if (back == null || !known) return;
+  if (!name) {
+    store(AFTER, back);
+    window.location.hash = "#account?welcome";
+  } else if (back && back !== window.location.hash) {
+    window.location.hash = back;
+  }
 });
 let started = false;
 
@@ -51,6 +75,7 @@ export function useAuth() {
     setDisplayName: (n) => { displayName.value = n; },
     /** Google or Discord (when switched on in Supabase). */
     async signInWith(provider) {
+      store(FROM, JSON.stringify({ hash: window.location.hash || "#runewords", at: Date.now() }));
       const { error } = await (await supabase()).auth.signInWithOAuth({ provider, options: { redirectTo: returnTo() } });
       return error ? { ok: false, reason: error.message } : { ok: true };
     },
