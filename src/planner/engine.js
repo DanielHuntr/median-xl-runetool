@@ -956,11 +956,15 @@ export function createEngine(data) {
     }
     if (!lines.length && !bonus.length) return null;
     // Sections as the game draws them, each under its own coloured heading (Mind Flay:
-    // orange "Shock", then gold "Synergies"). Lines before any heading go under "Synergies".
+    // orange "Shock", then gold "Synergies"). Lines before any heading go under "Synergies",
+    // unless the game has a heading of its own further down: then they stand untitled above it,
+    // as in the game (Death Pact's "bonuses unlock after putting points into the other trees"
+    // above its Synergies), rather than under a second "Synergies".
     const sections = [];
+    const laterHeading = block.lines.some((l) => l.heading);
     for (const l of block.lines) {
       if (l.heading) sections.push({ title: l.text, colour: l.colour || "gold", lines: [] });
-      else (sections.at(-1) ?? sections[sections.push({ title: title || "Synergies", colour: "gold", lines: [] }) - 1]).lines.push(l);
+      else (sections.at(-1) ?? sections[sections.push({ title: laterHeading ? "" : title || "Synergies", colour: "gold", lines: [] }) - 1]).lines.push(l);
     }
     // What the synergy formulas add now belongs with the synergies.
     if (bonus.length) {

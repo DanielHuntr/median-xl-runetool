@@ -156,7 +156,7 @@ const hasUnknown = computed(() =>
       <ul class="stats skill-lines">
         <SkillLine v-for="l in d.now.effect" :line="l" detailed />
       </ul>
-      <template v-if="d.next">
+      <template v-if="d.next?.effect?.length">
         <h3>
           With one more point <small class="muted">(Base Level {{ d.points + 1 }}, level {{ d.points + d.bonus + 1 }})</small>
         </h3>
@@ -170,8 +170,8 @@ const hasUnknown = computed(() =>
       </template>
       <template v-if="d.synergies">
         <!-- The game's sections below the levels (Mind Flay: "Shock", then "Synergies"), in its colours. -->
-        <template v-for="sec in d.synergies.sections" :key="sec.title">
-          <h3 :class="'d2c-' + sec.colour">{{ sec.title }}</h3>
+        <template v-for="(sec, i) in d.synergies.sections" :key="i">
+          <h3 v-if="sec.title" :class="'d2c-' + sec.colour">{{ sec.title }}</h3>
           <ul class="stats skill-lines synergy-lines">
             <SkillLine v-for="l in sec.lines" :line="l" detailed />
             <SkillLine v-for="l in sec.bonus || []" :line="l" detailed class="synergy-now" />

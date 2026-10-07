@@ -47,15 +47,15 @@ const tags = computed(() => [s.value.tabName, ...s.value.tags.filter((t) => t !=
         ><small v-else-if="l.status === 'varies'"> (depends on stats)</small>
       </li>
     </ul>
-    <template v-if="d.next">
+    <template v-if="d.next?.effect?.length">
       <p class="sheet-next">With one more point</p>
       <ul class="sheet-lines">
         <li v-for="l in d.next.effect" :class="[l.status === 'unknown' ? 'unknown' : 'counted', { 'skill-effect-heading': l.heading }]"><SkillText :line="l" /></li>
       </ul>
     </template>
     <template v-if="d.synergies">
-      <template v-for="sec in d.synergies.sections" :key="sec.title">
-        <p class="sheet-next" :class="'d2c-' + sec.colour">{{ sec.title }}</p>
+      <template v-for="(sec, i) in d.synergies.sections" :key="i">
+        <p v-if="sec.title" class="sheet-next" :class="'d2c-' + sec.colour">{{ sec.title }}</p>
         <ul class="sheet-lines">
           <li v-for="l in [...sec.lines, ...(sec.bonus || [])]" :class="[l.status === 'unknown' ? 'unknown' : 'counted', l.colour && 'd2c-' + l.colour]">
             {{ l.text }}
