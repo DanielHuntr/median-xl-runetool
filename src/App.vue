@@ -13,6 +13,7 @@ import OskillsBrowser from "./components/OskillsBrowser.vue";
 import SocketablesList from "./components/SocketablesList.vue";
 import BaseItems from "./components/BaseItems.vue";
 import RuneDrawer from "./components/RuneDrawer.vue";
+import WelcomeTour from "./components/WelcomeTour.vue";
 // Loaded on first visit so the planner code and data stay out of the main bundle.
 const CharacterPlanner = defineAsyncComponent(() => import("./components/planner/CharacterPlanner.vue"));
 const BuildsBrowser = defineAsyncComponent(() => import("./components/BuildsBrowser.vue"));
@@ -46,5 +47,6 @@ const { page } = state;
       <AppFooter />
     </main>
     <RuneDrawer />
+    <WelcomeTour />
   </div>
 </template>

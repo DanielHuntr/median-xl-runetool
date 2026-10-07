@@ -81,6 +81,8 @@ The original storage keys are preserved:
 - `mxlrw2:state`: search, class, item type, max level, sort, stat/damage/rune filters, generic-class option, inventory filter, starred-only filter and full-stats setting.
 - `mxlrw2:owned`: rune counts.
 - `mxlrw2:stars`: favourites by runeword name.
+- `mxlrw2:browse`, `mxlrw2:tuQuery`, `mxlrw2:oskills`: the catalogue pages' filters (tiered and sacred uniques, sets, socketables, base items, Oskills & Procs), so they survive a refresh.
+- `mxlrw2:welcome`: the welcome tour (`WelcomeTour.vue`) has been seen. The tour opens by itself only on a first visit to the bare address: no `#page`, and none of this site's keys stored. A shared link goes straight to what was shared. More → Welcome tour opens it again.
 - `mxlrw2:theme`: Auto, Light, Dark or High Contrast.
 - `mxlrw2:planner`: Character Planner builds (one per class), selected view and tree tabs.
 - `mxlrw2:saved-builds`: Up to 100 named build snapshots, stored only in this browser. Save from the planner and open, rename or delete them on the Builds page. Saving an existing name replaces that snapshot; opening one replaces the current planner build for its class.

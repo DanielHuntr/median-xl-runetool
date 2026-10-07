@@ -50,6 +50,12 @@ function openBackup() {
   moreOpen.value = false;
   backup.value?.open();
 }
+// The welcome tour again (WelcomeTour.vue).
+function openTour() {
+  closeMore();
+  moreOpen.value = false;
+  window.dispatchEvent(new Event("welcome-tour"));
+}
 const openMore = () => { sheet.value?.showModal(); menuOpen.value = true; };
 const closeMore = () => sheet.value?.close();
 function go(id) {
@@ -91,6 +97,7 @@ function reportHref() {
       <button
         v-for="[id, title, icon] in PAGES.filter((p) => !p[5])"
         :key="id"
+        :data-page="id"
         :aria-label="title"
         :data-tip="title"
         :class="{ selected: page === id }"
@@ -115,6 +122,7 @@ function reportHref() {
     <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = reportHref(); moreOpen = false; }"><Icon name="bug" />Report a bug or issue</a>
     <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = suggestHref(); moreOpen = false; }"><Icon name="idea" />Suggest an idea</a>
     <button role="menuitem" type="button" @click="openBackup"><Icon name="backup" />Back up &amp; restore</button>
+    <button role="menuitem" type="button" @click="openTour"><Icon name="idea" />Welcome tour</button>
     <a role="menuitem" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" @click="moreOpen = false"><Icon name="docs" />{{ docsLabel }}</a>
     <a role="menuitem" href="#privacy" @click.prevent="moreOpen = false; nav('privacy')"><Icon name="docs" />Privacy</a>
   </div>
@@ -146,6 +154,7 @@ function reportHref() {
       <button type="button" class="side-account mobile-account" :class="{ signed: user }" @click="openAccount"><span>{{ user ? accountName : "Sign in" }}</span><Icon :name="user ? 'user' : 'login'" /></button>
       <div class="mobile-sheet-links">
         <a href="#" @click.prevent="openBackup">Back up &amp; restore <Icon name="backup" /></a>
+        <a href="#" @click.prevent="openTour">Welcome tour <Icon name="arrow" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = reportHref())">Report a bug or issue <Icon name="arrow" /></a>
         <a :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => (e.currentTarget.href = suggestHref())">Suggest an idea <Icon name="arrow" /></a>
         <a :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener">Game documentation <Icon name="arrow" /></a>
