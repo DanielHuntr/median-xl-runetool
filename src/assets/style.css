@@ -1076,8 +1076,7 @@ a.socket.has-recipe:focus-visible {
   position: static;
 }
 .stats .skill-class[data-tip]:hover::after,
-.stats .skill-class[data-tip]:focus-visible::after,
-.stats .skill-class[data-tip].tip-shown::after {
+.stats .skill-class[data-tip]:focus-visible::after {
   left: 0;
   transform: none;
 }
@@ -2416,8 +2415,7 @@ select optgroup {
   position: relative;
 }
 [data-tip]:hover::after,
-[data-tip]:focus-visible::after,
-[data-tip].tip-shown::after {
+[data-tip]:focus-visible::after {
   content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 6px);

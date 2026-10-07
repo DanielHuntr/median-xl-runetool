@@ -1042,7 +1042,7 @@ export function createPlanner(engine, catalog, planner) {
     }
   }
 
-  // What is saved between visits (and what the welcome tour snapshots and restores).
+  // What is saved between visits.
   const persisted = () => ({
       cls: state.cls,
       autoLevel: state.autoLevel,
@@ -1065,15 +1065,6 @@ export function createPlanner(engine, catalog, planner) {
       savedAs: state.savedAs,
       view: state.view,
     });
-  /** Everything saved, as text: put back exactly by restore() (the welcome tour's demos). */
-  const snapshot = () => JSON.stringify(persisted());
-  function restore(text) {
-    const v = JSON.parse(text);
-    for (const k of Object.keys(v)) state[k] = v[k];
-    state.picker = state.selected = state.editing = state.tip = null;
-    state.suggesting = false;
-    state.message = "";
-  }
   watch(
     persisted,
     (v) => {
@@ -1088,7 +1079,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    snapshot, restore, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
+    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,

@@ -20,7 +20,6 @@ import { tabKeys } from "../../tabKeys.js";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
 import { createCatalog } from "../../planner/items.js";
 import { createPlanner, PlannerKey, STAGE_START, MAX_STAGES } from "../../planner/usePlanner.js";
-import { activePlanner } from "../../planner/tourHandle.js";
 import { areasNear, gearCats, runewordsBetween } from "../../levelling.js";
 import { OTHER_QUESTS, otherQuestDone } from "../../planner/character.js";
 import { DIFFICULTIES } from "../../planner/rules.js";
@@ -44,7 +43,6 @@ function start(data) {
   proxy.game = data.game || null;
   proxy.importFromHash();
   planner.value = proxy;
-  activePlanner.value = proxy;
 }
 
 // The Mercenary tab's choices, grouped by act.
@@ -177,7 +175,6 @@ onMounted(() => {
   document.addEventListener("keydown", closeStagePop);
 });
 onBeforeUnmount(() => {
-  if (activePlanner.value === proxy) activePlanner.value = null;
   window.removeEventListener("hashchange", onHash);
   document.removeEventListener("click", closeStagePop);
   document.removeEventListener("keydown", closeStagePop);

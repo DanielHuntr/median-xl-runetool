@@ -12,13 +12,7 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   retries: ci ? 1 : 0,
   reporter: ci ? [["list"], ["github"]] : "list",
-  // Every test starts as a visitor who has seen the welcome tour, which otherwise opens over
-  // the first page (the tour's own test starts without it).
-  use: {
-    baseURL: "http://localhost:4173",
-    trace: "retain-on-failure",
-    storageState: { cookies: [], origins: [{ origin: "http://localhost:4173", localStorage: [{ name: "mxlrw2:welcome", value: "done" }] }] },
-  },
+  use: { baseURL: "http://localhost:4173", trace: "retain-on-failure" },
   projects: [
     { name: "desktop", testIgnore: /phone/, use: { ...browser, viewport: { width: 1400, height: 900 } } },
     { name: "phone", testMatch: /phone/, use: { ...devices["Pixel 7"], ...browser } },

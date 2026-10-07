@@ -371,80 +371,6 @@ test("the sidebar's Sign in opens the account dialog, with Google sign-in", asyn
   await expect(dialog).toBeHidden();
 });
 
-test.describe("a first-time visitor", () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
-
-  test("sees the welcome tour on whichever page they arrive, once; More opens it again", async ({ page }) => {
-    await page.goto("/#uniques");
-    const tour = page.getByRole("dialog", { name: "Welcome to the Median XL Runetool" });
-    await expect(tour).toBeVisible();
-    await page.getByRole("button", { name: "Show me around" }).click();
-    // It goes into the pages: the Runeword Finder's search first, highlighted.
-    await expect(page).toHaveURL(/#runewords$/);
-    await expect(page.locator("#tour-title")).toHaveText("Search");
-    await expect(page.locator(".tour-count")).toContainText("Runeword Finder");
-    await expect(page.locator(".tour-spot")).toBeVisible();
-    await page.getByRole("button", { name: "Next" }).click();
-    await expect(page.locator("#tour-title")).toHaveText("Your class");
-    // Skip this page: on to the next page's first step.
-    await page.getByRole("button", { name: "Skip this page" }).click();
-    await expect(page).toHaveURL(/#uniques$/);
-    await expect(page.locator("#tour-title")).toHaveText("Tiers");
-    await expect(page.locator(".tour-spot")).toBeVisible();
-    await page.getByRole("button", { name: "Skip this page" }).click();
-    await expect(page).toHaveURL(/#cube$/);
-    await expect(page.locator(".tour-spot")).toBeVisible();
-    // Skip tour: back on the page they started on.
-    await page.getByRole("button", { name: "Skip tour" }).click();
-    await expect(page.locator(".tour")).toHaveCount(0);
-    await expect(page).toHaveURL(/#uniques$/);
-    await page.reload();
-    await expect(page.locator(".app-shell")).toBeVisible();
-    await expect(page.locator(".tour")).toHaveCount(0);
-    await page.locator(".side-more").click();
-    await page.getByRole("menuitem", { name: "Welcome tour" }).click();
-    await expect(page.locator(".tour-card")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(page.locator(".tour")).toHaveCount(0);
-  });
-
-  test("the tour shows a search, a filter and a cube recipe happening, and undoes each", async ({ page }) => {
-    await page.goto("/#runewords");
-    const title = page.locator("#tour-title"), next = page.locator(".tour-next");
-    await next.click();
-    await expect(title).toHaveText("Search");
-    await expect(page.locator(".primary-controls .search input")).toHaveValue("life");
-    await next.click();
-    await expect(page.locator(".primary-controls .search input")).toHaveValue("");
-    await next.click();
-    await expect(title).toHaveText("Filters");
-    await expect(page.locator(".active-filters .pill", { hasText: "Bows" })).toBeVisible();
-    await next.click();
-    await expect(page.locator(".active-filters .pill")).toHaveCount(0);
-    // On to the cube: two Ith Runes go in, and transmute into a Tal Rune.
-    for (let i = 0; i < 12 && (await title.textContent()) !== "Pick items"; i++) await page.getByRole("button", { name: "Skip this page" }).click();
-    await expect(page.locator(".cube-count")).toHaveText("2 items");
-    await next.click();
-    await next.click();
-    await expect(title).toHaveText("Transmute");
-    await expect(page.locator(".cube-result")).toContainText("Tal Rune");
-    await page.getByRole("button", { name: "Skip tour" }).click();
-    await expect(page).toHaveURL(/#runewords$/);
-    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("mxlrw2:state")));
-    expect([saved.q, saved.bases]).toEqual(["", []]);
-    await page.goto("/#cube");
-    await expect(page.locator(".cube-count")).toHaveText("0 items");
-  });
-
-  test("a returning visitor (with saved data) isn't shown it", async ({ page }) => {
-    await page.goto("/#runewords");
-    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("mxlrw2:owned", JSON.stringify({ Tir: 1 })); });
-    await page.reload();
-    await expect(page.locator(".app-shell")).toBeVisible();
-    await page.waitForTimeout(800);
-    await expect(page.locator(".tour")).toHaveCount(0);
-  });
-});
 
 test("a link claiming to be one of your saved builds can't aim Save at it; the Builds page's own link can", async ({ page }) => {
   await openBuild(page, "Hammer of Zerae");
@@ -470,17 +396,3 @@ test("a link claiming to be one of your saved builds can't aim Save at it; the B
   await expect(page.getByRole("dialog", { name: "Save build" }).getByText(/Updates your saved build "My Hammer"/)).toBeVisible();
 });
 
-test("the tour, replayed over your own search and class, shows its demos on a clear list and gives yours back", async ({ page }) => {
-  await page.goto("/#runewords");
-  await page.getByRole("main").getByPlaceholder("Search runewords, runes or stats").fill("Typhoon");
-  await page.locator(".side-more").click();
-  await page.getByRole("menuitem", { name: "Welcome tour" }).click();
-  await page.locator(".tour-next").click();
-  await expect(page.locator("#tour-title")).toHaveText("Search");
-  await expect(page.locator(".primary-controls .search input")).toHaveValue("life");
-  await page.locator(".tour-next").click();
-  await expect(page.locator("#tour-title")).toHaveText("Your class");
-  await expect(page.locator(".result-count strong")).not.toHaveText("0");
-  await page.getByRole("button", { name: "Skip tour" }).click();
-  await expect(page.locator(".primary-controls .search input")).toHaveValue("Typhoon");
-});
