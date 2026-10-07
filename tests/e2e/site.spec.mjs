@@ -380,7 +380,7 @@ test.describe("a first-time visitor", () => {
     await expect(tour).toBeVisible();
     await page.getByRole("button", { name: "Show me around" }).click();
     await expect(page.locator(".tour-spot")).toBeVisible();
-    await expect(page.locator("#tour-title")).toHaveText("Search everything");
+    await expect(page.locator("#tour-title")).toHaveText("Runeword Finder");
     await page.getByRole("button", { name: "Skip tour" }).click();
     await expect(page.locator(".tour")).toHaveCount(0);
     await page.reload();

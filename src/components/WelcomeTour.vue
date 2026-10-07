@@ -1,22 +1,20 @@
 <script setup>
-// A short welcome tour: what each part of the site is for, one step at a time, with the part
-// it's about highlighted (the sidebar on a desktop; the menu or search button on a phone).
+// A short welcome tour: the things about the site that aren't obvious from looking at it (a step
+// that only repeats a button's label is left out), one at a time, with the part it's about
+// highlighted (the sidebar on a desktop; the menu button on a phone).
 // It opens by itself for a first-time visitor, on whichever page they arrive (a shared link
 // included): one who hasn't seen it and has none of the site's data in this browser yet.
 // Closing it in any way counts as seen; "Welcome tour" in the More menu opens it again.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const KEY = "mxlrw2:welcome";
-const searchKey = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform || "") ? "⌘K" : "Ctrl K";
 const nav = (id) => `.sidebar nav [data-page="${id}"]`;
 const MENU = ".mobile-top .mobile-menu";
 const STEPS = [
   { title: "Welcome to the Median XL Runetool", text: "A companion for Median XL 2.14: find runewords and uniques, work out cube recipes and plan your character. Item data comes from the game's own files. Want a quick look around?" },
-  { at: ".sidebar .nav-search", phone: ".mobile-top [aria-label='Search the site']", title: "Search everything", phoneText: "Type an item, runeword, skill or recipe and jump straight to it.", text: `Type an item, runeword, skill or recipe and jump straight to it. The shortcut is ${searchKey}.` },
   { at: nav("runewords"), phone: MENU, title: "Runeword Finder", phoneText: "In the menu. Mark the runes you have under My Runes to see what you can make right now. New character? Starter runewords lists the ones made only of common runes.", text: "Mark the runes you have under My Runes to see what you can make right now. New character? Starter runewords lists the ones made only of common runes." },
-  { at: nav("uniques"), phone: MENU, title: "Uniques and sets", phoneText: "In the menu: every tiered unique at every tier, plus sacred uniques and sets. A card's cube button loads the recipe that makes or upgrades the item.", text: "Every tiered unique at every tier, plus sacred uniques and sets. A card's cube button loads the recipe that makes or upgrades the item." },
-  { at: nav("cube"), phone: MENU, title: "Cube Recipes", phoneText: "In the menu. Put items in the Horadric Cube and see what comes out, straight from the game's recipe table.", text: "Put items in the Horadric Cube and see what comes out, straight from the game's recipe table." },
-  { at: nav("planner"), phone: MENU, title: "Character Planner", phoneText: "In the menu. Skills, attributes, gear and a mercenary in one place, with damage and stats worked out from the game's formulas. Plan each levelling stage separately: Normal, Nightmare, Hell and Endgame.", text: "Skills, attributes, gear and a mercenary in one place, with damage and stats worked out from the game's formulas. Plan each levelling stage separately: Normal, Nightmare, Hell and Endgame." },
+  { at: nav("uniques"), phone: MENU, title: "Uniques and sets", phoneText: "In the menu. Each unique's card shows what its next tier adds, and its cube button loads the recipe that makes or upgrades it.", text: "Each unique's card shows what its next tier adds, and its cube button loads the recipe that makes or upgrades it." },
+  { at: nav("planner"), phone: MENU, title: "Character Planner", phoneText: "In the menu. Your damage and stats are worked out from the game's own formulas as you go, and each levelling stage (Normal, Nightmare, Hell, Endgame) can have its own skills and gear.", text: "Your damage and stats are worked out from the game's own formulas as you go, and each levelling stage (Normal, Nightmare, Hell, Endgame) can have its own skills and gear." },
   { at: nav("builds"), phone: MENU, title: "Builds", phoneText: "In the menu. Builds you save appear there. Share any build as a link, or publish it for other players to find.", text: "Builds you save appear here. Share any build as a link, or publish it for other players to find." },
   { at: ".sidebar .side-account", phone: MENU, title: "No account needed", phoneText: "Everything works without signing in, and is kept in this browser. Sign in with Google from the menu if you want your builds and filters on any device.", text: "Everything works without signing in, and is kept in this browser. Sign in with Google if you want your builds and filters on any device." },
   { at: ".sidebar .side-more", phone: MENU, title: "Bugs and ideas", phoneText: "Found a bug or have an idea? The links are at the foot of the menu, along with backups and this tour if you want it again. Good hunting!", text: "Found a bug or have an idea? It's under More, along with backups and this tour if you want it again. Good hunting!" },
