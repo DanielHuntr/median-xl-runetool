@@ -46,6 +46,19 @@ const socketsOf = (lines) => {
   const s = lines.find((l) => /^Socketed \(/.test(l));
   return s ? parseInt(s.replace(/\D/g, ""), 10) || 0 : 0;
 };
+// A two-handed weapon fills both hands, except that a bow takes an arrow quiver beside it and a
+// crossbow a bolt quiver (as in Diablo II). Resolved items (catalog.resolve); a runeword's
+// category is its base's.
+export const weaponCat = (r) => r?.baseDef?.cat || r?.def?.cat || "";
+export const quiverFor = (r) => (/Crossbows$/.test(weaponCat(r)) ? "Crossbow Quivers" : /Bows$/.test(weaponCat(r)) ? "Arrow Quivers" : null);
+/** Whether the main hand leaves room for this off-hand item (or, off omitted, for any). */
+export function offhandFits(main, off) {
+  if (!main?.twoHanded) return true;
+  const q = quiverFor(main);
+  if (!q) return false;
+  return !off || (off.def?.slotType === "quiver" && off.def.cat === q);
+}
+
 const isTwoHanded = (lines) =>
   lines.some((l) => /^Two-Hand Damage:/.test(l)) && !lines.some((l) => /^One-Hand Damage:/.test(l));
 

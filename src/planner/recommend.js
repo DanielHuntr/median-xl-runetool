@@ -4,7 +4,7 @@
 //  2. wantedStats: how much each character stat is worth to that profile.
 //  3. Compare complete candidate characters for damage, survival and recovery;
 //     retain small stat-based weights for unmodeled effects and socket/orb choices.
-import { SLOTS } from "./items.js";
+import { SLOTS, offhandFits, quiverFor } from "./items.js";
 import { superiorVariants, superiorLabel } from "./superior.js";
 import { ORBS, orbById, orbFits, orbGroup, orbMultiplier } from './orbs.js';
 import { computeCharacter, activeSlots, ATTRIBUTES } from './character.js';
@@ -226,15 +226,20 @@ export function wantedStats(profile, character) {
 // never goes back to a lower tier of something it already had.
 export function recommendForSlot(slot, { build, engine, catalog, planner, character, profile, want, weaponEnhancements = false, includeUnique = false, allocateAttributes = false, superior = false, maxOrbs = null, minTiers = null, minGemLevel = null, allow = null, judge = null }, limit = 30) {
   const mainSlot = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
-  if (mainSlot && build.gear[mainSlot] && catalog.resolve(build.gear[mainSlot], build.level)?.twoHanded) return [];
+  const mainItem = mainSlot && build.gear[mainSlot] ? catalog.resolve(build.gear[mainSlot], build.level) : null;
+  // Beside a two-handed weapon: nothing, or (a bow or crossbow) its quiver.
+  if (mainItem && !offhandFits(mainItem)) return [];
   const slotDef = SLOTS.find((s) => s.id === slot);
   const isWeapon = slot.startsWith("weapon");
   const need = isWeapon && profile.roles.attack > 0.3 ? profile.weapons[0] : null;
-  // Bow and crossbow builds hold a quiver, not a shield.
+  // Bow and crossbow builds hold a quiver, not a shield: arrows for a bow, bolts for a crossbow.
+  // The weapon in the hand decides which (the main hand is chosen first); with none yet, the
+  // weapons the build's skills use (a skill for bows and crossbows takes either quiver).
   const launcher = profile.roles.attack > 0.3 && profile.weapons[0];
-  const wantsQuiver = !isWeapon && slot.startsWith("offhand") && launcher && (launcher.fits("Bows") || launcher.fits("Crossbows"));
-  const quiverFits = (cat) =>
-    (launcher.fits("Bows") && cat === "Arrow Quivers") || (launcher.fits("Crossbows") && cat === "Crossbow Quivers");
+  const heldKind = quiverFor(mainItem);
+  const wantsQuiver = !isWeapon && slot.startsWith("offhand") && (heldKind || (!mainItem && launcher && (launcher.fits("Bows") || launcher.fits("Crossbows"))));
+  const quiverFits = (cat) => heldKind ? cat === heldKind
+    : (launcher.fits("Bows") && cat === "Arrow Quivers") || (launcher.fits("Crossbows") && cat === "Crossbow Quivers");
   const equippedSets = new Map();
   for (const r of Object.values(character.equipped))
     if (r.def.setId != null && !(build.gear[slot] && character.equipped[slot] === r)) equippedSets.set(r.def.setId, (equippedSets.get(r.def.setId) || 0) + 1);
@@ -268,8 +273,8 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
     const off = slot === 'weapon' ? 'offhand' : slot === 'weapon2' ? 'offhand2' : null;
     const main = slot === 'offhand' ? 'weapon' : slot === 'offhand2' ? 'weapon2' : null;
     let removed = '';
-    if (off && r.twoHanded && gear[off]) removed = off;
-    if (main && gear[main] && catalog.resolve(gear[main], build.level)?.twoHanded) removed = main;
+    if (off && gear[off] && !offhandFits(r, catalog.resolve(gear[off], build.level))) removed = off;
+    if (main && gear[main] && !offhandFits(catalog.resolve(gear[main], build.level), r)) removed = main;
     if (removed) delete gear[removed];
     if (!strippedCache.has(removed)) strippedCache.set(removed, computeCharacter({ ...build, gear }, env));
     const bare = strippedCache.get(removed);
@@ -405,7 +410,8 @@ export function recommendForSlot(slot, { build, engine, catalog, planner, charac
       let bestScore = rec.improvement + baseline.score;
       for (const candidate of states) {
         const gear = { ...build.gear, [slot]: candidate };
-        if (catalog.resolve(candidate, build.level)?.twoHanded) delete gear[slot === 'weapon' ? 'offhand' : 'offhand2'];
+        const offSlot = slot === 'weapon' ? 'offhand' : 'offhand2';
+        if (gear[offSlot] && !offhandFits(catalog.resolve(candidate, build.level), catalog.resolve(gear[offSlot], build.level))) delete gear[offSlot];
         const plan = suggestEnhancements({ build: { ...build, gear }, ...env, computeCharacter, activeSlots,
           profile, only: slot, includeUnique, maxOrbs, minGemLevel, allow, judge });
         const state = plan.gear[slot], resolved = catalog.resolve(state, build.level);

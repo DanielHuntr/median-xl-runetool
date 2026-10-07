@@ -4,7 +4,7 @@ import Icon from "../AppIcon.vue";
 import ItemIcon from "./ItemIcon.vue";
 import HoverCard from "./HoverCard.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
-import { SLOTS } from "../../planner/items.js";
+import { SLOTS, offhandFits } from "../../planner/items.js";
 import { activeSlots } from "../../planner/character.js";
 
 const emit = defineEmits(["close"]);
@@ -35,7 +35,7 @@ const isCurrent = (r, x) => {
 };
 const rows = computed(() =>
   activeSlots(build.value)
-    .filter((id) => !id.startsWith("offhand") || !character.value.weapon?.twoHanded)
+    .filter((id) => !id.startsWith("offhand") || offhandFits(character.value.weapon))
     .map((id) => ({
       id,
       label: SLOTS.find((s) => s.id === id).label,

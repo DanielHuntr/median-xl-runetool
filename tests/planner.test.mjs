@@ -2089,3 +2089,33 @@ test("a learned upgrade's minion bonus reaches its summons: Fervor's summon dama
   // Only the minion bonus: Fervor's fire damage is its Servants', not the character's.
   assert.ok(!withFervor.c.stats.total_damage_added_as_fire?.sources.some((x) => /Fervor/.test(x.source)));
 });
+
+test("the off-hand quiver suggested matches the weapon in hand: arrows for a bow, bolts for a crossbow", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Amazon");
+  p.reset();
+  p.setLevel(150);
+  for (const [launcher, quiver] of [[/Bows$/, "Arrow Quivers"], [/^Crossbows$/, "Crossbow Quivers"]]) {
+    const weapon = catalog.all().find((d) => d.slotType === "weapon" && launcher.test(d.cat) && !d.cls && d.variants?.length);
+    assert(weapon, `a ${quiver} launcher`);
+    p.equip("weapon", { ref: weapon.key, variant: 0 });
+    const quivers = p.recommend("offhand", 60).filter((x) => x.def.slotType === "quiver").map((x) => x.def.cat);
+    assert(quivers.length, `quivers suggested with ${weapon.name}`);
+    assert(quivers.every((c) => c === quiver), `${weapon.name} (${weapon.cat}): ${[...new Set(quivers)].join(", ")}`);
+  }
+  // A bow runeword (its category is its base's): arrows only, and a bow keeps its arrow quiver.
+  const hive = catalog.all().find((d) => d.kind === "runeword" && d.name === "Hive");
+  const bowBase = catalog.runewordBases(hive).find((b) => /Bows$/.test(b.cat));
+  p.equip("weapon", { ref: hive.key, base: bowBase.key, baseVariant: 0 });
+  const forHive = p.recommend("offhand", 60).filter((x) => x.def.slotType === "quiver").map((x) => x.def.cat);
+  assert(forHive.length && forHive.every((c) => c === "Arrow Quivers"), `Hive: ${[...new Set(forHive)].join(", ")}`);
+  const arrows = catalog.all().find((d) => d.slotType === "quiver" && d.cat === "Arrow Quivers");
+  p.equip("offhand", { ref: arrows.key, variant: 0 });
+  assert.equal(p.build.value.gear.weapon?.ref, hive.key, "the bow stays with its arrows");
+  assert.equal(p.build.value.gear.offhand?.ref, arrows.key);
+  scope.stop();
+});

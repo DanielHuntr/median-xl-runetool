@@ -3,7 +3,7 @@ import { MAX_LEVEL } from "./engine.js";
 import { isToggleSkill } from './skillEffects.js';
 import { spendRemaining, wearableBothSets, releaseUnusedRequirements, fundLoadout } from './attributeAllocation.js';
 import { computeCharacter, ATTRIBUTES, activeSlots } from "./character.js";
-import { SLOTS, bonusById, affixById } from "./items.js";
+import { SLOTS, bonusById, affixById, offhandFits } from "./items.js";
 import { cleanOrbs, orbById, orbFits } from './orbs.js';
 import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
@@ -127,7 +127,7 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
     if (it) b.gear[s.id] = it;
   }
   for (const [main, off] of [['weapon', 'offhand'], ['weapon2', 'offhand2']]) {
-    if (b.gear[main] && catalog.resolve(b.gear[main], b.level)?.twoHanded) delete b.gear[off];
+    if (b.gear[main] && b.gear[off] && !offhandFits(catalog.resolve(b.gear[main], b.level), catalog.resolve(b.gear[off], b.level))) delete b.gear[off];
   }
   b.swap = !!raw.swap;
   b.inventory = (raw.inventory || []).map((x) => cleanItem(x, catalog)).filter(Boolean).slice(0, 80);
@@ -641,7 +641,7 @@ export function createPlanner(engine, catalog, planner) {
         const rec = recommendForSlot(slot, { build: next, engine, catalog, planner, character: current,
           profile: currentProfile, want: wantedStats(currentProfile, current), superior: state.suggestSuperior, allocateAttributes: state.suggestAttributes,
           maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow(), judge: state.enhanceJudge }, 30)
-          .find(() => !slot.startsWith('offhand') || !current.weapon?.twoHanded);
+          .find(() => !slot.startsWith('offhand') || offhandFits(current.weapon));
         if (!rec) continue;
         next.gear[slot] = rec.state;
         if (state.suggestAttributes) next.attrs = rec.attrs;
@@ -661,8 +661,9 @@ export function createPlanner(engine, catalog, planner) {
       if (!rec || rec.improvement <= 0.25) continue;
       next.gear[slot] = rec.state;
       if (state.suggestAttributes) next.attrs = rec.attrs;
-      if (slot.startsWith('weapon') && catalog.resolve(rec.state, next.level)?.twoHanded)
-        delete next.gear[slot === 'weapon' ? 'offhand' : 'offhand2'];
+      const offSlot = slot === 'weapon' ? 'offhand' : 'offhand2';
+      if (slot.startsWith('weapon') && next.gear[offSlot] && !offhandFits(catalog.resolve(rec.state, next.level), catalog.resolve(next.gear[offSlot], next.level)))
+        delete next.gear[offSlot];
     }
     count = slots.filter(slot => next.gear[slot]).length;
     const result = state.suggestEnhancements ? suggestEnhancements({ build: next, engine, catalog, planner,
@@ -679,7 +680,8 @@ export function createPlanner(engine, catalog, planner) {
         includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minTiers: state.minTiers, minGemLevel: state.minGemLevel, allow: itemAllow(), judge: state.enhanceJudge }, 1)[0];
       if (rec && rec.improvement > 0.25 && !kept[weaponSlot]) {
         next.gear[weaponSlot] = rec.state;
-        if (catalog.resolve(rec.state, next.level)?.twoHanded) delete next.gear[next.swap ? 'offhand2' : 'offhand'];
+        const offSlot = next.swap ? 'offhand2' : 'offhand';
+        if (next.gear[offSlot] && !offhandFits(catalog.resolve(rec.state, next.level), catalog.resolve(next.gear[offSlot], next.level))) delete next.gear[offSlot];
       }
       count = slots.filter(slot => next.gear[slot]).length;
     }
@@ -716,17 +718,17 @@ export function createPlanner(engine, catalog, planner) {
     if (!it) return;
     build.value.gear[slot] = it;
     const r = catalog.resolve(it, build.value.level);
-    // A two-handed weapon occupies both hands, including the ammunition slot.
+    // A two-handed weapon occupies both hands, apart from a bow's or crossbow's own quiver.
     const off = slot === "weapon" ? "offhand" : slot === "weapon2" ? "offhand2" : null;
     const offItem = off && build.value.gear[off] && catalog.resolve(build.value.gear[off], build.value.level);
-    if (r?.twoHanded && offItem) {
+    if (offItem && !offhandFits(r, offItem)) {
       delete build.value.gear[off];
       say(`${r.def.name} is two-handed, so the off-hand item was removed.`, "info");
     }
     // Equipping any off-hand item removes an incompatible two-handed weapon.
     const main = slot === "offhand" ? "weapon" : slot === "offhand2" ? "weapon2" : null;
     const mainItem = main && build.value.gear[main] && catalog.resolve(build.value.gear[main], build.value.level);
-    if (mainItem?.twoHanded) {
+    if (mainItem && !offhandFits(mainItem, r)) {
       delete build.value.gear[main];
       say(`${mainItem.def.name} is two-handed, so it was removed to make room for ${r.def.name}.`, "info");
     }

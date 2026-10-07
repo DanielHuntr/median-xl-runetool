@@ -7,7 +7,7 @@ import {
   BLOCK_CAP, BLOCK_CAP_MAX, SPELL_FOCUS_CAP, STAT_POINTS_PER_LEVEL, LAM_ESEN_POINTS,
   SIGNET_CAP, JUSTICAR_SIGNET_BONUS, CLASS_BASE_AR,
 } from "./rules.js";
-import { SLOTS } from "./items.js";
+import { SLOTS, offhandFits, quiverFor } from "./items.js";
 import { activeSkillIds } from './skillEffects.js';
 import { computeMerc } from './mercs.js';
 
@@ -132,8 +132,10 @@ export function computeCharacter(b, { engine, catalog, planner }) {
     if (r.cls && r.cls !== b.cls) warn(`${r.def.name} can only be used by a ${r.cls}.`);
   }
   inventory.forEach((r, i) => takeParsed(ablated(`inv:${i}`, r.parsed), r.def.name, null));
-  if (weapon?.twoHanded && offhand)
-    warn(`${weapon.def.name} is two-handed, so the off-hand item can't be used with it.`);
+  if (weapon && offhand && !offhandFits(weapon, offhand))
+    warn(quiverFor(weapon) && offhand.def.slotType === "quiver"
+      ? `${weapon.def.name} fires ${quiverFor(weapon) === "Arrow Quivers" ? "arrows" : "bolts"}, so ${offhand.def.name} (${quiverFor(weapon) === "Arrow Quivers" ? "bolts" : "arrows"}) can't be used with it.`
+      : `${weapon.def.name} is two-handed, so the off-hand item can't be used with it.`);
 
   // Set bonuses: count distinct equipped pieces per set.
   const setCounts = {};
