@@ -12,3 +12,7 @@ playwright-report/
 .preset-stages-progress.json
 .preset-shard-*
 build-audit.json
+
+# Throwaway scripts from debugging sessions
+*-tmp.mjs
+*-tmp.cjs
