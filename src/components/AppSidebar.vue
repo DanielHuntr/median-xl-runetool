@@ -145,7 +145,7 @@ function reportHref() {
       </header>
       <ul>
         <li v-for="[id, title, icon, desc] in PAGES.filter((p) => !p[5])" :key="id">
-          <button type="button" :class="{ selected: page === id }" :aria-current="page === id ? 'page' : undefined" @click="go(id)">
+          <button type="button" :data-page="id" :class="{ selected: page === id }" :aria-current="page === id ? 'page' : undefined" @click="go(id)">
             <Icon :name="icon" />
             <span><b>{{ title }}</b><small>{{ desc }}</small></span>
           </button>

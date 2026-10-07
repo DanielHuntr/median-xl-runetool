@@ -127,11 +127,13 @@ const DEMOS = {
     el.classList.add("tip-shown");
     return { undo: () => el.classList.remove("tip-shown") };
   },
-  // A sidebar link: open its page (on a phone: the menu, which lists it).
-  async open({ el }) {
+  // A sidebar link: open its page. On a phone: open the menu, and light the page's row in it.
+  async open({ el, step }) {
     el.click();
-    if (el.matches(MENU)) { await raise(); return { undo: closeDialogs, then: $(".mobile-sheet[open] .mobile-sheet-body") }; }
-    return {};
+    if (!el.matches(MENU)) return {};
+    await raise();
+    const row = await waitFor(() => $(`.mobile-sheet[open] [data-page="${step.row}"]`), 1500);
+    return { undo: closeDialogs, then: row || $(".mobile-sheet[open] .mobile-sheet-body") };
   },
   async cubeIn({ alive }) {
     return (await twoIth(alive)) ? { undo: cubeEmpty, until: "page" } : null;
@@ -277,15 +279,14 @@ const STEPS = [
   { page: "runewords", at: ".primary-controls .level", demo: "level", title: "Max level", text: "Type your character's level to hide runewords you can't use yet. Watch: at level 30, only the runewords you could use by then are left." },
   { page: "runewords", at: ".secondary-controls .btn", has: "My Runes", demo: "runes", title: "My Runes", text: "Tell the site which runes you have: click a rune to count one. The list then shows what you can make right now, and how many runes you're short for the rest." },
   { page: "runewords", at: ".secondary-controls .btn", has: "Starter runewords", demo: "starter", title: "Starter runewords", text: "New character? This shows the runewords made only from common runes (El to Ist), lowest level first." },
-  { page: "runewords", at: ".rune-card .socket.has-recipe", demo: "follow", title: "Runes on a card", text: "A rune you can make in the Horadric Cube links to its recipe. Watch: clicking one opens the cube with that recipe loaded." },
   { page: "runewords", at: ".rune-card .card-actions", demo: "star", title: "Star and share", text: "The star saves a runeword to your favourites (the Starred button shows just those). The link icon copies a link to this card to send to someone. Watch: the star lights up." },
 
   { page: "uniques", at: ".unique-card .tier-tabs", demo: "tier", title: "Tiers", text: "Most uniques come in four tiers, each stronger than the last. Click I to IV to see each one; watch the card switch to tier I. A tier marked in red needs a higher level than the Max level you set." },
   { page: "uniques", at: ".unique-card .cube-link-square", demo: "follow", title: "Cube button", text: "Opens the Cube Recipes page with this unique's recipe loaded: how to make it, or how to upgrade it to the next tier. Watch." },
   { page: "uniques", at: "label.switch", has: "Compare", demo: "compare", title: "Compare with next tier", text: "With this on, each card shows what the next tier changes, so you can see whether upgrading is worth it. Watch it switch off, and back on." },
   { page: "uniques", at: ".unique-card .skill-class", demo: "tip", title: "Whose skill is it?", text: "A \"+ to a skill\" line has a tag saying which class the skill belongs to. Point at the tag for more, like this." },
-  { page: "uniques", at: ".sidebar nav [data-page='sacred-uniques']", phone: MENU, demo: "open", title: "More to browse", text: "Sacred Uniques, Sets, Gems & Runes and Base Items work the same way: search, filters and Max level. Watch: Sacred Uniques opens.", phoneText: "Sacred Uniques, Sets, Gems & Runes and Base Items are in the menu, and work the same way: search, filters and Max level." },
-  { page: "uniques", at: ".sidebar nav [data-page='oskills']", phone: MENU, demo: "open", title: "Oskills & Procs", text: "Find items that give you a skill from another class, or cast a skill for you when you attack or get hit. Watch: it opens.", phoneText: "In the menu: Oskills & Procs finds items that give you a skill from another class, or cast a skill for you when you attack or get hit." },
+  { page: "uniques", at: ".sidebar nav [data-page='sacred-uniques']", phone: MENU, row: "sacred-uniques", demo: "open", title: "More to browse", text: "Sacred Uniques, Sets, Gems & Runes and Base Items work the same way: search, filters and Max level. Watch: Sacred Uniques opens.", phoneText: "Sacred Uniques, Sets, Gems & Runes and Base Items are in the menu, and work the same way: search, filters and Max level. Watch: the menu opens." },
+  { page: "uniques", at: ".sidebar nav [data-page='oskills']", phone: MENU, row: "oskills", demo: "open", title: "Oskills & Procs", text: "Find items that give you a skill from another class, or cast a skill for you when you attack or get hit. Watch: it opens.", phoneText: "In the menu: Oskills & Procs finds items that give you a skill from another class, or cast a skill for you when you attack or get hit. Watch: the menu opens." },
 
   { page: "cube", at: ".cube-picker", demo: "cubeIn", title: "Pick items", text: "Find an item here and click it to put it in the cube: runes, gems, reagents and gear are all listed. Watch: two Ith Runes go in." },
   { page: "cube", at: ".cube-grid", demo: "cubeItem", title: "The cube", text: "What you've put in. Click an item in the cube to change its details, such as quality, level or sockets. Watch: one opens." },
@@ -348,9 +349,14 @@ async function start() {
   open.value = true;
   await nextTick();
   dlg.value?.showModal();
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(track);
 }
 async function close() {
   token++;
+  cancelAnimationFrame(raf);
+  ready.value = false;
+  point(null);
   undoDemos(null);
   dlg.value?.close();
   open.value = false;
@@ -385,14 +391,18 @@ async function findWhenReady(s, mine) {
 
 // The highlight, and the card beside the element (the sidebar), else below or above it, else
 // at the foot of the screen (a tall panel); nothing to point at: the middle of the screen.
-let target = null;
-async function place() {
+// Both follow the element every frame (track), so scrolling, a page still loading or a demo
+// changing the page can't leave them behind. Between steps they fade out, the page scrolls
+// smoothly to the next element, and they fade back in once it has stopped moving (ready).
+let target = null, raf = 0, lastKey = "";
+const ready = ref(false), glide = ref(false);
+const smooth = () => !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+function place() {
   if (!open.value) return;
-  const r = target?.isConnected ? target.getBoundingClientRect() : null;
+  const r = target?.isConnected && shown(target) ? target.getBoundingClientRect() : null;
   const vw = window.innerWidth, vh = window.innerHeight, m = 16;
-  rect.value = r ? { top: Math.max(r.top, 0) - 4, left: r.left - 4, width: r.width + 8, height: Math.min(r.bottom, vh) - Math.max(r.top, 0) + 8 } : null;
-  await nextTick();
-  const c = card.value?.getBoundingClientRect();
+  rect.value = r ? { top: Math.max(r.top, 0) - 4, left: r.left - 4, width: r.width + 8, height: Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) + 8 } : null;
+  const c = card.value ? { width: card.value.offsetWidth, height: card.value.offsetHeight } : null;
   if (!c) return;
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(v, hi));
   if (!r) return (cardPos.value = { left: `${(vw - c.width) / 2}px`, top: `${(vh - c.height) / 2}px` });
@@ -402,15 +412,43 @@ async function place() {
   else if (r.top - m - c.height >= m) cardPos.value = { left, top: `${r.top - m - c.height}px` };
   else cardPos.value = { left: `${vw - c.width - m}px`, top: `${vh - c.height - m}px` };
 }
+function track() {
+  raf = requestAnimationFrame(track);
+  if (!open.value) return;
+  const r = target?.isConnected ? target.getBoundingClientRect() : null;
+  const box = r ? [r.top, r.left, r.width, r.height].map(Math.round).join() : "-";
+  const key = `${box}|${card.value?.offsetWidth},${card.value?.offsetHeight}|${innerWidth},${innerHeight}`;
+  if (key !== lastKey) { lastKey = key; place(); }
+}
+// Until the element stops moving (a smooth scroll, a page loading): a few still frames.
+async function settle(el) {
+  let last = "", still = 0;
+  const until = Date.now() + 1500;
+  while (Date.now() < until && still < 4) {
+    await new Promise((r) => requestAnimationFrame(r));
+    const r = el.getBoundingClientRect(), k = [r.top, r.left, r.width, r.height].map(Math.round).join();
+    still = k === last ? still + 1 : 0;
+    last = k;
+  }
+}
+// The element pointed at carries data-tour-target (the browser tests check the outline against it).
+function point(el) {
+  target?.removeAttribute?.("data-tour-target");
+  target = el;
+  el?.setAttribute?.("data-tour-target", "");
+}
+const scrollTo = (el, block) => el.scrollIntoView({ block, behavior: smooth() ? "smooth" : "auto" });
 async function show() {
   const mine = ++token, s = cur.value;
   const alive = () => mine === token && open.value;
+  // Fade out before anything moves.
+  if (ready.value) { ready.value = false; await sleep(170); if (!alive()) return; }
+  point(null);
   undoDemos(s.page);
   // A page saves what was put back before it is left (its watchers stop when it closes).
   await nextTick();
   if (!alive()) return;
   if (s.page && page.value !== s.page) nav(s.page);
-  target = null;
   rect.value = null;
   const { el, phone } = await findWhenReady(s, mine);
   if (!alive()) return;
@@ -421,9 +459,12 @@ async function show() {
     if (!alive()) return;
   }
   onPhone.value = phone;
-  target = el;
-  if (el) el.scrollIntoView({ block: el.getBoundingClientRect().height > window.innerHeight * 0.6 ? "start" : "center" });
-  await place();
+  point(el);
+  if (el) { scrollTo(el, el.getBoundingClientRect().height > window.innerHeight * 0.6 ? "start" : "center"); await settle(el); }
+  if (!alive()) return;
+  await nextTick();
+  place();
+  ready.value = true;
   card.value?.querySelector(".tour-next")?.focus({ preventScroll: true });
   // The step's demo, a moment after its card shows (it's the tour doing it, not the player).
   const demo = el && s.demo && DEMOS[s.demo];
@@ -431,7 +472,7 @@ async function show() {
   await sleep(700);
   if (!alive()) return;
   let r = null;
-  try { r = await demo({ el, alive }); } catch {}
+  try { r = await demo({ el, alive, step: s }); } catch {}
   if (!r) return;
   // Kept to undo later, or (the player closed the tour or moved on meanwhile) undone now.
   const undo = r.undo || (() => {});
@@ -442,8 +483,14 @@ async function show() {
   await raise();
   if (!alive()) return;
   await nextTick();
-  if (r.then) { target = r.then; r.then.scrollIntoView({ block: "nearest" }); }
-  await place();
+  // Glide the highlight over to what the demo opened.
+  if (r.then && r.then !== target) {
+    glide.value = true;
+    point(r.then);
+    scrollTo(r.then, "nearest");
+    await settle(r.then);
+    setTimeout(() => (glide.value = false), 320);
+  }
   card.value?.querySelector(".tour-next")?.focus({ preventScroll: true });
 }
 watch(step, () => open.value && show());
@@ -453,26 +500,22 @@ const onKey = (e) => {
   if (e.key === "ArrowRight") next();
   else if (e.key === "ArrowLeft") back();
 };
-const onMove = () => place();
 
 onMounted(() => {
   window.addEventListener("welcome-tour", start);
   window.addEventListener("keydown", onKey);
-  window.addEventListener("resize", onMove);
-  window.addEventListener("scroll", onMove, { passive: true, capture: true });
   if (firstVisit) setTimeout(start, 400);
 });
 onBeforeUnmount(() => {
   window.removeEventListener("welcome-tour", start);
   window.removeEventListener("keydown", onKey);
-  window.removeEventListener("resize", onMove);
-  window.removeEventListener("scroll", onMove, { capture: true });
+  cancelAnimationFrame(raf);
 });
 </script>
 
 <template>
-  <dialog v-if="open" ref="dlg" class="tour" aria-labelledby="tour-title" aria-describedby="tour-text" @cancel.prevent="close">
-    <div class="tour-shade" :class="{ dim: !rect }" />
+  <dialog v-if="open" ref="dlg" class="tour" :class="{ ready, glide }" aria-labelledby="tour-title" aria-describedby="tour-text" @cancel.prevent="close">
+    <div class="tour-shade" :class="{ dim: !rect || !ready }" />
     <div v-if="rect" class="tour-spot" :style="{ top: `${rect.top}px`, left: `${rect.left}px`, width: `${rect.width}px`, height: `${rect.height}px` }" />
     <div ref="card" class="tour-card" :style="cardPos">
       <p class="tour-count"><span>{{ chapter(cur) }}</span> · {{ step + 1 }} of {{ STEPS.length }}</p>
@@ -506,15 +549,19 @@ onBeforeUnmount(() => {
   overflow: visible;
 }
 .tour::backdrop { background: transparent; }
-.tour-shade { position: fixed; inset: 0; }
-.tour-shade.dim { background: rgb(0 0 0 / 0.62); }
+.tour-shade { position: fixed; inset: 0; background: rgb(0 0 0 / 0.62); opacity: 0; transition: opacity 0.18s; }
+.tour-shade.dim { opacity: 1; }
 .tour-spot {
   position: fixed;
   border-radius: 8px;
   box-shadow: 0 0 0 2px var(--gold), 0 0 0 200vmax rgb(0 0 0 / 0.62);
   pointer-events: none;
-  transition: top 0.2s, left 0.2s, width 0.2s, height 0.2s;
+  opacity: 0;
+  transition: opacity 0.18s;
 }
+/* Fades in once the step has settled; glides only when a demo moves it within a step. */
+.tour.ready .tour-spot, .tour.ready .tour-card { opacity: 1; }
+.tour.glide .tour-spot { transition: opacity 0.18s, top 0.3s, left 0.3s, width 0.3s, height 0.3s; }
 .tour-card {
   position: fixed;
   width: min(360px, calc(100vw - 32px));
@@ -525,6 +572,8 @@ onBeforeUnmount(() => {
   background: var(--panel);
   color: var(--text);
   box-shadow: 0 12px 40px rgb(0 0 0 / 0.5);
+  opacity: 0;
+  transition: opacity 0.18s;
 }
 .tour-count { margin: 0 0 6px; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .tour-count span { color: var(--gold); }
@@ -533,5 +582,5 @@ onBeforeUnmount(() => {
 .tour-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
 .tour-skip { margin-right: auto; font-size: 0.8125rem; }
 .tour-skip-page { font-size: 0.8125rem; }
-@media (prefers-reduced-motion: reduce) { .tour-spot { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tour-spot, .tour-card, .tour-shade, .tour.glide .tour-spot { transition: none; } }
 </style>
