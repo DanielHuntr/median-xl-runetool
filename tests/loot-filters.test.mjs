@@ -50,3 +50,12 @@ test("filters are cleaned on import and export in the Filter Exchange's shape", 
   assert.equal(words(RULES.rules[0]), "SHOW Unique · type Tier Sacred · Notify · Map");
   assert.equal(words(RULES.rules[1]), "SHOW · Ist Rune · char level ≤ 50");
 });
+
+test("an exported filter reads like the game's own: keys in its order, plain-text name", async () => {
+  const { exportFilter, newRule } = await import("../src/filters/lootFilter.js");
+  // The order the game's exported filters (and the community editor) use.
+  assert.deepEqual(Object.keys(newRule()), ["active", "automap", "ethereal", "item_quality", "max_clvl", "max_ilvl", "min_clvl", "min_ilvl", "notify", "params", "rule_type", "show_item"]);
+  const game = { default_show_items: true, name: "Oroborius' Filter", rules: [{ active: true, automap: false, ethereal: 0, item_quality: -1, max_clvl: 50, max_ilvl: 0, min_clvl: 0, min_ilvl: 0, notify: false, params: { code: 540307560 }, rule_type: 1, show_item: true }] };
+  assert.equal(exportFilter(game), JSON.stringify(game, null, 2), "a game filter comes back byte for byte");
+  assert.equal(JSON.parse(exportFilter({ ...game, name: "Café ☕\nbuild" })).name, "Caf build", "no accents, emoji or line breaks in a name");
+});

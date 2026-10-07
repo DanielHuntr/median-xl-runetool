@@ -16,9 +16,11 @@ export const ETHEREAL = [[0, "Either"], [1, "Ethereal"], [2, "Not ethereal"]];
 export const MAX_RULES = 500;
 const LEVEL = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
 
+// Keys in the game's own order (alphabetical, as its exported filters and the community editor
+// write them), so an exported filter reads exactly like one the game made.
 export const newRule = () => ({
-  active: true, show_item: true, item_quality: -1, ethereal: 0,
-  min_clvl: 0, max_clvl: 0, min_ilvl: 0, max_ilvl: 0, rule_type: -1, params: null, notify: false, automap: false,
+  active: true, automap: false, ethereal: 0, item_quality: -1, max_clvl: 0, max_ilvl: 0,
+  min_clvl: 0, min_ilvl: 0, notify: false, params: null, rule_type: -1, show_item: true,
 });
 
 export function cleanRule(r) {
@@ -33,11 +35,16 @@ export function cleanRule(r) {
   return out;
 }
 
+// A filter's name in plain printable characters (letters, digits, spaces and punctuation such
+// as "Oroborius' Filter"): the game is an old Diablo II mod, so accents, emoji and control
+// characters are left out rather than risk a name it can't show or read.
+const cleanName = (n) => (typeof n === "string" ? n.replace(/[^\x20-\x7E]/g, "").replace(/\s+/g, " ").trim().slice(0, 60) : "");
+
 export function cleanFilter(f) {
   const rules = Array.isArray(f?.rules) ? f.rules.slice(0, MAX_RULES).map(cleanRule) : [];
   return {
     default_show_items: typeof f?.default_show_items === "boolean" ? f.default_show_items : true,
-    name: typeof f?.name === "string" && f.name.trim() ? f.name.trim().slice(0, 60) : "New filter",
+    name: cleanName(f?.name) || "New filter",
     rules,
   };
 }
