@@ -5,6 +5,10 @@ on:
   push:
   pull_request:
 
+# Reads the code only: the workflow can't write to the repository or its releases.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

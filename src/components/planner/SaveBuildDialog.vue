@@ -39,7 +39,7 @@ onMounted(async () => {
     if (p.ok) displayName.value = p.displayName;
     // Its account copy: kept published if it is.
     if (linked.accountId) {
-      const b = await getMyBuild(linked.accountId);
+      const b = await getMyBuild(linked.accountId, user.value.id);
       if (b.ok && b.build) { accountBuild.value = b.build; publish.value = b.build.published; }
     }
   }

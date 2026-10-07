@@ -81,9 +81,10 @@ export async function saveToAccount(userId, { name, cls, level, code, skills }, 
   return error ? fail(error) : { ok: true, id: data.id, replaced: false };
 }
 
-/** Whether one of the player's account builds is published (and that it still exists). */
-export async function getMyBuild(id) {
-  const { data, error } = await (await supabase()).from("builds").select("id, name, published").eq("id", id).maybeSingle();
+/** Whether one of the player's account builds is published (and that it still exists and is
+ *  theirs: other players' published builds are readable too, so the owner is checked). */
+export async function getMyBuild(id, userId) {
+  const { data, error } = await (await supabase()).from("builds").select("id, name, published").eq("id", id).eq("user_id", userId).maybeSingle();
   return error ? fail(error) : { ok: true, build: data };
 }
 

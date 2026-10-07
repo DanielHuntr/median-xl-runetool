@@ -389,3 +389,27 @@ test("a first visit to the bare address opens the welcome tour, once; More opens
   await page.keyboard.press("Escape");
   await expect(page.locator(".tour")).toHaveCount(0);
 });
+
+test("a link claiming to be one of your saved builds can't aim Save at it; the Builds page's own link can", async ({ page }) => {
+  await openBuild(page, "Hammer of Zerae");
+  await page.getByRole("button", { name: "Save build" }).click();
+  let dialog = page.getByRole("dialog", { name: "Save build" });
+  await dialog.getByLabel("Name").fill("My Hammer");
+  await dialog.getByRole("button", { name: /^Save/ }).click();
+  const id = await page.evaluate(() => JSON.parse(localStorage.getItem("mxlrw2:saved-builds")).find((b) => b.name === "My Hammer").id);
+  // Someone else's link, carrying "mine" and the saved build's id, with their build in it.
+  const { BUILDS } = await import("./fixtures/builds.mjs");
+  await page.goto(`/#planner?b=${BUILDS.Stormcall.code}&name=Free%20gear&mine=1&id=${id}`);
+  await expect(page.locator(".build-name")).toHaveText("Free gear");
+  await page.getByRole("button", { name: "Save build" }).click();
+  dialog = page.getByRole("dialog", { name: "Save build" });
+  await expect(dialog.getByText(/Updates your saved build/)).toHaveCount(0);
+  await expect(dialog.getByRole("button", { name: "Save", exact: true })).toBeVisible();
+  await dialog.getByRole("button", { name: "Cancel" }).click();
+  // Opened from the Builds page: it's that saved build, and saving updates it.
+  await page.goto("/#builds");
+  await page.locator("article.build-card.mine", { hasText: "My Hammer" }).getByRole("link", { name: "Open build" }).click();
+  await expect(page.locator(".build-name")).toHaveText("My Hammer");
+  await page.getByRole("button", { name: "Save build" }).click();
+  await expect(page.getByRole("dialog", { name: "Save build" }).getByText(/Updates your saved build "My Hammer"/)).toBeVisible();
+});

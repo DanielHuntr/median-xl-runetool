@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { listPublished, myLikes, setLike, listMyBuilds, addBuilds, updateBuild, deleteBuild as deleteFromAccount } from '../planner/accountData.js';
 import { useAuth } from '../composables/useAuth.js';
 import { useSavedBuilds, MAX_NAME } from '../planner/savedBuilds.js';
-import { decodeBuild, plannerHash } from '../planner/buildCode.js';
+import { decodeBuild, plannerHash, markOwnOpen } from '../planner/buildCode.js';
 import ClassPicker from './ClassPicker.vue';
 import Icon from './AppIcon.vue';
 const { builds, rename, remove } = useSavedBuilds();
@@ -136,7 +136,7 @@ async function setPublished(b, published) {
           <p>{{ b.accountId ? (b.published ? 'Delete this build from your account and the community list?' : 'Delete this build from your account?') : 'Delete this saved build?' }}</p><button class="btn" @click="deleteBuild(b)">Delete</button><button class="btn" @click="deleting = null">Cancel</button>
         </div>
         <div v-else class="build-actions">
-          <a class="btn gold" :href="href(b)">Open build</a>
+          <a class="btn gold" :href="href(b)" @click="markOwnOpen(href(b))" @auxclick="markOwnOpen(href(b))">Open build</a>
           <button v-if="b.accountId" class="btn" @click="setPublished(b, !b.published)">{{ b.published ? 'Unpublish' : 'Publish' }}</button>
           <button v-else-if="user" class="btn" @click="toAccount(b)">Save to account</button>
           <button class="btn" @click="editing = b.key; name = b.name; error = ''">Rename</button>

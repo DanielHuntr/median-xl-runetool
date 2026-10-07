@@ -54,6 +54,13 @@ test("database rules: players reach only their own data and published builds", {
   check("can't backdate a build", err(await as(A, `update public.builds set created_at = now() - interval '9 years' where id = $1`, [A1])));
   check("anon can't save builds", err(await as("anon", `insert into public.builds (name, cls, code) values ('x', 'Amazon', $1)`, [code])));
   check("bad build code rejected", err(await as(A, `insert into public.builds (name, cls, code) values ('x', 'Amazon', '<script>alert(1)</script>')`)));
+  check("a huge skill name rejected", err(await as(A, `insert into public.builds (name, cls, code, skills, published) values ('x', 'Amazon', $1, array[$2], true)`, [code, "x".repeat(2_000_000)])));
+  check("real skill names accepted", !err(await as(A, `insert into public.builds (name, cls, code, skills) values ('Two skills', 'Amazon', $1, array['Multiple Shot', 'Guided Arrow'])`, [code])));
+  check("a name with a direction override rejected", err(await as(A, `insert into public.builds (name, cls, code) values ($1, 'Amazon', $2)`, ["‮txt.exe", code])));
+  check("a name with a line break rejected", err(await as(A, `insert into public.builds (name, cls, code) values ($1, 'Amazon', $2)`, ["fake\nline", code])));
+  check("a skill with control characters rejected", err(await as(A, `insert into public.builds (name, cls, code, skills) values ('x', 'Amazon', $1, array[$2])`, [code, "a\u0007b"])));
+  check("a renamed build gets the same checks", err(await as(A, `update public.builds set name = $1 where id = $2`, ["‮evil", A1])));
+  check("names with accents and apostrophes accepted", !err(await as(A, `insert into public.builds (name, cls, code) values ($1, 'Amazon', $2)`, ["Ève's Javazon – Tier 1", code])));
 
   // Likes
   check("can like another's published build", !err(await as(A, `insert into public.build_likes (build_id) values ($1)`, [B2])));
@@ -81,6 +88,7 @@ test("database rules: players reach only their own data and published builds", {
   check("can't read another's filter", denied(await as(B, `select * from public.loot_filters`)));
   check("anon can't read filters", denied(await as("anon", `select * from public.loot_filters`)));
   check("can't save a filter as another player", err(await as(A, `insert into public.loot_filters (user_id, name, filter) values ($1, 'x', '{}')`, [B])));
+  check("a filter name with a direction override rejected", err(await as(A, `insert into public.loot_filters (name, filter) values ($1, '{}')`, ["‮evil"])));
   check("can't backdate a filter", err(await as(A, `update public.loot_filters set created_at = now()`)));
 
   // Functions
@@ -88,7 +96,9 @@ test("database rules: players reach only their own data and published builds", {
   check("trigger function not callable", err(await as(A, `select public.touch_updated_at()`)));
 
   // Caps
-  await as(A, `insert into public.builds (name, cls, code) select 'b' || g, 'Amazon', $1 from generate_series(1, 498) g`, [code]);
+  // Up to the cap, from however many the checks above saved.
+  const have = (await as(A, `select count(*)::int n from public.builds where user_id = auth.uid()`)).rows[0].n;
+  await as(A, `insert into public.builds (name, cls, code) select 'b' || g, 'Amazon', $1 from generate_series(1, $2) g`, [code, 500 - have]);
   check("500 builds allowed", (await as(A, `select count(*)::int n from public.builds where user_id = auth.uid()`)).rows?.[0]?.n === 500);
   const over = await as(A, `insert into public.builds (name, cls, code) values ('one too many', 'Amazon', $1)`, [code]);
   check("the 501st refused", /up to 500/.test(over.error || ""), over);

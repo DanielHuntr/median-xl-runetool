@@ -15,5 +15,28 @@ export function decodeBuild(code) {
   }
 }
 
+// A link to one of the player's own saved builds (&mine=1, with its ids) is trusted only when
+// this site's Builds or account page opened it a moment ago. The same link from anywhere else
+// opens as a shared build, so a link someone sends can't aim Save at one of the visitor's own
+// builds (published builds' ids are public). Kept outside the "mxlrw2:" keys, so a backup file
+// can't carry one.
+const OWN_KEY = "runetool-own-open";
+const bare = (hash) => String(hash || "").replace(/^#/, "");
+/** Called as the Builds or account page opens one of the player's builds (its link's href). */
+export function markOwnOpen(href) {
+  try { localStorage.setItem(OWN_KEY, JSON.stringify({ hash: bare(href), at: Date.now() })); } catch {}
+}
+/** Whether this link was opened that way (just now); either way, the mark is used up. */
+export function takeOwnOpen(hash) {
+  try {
+    const v = JSON.parse(localStorage.getItem(OWN_KEY));
+    localStorage.removeItem(OWN_KEY);
+    const age = Date.now() - v.at;
+    return v.hash === bare(hash) && age >= 0 && age < 120000;
+  } catch {
+    return false;
+  }
+}
+
 /** The planner link that opens a build. */
 export const plannerHash = (code) => `planner?b=${code}`;

@@ -1457,7 +1457,8 @@ export function createEngine(data) {
     tabs: (cls) => tabsByClass[cls] || [],
     treeNodes: (cls, tab) => (data.trees[cls]?.[tab] || []).map((n) => nodesByClass[cls].get(n.id)),
     node,
-    skill: (id) => skills[id],
+    // Own keys only: an id from a link ("constructor", "__proto__") isn't a skill.
+    skill: (id) => (typeof id === "string" && Object.hasOwn(skills, id) ? skills[id] : undefined),
     skillIds: () => Object.keys(skills),
     skillName,
     isInnate: (id) => isInnate({ ...skills[id], id }),

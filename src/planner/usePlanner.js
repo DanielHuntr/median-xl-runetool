@@ -8,7 +8,7 @@ import { cleanOrbs, orbById, orbFits } from './orbs.js';
 import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
 import { againstTarget, typicalTarget } from "./target.js";
-import { encodeBuild, decodeBuild, plannerHash } from "./buildCode.js";
+import { encodeBuild, decodeBuild, plannerHash, takeOwnOpen } from "./buildCode.js";
 import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 import { createAvailability } from "./availability.js";
@@ -1009,7 +1009,10 @@ export function createPlanner(engine, catalog, planner) {
       // looking at it. Only the first one opened is kept aside (opening another replaces the
       // one being looked at), unless the one being looked at is theirs, opened from their saved
       // builds (&mine=1): then it's the one to go back to. An empty build isn't worth keeping.
-      const mine = /[?&]mine=1(?:&|$)/.test(hash);
+      const mine = /[?&]mine=1(?:&|$)/.test(hash) && takeOwnOpen(hash);
+      // The planner keeps the build it opened, so a refresh needn't read the link again (its
+      // mark is used up, and the build would stop counting as the player's own).
+      if (mine && typeof history !== "undefined") history.replaceState(history.state, "", "#planner");
       const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], savedAs: state.savedAs[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls], stageOrder: stagesOf(b.cls) };
       const made = (x) => x && (!emptyStage(x) || Object.values(x.attrs || {}).some((v) => v > 0) || x.inventory?.length || x.merc);
       const blank = !own.stageOrder.some((n) => made(n === own.stage ? own.build : own.stages[n]));

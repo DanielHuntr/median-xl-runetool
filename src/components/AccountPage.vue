@@ -4,7 +4,7 @@
 import { ref, watch } from "vue";
 import { useAuth } from "../composables/useAuth.js";
 import { useSavedBuilds, MAX_NAME } from "../planner/savedBuilds.js";
-import { plannerHash } from "../planner/buildCode.js";
+import { plannerHash, markOwnOpen } from "../planner/buildCode.js";
 import { getProfile, saveDisplayName, listMyBuilds, addBuilds, updateBuild, deleteBuild, deleteAccount, listMyFilters, updateFilter, deleteFilter } from "../planner/accountData.js";
 import { useSavedFilters } from "../filters/savedFilters.js";
 import { useFilterSync } from "../filters/filterSync.js";
@@ -160,7 +160,7 @@ const signIn = () => window.dispatchEvent(new Event("account-open"));
               <button type="button" class="btn" @click="remove(b)">Delete</button><button type="button" class="btn" @click="confirmDelete = null">Cancel</button>
             </div>
             <div v-else-if="editing !== b.id" class="acct-row">
-              <a class="btn gold" :href="openHref(b)">Open</a>
+              <a class="btn gold" :href="openHref(b)" @click="markOwnOpen(openHref(b))" @auxclick="markOwnOpen(openHref(b))">Open</a>
               <button type="button" class="btn" :disabled="!b.published && !displayName" :title="!b.published && !displayName ? 'Choose a display name first' : ''" @click="setPublished(b, !b.published)">{{ b.published ? "Unpublish" : "Publish" }}</button>
               <button type="button" class="btn" @click="editing = b.id; editName = b.name">Rename</button>
               <button type="button" class="btn" @click="confirmDelete = b.id">Delete</button>
