@@ -1,5 +1,5 @@
-// The signed-in player (Supabase Auth), shared across the site. Sign-in is by an email link
-// for now; Google and Discord join when switched on in Supabase (AUTH_PROVIDERS).
+// The signed-in player (Supabase Auth), shared across the site. Sign-in is with Google (and any
+// other provider switched on in Supabase and listed in AUTH_PROVIDERS); there is no email sign-in.
 import { ref, computed, watch } from "vue";
 import { supabase, AUTH_PROVIDERS } from "../lib/supabase.js";
 
@@ -18,7 +18,7 @@ watch(user, async (u) => {
 });
 let started = false;
 
-// Picks up an existing session (and one returning from a sign-in link) and follows changes.
+// Picks up an existing session (and one returning from sign-in) and follows changes.
 async function start() {
   if (started || typeof window === "undefined") return;
   started = true;
@@ -34,7 +34,7 @@ async function start() {
   }
 }
 
-// Where a sign-in link or provider sends the player back to: the site's address (without the
+// Where the provider sends the player back to: the site's address (without the
 // #page, which Supabase's allowed redirect list wouldn't match).
 const returnTo = () => window.location.origin + window.location.pathname;
 
@@ -49,13 +49,6 @@ export function useAuth() {
     displayName,
     /** After saving a new display name (the account page). */
     setDisplayName: (n) => { displayName.value = n; },
-    /** Sends a one-time sign-in link. Resolves to { ok } or { ok: false, reason }. */
-    async signInWithEmail(email) {
-      const clean = String(email || "").trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) return { ok: false, reason: "Enter a valid email address." };
-      const { error } = await (await supabase()).auth.signInWithOtp({ email: clean, options: { emailRedirectTo: returnTo() } });
-      return error ? { ok: false, reason: error.message } : { ok: true };
-    },
     /** Google or Discord (when switched on in Supabase). */
     async signInWith(provider) {
       const { error } = await (await supabase()).auth.signInWithOAuth({ provider, options: { redirectTo: returnTo() } });

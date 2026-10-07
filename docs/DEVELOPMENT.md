@@ -327,6 +327,19 @@ Uniques, sacred uniques, set items and base items show their in-game inventory a
 - **Merge:** `import-skills` merges the manifest only when its patch matches the MedianDB dataset.
 - **Runewords** have no art of their own in game. They show their chosen base, or in the item list, the first base they can be made in.
 
+## Accounts and security
+
+Accounts are Supabase Auth, signed in with Google only (`AUTH_PROVIDERS` in `src/lib/supabase.js`; PKCE flow). The Supabase URL and publishable key in the bundle are public by design: what each player can read and change is decided by the database's Row Level Security in `supabase/migrations/`.
+
+- **The rules.** A player reads and changes only their own builds, loot filters, likes and profile. Anyone, including signed-out visitors, can read published builds and display names. Players write only the columns meant for them: not the owner, timestamps or like counts, which the database keeps. One account keeps up to 500 builds and 100 loot filters. Deleting an account (`delete_my_account`) removes only the caller's own login and data.
+- **Testing the rules.** `tests/database-rules.test.mjs` runs every migration (twice, since each must be safe to re-run) in an in-process Postgres (PGlite) with Supabase's auth stubbed. Two players and a signed-out visitor then try to read, change or fake each other's data. Add a check there whenever a migration changes what players can do.
+- **Applying a migration.** Run the new file in the Supabase dashboard's SQL editor, in date order. Each is additive and safe to run again.
+- **Browser headers.** `vercel.json` sends a Content Security Policy to every page. Scripts load only from the site itself. Connections go only to the site and the Supabase project, fonts only to Google Fonts, and images also to Google profile pictures. It also sends `X-Frame-Options: DENY`, `nosniff`, a strict referrer policy and `Cross-Origin-Opener-Policy`. A new outside host (a CDN, an analytics script, another Supabase project) has to be added to the policy, or the browser blocks it.
+- **Supabase dashboard settings**, which aren't in this repository:
+  - Authentication → Providers: only Google switched on. Email is off, because the site has no email sign-in.
+  - URL Configuration: Site URL set to the live address, and Redirect URLs listing only the live site's exact address, plus `http://localhost:5173` for development.
+  - The Security Advisor (Database → Advisors) showing no warnings.
+
 ## Hosting and caching
 
 The site is static apart from `/api/catalog`. To keep requests and downloads low:
