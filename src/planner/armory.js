@@ -310,6 +310,9 @@ export function armoryBuild(page, { engine, catalog, planner }) {
     if (sp) b.signets = Math.max(0, Math.min(sp.signetCap, sp.spent - sp.fromLevels - sp.fromQuests));
   }
   if (spare.length) b.spare = spare.slice(0, 120);
+  // The page doesn't say which weapon set is in use: the second one when only it holds a weapon
+  // (a bow kept on swap, the first set empty), otherwise the first.
+  if (!b.gear.weapon && b.gear.weapon2) b.swap = true;
   if (page.exportOnly) notes.push("The \"Export build\" text has no items: save the character's page itself to bring in its gear, charms and mercenary too.");
   // The stage the character is at: its title is the game's for each difficulty finished (Baal
   // killed there), softcore and hardcore; without one shown (the "Export build" JSON), the

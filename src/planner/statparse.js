@@ -136,7 +136,9 @@ const PATTERNS = [
   [new RegExp(`^\\+?${N}% to (Fire|Cold|Lightning|Poison) and (Fire|Cold|Lightning|Poison) Spell Damage$`), (m) =>
     [m[2], m[3]].map((e) => [`${ELEMENTS[e]}_spell_damage`, +m[1]])],
   [new RegExp(`^\\+?${N}% to Physical/Magic Spell Damage$`), (m) => [["physical_magic_spell_damage", +m[1]]]],
-  [new RegExp(`^\\+?${N}% to Spell Damage$`), (m) => FOUR.map((e) => [`${e}_spell_damage`, +m[1]])],
+  // The game's line for all five spell damage stats at one value (itemstatcost description
+  // group 5: fire, lightning, cold, poison and physical/magic).
+  [new RegExp(`^\\+?${N}% to Spell Damage$`), (m) => [...FOUR.map((e) => [`${e}_spell_damage`, +m[1]]), ["physical_magic_spell_damage", +m[1]]]],
   [new RegExp(`^\\+?${N}% to Elemental Spell Damage$`), (m) => ["fire", "cold", "lightning"].map((e) => [`${e}_spell_damage`, +m[1]])],
   [new RegExp(`^-?${N}% to Enemy (Fire|Cold|Lightning|Poison|Magic) Resistance$`), (m) => [[`enemy_${ELEMENTS[m[2]]}_resistance`, Math.abs(+m[1])]]],
   [new RegExp(`^-?${N}% to Enemy Elemental Resistances$`), (m) => FOUR.map((e) => [`enemy_${e}_resistance`, Math.abs(+m[1])])],

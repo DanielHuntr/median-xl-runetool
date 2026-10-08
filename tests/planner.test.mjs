@@ -2325,6 +2325,12 @@ test("a character's public page (imported by name) works out its quests from the
   assert.equal(p.damageOf("barrage").formula.includes("90.63%"), true);
   p.build.value.buffs = ["nova_charge"];
   assert.equal(total("energy"), 136);
+  // The bow moved to the second weapon set, the first left empty: that set is the one in use.
+  assert.equal(b.swap, false);
+  const swapped = html.replace(/"slot":"RightHandMain"/g, '"slot":"RightHandAlternate"').replace(/"slot":"LeftHandMain"/g, '"slot":"LeftHandAlternate"');
+  const moved = armoryBuild(parseArmoryPage(swapped.replace(/("item":"Magebane"[^]*?"location":")Gear(","slot":")RightHandAlternate/, "$1Inventory$2").replace(/("item":"Arrow Quiver"[^]*?"location":")Gear(","slot":")LeftHandAlternate/, "$1Inventory$2")), { engine, catalog, planner }).build;
+  assert.equal(moved.swap, true);
+  assert.equal(catalog.resolve(moved.gear.weapon2, 96).def.name, "Stag Bow (Sacred)");
   scope.stop();
 });
 
