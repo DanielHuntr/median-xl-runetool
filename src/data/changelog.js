@@ -1,0 +1,41 @@
+// "What's new" (WhatsNew.vue): what changed on the site, newest first, in players' words.
+// Add an entry for each release; its date marks it as new until a visitor has opened the list.
+export const CHANGELOG = [
+  {
+    date: "2026-10-08",
+    items: [
+      "Equipment slots show the rune, gem or jewel in each socket.",
+      "Oils and corruptions in the item editor, from the game's own cube recipes: the oil each item can take, and every corruption a sacred item can reveal with an Oil of Craft.",
+    ],
+  },
+  {
+    date: "2026-10-07",
+    items: [
+      "Quivers follow your weapon: arrows with a bow, bolts with a crossbow, and a bow and its quiver can be worn together.",
+      "Your first sign-in takes you to choose a display name, then back to where you were.",
+      "Loot filter exports match the game's own format exactly.",
+      "Skill tooltips laid out as the game shows them (Death Pact's tree bonuses).",
+      "Link previews when you share the site, and the level box no longer cuts off on phones.",
+      "Security improvements.",
+    ],
+  },
+  {
+    date: "2026-10-06",
+    items: [
+      "Median XL 2.14.6 data, with every item's text checked against the game files.",
+      "Starter runewords: the ones made only of common runes, for a new character.",
+      "Runes on a runeword card link to the cube recipe that makes them.",
+      "\"+ to skill\" lines say which class the skill belongs to.",
+      "Search and filters are kept when you refresh.",
+      "Planner stages can be duplicated.",
+      "Oskills & Procs page, an affix picker for rare, crafted and magic items, and Mastercrafted items.",
+      "Ten new themes from Blizzard's other games.",
+    ],
+  },
+  {
+    date: "2026-10-01",
+    items: [
+      "Accounts: sign in with Google to keep your builds and loot filters on any device, publish builds and like other players'.",
+    ],
+  },
+];
