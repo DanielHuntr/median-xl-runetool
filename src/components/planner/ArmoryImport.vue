@@ -127,7 +127,7 @@ function run() {
         <div class="armory-result">
           <p class="armory-done" role="status">Imported <b>{{ result.name }}</b>: level {{ result.level }} {{ result.cls }}, with {{ result.items }} items{{ result.merc ? " and the mercenary" : "" }}.</p>
           <p>Every stage starts with this setup, to change from there. It opens on <b>{{ result.stage }}</b>{{ result.stage === "Endgame" ? "" : ", where the character is now" }}.</p>
-          <p v-if="result.spare">{{ result.spare }} item{{ result.spare === 1 ? "" : "s" }} from the inventory and stash {{ result.spare === 1 ? "is" : "are" }} under <b>Spare items</b> in the equipment panel, to try on.</p>
+          <p v-if="result.spare">{{ result.spare }} item{{ result.spare === 1 ? "" : "s" }} from the inventory and stash {{ result.spare === 1 ? "is" : "are" }} under <b>Spare items</b> in the equipment panel on every stage, to try on.</p>
           <section v-if="runeCount(result)" class="armory-runes" aria-labelledby="armory-runes-h">
             <div class="armory-runes-head">
               <h3 id="armory-runes-h">{{ runeCount(result) }} rune{{ runeCount(result) === 1 ? "" : "s" }} found</h3>

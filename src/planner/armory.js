@@ -325,11 +325,10 @@ export function armoryBuild(page, { engine, catalog, planner }) {
 }
 
 /** The planner link that opens the imported build (importFromHash does the rest). */
-// Every stage starts as the imported character, to change from there; it opens on the stage the
-// character is at. The carried and stashed gear (spare) stays on that one.
+// Every stage starts as the imported character, its carried and stashed gear (spare) included,
+// to change from there; it opens on the stage the character is at.
 const STAGE_NAMES = ["Normal", "Nightmare", "Hell", "Endgame"];
 export const armoryHash = (r) => {
-  const { spare, ...rest } = r.build;
-  const stages = Object.fromEntries(STAGE_NAMES.filter((n) => n !== r.stage).map((n) => [n, rest]));
+  const stages = Object.fromEntries(STAGE_NAMES.filter((n) => n !== r.stage).map((n) => [n, r.build]));
   return `#planner?b=${encodeBuild({ ...r.build, stage: r.stage, stages })}&name=${encodeURIComponent(r.name)}`;
 };

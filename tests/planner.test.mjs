@@ -2307,17 +2307,15 @@ test("a character's public page (imported by name) works out its quests from the
   assert.equal(done.stage, "Nightmare");
   assert.equal(p.state.stage.Amazon, "Nightmare");
   assert.equal(p.build.value.level, 96);
-  // Every other stage starts as the same character, to change from there; the carried and
-  // stashed gear stays on the stage it opens on.
+  // Every other stage starts as the same character, its carried and stashed gear included.
   for (const n of ["Normal", "Hell", "Endgame"]) {
     const st = p.state.stages.Amazon[n];
     assert.ok(st, `${n} filled`);
     assert.equal(st.level, 96);
     assert.deepEqual(Object.keys(st.gear).sort(), Object.keys(p.build.value.gear).sort(), `${n} has the same gear`);
     assert.deepEqual(st.points, p.build.value.points);
-    assert.ok(!st.spare?.length, `${n} has no spare items`);
+    assert.equal(st.spare?.length, p.build.value.spare.length, `${n} has the spare items`);
   }
-  assert.ok(p.build.value.spare?.length, "the opened stage keeps the spare items");
   // The character's attributes as its in-game character screen shows them: Cindercone's rolls
   // read from "+5% to Strength" (the catalogue's range has no sign), and Nova Charge from the
   // bow ("+25 to Nova Charge": Base Level 0, so 20% of base Dexterity as Energy, not 50%).
