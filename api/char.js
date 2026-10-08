@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       const r = await fetch(`${CHAR_SITE}${encodeURIComponent(name)}`, { headers: { "user-agent": "median-xl-runetool (+https://github.com/DanielHuntr/median-xl-runetool)" } });
       // median-xl.com answers 404 both for a name it doesn't know and for a character it has no
       // public copy of yet: it makes one when someone signed in opens the character's page.
-      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ error: `median-xl.com has no public copy of ${name} yet. Open the character's page there while signed in, then try again, or import from your page. (Single-player characters aren't on the site.)` }) };
+      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ code: "no-copy", error: `median-xl.com has no public copy of ${name} yet. Open the character's page there while signed in, then try again, or import from your page. (Single-player characters aren't on the site.)` }) };
       else if (!r.ok) throw new Error(`median-xl.com answered ${r.status}`);
       else {
         const page = trimCharPage(await r.text());
@@ -39,10 +39,12 @@ export default async function handler(req, res) {
           : { at: Date.now(), status: 404, body: JSON.stringify({ error: `median-xl.com's page for ${name} has no character on it.` }) };
       }
       if (memo.size > 200) memo.clear();
-      memo.set(key, hit);
+      // Only a page found is kept: a missing copy can appear any moment (the player opens the
+      // character signed in, then fetches again).
+      if (hit.status === 200) memo.set(key, hit);
     }
     res.statusCode = hit.status;
-    res.setHeader("cache-control", hit.status === 200 ? "public, max-age=300, s-maxage=300" : "public, max-age=60, s-maxage=60");
+    res.setHeader("cache-control", hit.status === 200 ? "public, max-age=300, s-maxage=300" : "no-store");
     res.end(req.method === "HEAD" ? undefined : hit.body);
   } catch (err) {
     res.statusCode = 502;

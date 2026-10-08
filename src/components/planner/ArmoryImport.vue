@@ -3,7 +3,7 @@
 // the public page, api/char.js), or the saved page, its source or its "Export build" text, read in
 // this browser only. Opens the character in the planner like a shared build
 // (the player's own build for that class is kept to go back to), then says what couldn't come in.
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { useRunetool } from "../../composables/useRunetool.js";
 import { RIMG, STD } from "../../data/index.js";
@@ -23,12 +23,19 @@ function addRunes() {
 const how = ref("name");
 function setHow(v) {
   how.value = v;
-  error.value = "";
+  error.value = noCopy.value = "";
 }
 const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false), charName = ref("");
 const NAME = /^[A-Za-z0-9_-]{2,16}$/;
+// The character's page on median-xl.com (the site's home until a name is typed): opening it
+// signed in makes the public copy that fetching by name reads.
+const SITE = "https://www.median-xl.com/";
+const charUrl = (n) => `${SITE}char/${encodeURIComponent(n)}`;
+const pageUrl = computed(() => (NAME.test(charName.value.trim()) ? charUrl(charName.value.trim()) : SITE));
+// A name median-xl.com has no public copy of: said with a link to the page that makes one.
+const noCopy = ref("");
 async function fromName() {
-  error.value = "";
+  error.value = noCopy.value = "";
   result.value = null;
   const name = charName.value.trim();
   if (!NAME.test(name)) return (error.value = "A character name is 2 to 16 letters, digits, - or _.");
@@ -36,6 +43,7 @@ async function fromName() {
   try {
     const res = await fetch(`/api/char?name=${encodeURIComponent(name)}`);
     const body = await res.json().catch(() => ({}));
+    if (body.code === "no-copy") return (noCopy.value = name);
     if (!res.ok || !body.page) return (error.value = body.error || "median-xl.com couldn't be reached. Try again, or save the page instead.");
     const r = importArmory(body.page);
     if (!r.ok) return (error.value = r.reason);
@@ -85,12 +93,17 @@ function run() {
         <form v-if="how === 'name'" class="armory-pane" @submit.prevent="fromName">
           <label class="field">Character name
             <span class="armory-row">
-              <input v-model="charName" type="text" autocomplete="off" spellcheck="false" maxlength="16" placeholder="As it's spelled in game" :aria-invalid="!!error" />
+              <input v-model="charName" type="text" autocomplete="off" spellcheck="false" maxlength="16" placeholder="As it's spelled in game" :aria-invalid="!!(error || noCopy)" />
               <button type="submit" class="btn gold" :disabled="busy || !charName.trim()">{{ busy ? "Fetching…" : "Fetch" }}</button>
             </span>
           </label>
           <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
-          <p class="muted armory-hint">Online characters only, from the copy median-xl.com shows signed-out visitors. It makes one when someone signed in opens the character there, so it can be behind. Quests are worked out from the points spent; for the exact ones, import from your page.</p>
+          <p v-else-if="noCopy" class="save-build-error" role="alert">
+            median-xl.com has no public copy of {{ noCopy }} yet.
+            <a :href="charUrl(noCopy)" target="_blank" rel="noopener noreferrer">Open {{ noCopy }} on median-xl.com</a>
+            while signed in, then fetch again. Single-player characters aren't on the site.
+          </p>
+          <p class="muted armory-hint">Online characters only, from the copy median-xl.com shows signed-out visitors. It makes one when someone signed in <a :href="pageUrl" target="_blank" rel="noopener noreferrer">opens the character there</a>, so it can be behind. Quests are worked out from the points spent; for the exact ones, import from your page.</p>
         </form>
         <div v-else class="armory-pane">
           <ol class="armory-steps">
@@ -145,6 +158,7 @@ function run() {
 .armory-row { display: flex; gap: 10px; margin-top: 4px; }
 .armory-row input { flex: 1; min-width: 0; }
 .armory-hint { font-size: 0.8125rem; line-height: 1.45; }
+.armory-pane a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 .armory-pane .save-build-error { font-size: 0.875rem; }
 .armory-pane .save-build-actions { margin-top: 0; }
 .armory-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 0.875rem; line-height: 1.5; }
