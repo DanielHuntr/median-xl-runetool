@@ -2963,3 +2963,14 @@
   flex: 0 0 auto;
   margin-left: auto;
 }
+
+/* Buttons at the editor's right edge (a heading's actions, a socket row's icons): their tooltip
+   lines up with the button's right side instead of running past the dialog's edge. */
+.item-editor .head-actions [data-tip]:hover::after,
+.item-editor .head-actions [data-tip]:focus-visible::after,
+.item-editor .row-actions [data-tip]:hover::after,
+.item-editor .row-actions [data-tip]:focus-visible::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}

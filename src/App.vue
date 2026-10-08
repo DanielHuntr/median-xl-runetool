@@ -5,6 +5,7 @@ import AppSidebar from "./components/AppSidebar.vue";
 import SiteSearch from "./components/SiteSearch.vue";
 import AppHeader from "./components/AppHeader.vue";
 import AppFooter from "./components/AppFooter.vue";
+import ToastHost from "./components/ToastHost.vue";
 import RunewordFinder from "./components/RunewordFinder.vue";
 import TieredUniques from "./components/TieredUniques.vue";
 import SacredUniques from "./components/SacredUniques.vue";
@@ -46,6 +47,7 @@ const { page } = state;
       <LootFilters v-else-if="page === 'filters'" />
       <CharacterPlanner v-else />
       <AppFooter />
+      <ToastHost />
     </main>
     <RuneDrawer />
   </div>

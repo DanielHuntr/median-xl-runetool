@@ -392,7 +392,7 @@ const cubeLink = computed(() => {
                 >
                 <span class="stepper" role="group" :aria-label="`${g.orb.name} orbs`">
                   <button class="icon-btn" :aria-label="`Remove a ${g.orb.name} orb`" @click="removeOrb(g.id)">−</button>
-                  <output>{{ g.n }}</output>
+                  <output :key="g.n" class="bump">{{ g.n }}</output>
                   <button class="icon-btn" :aria-label="`Add a ${g.orb.name} orb`" :disabled="!canAddOrb(slot, g.id)" @click="addOrb(slot, g.id)">+</button>
                 </span>
               </li>

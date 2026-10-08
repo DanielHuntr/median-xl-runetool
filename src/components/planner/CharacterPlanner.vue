@@ -2,6 +2,7 @@
 import ClassPicker from "../ClassPicker.vue";
 import { ref, shallowRef, provide, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import Icon from "../AppIcon.vue";
+import ConfirmButton from "../ConfirmButton.vue";
 import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
 import EquipmentPanel from "./EquipmentPanel.vue";
@@ -191,9 +192,7 @@ async function share() {
     window.prompt("Copy this link to share your build:", url);
   }
 }
-function confirmReset() {
-  if (window.confirm(`Clear your ${planner.value.state.cls} character (skills, stats and gear, every stage)?`)) planner.value.reset();
-}
+
 const shortDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { dateStyle: "medium" }) : "unknown date");
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 // The quest list, from the stage row (QuestsDialog).
@@ -306,7 +305,7 @@ const questsOpen = ref(false);
           <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
             <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
           </button>
-          <button class="btn" @click="confirmReset"><Icon name="close" />Reset</button>
+          <ConfirmButton :question="`Clear your ${planner.state.cls}'s skills, stats and gear on every stage?`" confirm-label="Reset" @confirm="planner.reset()"><Icon name="close" />Reset</ConfirmButton>
         </div>
       </div>
 
@@ -387,7 +386,6 @@ const questsOpen = ref(false);
         <button type="button" class="btn stage-quests" aria-haspopup="dialog" @click="questsOpen = true">Quests</button>
         <QuestsDialog v-if="questsOpen" @close="questsOpen = false" />
       </div>
-      <p class="planner-message" :class="planner.state.tone" role="status">{{ planner.state.message }}</p>
 
       <div class="planner-layout" :class="{ docked: planner.state.statsOpen && planner.state.statsPinned }">
         <div class="planner-content">

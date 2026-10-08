@@ -5,6 +5,7 @@
 import { tabKeys } from "../tabKeys.js";
 import { ref, computed, onMounted, nextTick, watch } from "vue";
 import Icon from "./AppIcon.vue";
+import ConfirmButton from "./ConfirmButton.vue";
 import FD from "../data/filter-data.json";
 import { QUALITIES, ETHEREAL, MAX_RULES, newRule, cleanFilter, exportFilter, importFilter, describeRule } from "../filters/lootFilter.js";
 import { useSavedFilters, MAX_FILTERS } from "../filters/savedFilters.js";
@@ -115,8 +116,6 @@ async function importFile(e) {
 async function deleteCurrent() {
   const c = current.value;
   if (!c) return;
-  const note = c.accountId ? (user.value ? " It's removed from your account too." : " It stays in your account; sign in to delete it there.") : "";
-  if (!window.confirm(`Delete "${c.filter.name}"?${note}`)) return;
   if (c.accountId && user.value && !(await sync.removeFromAccount(c.id)).ok) return say("Couldn't delete it from your account. Please try again.", "warn");
   remove(c.id);
   selectedId.value = filters.value[0]?.id ?? null;
@@ -285,7 +284,12 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
             <span v-else-if="current.accountId" class="lf-sync" :class="{ pending: current.dirty }">{{ current.dirty ? (user ? "Saving to your account…" : "Changes not in your account yet: sign in to send them") : "Saved to your account" }}</span>
             <span class="lf-spacer"></span>
             <button class="btn" @click="create({ ...current.filter, name: `${current.filter.name} (copy)`.slice(0, 60) }, current.from)">Duplicate</button>
-            <button class="btn lf-danger" @click="deleteCurrent">Delete</button>
+            <ConfirmButton
+              btn-class="btn lf-danger"
+              :question="`Delete “${current.filter.name}”?${current.accountId ? (user ? ' It goes from your account too.' : ' It stays in your account until you sign in.') : ''}`"
+              @confirm="deleteCurrent"
+              >Delete</ConfirmButton
+            >
           </div>
           <p class="lf-hint">Exports the same JSON as the Filter Exchange's "Copy to Clipboard".</p>
         </section>

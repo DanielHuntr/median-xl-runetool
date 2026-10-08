@@ -1,5 +1,6 @@
 import { reactive, computed, watch, inject, ref } from "vue";
 import { MAX_LEVEL } from "./engine.js";
+import { toast } from "../composables/useToasts.js";
 import { isToggleSkill } from './skillEffects.js';
 import { spendRemaining, wearableBothSets, releaseUnusedRequirements, fundLoadout } from './attributeAllocation.js';
 import { computeCharacter, ATTRIBUTES, activeSlots } from "./character.js";
@@ -465,11 +466,15 @@ export function createPlanner(engine, catalog, planner) {
     ),
   );
 
-  function say(msg, tone = "warn") {
+  function say(msg, tone = "warn", action = null) {
     state.message = "";
     state.tone = tone;
     queueMicrotask(() => (state.message = msg));
+    toast(msg, { tone, action });
   }
+  // A change made at once, offered back on its toast ("Removed Lionpaw. Undo"): quick to
+  // reverse, so it doesn't ask first. undo() puts it back if nothing has taken its place.
+  const undoable = (msg, undo) => say(msg, "info", { label: "Undo", run: undo });
 
   // ---------- Skills
   function add(id, times = 1) {
@@ -667,11 +672,14 @@ export function createPlanner(engine, catalog, planner) {
   // ---------- Equipment
   function clearEquipment() {
     hideTip();
-    build.value.gear = {};
+    const b = build.value, before = b.gear;
+    b.gear = {};
     state.slot = null;
     state.editing = null;
     if (state.picker?.mode !== 'inventory') state.picker = null;
-    say('Cleared equipment from both weapon sets.', 'info');
+    undoable('Cleared equipment from both weapon sets.', () => {
+      if (!Object.keys(b.gear).length) b.gear = before;
+    });
   }
   const suggestionFingerprint = () => JSON.stringify([build.value, state.suggestAttributes, state.allowAttributeRespec, state.suggestEnhancements, state.includeUniqueOrbs, state.suggestSuperior, state.maxOrbsPerItem, state.minTiers, state.minGemLevel, state.keepGear, state.foundGear]);
   function applyGearPreview(preview) {
@@ -822,10 +830,15 @@ export function createPlanner(engine, catalog, planner) {
   const itemLevel = (slot) => (mercSlot(slot) ? mercLevel() : build.value.level);
   function unequip(slot) {
     hideTip();
-    const m = mercSlot(slot);
-    if (m) { if (build.value.merc) delete build.value.merc.gear[m]; }
-    else delete build.value.gear[slot];
+    const m = mercSlot(slot), b = build.value, it = gearItem(slot);
+    const name = it && (catalog.resolve(it, itemLevel(slot))?.def.name || "the item");
+    if (m) { if (b.merc) delete b.merc.gear[m]; }
+    else delete b.gear[slot];
     if (state.editing === slot) state.editing = null;
+    if (it) undoable(`Removed ${name}.`, () => {
+      const where = m ? b.merc?.gear : b.gear, key = m || slot;
+      if (where && !where[key]) where[key] = it;
+    });
   }
   function openEditor(slot) {
     hideTip();
@@ -989,7 +1002,13 @@ export function createPlanner(engine, catalog, planner) {
     return [...counts].map(([n, c]) => (c > 1 ? `${c} × ${n}` : n)).join(", ");
   };
   function clearSockets(slot) {
-    if (gearItem(slot)) updateItem(slot, { sockets: [] });
+    const it = gearItem(slot);
+    if (!it) return;
+    const before = it.sockets || [];
+    updateItem(slot, { sockets: [] });
+    undoable("Emptied the sockets.", () => {
+      if (!(it.sockets || []).some(Boolean)) it.sockets = before;
+    });
   }
   function updateItem(slot, patch) {
     const it = gearItem(slot);
