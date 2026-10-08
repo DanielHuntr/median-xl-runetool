@@ -332,7 +332,7 @@ export function createCatalog(app, planner) {
 
   /**
    * Resolves an equipped item into lines and numbers.
-   * state: { ref, variant, rolls, sockets: [ref|null], socketCount, base, baseVariant, custom }
+   * state: { ref, variant, rolls, sockets: [ref|{ jewel }|null], socketCount, base, baseVariant, custom }
    */
   // Resolving an item parses every line of its text, and the planner resolves the same
   // equipped items for every candidate it scores, so results are cached by content.
@@ -419,7 +419,9 @@ export function createCatalog(app, planner) {
       if (!def || !baseDef) return null;
       const v = baseDef.variants[Math.min(state.baseVariant ?? baseDef.variants.length - 1, baseDef.variants.length - 1)];
       label = v.label;
-      lines = [...v.lines.filter((l) => !/^Socketed/.test(l)), `Socketed (${def.runes.length})`, ...def.lines];
+      // Its runes, plus any jewels put in the base's extra sockets first (up to the base's sockets).
+      const jewels = Math.min(state.sockets?.filter(Boolean).length || 0, Math.max(0, socketsOf(v.lines) - def.runes.length));
+      lines = [...v.lines.filter((l) => !/^Socketed/.test(l)), `Socketed (${def.runes.length + jewels})`, ...def.lines];
       def = { ...def, slotType: baseDef.slotType, cat: baseDef.cat, base: baseDef.name, icon: baseArt(baseDef.name, v.label) ?? baseDef.icon };
     } else {
       def = get(state.ref);
@@ -506,12 +508,20 @@ export function createCatalog(app, planner) {
     const socketCount = !mastercrafted && (def.kind === "base" || def.kind === "custom") ? Math.min(state.socketCount ?? 0, maxSockets) : maxSockets;
     const parsed = rolled.map((l) => parseCached(l, level));
 
-    // Socket contents (runewords already include their runes' stats).
+    // Socket contents (runewords already include their runes' stats). A runeword's base can hold
+    // jewels in its extra sockets, put in before the runes (an imported character's): those count.
     const sockets = [];
-    if (def.kind !== "runeword")
-      for (let i = 0; i < socketCount; i++) {
+    const count = def.kind === "runeword" ? Math.max(0, maxSockets - (def.runes?.length || 0)) : socketCount;
+    if (def.kind !== "runeword" || count)
+      for (let i = 0; i < count; i++) {
         const ref = state.sockets?.[i];
-        const sd = ref ? get(ref) : null;
+        // A magic or rare jewel (an imported character's): its own stat lines, like a custom item.
+        if (ref && typeof ref === "object" && ref.jewel) {
+          const lines = String(ref.jewel.text || "").split("\n").map((l) => l.trim()).filter(Boolean);
+          sockets.push({ def: { key: "jewel", kind: "jewel", name: ref.jewel.name || "Jewel", slotType: "jewel", icon: ref.jewel.icon || "game/invgswe", lvl: ref.jewel.req || 0 }, lines, parsed: lines.map((l) => parseCached(l, level)) });
+          continue;
+        }
+        const sd = typeof ref === "string" ? get(ref) : null;
         if (!sd) {
           sockets.push(null);
           continue;
@@ -521,7 +531,7 @@ export function createCatalog(app, planner) {
 
     for (const s of sockets.filter(Boolean)) {
       const d = s.def;
-      const required = d.kind === 'socketable' ? d.lvl || 0 : maxNum(d.variants.at(-1).lines.find(l => /^Required Level:/.test(l)) || '0');
+      const required = d.kind === 'socketable' || d.kind === 'jewel' ? d.lvl || 0 : maxNum(d.variants.at(-1).lines.find(l => /^Required Level:/.test(l)) || '0');
       head.reqLevel = Math.max(head.reqLevel, required);
       s.lines.forEach(addReq);
     }

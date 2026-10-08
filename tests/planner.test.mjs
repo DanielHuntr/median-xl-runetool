@@ -2211,5 +2211,34 @@ test("a median-xl.com character page imports: skills, quests, attributes, worn g
   assert(b.gear.weapon.custom.text.includes("+3 to Amazon Skill Levels"));
   assert.deepEqual(b.inventory.map((x) => catalog.get(x.ref).name), ["Sunstone of the Twin Seas", "Sacred Sunstone"]);
   assert.deepEqual([b.merc.spec, b.merc.level, Object.keys(b.merc.gear).length], ["Bloodmage", 96, 5]);
-  assert.deepEqual(r.missing, ["a magic jewel in a socket (the planner's sockets take catalogue items)"]);
+  assert.deepEqual(r.missing, []);
+  // A magic or rare jewel put in a runeword base's extra socket counts, with its own lines.
+  const body = catalog.resolve(b.gear.body, b.level);
+  assert.equal(body.def.name, "Lumen Arcana");
+  assert.equal(body.lines.find((l) => /^Socketed/.test(l)), "Socketed (2)");
+  assert.equal(body.sockets[0].def.name, "Rare Jewel");
+  assert(body.sockets[0].lines.includes("Cold Resist +6%"));
+  // Actual rolls, from the values the page shows.
+  assert(b.gear.boots.rolls?.some((x) => x < 1), "Lionpaw's rolls read from the page");
+  // Carried and stashed gear as spare items; runes for My Runes.
+  assert(b.spare.length >= 5);
+  assert(b.spare.every((x) => catalog.resolve(x, b.level)));
+  assert.deepEqual(r.runes, { Lo: 1, Ber: 1 });
+  // Spare items stay in the browser: a share link leaves them out.
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { decodeBuild } = await load("/src/planner/buildCode.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  assert.equal(p.importArmory(html).ok, true);
+  assert(p.build.value.spare.length >= 5, "the planner keeps the spare items");
+  assert.equal(decodeBuild(p.buildCode()).spare, undefined, "a share link doesn't carry them");
+  // Equipping a spare swaps it with what was in the slot.
+  const before = p.build.value.gear.ring1, n = p.build.value.spare.length;
+  const ringAt = p.build.value.spare.findIndex((x) => catalog.resolve(x, 96).def.slotType === "ring");
+  if (ringAt >= 0) {
+    p.equipSpare(ringAt, "ring1");
+    assert.notDeepEqual(p.build.value.gear.ring1, before);
+    assert.equal(p.build.value.spare.length, n);
+  }
+  scope.stop();
 });

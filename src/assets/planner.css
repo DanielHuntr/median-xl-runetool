@@ -2622,3 +2622,6 @@
   margin: 0 0 8px;
 }
 
+
+/* Spare items (an imported character's gear): one width for every "Equip in" choice. */
+.spares .spare-equip { width: 9.5em; flex: none; }

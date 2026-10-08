@@ -4,8 +4,17 @@
 // (the player's own build for that class is kept to go back to), then says what couldn't come in.
 import { ref, onMounted } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
+import { useRunetool } from "../../composables/useRunetool.js";
 const emit = defineEmits(["close"]);
 const { importArmory } = usePlanner();
+const { owned } = useRunetool();
+// Runes the character carries or stashes, into My Runes (the Runeword Finder): 1, or 2 for two or more.
+const runeCount = (r) => Object.values(r?.runes || {}).reduce((a, n) => a + n, 0);
+const runesAdded = ref(false);
+function addRunes() {
+  for (const [rune, n] of Object.entries(result.value.runes || {})) owned.value[rune] = Math.max(owned.value[rune] || 0, Math.min(2, n));
+  runesAdded.value = true;
+}
 const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false);
 onMounted(() => dialog.value?.showModal?.());
 function close() {
@@ -54,12 +63,17 @@ function run() {
       </template>
       <template v-else>
         <p class="armory-done" role="status">Imported <b>{{ result.name }}</b>: level {{ result.level }} {{ result.cls }}, with {{ result.items }} items{{ result.merc ? " and the mercenary" : "" }}.</p>
+        <p v-if="result.spare">{{ result.spare }} more item{{ result.spare === 1 ? "" : "s" }} from your inventory and stash are under <b>Spare items</b> in the equipment panel, to try on.</p>
+        <p v-if="runeCount(result)" class="armory-runes">
+          {{ runeCount(result) }} rune{{ runeCount(result) === 1 ? "" : "s" }} found ({{ Object.keys(result.runes).join(", ") }}).
+          <button v-if="!runesAdded" type="button" class="btn" @click="addRunes">Add to My Runes</button>
+          <span v-else class="muted">Added to My Runes in the Runeword Finder.</span>
+        </p>
         <template v-if="result.missing.length">
           <p>These couldn't be brought in, so add them yourself if you need them:</p>
           <ul class="armory-missing"><li v-for="m in result.missing" :key="m">{{ m }}</li></ul>
         </template>
         <ul v-if="result.notes.length" class="armory-missing muted"><li v-for="n in result.notes" :key="n">{{ n }}</li></ul>
-        <p class="muted">Uniques and set items come in at their best rolls; their exact rolls aren't read from the page yet.</p>
         <div class="save-build-actions">
           <button type="button" class="btn gold" @click="close">Done</button>
         </div>

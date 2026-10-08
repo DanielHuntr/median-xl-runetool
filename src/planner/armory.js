@@ -99,8 +99,40 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   const socketOf = (s) => {
     const name = s.name.replace(/ Rune \(\d+\)$/, "").replace(/ \(\d+\)$/, "");
     const d = byName(name, ["socketable"])[0] || byName(s.name, ["socketable", "unique", "sacred"])[0];
-    if (!d) { missing.push(s.type === "Jewel" || s.name === "Jewel" ? "a magic jewel in a socket (the planner's sockets take catalogue items)" : `${s.name} (in a socket)`); return null; }
-    return d.key;
+    if (d) return d.key;
+    // A magic or rare jewel: its own lines and required level, kept in the socket.
+    if (s.type === "Jewel" || /Jewel$/.test(s.name)) {
+      const lines = textLines(s);
+      const req = Number(/^Required Level: (\d+)/.exec(lines.find((l) => /^Required Level:/.test(l)) || "")?.[1]) || 0;
+      return { jewel: { name: s.quality ? `${s.quality} Jewel` : s.name, text: statText(s).join("\n"), ...(req ? { req } : {}) } };
+    }
+    missing.push(`${s.name} (in a socket)`);
+    return null;
+  };
+  // An item's rolls, from the values its text shows: each ranged line ("+(16 to 20) to Arrow
+  // Swarm") matched to the page's rolled one ("+18 to Arrow Swarm"). A value above the range (an
+  // orb or socket adding to the same stat) stays at the top; a line not found, at the top too.
+  const rollsOf = (st, it) => {
+    const r = catalog.resolve(st, level);
+    if (!r?.ranges?.length) return null;
+    const pool = textLines(it), rolls = r.ranges.map(() => 1);
+    for (let i = 0; i < r.ranges.length;) {
+      const line = r.ranges[i].line;
+      let n = 0;
+      while (r.ranges[i + n]?.line === line) n++;
+      const re = new RegExp(`^${line.replace(/\((-?[\d.]+) to (-?[\d.]+)\)/g, "\u0000").replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\u0000/g, "(-?[\\d.]+)")}$`);
+      const at = pool.findIndex((l) => re.test(l));
+      if (at >= 0) {
+        const m = re.exec(pool[at]);
+        pool.splice(at, 1);
+        for (let j = 0; j < n; j++) {
+          const { min, max } = r.ranges[i + j], v = Number(m[j + 1]);
+          rolls[i + j] = max === min ? 1 : Math.max(0, Math.min(1, (v - min) / (max - min)));
+        }
+      }
+      i += n;
+    }
+    return rolls.some((x) => x !== 1) ? rolls.map((x) => Math.round(x * 1000) / 1000) : null;
   };
   const orbsOf = (it, def) => {
     const out = [];
@@ -158,7 +190,10 @@ export function armoryBuild(page, { engine, catalog, planner }) {
       if (it.mystic_orbs?.length) notes.push(`${it.display_name || it.item}: its mystic orbs are counted in its stat lines`);
     } else return null;
     if (st.ref !== "custom") {
-      const sockets = (it.socketables || []).map(socketOf);
+      const rolls = rollsOf(st, it);
+      if (rolls) st.rolls = rolls;
+      // A runeword's sockets hold its runes (part of the runeword); jewels put in before them count.
+      const sockets = (it.socketables || []).filter((x) => st.ref.startsWith("rw:") ? !/ Rune( \(\d+\))?$/.test(x.name) : true).map(socketOf);
       if (sockets.some(Boolean)) st.sockets = sockets.map((s) => s || null);
       // Orbs by the item's slot (a runeword's is its base's).
       const r0 = catalog.resolve(st, level);
@@ -171,7 +206,23 @@ export function armoryBuild(page, { engine, catalog, planner }) {
     return st;
   }
 
+  // Gear the character carries or stashes: kept as spare items to try on (not counted). Runes
+  // are counted for My Runes.
+  const spare = [], runes = {};
+  const GEAR = new Set(["weapon", "shield", "helm", "body", "gloves", "belt", "boots", "ring", "amulet", "quiver"]);
+  const QUALITIES = new Set(["Unique", "Set", "RW", "Magic", "Rare", "Crafted", "Honorific", "Normal", "High"]);
   for (const it of items) {
+    if (it.area === "character" && it.location !== "Gear" && it.location !== "Belt" && !it.is_charm) {
+      const rune = /^(.+) Rune(?: \(\d+\))?$/.exec(it.item || "");
+      if (rune && /Rune/.test(it.type || "")) { runes[rune[1]] = (runes[rune[1]] || 0) + (Number(it.quantity) || 1); continue; }
+      if (!QUALITIES.has(it.quality) || /Jewel|Charm|Relic/.test(it.type || "")) continue;
+      const before = missing.length;
+      const st = itemState(it, "spare");
+      missing.length = before;
+      const r = st && catalog.resolve(st, level);
+      if (r && GEAR.has(r.def.slotType || r.baseDef?.slotType)) spare.push(st);
+      continue;
+    }
     if (it.area === "character" && it.location === "Gear" && SLOTS[it.slot]) {
       const st = itemState(it, SLOTS[it.slot]);
       if (st) b.gear[SLOTS[it.slot]] = st;
@@ -195,7 +246,8 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   // the class's starting values (the planner's, with nothing spent and nothing worn).
   const start = computeCharacter({ ...b, points: {}, buffs: [], gear: {}, inventory: [], merc: null, attrs: { strength: 0, dexterity: 0, vitality: 0, energy: 0 } }, { engine, catalog, planner }).charStats || {};
   for (const a of Object.keys(b.attrs)) if (page.attrs[a] != null) b.attrs[a] = Math.max(0, page.attrs[a] - (start[a] ?? 0));
-  return { build: b, name: exp.name || cls, missing: [...new Set(missing)], notes: [...new Set(notes)] };
+  if (spare.length) b.spare = spare.slice(0, 120);
+  return { build: b, name: exp.name || cls, missing: [...new Set(missing)], notes: [...new Set(notes)], runes };
 }
 
 /** The planner link that opens the imported build (importFromHash does the rest). */

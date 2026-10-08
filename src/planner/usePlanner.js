@@ -79,7 +79,14 @@ function cleanItem(st, catalog) {
   if (Array.isArray(st.rolls))
     out.rolls = st.rolls.slice(0, 40).map((x) => (typeof x === "number" && x >= 0 && x <= 1 ? x : 1));
   if (Array.isArray(st.sockets))
-    out.sockets = st.sockets.slice(0, 6).map((r) => (typeof r === "string" && catalog.get(r) ? r : null));
+    out.sockets = st.sockets.slice(0, 6).map((r) => {
+      if (typeof r === "string") return catalog.get(r) ? r : null;
+      // A magic or rare jewel: its name, stat lines and required level (an imported character's).
+      const j = r && typeof r === "object" ? r.jewel : null;
+      if (!j || typeof j !== "object") return null;
+      const req = Math.max(0, Math.min(150, Math.floor(Number(j.req) || 0)));
+      return { jewel: { name: String(j.name || "Jewel").slice(0, 60), text: String(j.text || "").slice(0, 1000), ...(req ? { req } : {}), ...(/^game\/[a-z0-9_]+$/i.test(j.icon || "") ? { icon: j.icon } : {}) } };
+    });
   out.orbs = cleanOrbs(st.orbs);
   if (st.ethereal === true) out.ethereal = true;
   if (st.honorific === true && catalog.get(st.ref)?.kind === "base") out.honorific = true;
@@ -144,6 +151,10 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
   // The order skill points were spent in (one entry per point), for planning a character's
   // levelling; skillOrder() reconciles it with the points.
+  // Spare items: gear an imported character carries or stashes, to try on (not counted). Kept in
+  // this browser, left out of share links (buildCode).
+  const spare = list(raw.spare).map((x) => cleanItem(x, catalog)).filter(Boolean).slice(0, 120);
+  if (spare.length) b.spare = spare;
   const order = list(raw.order).filter((id) => typeof id === "string" && !!engine.node(b, id) && b.points[id] > 0).slice(0, 4000);
   if (order.length) b.order = order;
   b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
@@ -499,6 +510,16 @@ export function createPlanner(engine, catalog, planner) {
     return removed;
   }
   const addMax = (id) => add(id, MAX_LEVEL);
+  // A spare item into a slot: what was there takes its place among the spares.
+  function equipSpare(i, slot) {
+    const b = build.value, it = b.spare?.[i];
+    if (!it) return;
+    const was = b.gear[slot];
+    equip(slot, JSON.parse(JSON.stringify(it)));
+    if (b.gear[slot] && was) b.spare.splice(i, 1, was);
+    else if (b.gear[slot]) b.spare.splice(i, 1);
+  }
+  const removeSpare = (i) => build.value.spare?.splice(i, 1);
 
   // ---------- Skill order: the order the points were spent in, for levelling. Points a build
   // got some other way (a shared link, a stage filled in) follow the recorded ones in an order
@@ -1028,7 +1049,10 @@ export function createPlanner(engine, catalog, planner) {
   const buildCode = () => {
     const others = state.stages[state.cls], stage = state.stage[state.cls], order = stagesOf();
     const custom = order.join("|") !== STAGES.join("|");
-    return encodeBuild(Object.keys(others).length || stage !== "Endgame" || custom ? { ...build.value, stage, stages: others, ...(custom ? { stageOrder: order } : {}) } : build.value);
+    // Spare items stay in this browser: a link carries the build, not the player's stash.
+    const bare = ({ spare, ...b }) => b;
+    const stages = Object.fromEntries(Object.entries(others).map(([n, b]) => [n, b && bare(b)]));
+    return encodeBuild(Object.keys(others).length || stage !== "Endgame" || custom ? { ...bare(build.value), stage, stages, ...(custom ? { stageOrder: order } : {}) } : bare(build.value));
   };
   // "&stage=Normal" is also written out, readable in the link, and works on its own (a
   // starter build's link to one of its stages).
@@ -1045,7 +1069,7 @@ export function createPlanner(engine, catalog, planner) {
     const r = armoryBuild(page, { engine, catalog, planner });
     if (!r) return { ok: false, reason: `The page's class (${page.exp.class}) isn't one the planner knows.` };
     if (!importFromHash(armoryHash(r))) return { ok: false, reason: "The character couldn't be opened in the planner." };
-    return { ok: true, name: r.name, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, merc: !!r.build.merc, missing: r.missing, notes: r.notes };
+    return { ok: true, name: r.name, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, spare: r.build.spare?.length || 0, merc: !!r.build.merc, missing: r.missing, notes: r.notes, runes: r.runes };
   }
   function importFromHash(hash = window.location.hash) {
     // #planner?skill=<id> (site search): show that skill in its class's tree. Each class
@@ -1146,7 +1170,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    skillOrder, moveOrder, importArmory, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
+    skillOrder, moveOrder, importArmory, equipSpare, removeSpare, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,

@@ -8,7 +8,19 @@ import { usePlanner } from "../../planner/usePlanner.js";
 import { SLOTS } from "../../planner/items.js";
 import { superiorNames } from "../../planner/superior.js";
 
-const { catalog, state, build, character, swapWeapons, removeInventory, openPicker, openEditor, unequip, clearEquipment, say, tipOn } = usePlanner();
+const { catalog, state, build, character, swapWeapons, removeInventory, openPicker, openEditor, unequip, clearEquipment, say, tipOn, equipSpare, removeSpare } = usePlanner();
+// Spare items (an imported character's carried and stashed gear): each with the slots it fits.
+const spares = computed(() => (build.value.spare || []).map((st, i) => {
+  const r = catalog.resolve(st, build.value.level);
+  const type = r?.def.slotType || r?.baseDef?.slotType;
+  return r ? { i, st, r, slots: SLOTS.filter((s) => s.accepts.includes(type)) } : null;
+}).filter(Boolean));
+const spareOpen = ref(true);
+function equipFrom(x, e) {
+  const slot = e.target.value;
+  e.target.value = "";
+  if (slot) equipSpare(x.i, slot);
+}
 // What sits in a socket, as art for the slot: a runeword's runes, else the gem, rune or jewel
 // put in it (the same pictures as the item editor); null for an empty socket.
 function socketArt(r, i) {
@@ -139,6 +151,28 @@ const charmSummary = computed(() => {
           <button class="text-btn" :aria-label="`Remove ${x.def.name}`" @click="removeInventory(x.i)">Remove</button>
           <ItemBonuses v-if="x.def.kind === 'charm'" compact :item="catalog.resolve(build.inventory[x.i], build.level)" :addons="build.inventory[x.i].addons || []"
             @update="(a) => (build.inventory[x.i].addons = a.length ? a : undefined)" />
+        </li>
+      </ul>
+    </div>
+    <div v-if="spares.length" class="charms spares">
+      <div class="doll-top">
+        <h2 class="group-title">
+          <button type="button" class="charms-toggle" :aria-expanded="spareOpen" @click="spareOpen = !spareOpen">
+            Spare items <span class="charms-count">{{ spares.length }}</span><span class="charms-caret" aria-hidden="true">{{ spareOpen ? "▴" : "▾" }}</span>
+          </button>
+        </h2>
+      </div>
+      <p class="muted">From your imported character's inventory and stash: not counted in your stats until you equip one.</p>
+      <ul v-if="spareOpen">
+        <li v-for="x in spares" :key="x.i">
+          <span class="charm-name" tabindex="0" v-on="tipOn({ kind: 'item', item: x.st })"
+            ><ItemIcon :icon="x.r.def.icon" /><span :class="'q-' + x.r.def.kind">{{ superiorNames(x.r).name }}</span></span
+          >
+          <select v-if="x.slots.length" class="spare-equip" :aria-label="`Equip ${x.r.def.name} in`" @change="(e) => equipFrom(x, e)">
+            <option value="">Equip in…</option>
+            <option v-for="s in x.slots" :key="s.id" :value="s.id">{{ s.label }}</option>
+          </select>
+          <button class="text-btn" :aria-label="`Remove ${x.r.def.name}`" @click="removeSpare(x.i)">Remove</button>
         </li>
       </ul>
     </div>
