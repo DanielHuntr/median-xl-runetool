@@ -983,7 +983,11 @@ export function createPlanner(engine, catalog, planner) {
       profile: profile.value, only: slot, includeUnique: state.includeUniqueOrbs, maxOrbs: state.maxOrbsPerItem, minGemLevel: state.minGemLevel, allow: itemAllow(), judge: state.enhanceJudge });
     for (const s of new Set([...result.picks, ...result.orbPicks].map(p => p.slot)))
       updateItem(s, { sockets: result.gear[s].sockets || [], orbs: result.gear[s].orbs || [] });
-    if (!quiet) say(`Added ${result.orbPicks.length} mystic orbs and filled ${result.picks.length} sockets within level ${build.value.level}.`, 'info');
+    if (!quiet) {
+      const o = result.orbPicks.length, f = result.picks.length;
+      const parts = [o && `${o} mystic orb${o > 1 ? "s" : ""}`, f && `${f} socket filler${f > 1 ? "s" : ""}`].filter(Boolean);
+      say(parts.length ? `Added ${parts.join(" and ")}, within level ${build.value.level}.` : `Nothing more fits within level ${build.value.level}.`, parts.length ? "info" : "warn");
+    }
     return result;
   }
   function canAddOrb(slot, id) {

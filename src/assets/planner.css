@@ -1373,6 +1373,10 @@
 
 /* ---------- One-screen layout: attributes | equipment | skills, details below,
    stats in a slide-out panel that can be pinned beside the planner. */
+/* The space under the stage row (the message line that used to sit there gave it). */
+.planner-layout {
+  margin-top: 16px;
+}
 .planner-layout.docked {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
