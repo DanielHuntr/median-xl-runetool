@@ -143,7 +143,8 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
   // The order skill points were spent in (one entry per point), for planning a character's
   // levelling; skillOrder() reconciles it with the points.
-  b.order = list(raw.order).filter((id) => typeof id === "string" && !!engine.node(b, id) && b.points[id] > 0).slice(0, 4000);
+  const order = list(raw.order).filter((id) => typeof id === "string" && !!engine.node(b, id) && b.points[id] > 0).slice(0, 4000);
+  if (order.length) b.order = order;
   b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
   // The tiers its author gives it (overall, bossing, clearing, survival), shared with the build.
   const tiers = Object.fromEntries(AUTHOR_TIER_KEYS.filter((k) => AUTHOR_TIERS.includes(raw.authorTiers?.[k])).map((k) => [k, raw.authorTiers[k]]));
