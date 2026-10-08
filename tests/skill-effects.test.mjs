@@ -91,7 +91,7 @@ test('shared level-150 Assassin: all three Ways apply automatically to Backstab 
     }
   }
   const fire = full.damage.elements.fire;
-  assert.deepEqual(damage(b, 'backstab', full).parts.find(p => p.element === 'fire').range, fire.map(n => Math.floor(n * 2)), 'Backstab applies its 200% weapon damage once');
+  assert.deepEqual(damage(b, 'backstab', full).parts.find(p => p.element === 'fire').range, fire.map(n => Math.floor(n * 250 / 128)), "Backstab applies its weapon damage once (the game's 250/128)");
   assert.deepEqual(damage(b, 'queen_of_blades', full).parts.find(p => p.element === 'fire').range, fire, 'Queen of Blades applies its 100% weapon damage once');
   const { buildProfile } = await vite.ssrLoadModule('/src/planner/recommend.js');
   const { combatScore } = await vite.ssrLoadModule('/src/planner/combatScore.js');

@@ -449,18 +449,26 @@ function computeDamage({ weapon, weaponLocalEd, s, STR, DEX, attributes }) {
     out.base = [d.min, d.max];
     out.physical = [min, Math.max(min, max)];
   }
+  // As the game's character screen counts them (an imported character's normal attack, 1017-1230
+  // in game): added fire, cold and lightning damage is raised by that element's spell damage;
+  // an elemental base's innate damage isn't, and is counted once, a Tri-Elemental base's split
+  // across the three (how the game divides it between them is assumed). The innate amount is
+  // the weapon's tooltip value: the attribute's share rounded down, then Innate Elemental Damage
+  // (a Stag Bow's 62% of 558 Dexterity is 345, and with +15% shows 396).
   const innateMult = 1 + s("innate_elemental_damage") / 100;
+  const shares = {};
+  for (const inn of weapon?.head.innate || []) {
+    const elements = (/Tri-Elemental/i.test(inn.element) ? ["fire", "cold", "lightning"] : [inn.element.toLowerCase()])
+      .filter((el) => !s(`disable_${el}_damage`) && !(s('disable_elemental_damage') && el !== 'magic'));
+    const v = Math.floor(Math.floor((inn.pct / 100) * (attributes[inn.stat]?.total || 0)) * innateMult);
+    elements.forEach((el, i) => (shares[el] = (shares[el] || 0) + Math.floor(v / elements.length) + (i === 0 ? v % elements.length : 0)));
+    out.innate = (out.innate || 0) + (elements.length ? v : 0);
+  }
   for (const el of ["fire", "cold", "lightning", "magic"]) {
     if (s(`disable_${el}_damage`) || s('disable_elemental_damage') && el !== 'magic') continue;
-    let min = s(`minimum_${el}_damage`), max = s(`maximum_${el}_damage`);
-    for (const inn of weapon?.head.innate || []) {
-      const elements = /Tri-Elemental/i.test(inn.element) ? ["fire", "cold", "lightning"] : [inn.element.toLowerCase()];
-      if (elements.includes(el)) {
-        const v = Math.floor(((inn.pct / 100) * (attributes[inn.stat]?.total || 0)) * innateMult);
-        min += v;
-        max += v;
-      }
-    }
+    const boost = el === "magic" ? 1 : Math.max(0, 1 + s(`${el}_spell_damage`) / 100);
+    const min = Math.floor(s(`minimum_${el}_damage`) * boost) + (shares[el] || 0);
+    const max = Math.floor(s(`maximum_${el}_damage`) * boost) + (shares[el] || 0);
     if (min || max) out.elements[el] = [min, max];
   }
   return out;

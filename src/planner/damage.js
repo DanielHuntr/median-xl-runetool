@@ -141,7 +141,11 @@ function skillDamageOf(id, { engine, build, skillBuild, character }) {
   const s = engine.node(build, id) || engine.skill(id);
   if (!s) return null;
   const { values, from: upgrades } = withUpgrades(engine, skillBuild, id, engine.skillValues(skillBuild, id));
-  const weaponPct = num(values.weapon_damage?.[0]);
+  // The game's own share of weapon damage (skills.bin SrcDam, in 128ths) where it has one:
+  // Barrage's 116/128 is 90.625%, which MedianDB rounds to 90 (an in-game character screen
+  // shows 921-1114 for Barrage beside 1017-1230 for a normal attack).
+  const srcDam = engine.skill?.(id)?.game?.srcDam;
+  const weaponPct = num(values.weapon_damage?.[0]) && srcDam > 0 ? (srcDam * 100) / 128 : num(values.weapon_damage?.[0]);
   if (weaponPct) {
     const d = attack({ id, name: s.name, pct: weaponPct, values }, c, engine.describe(skillBuild, id, build.points[id] || 0, { asShown: false }));
     if (upgrades.length) d.notes.push(`Includes ${upgrades.join(" and ")} (upgrade${upgrades.length > 1 ? "s" : ""} of this skill).`);
@@ -405,7 +409,7 @@ function attack({ id, name, pct, values }, c, describe = null) {
     // Deadly strike this skill gets on top of yours (Savagery during Whirlwind).
     ...(num(values.deadly_strike?.[0]) ? { deadlyStrike: num(values.deadly_strike[0]) } : {}),
     ar: c.ar.total,
-    formula: `Weapon damage × ${pct}% (with ${Math.round(d.statBonus + d.otherPct + wpd)}% physical bonus), then conversions and bonus damage. Per hit, before enemy resistance.`,
+    formula: `Weapon damage × ${Math.round(pct * 100) / 100}% (with ${Math.round(d.statBonus + d.otherPct + wpd)}% physical bonus), then conversions and bonus damage. Per hit, before enemy resistance.`,
   };
 }
 const cap = (s) => s[0].toUpperCase() + s.slice(1);

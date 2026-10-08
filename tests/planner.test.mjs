@@ -416,7 +416,7 @@ test("skill damage estimates: attacks, elemental weapons, spells, summons", asyn
   assert.equal(atk.kind, "attack");
   assert.ok(atk.total[1] > 0 && atk.parts.some((p) => p.element === "lightning"), "elemental weapon damage counts");
   const barrage = est(b, "barrage");
-  assert.ok(barrage.total[1] > 0 && barrage.formula.includes("90%"), "uses the skill's weapon damage %");
+  assert.ok(barrage.total[1] > 0 && barrage.formula.includes("90.63%"), "uses the game's weapon damage share (116/128)");
   assert.equal(est(build("Amazon", { level: 110, points: { trinity_arrow: 1, barrage: 1 } }), "barrage").total, undefined, "no weapon, no number");
   // An attack's own damage line (Hades Gate: 110% weapon damage plus "Fire Damage: x-y")
   // is part of the hit, unscaled; Way of the Phoenix raises it through its synergy.
@@ -1333,7 +1333,10 @@ test('combat scoring values usable survival and does not multiply poison duratio
   assert.ok(Number.isFinite(short.damage) && Number.isFinite(long.damage));
   // Isolate poison from the passive whose duration legitimately changes the combined rate.
   b.points = { crucify: 10 };
-  assert.equal(score('Adds 100-200 Poison Damage over 1 seconds').damage, score('Adds 1000-2000 Poison Damage over 10 seconds').damage);
+  // The same damage a second either way (within rounding: an attack's weapon damage share is
+  // the game's 128ths, so the two round slightly differently).
+  const short1 = score('Adds 100-200 Poison Damage over 1 seconds').damage, long10 = score('Adds 1000-2000 Poison Damage over 10 seconds').damage;
+  assert.ok(Math.abs(short1 - long10) / long10 < 0.01, `${short1} vs ${long10}`);
 });
 
 test('Crucify evaluates Elverfolk as a melee weapon without credit for caster bonuses', async () => {
@@ -2310,6 +2313,16 @@ test("a character's public page (imported by name) works out its quests from the
   // bow ("+25 to Nova Charge": Base Level 0, so 20% of base Dexterity as Energy, not 50%).
   const total = (a) => p.character.value.attributes[a].total;
   assert.deepEqual(["strength", "dexterity", "vitality", "energy"].map(total), [144, 558, 47, 41]);
+  // Its in-game screens: attack rating 4,949; the bow's "Innate Tri-Elemental Damage: 396
+  // (71.3% of Dexterity)", 62% of 558 rounded down, raised 15% by Elemental Command, counted
+  // once; Barrage 921-1114 beside a normal attack's 1017-1230, the game's 116/128 of it.
+  const c = p.character.value;
+  assert.equal(c.ar.total, 4949);
+  assert.equal(c.damage.innate, 396);
+  const sum = (i) => ["fire", "cold", "lightning"].reduce((n, k) => n + c.damage.elements[k][i], 0);
+  const added = ["fire", "cold", "lightning"].map((k) => [c.stats[`minimum_${k}_damage`].total, c.stats[`${k}_spell_damage`]?.total || 0]);
+  assert.equal(sum(0), 396 + added.reduce((n, [v, sd]) => n + Math.floor(v * (1 + sd / 100)), 0), "added damage raised by its element's spell damage; innate once");
+  assert.equal(p.damageOf("barrage").formula.includes("90.63%"), true);
   p.build.value.buffs = ["nova_charge"];
   assert.equal(total("energy"), 136);
   scope.stop();
