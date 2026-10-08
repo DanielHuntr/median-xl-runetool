@@ -2797,3 +2797,103 @@
 
 /* Spare items (an imported character's gear): one width for every "Equip in" choice. */
 .spares .spare-equip { width: 9.5em; flex: none; }
+
+/* Item editor spacing: sections 18px apart with a rule, a heading 10px above its content, one
+   label column, compact lists. Scoped to the editor so the older rules elsewhere keep theirs. */
+.item-editor {
+  --editor-label: 8rem;
+}
+.item-editor .item-editor-head {
+  gap: 14px;
+}
+.item-editor .item-editor-title .base {
+  margin: 2px 0 0;
+}
+.item-editor .item-editor-title .cube-link,
+.item-editor .item-editor-title > a {
+  margin-top: 8px;
+}
+.item-editor .item-editor-meta {
+  margin: 10px 0 0;
+}
+.item-editor > p.warning {
+  margin: 12px 0 0;
+}
+.item-editor .editor-grid {
+  margin-top: 20px;
+}
+.item-editor .editor-controls h3,
+.item-editor .editor-preview h3 {
+  margin: 0 0 10px;
+}
+.item-editor .editor-controls > .editor-section + .editor-section {
+  margin-top: 18px;
+  padding-top: 18px;
+}
+.item-editor .editor-form > label {
+  grid-template-columns: var(--editor-label) minmax(0, 1fr);
+}
+.item-editor .editor-controls select {
+  min-height: 38px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 0.875rem;
+}
+.item-editor .rolls {
+  gap: 6px;
+}
+.item-editor .rolls h3 {
+  margin-bottom: 4px;
+}
+.item-editor .orb-editor {
+  display: block;
+  margin: 0;
+}
+.item-editor .orb-editor h3 {
+  margin: 0 0 10px;
+}
+.item-editor .orb-meta {
+  margin: 0 0 8px;
+}
+.item-editor .orb-meta .switch {
+  min-height: 0;
+}
+.item-editor .orb-list {
+  gap: 0 !important;
+  margin: 0 0 10px !important;
+}
+.item-editor .orb-list li {
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--soft-border);
+}
+.item-editor .orb-list li:first-child {
+  border-top: 1px solid var(--soft-border);
+}
+.item-editor .orb-list li > span:first-child {
+  line-height: 1.45;
+}
+.item-editor .item-affixes {
+  display: grid;
+  gap: 10px;
+}
+.item-editor .item-affixes > h3 {
+  margin-bottom: 0;
+}
+.item-editor .item-affixes .affix-quality,
+.item-editor .item-affixes .affix-search,
+.item-editor .item-affixes p {
+  margin: 0;
+}
+.item-editor .item-affixes .orb-add-controls {
+  gap: 8px;
+}
+.item-editor .item-affixes .orb-select {
+  gap: 4px;
+}
+@container (min-width: 760px) {
+  /* The controls' first heading level with the Stats heading inside its card. */
+  .item-editor .editor-controls {
+    padding-top: 15px;
+  }
+}

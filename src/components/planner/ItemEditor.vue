@@ -211,6 +211,17 @@ const cubeLink = computed(() => {
           {{ names.base || r.def.cat }}<template v-if="r.label"> · {{ r.label }}</template>
         </p>
         <CubeLink v-if="cubeLink" v-bind="cubeLink" />
+        <div class="unique-meta item-editor-meta">
+          <span v-for="q in reqs" :class="{ warning: !q.ok }"
+            ><b>{{ q.t }}</b
+            ><button v-if="!q.ok && q.fix" class="fix-btn" @click="applyFix(q.fix)">{{ q.label }}</button></span
+          >
+          <span v-if="r.head.damage"
+            >{{ r.head.damage.type }} damage <b>{{ Math.floor(r.head.damage.min) }}–{{ Math.floor(r.head.damage.max) }}</b></span
+          >
+          <span v-if="r.head.defense != null">Defense <b>{{ Math.floor(r.head.defense) }}</b></span>
+          <span v-if="r.head.block != null">Block <b>{{ r.head.block }}%{{ r.head.blockClass ? " + class" : "" }}</b></span>
+        </div>
       </div>
       <div class="item-editor-actions">
         <button class="btn" @click="openPicker(mercKey ? { mode: 'merc', slot: mercKey } : { mode: 'slot', slot })">Change item</button>
@@ -219,17 +230,6 @@ const cubeLink = computed(() => {
     </header>
 
     <p v-if="inactive" class="warning">This slot belongs to the other weapon set, so it isn't counted right now.</p>
-    <div class="unique-meta item-editor-meta">
-      <span v-for="q in reqs" :class="{ warning: !q.ok }"
-        ><b>{{ q.t }}</b
-        ><button v-if="!q.ok && q.fix" class="fix-btn" @click="applyFix(q.fix)">{{ q.label }}</button></span
-      >
-      <span v-if="r.head.damage"
-        >{{ r.head.damage.type }} damage <b>{{ Math.floor(r.head.damage.min) }}–{{ Math.floor(r.head.damage.max) }}</b></span
-      >
-      <span v-if="r.head.defense != null">Defense <b>{{ Math.floor(r.head.defense) }}</b></span>
-      <span v-if="r.head.block != null">Block <b>{{ r.head.block }}%{{ r.head.blockClass ? " + class" : "" }}</b></span>
-    </div>
 
     <div class="editor-grid">
       <!-- The item as it is now: every change on the right shows here at once. -->

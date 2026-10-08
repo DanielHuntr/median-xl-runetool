@@ -57,12 +57,14 @@ const summary = computed(() => {
 <template>
   <div v-if="item.affixes?.types" class="sockets item-affixes">
     <h3>Affixes</h3>
-    <div class="affix-quality" role="group" aria-label="Item quality">
-      <button v-for="[q, name] in QUALITIES" :key="q" type="button" :aria-pressed="quality === q" @click="setQuality(q)">{{ name }}</button>
+    <div class="affix-row">
+      <div class="affix-quality" role="group" aria-label="Item quality">
+        <button v-for="[q, name] in QUALITIES" :key="q" type="button" :aria-pressed="quality === q" @click="setQuality(q)">{{ name }}</button>
+      </div>
+      <label class="field-inline affix-ilvl" title="An item's level is the level of the monster or area that dropped it. Affixes need at least their own level, and some stop rolling above a maximum."
+        >Item level <input type="number" min="1" max="150" :value="ilvl" @change="setIlvl($event.target.value)" aria-label="Item level"
+      /></label>
     </div>
-    <label class="field-inline affix-ilvl" title="An item's level is the level of the monster or area that dropped it. Affixes need at least their own level, and some stop rolling above a maximum."
-      >Item level <input type="number" min="1" max="150" :value="ilvl" @change="setIlvl($event.target.value)" aria-label="Item level"
-    /></label>
     <p class="muted">
       From the game's affix tables, those that fit this base at item level {{ ilvl }}: {{ summary }}, one from each group.
       <template v-if="item.affixes.rules.procsOnly"> This base rolls procs only{{ item.affixes.rules.repeatProcs ? ", and the same one more than once" : "" }}.</template>
@@ -74,24 +76,20 @@ const summary = computed(() => {
       </li>
     </ul>
     <label class="search affix-search"><Icon name="search" /><input v-model="query" type="search" placeholder="Filter affixes, e.g. resist or Flamefront" aria-label="Filter affixes" /></label>
-    <div v-for="[kind, title, one] in KINDS" :key="kind" class="orb-add-controls">
-      <label class="orb-select">{{ title }}
-        <select v-model="choice[kind]" :disabled="full(kind)">
-          <option value="">{{ full(kind) ? `${title}: no more on this item` : `Choose ${one} (${options(kind).length})` }}</option>
-          <option v-for="a in options(kind)" :key="a.id" :value="a.id">{{ label(a) }}</option>
-        </select>
-      </label>
-      <button class="btn" :disabled="!choice[kind] || full(kind)" @click="add(kind)">Add</button>
-    </div>
+    <select v-for="[kind, title, one] in KINDS" :key="kind" v-model="choice[kind]" class="add-select" :aria-label="`Add ${one}`" :disabled="full(kind)" @change="(e) => { choice[kind] = e.target.value; add(kind); }">
+      <option value="">{{ full(kind) ? `${title}: no more on this item` : `+ Add ${one} (${options(kind).length})…` }}</option>
+      <option v-for="a in options(kind)" :key="a.id" :value="a.id">{{ label(a) }}</option>
+    </select>
   </div>
 </template>
 
 <style scoped>
-.affix-quality { display: inline-flex; gap: 4px; margin-bottom: 6px; }
+.affix-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.affix-quality { display: inline-flex; gap: 4px; }
 .affix-quality button { padding: 4px 10px; border: 1px solid var(--soft-border); border-radius: 6px; background: var(--field); color: var(--muted); }
 .affix-quality button[aria-pressed="true"] { color: var(--text); border-color: var(--gold); }
 .affix-search { margin: 6px 0; }
-.affix-ilvl { margin-left: 10px; }
+.affix-ilvl { margin: 0; }
 .affix-ilvl input { width: 64px; }
 .item-affixes select { max-width: 100%; }
 </style>

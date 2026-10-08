@@ -39,7 +39,7 @@ function add(g, e) {
 // How each is added in game, as a hint under its list.
 const NOTES = {
   trophy: "After its challenge, cubed with the charm.",
-  scroll: "One per item.",
+  scroll: "A scroll of enchantment, one per item.",
   shrine: "Crafting adds one set; blessing adds a second.",
   cycle: "From The Triune on Hell, cubed into the Corrupted Wormhole.",
   oil: "One per item, cubed with it.",
@@ -52,7 +52,7 @@ const NOTES = {
     <h3 v-if="!compact">Added bonuses</h3>
     <div class="bonus-rows">
       <div v-for="g in groups" :key="g.group" class="bonus-row">
-        <span class="bonus-label">{{ g.label }}</span>
+        <span class="bonus-label">{{ g.group === "scroll" ? "Scroll" : g.label }}</span>
         <div class="bonus-pick">
           <select v-if="g.max === 1" :aria-label="g.label" :value="g.chosen[0]?.b.id || ''" @change="choose(g, $event.target.value)">
             <option value="">None</option>
@@ -78,10 +78,10 @@ const NOTES = {
 </template>
 
 <style scoped>
-.bonus-rows { display: grid; gap: 12px; }
-.bonus-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 12px; align-items: start; }
-.bonus-label { padding-top: 9px; font-size: 0.8125rem; color: var(--muted); }
-.bonus-pick { display: grid; gap: 6px; min-width: 0; }
+.bonus-rows { display: grid; gap: 14px; }
+.bonus-row { display: grid; grid-template-columns: var(--editor-label, 8rem) minmax(0, 1fr); gap: 12px; align-items: start; }
+.bonus-label { padding-top: 8px; font-size: 0.8125rem; color: var(--muted); }
+.bonus-pick { display: grid; gap: 4px; min-width: 0; }
 .bonus-pick select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
 .bonus-pick small { font-size: 0.75rem; }
 .bonus-chosen { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
