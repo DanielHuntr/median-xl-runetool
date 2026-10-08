@@ -35,9 +35,18 @@ const decode = (s) => s.replace(/&(amp|lt|gt|quot|apos|#39);/g, (m, e) => ({ amp
 const textLines = (it) => (it.description_lines || []).map((l) => l.map(([t]) => t).join("").trim());
 const statText = (it) => textLines(it).slice(1).filter((l) => l && l !== it.type && !NOT_STATS.test(l));
 
-/** The parts of a character page: null if it isn't one. */
+/** The parts of a character page, or of NotArmory's "Export build" JSON (no items): null if it's neither. */
 export function parseArmoryPage(html) {
   const text = String(html || "");
+  // "Export build" (made for MedianDB's planner): class, level, skills, quests and the
+  // character's attributes in its "stats" text, but no items, signets or mercenary.
+  if (/^\s*\{/.test(text)) {
+    let exp;
+    try { exp = JSON.parse(text); } catch { return null; }
+    if (!exp || typeof exp !== "object" || !exp.class || !exp.skillPoints) return null;
+    const stat = (k) => { const m = new RegExp(`\\{\\{${k}\\}\\}=(\\d+)`).exec(String(exp.stats || "")); return m ? Number(m[1]) : null; };
+    return { exp, items: [], exportOnly: true, attrs: { strength: stat("strength"), dexterity: stat("dexterity"), vitality: stat("vitality"), energy: stat("energy") }, signets: null, merc: { spec: "", level: null } };
+  }
   const exp = jsonBlock(text, "notarmory-export"), items = jsonBlock(text, "notarmory-items");
   if (!exp || !Array.isArray(items)) return null;
   const stat = (k) => { const m = new RegExp(`na-stat-${k}"><dt>[^<]*</dt><dd>([^<]*)</dd>`).exec(text); return m ? decode(m[1]).replace(/[^\d]/g, "") : null; };
@@ -72,8 +81,9 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   }
   // Quests done, per difficulty.
   for (const [k, by] of Object.entries(exp.questsCompleted || {}))
-    for (const [d, done] of Object.entries(by || {})) if (done) b.quests[`${QUESTS[k] || k}.${d}`] = true;
-  const any = (d) => Object.keys(b.quests).some((k) => k.endsWith(`.${d}`));
+    // Not done is said too: the planner counts a quest as done unless it's marked otherwise.
+    for (const [d, done] of Object.entries(by || {})) b.quests[`${QUESTS[k] || k}.${d}`] = !!done;
+  const any = (d) => Object.entries(b.quests).some(([k, v]) => v && k.endsWith(`.${d}`));
   b.difficulty = any("hell") || any("nightmare") ? "Hell" : any("normal") ? "Nightmare" : "Normal";
 
   const all = catalog.all();
@@ -246,7 +256,14 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   // the class's starting values (the planner's, with nothing spent and nothing worn).
   const start = computeCharacter({ ...b, points: {}, buffs: [], gear: {}, inventory: [], merc: null, attrs: { strength: 0, dexterity: 0, vitality: 0, energy: 0 } }, { engine, catalog, planner }).charStats || {};
   for (const a of Object.keys(b.attrs)) if (page.attrs[a] != null) b.attrs[a] = Math.max(0, page.attrs[a] - (start[a] ?? 0));
+  // Signets eaten, where the page doesn't say (the "Export build" JSON): the points spent beyond
+  // what the levels and quests give.
+  if (page.signets == null) {
+    const sp = computeCharacter({ ...b, signets: 0 }, { engine, catalog, planner }).statPoints;
+    if (sp) b.signets = Math.max(0, Math.min(sp.signetCap, sp.spent - sp.fromLevels - sp.fromQuests));
+  }
   if (spare.length) b.spare = spare.slice(0, 120);
+  if (page.exportOnly) notes.push("The \"Export build\" text has no items: save the character's page itself to bring in its gear, charms and mercenary too.");
   return { build: b, name: exp.name || cls, missing: [...new Set(missing)], notes: [...new Set(notes)], runes };
 }
 

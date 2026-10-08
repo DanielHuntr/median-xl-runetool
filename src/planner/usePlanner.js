@@ -1065,7 +1065,7 @@ export function createPlanner(engine, catalog, planner) {
   // A character from its median-xl.com page (armory.js), opened like a shared build.
   function importArmory(text) {
     const page = parseArmoryPage(text);
-    if (!page) return { ok: false, reason: "That isn't a median-xl.com character page (its character data wasn't found)." };
+    if (!page) return { ok: false, reason: "That isn't a median-xl.com character page or its \"Export build\" text (no character data found)." };
     const r = armoryBuild(page, { engine, catalog, planner });
     if (!r) return { ok: false, reason: `The page's class (${page.exp.class}) isn't one the planner knows.` };
     if (!importFromHash(armoryHash(r))) return { ok: false, reason: "The character couldn't be opened in the planner." };

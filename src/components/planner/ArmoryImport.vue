@@ -51,9 +51,10 @@ function run() {
         <ol class="armory-steps">
           <li>On median-xl.com, open your character's page (NotArmory → Your Characters → the character).</li>
           <li>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> to save the page, then choose the file here. Or press <kbd>Ctrl</kbd>+<kbd>U</kbd> to see its source, then <kbd>Ctrl</kbd>+<kbd>A</kbd> and <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy it, and paste it below.</li>
+          <li>Skills only? The page's <b>Export build</b> button copies its skills, quests and attributes: paste that below (it has no items).</li>
         </ol>
         <label class="field">Saved page<input type="file" accept=".html,.htm,text/html" @change="fromFile" /></label>
-        <label class="field">Or paste the page source<textarea v-model="text" rows="5" spellcheck="false" placeholder="<!DOCTYPE html> …"></textarea></label>
+        <label class="field">Or paste the page source, or the Export build text<textarea v-model="text" rows="5" spellcheck="false" placeholder="<!DOCTYPE html> …"></textarea></label>
         <p class="muted armory-private">The page is read in your browser only: nothing is sent anywhere, and your account name and the page's session token aren't kept.</p>
         <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
         <div class="save-build-actions">

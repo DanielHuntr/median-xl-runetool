@@ -2242,3 +2242,23 @@ test("a median-xl.com character page imports: skills, quests, attributes, worn g
   }
   scope.stop();
 });
+
+test("NotArmory's Export build text imports skills, quests and attributes, and works out the signets", async () => {
+  const { engine, catalog } = await env();
+  const { parseArmoryPage, armoryBuild } = await load("/src/planner/armory.js");
+  const text = await readFile(new URL("./fixtures/armory-export.json", import.meta.url), "utf8");
+  const r = armoryBuild(parseArmoryPage(text), { engine, catalog, planner });
+  const b = r.build;
+  assert.deepEqual([b.cls, b.level, Object.keys(b.points).length], ["Amazon", 96, 15]);
+  assert.deepEqual(b.attrs, { strength: 70, dexterity: 408, vitality: 0, energy: 0 });
+  assert.equal(b.signets, 3, "478 points spent, 475 from levels: 3 signets");
+  // Quests not done are said so (the planner counts a quest done unless told): Lam Esen's Tome
+  // isn't, so its stat points aren't counted, and the points add up exactly.
+  assert.equal(b.quests["lam_esens_tome.normal"], false);
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const sp = computeCharacter(b, { engine, catalog, planner }).statPoints;
+  assert.equal(sp.available, sp.spent);
+  assert.deepEqual(b.gear, {});
+  assert(r.notes.some((n) => /no items/.test(n)));
+  assert.equal(parseArmoryPage("{\"hello\": 1}"), null);
+});
