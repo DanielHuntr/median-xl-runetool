@@ -90,9 +90,12 @@ export function createEngine(data) {
   }
   const node = (b, id) => nodesByClass[b.cls]?.get(id);
   const nodes = (b) => [...(nodesByClass[b.cls]?.values() || [])];
-  // A skill's level from points, or for one an item grants from outside the class's tree
-  // (character.js itemSkills), the item's level.
-  const pts = (b, id) => b.points[id] || b.itemSkills?.[id] || 0;
+  // A skill's Base Level: its points. One an item grants from outside the class's tree
+  // (character.js itemSkills, "+25 to Nova Charge") has Base Level 0 and the items' levels as
+  // bonus levels, as in game: Nova Charge from Bowzer's bow adds min(20 + 5 × blvl, 50)% of
+  // base Dexterity to Energy, 20% in game, not the 50% Base Level 25 would give.
+  const pts = (b, id) => b.points[id] || 0;
+  const itemLevel = (b, id) => (b.points[id] ? 0 : b.itemSkills?.[id] || 0);
   const skillName = (id) => skills[id]?.name || data.skillNames?.[id] || String(id).replace(/_/g, " ");
   const isInnate = (s) => s.tabName === "Innate" || /innate/i.test(s.id);
 
@@ -505,7 +508,7 @@ export function createEngine(data) {
         const helper = other ? null : game.helpers?.[ref];
         if (!other && !helper) return undefined;
         const ob = other ? pts(b, other) : 0;
-        const ol = ob > 0 ? ob + (b.soft?.[other] || 0) : 0;
+        const ol = ob > 0 || (other && itemLevel(b, other) > 0) ? levelOf(b, other, ob) : 0;
         const who = other ? skillName(other) : `helper skill ${ref}`;
         // A skill the character hasn't learned is read at level 0: its per-level values are 0
         // (gamecalc.js), its fixed ones still count. In game: Snake Bite's poison ignores
@@ -546,7 +549,8 @@ export function createEngine(data) {
   }
   // Effective Level. An unlearned skill's tooltip ("First Level") is Base Level 0 at
   // level 1: the game shows Askari Lightning's (299 + lvl) × (100 + blvl) / 100 as 300%.
-  const levelOf = (b, id, blvl) => (blvl > 0 ? blvl + (b.soft?.[id] || 0) : 1);
+  // A skill only items grant is at their level (with no Base Level).
+  const levelOf = (b, id, blvl) => (blvl > 0 ? blvl + (b.soft?.[id] || 0) : itemLevel(b, id) > 0 ? itemLevel(b, id) + (b.soft?.[id] || 0) : 1);
   const levelInputs = (b, id, blvl) => ({ blvl, lvl: levelOf(b, id, blvl), ulvl: b.level });
   // ---------- In-game evidence. Every line an in-game screenshot shows (data.fixtures) that the
   // planner reproduces exactly supports each gap it relies on (a formula variable, operator,
@@ -1185,7 +1189,7 @@ export function createEngine(data) {
     if (id === 'feral_escalation' && !(b.buffs || []).includes('werewolf_form')) return [];
     const blvl = pts(b, id);
     const soft = b.soft?.[id] || 0;
-    if (blvl + soft <= 0 && !isInnate({ ...skill, id })) return [];
+    if (blvl + soft + itemLevel(b, id) <= 0 && !isInnate({ ...skill, id })) return [];
     const out = [];
     const rows = (skills[id]?.constants || []).filter((r) => !r.variant).map((r) => [r.key, r.occ, r]);
     // Some skills (Stormlord, Spark of Hope, Tainted Blood) have game formulas
@@ -1302,7 +1306,7 @@ export function createEngine(data) {
     const g = skills[id]?.game;
     const blvl = pts(b, id);
     const W = WEAPON_POISON_STATS;
-    if (!g?.passive.some((p) => p.stat === W.min) || blvl + (b.soft?.[id] || 0) <= 0) return null;
+    if (!g?.passive.some((p) => p.stat === W.min) || blvl + (b.soft?.[id] || 0) + itemLevel(b, id) <= 0) return null;
     const e = gameEval(b, id, blvl);
     const rs = [W.min, W.max, W.length].map((st) => e.passive(st));
     if (rs.some((r) => !r.ok)) return null;
@@ -1313,7 +1317,7 @@ export function createEngine(data) {
   // Level breakdown for the UI: Base Level (hard points), bonus levels from gear,
   // Effective Level, Character Level, and the cap and required level with their sources.
   function levels(b, id) {
-    const base = pts(b, id), bonus = b.soft?.[id] || 0;
+    const base = pts(b, id), bonus = (b.soft?.[id] || 0) + itemLevel(b, id);
     return {
       base, bonus, effective: base + bonus, character: b.level,
       cap: maxLevel(b, id), capSource: capSource(id), required: requiredLevelSource(id, b),

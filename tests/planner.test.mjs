@@ -2305,6 +2305,13 @@ test("a character's public page (imported by name) works out its quests from the
   assert.equal(p.state.stage.Amazon, "Nightmare");
   assert.equal(p.build.value.level, 96);
   assert.equal(p.state.stages.Amazon.Endgame, undefined, "Endgame left for the player to plan");
+  // The character's attributes as its in-game character screen shows them: Cindercone's rolls
+  // read from "+5% to Strength" (the catalogue's range has no sign), and Nova Charge from the
+  // bow ("+25 to Nova Charge": Base Level 0, so 20% of base Dexterity as Energy, not 50%).
+  const total = (a) => p.character.value.attributes[a].total;
+  assert.deepEqual(["strength", "dexterity", "vitality", "energy"].map(total), [144, 558, 47, 41]);
+  p.build.value.buffs = ["nova_charge"];
+  assert.equal(total("energy"), 136);
   scope.stop();
 });
 

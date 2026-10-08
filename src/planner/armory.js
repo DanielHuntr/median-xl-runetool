@@ -144,12 +144,15 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   const rollsOf = (st, it) => {
     const r = catalog.resolve(st, level);
     if (!r?.ranges?.length) return null;
-    const pool = textLines(it), rolls = r.ranges.map(() => 1);
+    // The page writes a positive value with its sign where the catalogue's range has none
+    // ("+5% to Strength" for "(5 to 10)% to Strength", Cindercone): compared without it.
+    const unsigned = (l) => l.replace(/^\+(?=[\d(])/, "");
+    const pool = textLines(it).map(unsigned), rolls = r.ranges.map(() => 1);
     for (let i = 0; i < r.ranges.length;) {
       const line = r.ranges[i].line;
       let n = 0;
       while (r.ranges[i + n]?.line === line) n++;
-      const re = new RegExp(`^${line.replace(/\((-?[\d.]+) to (-?[\d.]+)\)/g, "\u0000").replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\u0000/g, "(-?[\\d.]+)")}$`);
+      const re = new RegExp(`^${unsigned(line).replace(/\((-?[\d.]+) to (-?[\d.]+)\)/g, "\u0000").replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\u0000/g, "(-?[\\d.]+)")}$`);
       const at = pool.findIndex((l) => re.test(l));
       if (at >= 0) {
         const m = re.exec(pool[at]);
