@@ -2148,3 +2148,36 @@ test("oils and corruptions come from the game's recipes, by the item's game type
   assert(options(ring, "corruption").some((c) => c.type === "ring"));
   assert.deepEqual(options(ring, "oil").map((o) => o.lines[0]), ["+5% to Fire Spell Damage"]);
 });
+
+test("skill order: points in the order spent, with the level each can come at; moving one before its prerequisite is flagged; shared links keep it", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const { decodeBuild } = await load("/src/planner/buildCode.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  p.setClass("Amazon");
+  p.reset();
+  p.state.autoLevel = true;
+  // Balance needs a point in Wild and Free first (skill_level:1:wild_and_free).
+  const first = "wild_and_free", later = "balance";
+  assert.equal(p.add(first, 3), 3);
+  assert.equal(p.add(later, 2), 2);
+  let rows = p.skillOrder();
+  assert.deepEqual(rows.map((r) => [r.id, r.count]), [[first, 3], [later, 2]]);
+  assert(rows[0].level <= rows[1].level, "levels rise with the points");
+  assert(rows.every((r) => !r.problem));
+  // Removing a point takes the latest one off.
+  p.remove(first, 1);
+  assert.deepEqual(p.skillOrder().map((r) => [r.id, r.count]), [[first, 2], [later, 2]]);
+  // Moving the later skill first breaks its prerequisite: flagged.
+  rows = p.skillOrder();
+  p.moveOrder(rows, 1, -1);
+  rows = p.skillOrder();
+  assert.equal(rows[0].id, later);
+  assert(rows[0].problem, "a point before its prerequisite is flagged");
+  // A shared link keeps the order.
+  const code = decodeBuild(p.buildCode());
+  assert.deepEqual(code.order, [later, later, first, first]);
+  scope.stop();
+});

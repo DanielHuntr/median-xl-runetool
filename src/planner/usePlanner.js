@@ -141,6 +141,9 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   if (raw.leftSkill === null || usable(raw.leftSkill)) b.leftSkill = raw.leftSkill ?? BASIC_ATTACK;
   if (usable(raw.rightSkill)) b.rightSkill = raw.rightSkill;
   b.skillBar = [...new Set(list(raw.skillBar).filter((id) => usable(id) && id !== BASIC_ATTACK))].slice(0, MAX_BAR);
+  // The order skill points were spent in (one entry per point), for planning a character's
+  // levelling; skillOrder() reconciles it with the points.
+  b.order = list(raw.order).filter((id) => typeof id === "string" && !!engine.node(b, id) && b.points[id] > 0).slice(0, 4000);
   b.merc = planner ? cleanMerc(raw.merc, planner, (x) => cleanItem(x, catalog)) : null;
   // The tiers its author gives it (overall, bossing, clearing, survival), shared with the build.
   const tiers = Object.fromEntries(AUTHOR_TIER_KEYS.filter((k) => AUTHOR_TIERS.includes(raw.authorTiers?.[k])).map((k) => [k, raw.authorTiers[k]]));
@@ -466,6 +469,7 @@ export function createPlanner(engine, catalog, planner) {
       }
       build.value.level = r.level;
       build.value.points[id] = (build.value.points[id] || 0) + 1;
+      (build.value.order ||= []).push(id);
       added++;
     }
     if (added) state.message = "";
@@ -483,12 +487,62 @@ export function createPlanner(engine, catalog, planner) {
         delete build.value.points[id];
         unslot(id);
       }
+      // The latest point spent in it comes off the order.
+      const order = build.value.order || [];
+      const at = order.lastIndexOf(id);
+      if (at >= 0) order.splice(at, 1);
       removed++;
     }
     if (removed) state.message = "";
     return removed;
   }
   const addMax = (id) => add(id, MAX_LEVEL);
+
+  // ---------- Skill order: the order the points were spent in, for levelling. Points a build
+  // got some other way (a shared link, a stage filled in) follow the recorded ones in an order
+  // that can be followed: each next point the one, in the build's own order, that breaks no rule
+  // and needs the lowest level (a skill's later points wait for the skills that raise its cap). Each point carries the lowest character level the build up to it
+  // needs (the game's points per level, quest points and skill level requirements) and, if
+  // spending it there breaks a rule (a prerequisite with no points yet), why.
+  function orderOf(b) {
+    const left = { ...b.points }, out = [], points = {};
+    for (const id of b.order || []) if (left[id] > 0) { out.push(id); left[id]--; points[id] = (points[id] || 0) + 1; }
+    const ids = () => Object.keys(left).filter((id) => left[id] > 0);
+    while (ids().length) {
+      let best = null;
+      for (const id of ids()) {
+        const at = { ...b, points: { ...points, [id]: (points[id] || 0) + 1 } };
+        if (engine.buildProblems(at).some((p) => p.id === id)) continue;
+        const level = engine.minRequiredLevel(at);
+        if (!best || level < best.level) best = { id, level };
+      }
+      const id = best?.id ?? ids()[0];
+      out.push(id); left[id]--; points[id] = (points[id] || 0) + 1;
+    }
+    return out;
+  }
+  function skillOrder() {
+    const b = build.value, order = orderOf(b), points = {}, rows = [];
+    let level = 1;
+    order.forEach((id, i) => {
+      points[id] = (points[id] || 0) + 1;
+      const at = { ...b, points: { ...points } };
+      level = Math.max(level, engine.minRequiredLevel(at));
+      const problem = engine.buildProblems(at).find((p) => p.skill === id || p.id === id || p.reason?.includes(engine.skillName(id)))?.reason || "";
+      const last = rows.at(-1);
+      if (last && last.id === id && !problem && !last.problem) { last.count++; last.to = points[id]; last.levelTo = level; last.end = i; }
+      else rows.push({ id, start: i, end: i, count: 1, to: points[id], level, levelTo: level, problem });
+    });
+    return rows;
+  }
+  // Moves a run of points (a row of skillOrder) before the previous row or after the next one.
+  function moveOrder(rows, index, dir) {
+    const order = orderOf(build.value), a = rows[index], bRow = rows[index + dir];
+    if (!a || !bRow) return;
+    const [first, second] = dir < 0 ? [bRow, a] : [a, bRow];
+    const before = order.slice(0, first.start), after = order.slice(second.end + 1);
+    build.value.order = [...before, ...order.slice(second.start, second.end + 1), ...order.slice(first.start, first.end + 1), ...after];
+  }
   // A skill with no points can't be used: take it out of the slots and the skill bar.
   function unslot(id) {
     const b = build.value;
@@ -1081,7 +1135,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
+    skillOrder, moveOrder, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
