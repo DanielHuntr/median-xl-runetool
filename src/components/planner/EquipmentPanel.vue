@@ -9,6 +9,13 @@ import { SLOTS } from "../../planner/items.js";
 import { superiorNames } from "../../planner/superior.js";
 
 const { catalog, state, build, character, swapWeapons, removeInventory, openPicker, openEditor, unequip, clearEquipment, say, tipOn } = usePlanner();
+// What sits in a socket, as art for the slot: a runeword's runes, else the gem, rune or jewel
+// put in it (the same pictures as the item editor); null for an empty socket.
+function socketArt(r, i) {
+  if (r.def.kind === "runeword") { const rune = r.def.runes?.[i]; return rune ? { src: catalog.images[rune] || "", name: `${rune} Rune` } : null; }
+  const s = r.sockets[i];
+  return s ? { icon: s.def.icon, src: s.def.img ? catalog.images[s.def.img] || "" : "", name: s.def.name } : null;
+}
 function suggestGear() {
   state.suggesting = true;
 }
@@ -87,8 +94,10 @@ const charmSummary = computed(() => {
             <span v-if="resolved(d.slot).socketCount" class="doll-sockets" aria-hidden="true"
               ><i
                 v-for="n in resolved(d.slot).socketCount"
-                :class="{ on: resolved(d.slot).def.kind === 'runeword' || resolved(d.slot).sockets[n - 1] }"
-              ></i
+                :key="n"
+                :class="{ on: socketArt(resolved(d.slot), n - 1) }"
+                :title="socketArt(resolved(d.slot), n - 1)?.name"
+                ><ItemIcon v-if="socketArt(resolved(d.slot), n - 1)" :icon="socketArt(resolved(d.slot), n - 1).icon || ''" :src="socketArt(resolved(d.slot), n - 1).src" /></i
             ></span>
           </template>
           <span v-else class="doll-empty">{{ label(d.slot) }}</span>

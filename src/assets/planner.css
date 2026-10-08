@@ -672,15 +672,34 @@
   flex-direction: column;
   gap: 2px;
 }
+/* Each socket as a small round window showing what's in it (an empty ring when nothing is). */
 .doll-sockets i {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--muted) 70%, transparent);
+  background: rgb(0 0 0 / 0.45);
+  overflow: hidden;
+}
+.doll-sockets i.on {
+  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+}
+.doll-slot .doll-sockets .item-icon,
+.doll-slot .doll-sockets svg.item-icon {
+  width: 13px;
+  height: 13px;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+}
+.doll-sockets .item-icon.missing {
+  border: 0;
+  background: var(--gold);
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  border: 1px solid var(--muted);
-}
-.doll-sockets i.on {
-  background: var(--gold);
-  border-color: var(--gold);
 }
 .item-icon {
   display: block;
