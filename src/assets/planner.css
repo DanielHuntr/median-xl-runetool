@@ -958,8 +958,9 @@
   /* The stats stay in view while the controls scroll past. */
   .editor-preview {
     position: sticky;
-    top: 0;
-    max-height: calc(min(86dvh, 900px) - 60px);
+    /* Stuck at the dialog's own margin (its 22px padding), not against its edge. */
+    top: 22px;
+    max-height: calc(min(86dvh, 900px) - 44px);
     overflow-y: auto;
   }
 }
