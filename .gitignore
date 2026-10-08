@@ -16,3 +16,7 @@ build-audit.json
 # Throwaway scripts from debugging sessions
 *-tmp.mjs
 *-tmp.cjs
+
+# A saved median-xl.com character page (personal: account name, session token)
+armory-sample.html
+armory-sample_files/

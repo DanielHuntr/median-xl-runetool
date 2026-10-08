@@ -9,6 +9,7 @@ import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
 import { againstTarget, typicalTarget } from "./target.js";
 import { encodeBuild, decodeBuild, plannerHash, takeOwnOpen } from "./buildCode.js";
+import { parseArmoryPage, armoryBuild, armoryHash } from "./armory.js";
 import { cleanMerc, mercCats, mercSpecs, suggestMercGear } from "./mercs.js";
 import { buildProfile, wantedStats, recommendForSlot, describeProfile, suggestSockets, suggestEnhancements } from "./recommend.js";
 import { createAvailability } from "./availability.js";
@@ -1037,6 +1038,15 @@ export function createPlanner(engine, catalog, planner) {
     url.hash = plannerHash(buildCode()) + (stage !== "Endgame" ? `&stage=${stage}` : "");
     return url.toString();
   }
+  // A character from its median-xl.com page (armory.js), opened like a shared build.
+  function importArmory(text) {
+    const page = parseArmoryPage(text);
+    if (!page) return { ok: false, reason: "That isn't a median-xl.com character page (its character data wasn't found)." };
+    const r = armoryBuild(page, { engine, catalog, planner });
+    if (!r) return { ok: false, reason: `The page's class (${page.exp.class}) isn't one the planner knows.` };
+    if (!importFromHash(armoryHash(r))) return { ok: false, reason: "The character couldn't be opened in the planner." };
+    return { ok: true, name: r.name, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, merc: !!r.build.merc, missing: r.missing, notes: r.notes };
+  }
   function importFromHash(hash = window.location.hash) {
     // #planner?skill=<id> (site search): show that skill in its class's tree. Each class
     // keeps its own build, so switching class loses nothing.
@@ -1136,7 +1146,7 @@ export function createPlanner(engine, catalog, planner) {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
     problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
-    skillOrder, moveOrder, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
+    skillOrder, moveOrder, importArmory, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,

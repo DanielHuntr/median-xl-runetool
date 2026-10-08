@@ -4,6 +4,7 @@ export const CHANGELOG = [
   {
     date: "2026-10-08",
     items: [
+      "Import your character from its median-xl.com page: skills, quests, attributes, worn gear (rares with their exact stats), charms and your mercenary, read in your browser only.",
       "Equipment slots show the rune, gem or jewel in each socket.",
       "Skill order in the planner's skill summary: the order you spend skill points, the character level each comes at, and warnings if a point comes before its prerequisite. Move rows to plan your levelling.",
       "Item Upgrades page: every affix, mystic orb, oil, corruption, shrine, scroll of enchantment, trophy and cycle, searchable, with what each goes on.",

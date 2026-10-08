@@ -2181,3 +2181,35 @@ test("skill order: points in the order spent, with the level each can come at; m
   assert.deepEqual(code.order, [later, later, first, first]);
   scope.stop();
 });
+
+test("a median-xl.com character page imports: skills, quests, attributes, worn gear, charms and the mercenary", async () => {
+  stubBrowser();
+  const { engine, catalog } = await env();
+  const { parseArmoryPage, armoryBuild } = await load("/src/planner/armory.js");
+  const html = await readFile(new URL("./fixtures/armory-page.html", import.meta.url), "utf8");
+  assert.equal(parseArmoryPage("<html>not a character</html>"), null);
+  const r = armoryBuild(parseArmoryPage(html), { engine, catalog, planner });
+  const b = r.build;
+  assert.deepEqual([b.cls, b.level, r.name], ["Amazon", 96, "Sample"]);
+  assert.equal(Object.keys(b.points).length, 15, "every skill matched by name");
+  assert.equal(b.points.wild_and_free, 25);
+  assert(b.quests["den_of_evil.nightmare"] && b.quests["golden_bird.normal"]);
+  // The page's attributes are the character's own: points spent are those less the class's start.
+  assert.deepEqual(b.attrs, { strength: 70, dexterity: 408, vitality: 0, energy: 0 });
+  assert.equal(b.signets, 3);
+  assert.equal(Object.keys(b.gear).length, 12, "all twelve worn slots, the swap set included");
+  const name = (slot) => catalog.resolve(b.gear[slot], b.level).def.name;
+  assert.equal(name("weapon2"), "Magebane");
+  assert.equal(b.gear.weapon2.variant, 3, "Long Bow (4): tier 4");
+  assert.equal(b.gear.weapon2.orbs.length, 5);
+  assert.deepEqual(catalog.resolve(b.gear.weapon2, 96).sockets.filter(Boolean).map((s) => s.def.name), ["Perfect Skull", "Perfect Skull", "Perfect Skull"]);
+  assert.equal(name("gloves"), "Enlightenment");
+  assert(b.gear.gloves.superior != null, "a superior runeword base");
+  // A rare: its own stat lines on its base, without the base's (no doubled elemental damage).
+  assert.equal(b.gear.weapon.ref, "custom");
+  assert(!/Adds 150-200 Fire Damage|Innate/.test(b.gear.weapon.custom.text));
+  assert(b.gear.weapon.custom.text.includes("+3 to Amazon Skill Levels"));
+  assert.deepEqual(b.inventory.map((x) => catalog.get(x.ref).name), ["Sunstone of the Twin Seas", "Sacred Sunstone"]);
+  assert.deepEqual([b.merc.spec, b.merc.level, Object.keys(b.merc.gear).length], ["Bloodmage", 96, 5]);
+  assert.deepEqual(r.missing, ["a magic jewel in a socket (the planner's sockets take catalogue items)"]);
+});

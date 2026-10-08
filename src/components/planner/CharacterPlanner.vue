@@ -14,6 +14,7 @@ import StatsPanel from "./StatsPanel.vue";
 import HoverCard from "./HoverCard.vue";
 import SkillChooser from "./SkillChooser.vue";
 import SaveBuildDialog from "./SaveBuildDialog.vue";
+import ArmoryImport from "./ArmoryImport.vue";
 import MercPanel from "./MercPanel.vue";
 import { MERC_ACTS, mercSpecs } from "../../planner/mercs.js";
 import { tabKeys } from "../../tabKeys.js";
@@ -31,7 +32,7 @@ const props = defineProps({ data: { type: Object, default: null } });
 const planner = shallowRef(null);
 const error = ref("");
 const copied = ref(false);
-const saving = ref(false);
+const saving = ref(false), importing = ref(false);
 const proxy = {};
 provide(PlannerKey, proxy);
 
@@ -301,6 +302,7 @@ const questsOpen = ref(false);
             <Icon name="panel" />Stats
           </button>
           <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
+          <button class="btn" @click="importing = true"><Icon name="backup" />Import character</button>
           <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
             <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
           </button>
@@ -452,6 +454,7 @@ const questsOpen = ref(false);
       <ItemEditorModal v-if="planner.state.editing" />
       <SkillChooser v-if="planner.state.skillChooser" />
       <SaveBuildDialog v-if="saving" @close="saving = false" />
+      <ArmoryImport v-if="importing" @close="importing = false" />
       <ItemPicker
         v-if="planner.state.picker"
         :key="planner.state.picker.mode + (planner.state.picker.slot || '') + (planner.state.picker.index ?? '')"
