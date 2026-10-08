@@ -6,12 +6,15 @@
 import { ref, onMounted } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { useRunetool } from "../../composables/useRunetool.js";
+import { RIMG, STD } from "../../data/index.js";
 const emit = defineEmits(["close"]);
 const { importArmory } = usePlanner();
 const { owned } = useRunetool();
 // Runes the character carries or stashes, into My Runes (the Runeword Finder): 1, or 2 for two or more.
 const runeCount = (r) => Object.values(r?.runes || {}).reduce((a, n) => a + n, 0);
 const runesAdded = ref(false);
+// Runes in the game's order (El, Eld, Tir …), the others after.
+const runeList = (r) => Object.entries(r?.runes || {}).sort(([a], [b]) => (STD.indexOf(a) + 1 || 99) - (STD.indexOf(b) + 1 || 99));
 function addRunes() {
   for (const [rune, n] of Object.entries(result.value.runes || {})) owned.value[rune] = Math.max(owned.value[rune] || 0, Math.min(2, n));
   runesAdded.value = true;
@@ -90,18 +93,27 @@ function run() {
         </div>
       </template>
       <template v-else>
-        <p class="armory-done" role="status">Imported <b>{{ result.name }}</b>: level {{ result.level }} {{ result.cls }}, with {{ result.items }} items{{ result.merc ? " and the mercenary" : "" }}.</p>
-        <p v-if="result.spare">{{ result.spare }} more item{{ result.spare === 1 ? "" : "s" }} from your inventory and stash are under <b>Spare items</b> in the equipment panel, to try on.</p>
-        <p v-if="runeCount(result)" class="armory-runes">
-          {{ runeCount(result) }} rune{{ runeCount(result) === 1 ? "" : "s" }} found ({{ Object.keys(result.runes).join(", ") }}).
-          <button v-if="!runesAdded" type="button" class="btn" @click="addRunes">Add to My Runes</button>
-          <span v-else class="muted">Added to My Runes in the Runeword Finder.</span>
-        </p>
-        <template v-if="result.missing.length">
-          <p>These couldn't be brought in, so add them yourself if you need them:</p>
-          <ul class="armory-missing"><li v-for="m in result.missing" :key="m">{{ m }}</li></ul>
-        </template>
-        <ul v-if="result.notes.length" class="armory-missing muted"><li v-for="n in result.notes" :key="n">{{ n }}</li></ul>
+        <div class="armory-result">
+          <p class="armory-done" role="status">Imported <b>{{ result.name }}</b>: level {{ result.level }} {{ result.cls }}, with {{ result.items }} items{{ result.merc ? " and the mercenary" : "" }}.</p>
+          <p v-if="result.spare">{{ result.spare }} item{{ result.spare === 1 ? "" : "s" }} from the inventory and stash {{ result.spare === 1 ? "is" : "are" }} under <b>Spare items</b> in the equipment panel, to try on.</p>
+          <section v-if="runeCount(result)" class="armory-runes" aria-labelledby="armory-runes-h">
+            <div class="armory-runes-head">
+              <h3 id="armory-runes-h">{{ runeCount(result) }} rune{{ runeCount(result) === 1 ? "" : "s" }} found</h3>
+              <button v-if="!runesAdded" type="button" class="btn" @click="addRunes">Add to My Runes</button>
+              <span v-else class="muted armory-added">Added to My Runes</span>
+            </div>
+            <ul class="armory-rune-list">
+              <li v-for="[rune, n] in runeList(result)" :key="rune">
+                <img v-if="RIMG[rune]" :src="RIMG[rune]" alt="" />{{ rune }}<span v-if="n > 1" class="muted">×{{ n }}</span>
+              </li>
+            </ul>
+          </section>
+          <template v-if="result.missing.length">
+            <p>These couldn't be brought in, so add them yourself if you need them:</p>
+            <ul class="armory-missing"><li v-for="m in result.missing" :key="m">{{ m }}</li></ul>
+          </template>
+          <ul v-if="result.notes.length" class="armory-notes muted"><li v-for="n in result.notes" :key="n">{{ n }}</li></ul>
+        </div>
         <div class="save-build-actions">
           <button type="button" class="btn gold" @click="close">Done</button>
         </div>
@@ -114,12 +126,21 @@ function run() {
 .armory-steps { margin: 4px 0 14px; padding-left: 20px; display: grid; gap: 6px; font-size: 0.875rem; line-height: 1.5; }
 .armory-import .field { margin: 0 0 12px; }
 .armory-import textarea { width: 100%; font: 0.75rem ui-monospace, monospace; resize: vertical; }
-.armory-private { font-size: 0.8125rem; }
+.armory-private { font-size: 0.8125rem; line-height: 1.45; margin: 8px 0 0; }
 .armory-by-name { display: flex; gap: 12px; align-items: flex-end; }
 .armory-by-name .field { flex: 1; margin: 0; }
 .armory-by-name input { width: 100%; }
 .armory-or { margin: 16px 0 4px; font-weight: 600; font-size: 0.875rem; }
-.armory-done { font-size: 0.9375rem; }
+.armory-result { display: grid; gap: 12px; font-size: 0.9375rem; line-height: 1.5; }
+.armory-result p { margin: 0; }
+.armory-runes { padding: 12px; border: 1px solid var(--border); border-radius: 6px; display: grid; gap: 10px; }
+.armory-runes-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.armory-runes h3 { margin: 0; font-size: 0.9375rem; font-weight: 600; }
+.armory-added { font-size: 0.8125rem; }
+.armory-rune-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.armory-rune-list li { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 4px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.8125rem; }
+.armory-rune-list img { width: 18px; height: 18px; }
+.armory-notes { margin: 0; padding: 2px 0 2px 12px; list-style: none; border-left: 2px solid var(--border); font-size: 0.8125rem; display: grid; gap: 3px; }
 .armory-missing { margin: 6px 0 12px; padding-left: 20px; font-size: 0.8125rem; display: grid; gap: 3px; }
 .save-build-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
 .save-build-error { color: #ef9990; }
