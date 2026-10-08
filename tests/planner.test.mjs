@@ -2307,3 +2307,20 @@ test("a character's public page (imported by name) works out its quests from the
   assert.equal(p.state.stages.Amazon.Endgame, undefined, "Endgame left for the player to plan");
   scope.stop();
 });
+
+test("a pierce the game's skill data gives isn't counted again from MedianDB's row for it", async () => {
+  const { engine } = await env();
+  const charStats = { strength: 500, dexterity: 500, vitality: 500, energy: 500, life: 5000, mana: 2000 };
+  const fx = (cls, points) => {
+    const id = Object.keys(points)[0];
+    return engine.skillStatEffects({ ...build(cls), points, soft: {}, charStats }, id).filter(([k]) => k.startsWith("enemy_"));
+  };
+  // Dragonlore: the game gives fire, cold and lightning pierce (Trinity Arrow + Barrage), once
+  // each and no poison; MedianDB's "Enemy Elemental Resistances" would add all four again.
+  const dragonlore = fx("Amazon", { dragonlore: 1, trinity_arrow: 23, barrage: 19 });
+  assert.deepEqual(dragonlore.map(([k, v]) => `${k}=${v}`).sort(), ["enemy_cold_resistance=42", "enemy_fire_resistance=42", "enemy_lightning_resistance=42"]);
+  for (const [cls, id, key] of [["Amazon", "thundermaiden", "enemy_lightning_resistance"], ["Druid", "howl_of_the_spirits", "enemy_cold_resistance"]]) {
+    if (!engine.skill(id) || engine.skill(id).class !== cls) continue;
+    assert.equal(fx(cls, { [id]: 20 }).filter(([k]) => k === key).length, 1, id);
+  }
+});

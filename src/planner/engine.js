@@ -1192,9 +1192,18 @@ export function createEngine(data) {
     // and tooltip placeholders but no community constant rows for their effects.
     for (const text of skill.effect || []) for (const match of text.matchAll(/\{\{(\w+)\}\}/g))
       if (!rows.some(r => r[0] === match[1])) rows.push([match[1], 0, null]);
-    // Stats only the game files give (a pierce or mastery MedianDB has no formula for).
-    for (const [key, st] of Object.entries(STAT_IDS))
-      if (!rows.some((r) => r[0] === key) && skills[id]?.game?.passive.some((p) => p.stat === st)) rows.push([key, 0, null]);
+    // Stats the game files give (a pierce or mastery), from them. A MedianDB row for the same
+    // stat under another name goes: "Enemy Elemental Resistances" on Dragonlore, beside the
+    // game's fire, cold and lightning pierce, would count them twice and add a poison pierce
+    // the game doesn't give.
+    const outputs = (key) => (SKILL_STAT_PAIRS[key] || data.stats[key]?.paired || []).map(([, k]) => k);
+    for (const [key, st] of Object.entries(STAT_IDS)) {
+      if (rows.some((r) => r[0] === key) || !skills[id]?.game?.passive.some((p) => p.stat === st)) continue;
+      const mine = outputs(key);
+      for (let i = rows.length - 1; i >= 0; i--)
+        if (!(rows[i][0] in STAT_IDS) && outputs(rows[i][0]).some((k) => mine.includes(k))) rows.splice(i, 1);
+      rows.push([key, 0, null]);
+    }
     for (const [rowKey, occ, row] of rows) {
       const paired = SKILL_STAT_PAIRS[rowKey] || data.stats[rowKey]?.paired;
       if (!paired) continue;
@@ -1267,8 +1276,9 @@ export function createEngine(data) {
         extra('maximum_cold_resistance', 5); extra('total_defense_multiplier', 20);
       }
       if (id === 'veneration_of_justice') {
+        // Only where its tooltip's Vitality and Energy didn't already give them (counted twice otherwise).
         const bonus = gameValue('ast1');
-        if (bonus != null) { extra('vitality', Math.max(30, bonus)); extra('energy', Math.max(30, bonus)); }
+        if (bonus != null) for (const key of ['vitality', 'energy']) if (!out.some((e) => e[0] === key)) extra(key, Math.max(30, bonus));
       }
     }
     if (id === 'raven_familiar') {
