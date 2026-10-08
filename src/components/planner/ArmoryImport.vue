@@ -3,7 +3,7 @@
 // the public page, api/char.js), or the saved page, its source or its "Export build" text, read in
 // this browser only. Opens the character in the planner like a shared build
 // (the player's own build for that class is kept to go back to), then says what couldn't come in.
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { useRunetool } from "../../composables/useRunetool.js";
 import { RIMG, STD } from "../../data/index.js";
@@ -27,11 +27,10 @@ function setHow(v) {
 }
 const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false), charName = ref("");
 const NAME = /^[A-Za-z0-9_-]{2,16}$/;
-// The character's page on median-xl.com (the site's home until a name is typed): opening it
-// signed in makes the public copy that fetching by name reads.
-const SITE = "https://www.median-xl.com/";
-const charUrl = (n) => `${SITE}char/${encodeURIComponent(n)}`;
-const pageUrl = computed(() => (NAME.test(charName.value.trim()) ? charUrl(charName.value.trim()) : SITE));
+// NotArmory on median-xl.com: "Your characters" (asks to sign in first), and a character's page.
+// Opening a character's page signed in makes the public copy that fetching by name reads.
+const ARMORY = "https://www.median-xl.com/acc/";
+const charUrl = (n) => `https://www.median-xl.com/char/${encodeURIComponent(n)}`;
 // A name median-xl.com has no public copy of: said with a link to the page that makes one.
 const noCopy = ref("");
 async function fromName() {
@@ -98,12 +97,17 @@ function run() {
             </span>
           </label>
           <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
-          <p v-else-if="noCopy" class="save-build-error" role="alert">
-            median-xl.com has no public copy of {{ noCopy }} yet.
-            <a :href="charUrl(noCopy)" target="_blank" rel="noopener noreferrer">Open {{ noCopy }} on median-xl.com</a>
-            while signed in, then fetch again. Single-player characters aren't on the site.
-          </p>
-          <p class="muted armory-hint">Online characters only, from the copy median-xl.com shows signed-out visitors. It makes one when someone signed in <a :href="pageUrl" target="_blank" rel="noopener noreferrer">opens the character there</a>, so it can be behind. Quests are worked out from the points spent; for the exact ones, import from your page.</p>
+          <div v-else-if="noCopy" class="armory-nocopy" role="alert">
+            <p><b>{{ noCopy }} can't be fetched yet.</b> NotArmory only shows a character to us once it has been opened there by someone signed in. To fix it:</p>
+            <ol>
+              <li>Check the name is spelled exactly as in game.</li>
+              <li>Sign in to <a :href="ARMORY" target="_blank" rel="noopener noreferrer">NotArmory</a> (median-xl.com).</li>
+              <li>Open <a :href="charUrl(noCopy)" target="_blank" rel="noopener noreferrer">{{ noCopy }}'s page</a> there.</li>
+              <li>Come back and press <b>Fetch</b> again.</li>
+            </ol>
+            <p class="muted">Single-player characters aren't on NotArmory, so they can't be imported.</p>
+          </div>
+          <p class="muted armory-hint">For online characters on <a :href="ARMORY" target="_blank" rel="noopener noreferrer">NotArmory</a>. It fetches the copy shown there, which can be behind the game. Quests are estimated from the points spent; for the exact ones, use <b>From your page</b>.</p>
         </form>
         <div v-else class="armory-pane">
           <ol class="armory-steps">
@@ -158,6 +162,10 @@ function run() {
 .armory-row { display: flex; gap: 10px; margin-top: 4px; }
 .armory-row input { flex: 1; min-width: 0; }
 .armory-hint { font-size: 0.8125rem; line-height: 1.45; }
+.armory-nocopy { padding: 12px 14px; border: 1px solid #ef999066; border-radius: 6px; background: #ef99900f; font-size: 0.875rem; line-height: 1.5; display: grid; gap: 8px; }
+.armory-nocopy p, .armory-nocopy ol { margin: 0; }
+.armory-nocopy ol { padding-left: 20px; display: grid; gap: 2px; }
+.armory-nocopy .muted { font-size: 0.8125rem; }
 .armory-pane a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 .armory-pane .save-build-error { font-size: 0.875rem; }
 .armory-pane .save-build-actions { margin-top: 0; }
