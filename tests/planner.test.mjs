@@ -2119,3 +2119,32 @@ test("the off-hand quiver suggested matches the weapon in hand: arrows for a bow
   assert.equal(p.build.value.gear.offhand?.ref, arrows.key);
   scope.stop();
 });
+
+test("oils and corruptions come from the game's recipes, by the item's game types", async () => {
+  const { catalog } = await env();
+  const { bonusFits, gameTypes, BONUS_GROUPS } = await load("/src/planner/items.js");
+  const options = (r, group) => BONUS_GROUPS.find((g) => g.group === group).list.map((b) => ({ ...b, group })).filter((b) => bonusFits(b, r.def, { twoHanded: r.twoHanded, types: r.types }));
+  const base = (name, label) => {
+    const d = catalog.all().find((x) => x.kind === "base" && x.name === name);
+    const v = d.variants.findIndex((x) => x.label === label);
+    return catalog.resolve({ ref: d.key, variant: v }, 150);
+  };
+  // An elemental weapon takes Oil of Luck's attack speed, not the weapon's enhanced damage.
+  const axe = base("Battle Axe", "Sacred");
+  assert.deepEqual(options(axe, "oil").map((o) => o.lines[0]).sort(), ["+10% to Fire Spell Damage", "20% Attack Speed"]);
+  const sword = base("Short Sword", "Sacred");
+  assert(options(sword, "oil").some((o) => o.lines.includes("+20% Enhanced Damage")));
+  const plate = base("Plate Mail", "Sacred");
+  assert.deepEqual(options(plate, "oil").map((o) => o.lines[0]), ["+20% Enhanced Defense"]);
+  // Corruption: sacred items only; an elemental weapon's band outcomes take the place of the general ones.
+  assert.equal(options(base("Plate Mail", "Tier 1"), "corruption").length, 0, "tier 1 can't be corrupted");
+  const plateC = options(plate, "corruption"), axeC = options(axe, "corruption");
+  assert(plateC.length > 40, `${plateC.length} outcomes on sacred armour`);
+  assert(axeC.some((c) => c.lines.includes("10% Innate Elemental Damage")));
+  assert(!plateC.some((c) => c.lines.includes("10% Innate Elemental Damage")));
+  assert(gameTypes(plate.def, { label: "Sacred" }).has("ssgl"));
+  // A ring counts as sacred, and has its own outcomes.
+  const ring = catalog.resolve({ ref: catalog.all().find((d) => d.slotType === "ring" && d.kind === "unique").key, variant: 0 }, 150);
+  assert(options(ring, "corruption").some((c) => c.type === "ring"));
+  assert.deepEqual(options(ring, "oil").map((o) => o.lines[0]), ["+5% to Fire Spell Damage"]);
+});

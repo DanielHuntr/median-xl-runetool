@@ -1324,5 +1324,961 @@
     "Maximum Mana +(1 to 3)%"
    ]
   }
+ ],
+ "oils": [
+  {
+   "id": "oil:conjuration:weap",
+   "name": "Oil of Conjuration",
+   "type": "weap",
+   "on": "Weapon",
+   "order": 0,
+   "lines": [
+    "+10% to Fire Spell Damage",
+    "+10% to Lightning Spell Damage",
+    "+10% to Cold Spell Damage",
+    "+10% to Poison Spell Damage",
+    "+10% to Physical/Magic Spell Damage"
+   ]
+  },
+  {
+   "id": "oil:luck:elex",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "elex",
+   "on": "Battle Axe, Crystal Sword or 9 other bases",
+   "order": 1,
+   "lines": [
+    "20% Attack Speed",
+    "100% Bonus to Attack Rating"
+   ]
+  },
+  {
+   "id": "oil:luck:weap",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "weap",
+   "on": "Weapon",
+   "order": 2,
+   "lines": [
+    "+20% Enhanced Damage",
+    "100% Bonus to Attack Rating"
+   ]
+  },
+  {
+   "id": "oil:luck:armo",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "armo",
+   "on": "Armor",
+   "order": 3,
+   "lines": [
+    "+20% Enhanced Defense",
+    "Physical Resist 1%"
+   ]
+  },
+  {
+   "id": "oil:luck:amul",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "amul",
+   "on": "Amulet",
+   "order": 4,
+   "lines": [
+    "+1 to All Skills"
+   ]
+  },
+  {
+   "id": "oil:luck:ring",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "ring",
+   "on": "Ring",
+   "order": 5,
+   "lines": [
+    "+5% to Fire Spell Damage",
+    "+5% to Lightning Spell Damage",
+    "+5% to Cold Spell Damage",
+    "+5% to Poison Spell Damage",
+    "+5% to Physical/Magic Spell Damage"
+   ]
+  },
+  {
+   "id": "oil:luck:misl",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "misl",
+   "on": "Quiver",
+   "order": 6,
+   "lines": [
+    "5% to Strength",
+    "5% to Dexterity",
+    "5% to Energy",
+    "5% to Vitality"
+   ]
+  },
+  {
+   "id": "oil:luck:jewl",
+   "name": "Oil of Luck or Greater Luck",
+   "type": "jewl",
+   "on": "Jewel",
+   "order": 7,
+   "lines": [
+    "+2 to Strength",
+    "+2 to Dexterity",
+    "+2 to Energy",
+    "+2 to Vitality"
+   ]
+  }
+ ],
+ "corruptions": [
+  {
+   "id": "corruption:ssgl:maximum-fire-resist-1-maximum-lightning-resist-1-maximum-cold-resist-1-maximum-poison-resist-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Fire Resist +1%",
+    "Maximum Lightning Resist +1%",
+    "Maximum Cold Resist +1%",
+    "Maximum Poison Resist +1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:fire-absorb-1-lightning-absorb-1-cold-absorb-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Fire Absorb 1%",
+    "Lightning Absorb 1%",
+    "Cold Absorb 1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:elex:10-innate-elemental-damage",
+   "type": "elex",
+   "on": "Battle Axe, Crystal Sword or 9 other bases",
+   "lines": [
+    "10% Innate Elemental Damage"
+   ],
+   "after": [
+    [],
+    [
+     "ring",
+     "amu"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:5-deadly-strike",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "5% Deadly Strike"
+   ],
+   "after": [
+    [
+     "elex"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:2-chance-to-avoid-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "2% Chance to Avoid Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-enemy-fire-resistance-10-to-enemy-lightning-resistance-10-to-enemy-cold-resistance-10-to-enemy-poison-resistance",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "-10% to Enemy Fire Resistance",
+    "-10% to Enemy Lightning Resistance",
+    "-10% to Enemy Cold Resistance",
+    "-10% to Enemy Poison Resistance"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-life-5",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Life +5%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-strength-10-to-dexterity-10-to-energy-10-to-vitality",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "10% to Strength",
+    "10% to Dexterity",
+    "10% to Energy",
+    "10% to Vitality"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:1-to-all-skills",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+1 to All Skills"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:25-magic-find",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "25% Magic Find"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ring:magic-absorb-1",
+   "type": "ring",
+   "on": "Ring",
+   "lines": [
+    "Magic Absorb 1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:amu:magic-absorb-1",
+   "type": "amu",
+   "on": "Amulet (the usual one)",
+   "lines": [
+    "Magic Absorb 1%"
+   ],
+   "after": [
+    [
+     "ring"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:ethereal",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Ethereal"
+   ],
+   "after": [
+    [
+     "ring",
+     "amu",
+     "elex"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:60-spell-focus",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+60 Spell Focus"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-fire-resist-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Fire Resist +1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-cold-resist-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Cold Resist +1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-lightning-resist-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Lightning Resist +1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-poison-resist-1",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Poison Resist +1%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:5-to-experience-gained",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+5% to Experience Gained"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:slow-target-5",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Slow Target 5%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:activation-frequency-8",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Activation Frequency 8%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:elex:2-life-on-striking",
+   "type": "elex",
+   "on": "Battle Axe, Crystal Sword or 9 other bases",
+   "lines": [
+    "+2 Life on Striking"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:weap:15-life-stolen-per-hit",
+   "type": "weap",
+   "on": "Weapon",
+   "lines": [
+    "15% Life stolen per Hit"
+   ],
+   "after": [
+    [
+     "elex"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:shie:1-base-block-chance",
+   "type": "shie",
+   "on": "Shield",
+   "lines": [
+    "1% Base Block Chance"
+   ],
+   "after": [
+    [
+     "elex",
+     "weap"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:15-to-strength-15-to-energy-15-to-dexterity-15-to-vitality",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+15 to Strength",
+    "+15 to Energy",
+    "+15 to Dexterity",
+    "+15 to Vitality"
+   ],
+   "after": [
+    [
+     "elex",
+     "weap",
+     "shie"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-enemy-poison-resistance",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "-10% to Enemy Poison Resistance"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-enemy-cold-resistance",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "-10% to Enemy Cold Resistance"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:35-to-strength",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+35 to Strength"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:35-to-dexterity",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+35 to Dexterity"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:35-to-vitality",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+35 to Vitality"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:35-to-energy",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+35 to Energy"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-enemy-lightning-resistance",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "-10% to Enemy Lightning Resistance"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-enemy-fire-resistance",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "-10% to Enemy Fire Resistance"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-fire-spell-damage-10-to-lightning-spell-damage-10-to-cold-spell-damage-10-to-poison-spell-damage-10-to-physical-magic-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+10% to Fire Spell Damage",
+    "+10% to Lightning Spell Damage",
+    "+10% to Cold Spell Damage",
+    "+10% to Poison Spell Damage",
+    "+10% to Physical/Magic Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:fire-resist-10-lightning-resist-10-cold-resist-10-poison-resist-10",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Fire Resist +10%",
+    "Lightning Resist +10%",
+    "Cold Resist +10%",
+    "Poison Resist +10%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:curse-length-reduction-15",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Curse Length Reduction 15%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-summon-damage-15-to-summon-attack-rating",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+10% to Summon Damage",
+    "+15% to Summon Attack Rating"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-to-summon-life-5-to-summon-elemental-resistances",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+10% to Summon Life",
+    "+5% to Summon Elemental Resistances"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:10-hit-recovery-10-block-speed-10-cast-speed-10-attack-speed",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "10% Hit Recovery",
+    "10% Block Speed",
+    "10% Cast Speed",
+    "10% Attack Speed"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:maximum-mana-10",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Maximum Mana +10%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:weapon-physical-damage-40",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Weapon Physical Damage +40%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:7-to-8-to-minimum-damage-7-to-8-to-maximum-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+(7 to 8) to Minimum Damage",
+    "+(7 to 8) to Maximum Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:physical-resist-5",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Physical Resist 5%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:elex:5-innate-elemental-damage",
+   "type": "elex",
+   "on": "Battle Axe, Crystal Sword or 9 other bases",
+   "lines": [
+    "5% Innate Elemental Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:weap:7-to-8-to-minimum-damage-7-to-8-to-maximum-damage",
+   "type": "weap",
+   "on": "Weapon",
+   "lines": [
+    "+(7 to 8) to Minimum Damage",
+    "+(7 to 8) to Maximum Damage"
+   ],
+   "after": [
+    [
+     "elex"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:5-innate-elemental-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "5% Innate Elemental Damage"
+   ],
+   "after": [
+    [
+     "elex",
+     "weap"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:poison-length-reduction-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Poison Length Reduction 20%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:poison-resist-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Poison Resist +20%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:fire-resist-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Fire Resist +20%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:cold-resist-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Cold Resist +20%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:lightning-resist-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Lightning Resist +20%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:13-to-physical-magic-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+13% to Physical/Magic Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:13-to-poison-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+13% to Poison Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:13-to-fire-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+13% to Fire Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:13-to-cold-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+13% to Cold Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:13-to-lightning-spell-damage",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+13% to Lightning Spell Damage"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:15-movement-speed",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "15% Movement Speed"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ct2w:20-hit-recovery",
+   "type": "ct2w",
+   "on": "Sacred two-handed weapon",
+   "lines": [
+    "20% Hit Recovery"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:20-block-speed",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "20% Block Speed"
+   ],
+   "after": [
+    [
+     "ct2w"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:20-hit-recovery",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "20% Hit Recovery"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:20-attack-speed",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "20% Attack Speed"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:20-cast-speed",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "20% Cast Speed"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:150-to-mana",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+150 to Mana"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:150-to-life",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+150 to Life"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:regenerate-mana-10",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Regenerate Mana +10%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:50-life-regenerated-per-second",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+50 Life Regenerated per Second"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:slows-attacker-by-5",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Slows Attacker by 5%"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ring:20-to-strength-20-to-dexterity",
+   "type": "ring",
+   "on": "Ring",
+   "lines": [
+    "+20 to Strength",
+    "+20 to Dexterity"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:amu:20-to-strength-20-to-dexterity",
+   "type": "amu",
+   "on": "Amulet (the usual one)",
+   "lines": [
+    "+20 to Strength",
+    "+20 to Dexterity"
+   ],
+   "after": [
+    [
+     "ring"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:requirements-20",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "Requirements -20%"
+   ],
+   "after": [
+    [
+     "ring",
+     "amu"
+    ]
+   ]
+  },
+  {
+   "id": "corruption:ssgl:30-gold-find",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "30% Gold Find"
+   ],
+   "after": [
+    []
+   ]
+  },
+  {
+   "id": "corruption:ssgl:3-to-light-radius",
+   "type": "ssgl",
+   "on": "Sacred item",
+   "lines": [
+    "+3 to Light Radius"
+   ],
+   "after": [
+    []
+   ]
+  }
  ]
 }

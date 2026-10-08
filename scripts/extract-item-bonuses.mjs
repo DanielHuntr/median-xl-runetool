@@ -10,7 +10,17 @@
 //   - shrines: the preset bonuses a shrine adds to a sacred rare, crafted or honorific item
 //     (crafting and blessing add the same set), per item category, from the plain recipe
 //     (without Oil of Intensity, which narrows the same ranges upwards);
-//   - cycles: Small, Medium and Large Cycles cubed into the Corrupted Wormhole.
+//   - cycles: Small, Medium and Large Cycles cubed into the Corrupted Wormhole;
+//   - oils: Oil of Luck, Greater Luck and Conjuration on a kept item (one per item, "Already
+//     Upgraded"), each by the game item type the recipe takes ("weap", "elex" for elemental
+//     weapons, "armo", "ring", "amul", "misl" for quivers, "jewl"), in recipe order: the game
+//     uses the first recipe that matches, so an elemental weapon gets Oil of Luck's attack speed
+//     rather than the weapon's enhanced damage;
+//   - corruptions: what a corrupted item can turn out to have. A Corrupted Crystal on a sacred
+//     item ("ssgl") marks it corrupted and rolls a hidden number (stat 498); an Oil of Craft then
+//     reveals the outcome that number's band gives ("(Cube with Oil of Craft to Reveal)"). Each
+//     band lists outcomes by item type in recipe order, the first that fits applying. An outcome
+//     keeps, for each band it appears in, the item types listed before it there.
 // Lines as the cube engine writes them, with "(a-b)" ranges as the item text's "(a to b)";
 // hidden markers (Already Enchanted, a trophy's "- Name -") and repeated lines dropped.
 //
@@ -27,7 +37,8 @@ const tidy = (lines) => [...new Set(lines
     .replace(/^(\d+)% Avoid Damage$/, "$1% Chance to Avoid Damage")))];
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const trophies = [], scrolls = [], shrines = [], cycles = [];
+const trophies = [], scrolls = [], shrines = [], cycles = [], oils = [];
+const corruptionByKey = new Map(), bandTypes = new Map();
 const WEAPON_SCROLL = { Staff: "Staves", Mace: "Maces", Hammer: "Hammers", Javelin: "Javelins", Spear: "Spears" };
 const SLOT_SCROLL = { "Body armor": "body", Gloves: "gloves", Boots: "boots", Belt: "belt", Helm: "helm", Ring: "ring", Amulet: "amulet" };
 const shrineSeen = new Set();
@@ -62,14 +73,38 @@ for (const r of cube.recipes) {
     shrines.push({ id: `shrine:${slug(shrine[1])}:${slug(cat[1])}`, shrine: shrine[1], category: cat[1], lines: tidy(out.lines) });
     continue;
   }
+  // Oils: a kept item + Oil of Luck, Greater Luck or Conjuration ("Already Upgraded").
+  const oil = /^Oil of (Luck|Greater Luck|Conjuration)$/.exec(second || "");
+  if (d.inputs.length === 2 && oil && out.name === first && out.lines.includes("Already Upgraded")) {
+    const lines = tidy(out.lines.filter((l) => l !== "Already Upgraded"));
+    const type = r.inputs[0].key;
+    // Greater Luck adds the same as Luck (it also hands back an Oil of Luck): one option for both.
+    const same = oils.find((o) => o.type === type && o.lines.join("|") === lines.join("|"));
+    if (same) { if (!same.name.includes(oil[1])) same.name += ` or ${oil[1]}`; continue; }
+    oils.push({ id: `oil:${slug(oil[1])}:${type}`, name: `Oil of ${oil[1]}`, type, on: first, order: oils.length, lines });
+    continue;
+  }
+  // Corruption outcomes, revealed with an Oil of Craft (by the hidden number's band, op 16 on stat 498).
+  if (d.inputs.length === 2 && second === "Oil of Craft" && out.lines.some((l) => /to Reveal\)?$/.test(l)) && r.op?.[0] === 16 && r.op[1] === 498) {
+    const lines = tidy(out.lines.filter((l) => !/to Reveal\)?$/.test(l)));
+    const type = r.inputs[0].key, band = r.op[2];
+    const before = bandTypes.get(band) || [];
+    const key = `${type}|${lines.join("|")}`;
+    const c = corruptionByKey.get(key) || { id: `corruption:${type}:${slug(lines.join(" "))}`, type, on: first, lines, after: [] };
+    c.after.push([...before]);
+    corruptionByKey.set(key, c);
+    bandTypes.set(band, [...before, type]);
+    continue;
+  }
   // Cycles into the Corrupted Wormhole.
   if (d.inputs.length === 2 && /^(Small|Medium|Large) Cycle/.test(second || "") && out.name === first) {
     const lines = tidy(out.lines);
     cycles.push({ id: `cycle:${slug(`${second.split(" (")[0]} ${lines.filter((l) => !/Required Level/.test(l)).join(" ")}`)}`, charm: r.inputs[0].key, name: second.split(" (")[0], lines });
   }
 }
-const ids = [...trophies, ...scrolls, ...shrines, ...cycles].map((x) => x.id);
+const corruptions = [...corruptionByKey.values()];
+const ids = [...trophies, ...scrolls, ...shrines, ...cycles, ...oils, ...corruptions].map((x) => x.id);
 const dup = ids.find((id, i) => ids.indexOf(id) !== i);
 if (dup) throw new Error(`Two bonuses share the id ${dup}`);
-writeFileSync(new URL("../src/data/item-bonuses.json", import.meta.url), JSON.stringify({ patch: data.patch, source: "cubemain.bin (via src/data/cube-main.json)", trophies, scrolls, shrines, cycles }, null, 1) + "\n");
-console.log(`extract-item-bonuses: ${trophies.length} trophies, ${scrolls.length} scrolls of enchantment, ${shrines.length} shrine bonuses, ${cycles.length} cycles`);
+writeFileSync(new URL("../src/data/item-bonuses.json", import.meta.url), JSON.stringify({ patch: data.patch, source: "cubemain.bin (via src/data/cube-main.json)", trophies, scrolls, shrines, cycles, oils, corruptions }, null, 1) + "\n");
+console.log(`extract-item-bonuses: ${trophies.length} trophies, ${scrolls.length} scrolls of enchantment, ${shrines.length} shrine bonuses, ${cycles.length} cycles, ${oils.length} oils, ${corruptions.length} corruption outcomes`);

@@ -71,6 +71,8 @@ export const BONUS_GROUPS = [
   { group: "scroll", label: "Scroll of enchantment", max: 1, list: BONUSES.scrolls },
   { group: "shrine", label: "Shrine", max: 2, list: BONUSES.shrines },
   { group: "cycle", label: "Cycles", max: 99, list: BONUSES.cycles },
+  { group: "oil", label: "Oil", max: 1, list: BONUSES.oils || [] },
+  { group: "corruption", label: "Corruption", max: 1, list: BONUSES.corruptions || [] },
 ];
 const BONUS_BY_ID = new Map(BONUS_GROUPS.flatMap((g) => g.list.map((b) => [b.id, { ...b, group: g.group }])));
 export const bonusById = (id) => BONUS_BY_ID.get(id);
@@ -78,8 +80,34 @@ const shrineCategory = (slotType, twoHanded) =>
   slotType === "weapon" ? (twoHanded ? "two-handed weapon" : "one-handed weapon")
     : slotType === "body" ? "body armor"
     : ["shield", "helm", "gloves", "boots", "belt"].includes(slotType) ? "shield or small armor" : null;
-// Whether a bonus can go on this item (def from the catalogue, twoHanded from its lines).
-export function bonusFits(b, def, { twoHanded = false, honorific = false } = {}) {
+// The game's item types for an item (the cube recipes that add oils and corruptions name them):
+// its base's types at its tier (affixes.json, from the game files), a tiered unique's at the
+// tier it's at, sacred uniques' and set items' at Sacred (all sets are sacred), jewellery's own.
+// A quiver isn't a base item: the game's "misl".
+export function gameTypes(def, { label = "", variant = 0, baseDef = null } = {}) {
+  if (def.slotType === "quiver") return new Set(["misl"]);
+  if (["ring", "amulet", "jewel"].includes(def.slotType)) return new Set(AFFIXES.jewellery[def.slotType] || []);
+  const base = baseDef?.name || def.base || def.name;
+  const tier = label || (def.kind === "sacred" || def.kind === "set" ? "Sacred" : def.kind === "unique" ? `Tier ${variant + 1}` : "");
+  const t = AFFIXES.bases[base]?.[tier] || AFFIXES.bases[base]?.Sacred || [];
+  return new Set(t);
+}
+// The plain Amulet's own code ("amu"): the recipes that name it take any amulet in the planner.
+const typeOf = (types, def, t) => types.has(t) || (t === "amu" && def.slotType === "amulet");
+// An oil or corruption fits when the item has the recipe's type and no recipe the game reads
+// first fits instead (oils: the same oil's earlier recipes; corruptions: in any one of the
+// hidden-number bands it appears in, none of the types listed before it). Only a sacred item
+// can be corrupted (the Corrupted Crystal takes one).
+function cubeFits(b, def, types) {
+  if (!typeOf(types, def, b.type)) return false;
+  if (b.group === "oil") return !BONUSES.oils.some((o) => o.order < b.order && o.name === b.name && typeOf(types, def, o.type));
+  if (b.group === "corruption") return types.has("ssgl") && b.after.some((before) => !before.some((t) => typeOf(types, def, t)));
+  return false;
+}
+// Whether a bonus can go on this item (def from the catalogue, twoHanded from its lines,
+// types its game item types: gameTypes).
+export function bonusFits(b, def, { twoHanded = false, honorific = false, types = null } = {}) {
+  if (b.group === "oil" || b.group === "corruption") return cubeFits(b, def, types || gameTypes(def));
   const charm = def.key?.startsWith("inv:") ? def.key.slice(4) : null;
   if (b.group === "trophy" || b.group === "cycle") return def.kind === "charm" && b.charm === charm;
   if (b.group === "scroll")
@@ -413,7 +441,8 @@ export function createCatalog(app, planner) {
     // Added bonuses (trophy, scroll, shrines, cycles): those that fit, at most a group's limit.
     const twoHanded = isTwoHanded(lines);
     const taken = {};
-    const addons = (state.addons || []).map(bonusById).filter((b) => b && bonusFits(b, def, { twoHanded, honorific: !!state.honorific && def.kind === "base" && !def.mastercrafted })
+    const types = gameTypes(def, { label, variant: state.variant || 0, baseDef });
+    const addons = (state.addons || []).map(bonusById).filter((b) => b && bonusFits(b, def, { twoHanded, honorific: !!state.honorific && def.kind === "base" && !def.mastercrafted, types })
       && (taken[b.group] = (taken[b.group] || 0) + 1) <= BONUS_GROUPS.find((g) => g.group === b.group).max);
     for (const b of addons) lines = [...lines, ...b.lines];
 
@@ -500,7 +529,7 @@ export function createCatalog(app, planner) {
     for (const a of affixes?.picked || []) head.reqLevel = Math.max(head.reqLevel, a.req);
     head.reqLevel += reqAdd;
     head.reqLevel += orbs.reduce((n, o) => n + o.def.reqLevel, 0);
-    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded, addons, cls: lineClass(lines), superior, canBeSuperior, honorific, mastercrafted, affixes };
+    return { state, def, baseDef, label, lines: rolled, ranges, head, parsed, sockets, orbs, maxSockets, socketCount, twoHanded, addons, cls: lineClass(lines), superior, canBeSuperior, honorific, mastercrafted, affixes, types };
   }
 
   const setById = (id) => app.SETD.find((s) => s.id === id);
