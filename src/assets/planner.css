@@ -1824,9 +1824,10 @@
 #item-editor:focus {
   outline: none;
 }
+/* The editor takes focus when it opens so the keyboard starts inside it; it isn't a control, so
+   it draws no ring (one hugged its edges, crowding the Stats card). Its controls keep theirs. */
 #item-editor:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
+  outline: none;
 }
 .fix-btn {
   margin-left: 8px;
