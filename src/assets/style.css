@@ -17,6 +17,8 @@
   --stats: #a3a3ec;
   --good: #86d886;
   --warn: #e8a860;
+  /* Danger (Delete, Reset): readable on this theme's panels. */
+  --red: #f08a80;
   --bad: #ff6f6f;
   --shade: #000b;
   --serif: "Alegreya SC", Georgia, serif;
@@ -41,6 +43,8 @@
   --stats: #4d4c91;
   --good: #326b3b;
   --warn: #93401f;
+  /* Danger (Delete, Reset): readable on this theme's panels. */
+  --red: #a8352c;
   --bad: #b3261e;
   --shade: #201b1670;
   /* Darker D2 colours so yellow and orange stay readable on a light background. */
@@ -64,6 +68,8 @@
   --stats: #7ff;
   --good: #91ff95;
   --warn: #ffb292;
+  /* Danger (Delete, Reset): readable on this theme's panels. */
+  --red: #ff9a90;
   --bad: #ff8a8a;
   --shade: #000d;
   --d2-white: #fff; --d2-red: #ff8080; --d2-green: #7fff7f; --d2-blue: #a0a0ff;
@@ -88,6 +94,8 @@
   --stats: #c3b0ff;
   --good: #a2d494;
   --warn: #ffb870;
+  /* Danger (Delete, Reset): readable on this theme's panels. */
+  --red: #ff9a8a;
   --bad: #ff7a70;
   --shade: #000b;
 }
@@ -3377,3 +3385,163 @@ main article.found {
 }
 .more-pop svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
 .more-pop a:hover, .more-pop button:hover, .more-pop a:focus-visible, .more-pop button:focus-visible { background: var(--gold-bg); color: var(--gold); outline: none; }
+
+/* Searchable list (SearchSelect.vue): looks like a select until opened, then a filter box and
+   grouped options below it. */
+.search-select {
+  position: relative;
+  min-width: 0;
+}
+.search-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 12px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+}
+.search-select-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+}
+.search-select-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.search-select.open .search-select-btn {
+  border-color: var(--gold);
+}
+.search-select-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-select-value.placeholder {
+  color: var(--text);
+}
+.search-select-chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.search-select.open .search-select-chevron {
+  transform: rotate(180deg);
+}
+.search-select-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  min-width: min(340px, calc(100vw - 48px));
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  animation: pop-in var(--dur) var(--ease-spring);
+  transform-origin: top center;
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+}
+.search-select-filter {
+  margin: 0 0 6px;
+}
+.search-select-filter input {
+  height: 36px;
+  padding-left: 38px;
+  font-size: 0.875rem;
+}
+.search-select-filter svg {
+  left: 12px;
+  width: 15px;
+}
+.search-select-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.search-select-group {
+  position: sticky;
+  top: 0;
+  padding: 8px 8px 4px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.search-select-option {
+  display: grid;
+  gap: 1px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+.search-select-option.active {
+  background: var(--raised);
+}
+.search-select-option[aria-selected="true"] .search-select-label {
+  color: var(--gold);
+}
+.search-select-option.none .search-select-label {
+  color: var(--muted);
+}
+.search-select-option.disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.search-select-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+}
+.search-select-reason {
+  color: var(--warn);
+  font-size: 0.75rem;
+}
+.search-select-detail {
+  color: var(--stats);
+  font-size: 0.75rem;
+}
+.search-select-empty {
+  padding: 10px 8px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.search-select-pop.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+  transform-origin: bottom center;
+}
+/* Inside the item editor's sections, list rules (a row per socket or orb) don't reach the
+   picker's options: each stays a name above its stats. */
+.search-select .search-select-list li {
+  border: 0;
+  margin: 0;
+}
+.search-select .search-select-option {
+  display: grid;
+  align-items: start;
+  gap: 1px;
+  padding: 7px 8px;
+}
+.search-select .search-select-group {
+  display: block;
+  padding: 8px 8px 4px;
+}

@@ -2,6 +2,7 @@
 // The signed-in player's account: their public display name, the builds saved to their account
 // (private or published), and deleting the account. Signed out, it asks them to sign in.
 import { ref, watch, nextTick } from "vue";
+import ConfirmButton from "./ConfirmButton.vue";
 import { useRunetool } from "../composables/useRunetool.js";
 import { useAuth } from "../composables/useAuth.js";
 import { useSavedBuilds, MAX_NAME } from "../planner/savedBuilds.js";
@@ -32,11 +33,11 @@ function continueOn() {
   else nav("runewords");
 }
 const builds = ref([]), buildsError = ref(""), loading = ref(false), uploadMsg = ref("");
-const editing = ref(null), editName = ref(""), confirmDelete = ref(null);
+const editing = ref(null), editName = ref("");
 const deleteText = ref(""), deleteError = ref(""), deleting = ref(false);
 
 // Loot filters in the account: renamed or deleted here, and in this browser too.
-const lootFilters = ref([]), filtersError = ref(""), editingFilter = ref(null), filterName = ref(""), confirmFilterDelete = ref(null);
+const lootFilters = ref([]), filtersError = ref(""), editingFilter = ref(null), filterName = ref("");
 async function loadFilters() {
   const r = await listMyFilters(user.value.id);
   if (r.ok) { lootFilters.value = r.filters; filtersError.value = ""; } else filtersError.value = r.reason;
@@ -57,7 +58,6 @@ async function removeFilter(f) {
   const r = await deleteFilter(f.id);
   if (!r.ok) return (filtersError.value = r.reason);
   lootFilters.value = lootFilters.value.filter((x) => x.id !== f.id);
-  confirmFilterDelete.value = null;
   const here = localFilters.value.find((e) => e.accountId === f.id);
   if (here) removeLocalFilter(here.id);
 }
@@ -117,7 +117,7 @@ async function rename(b) {
 }
 async function remove(b) {
   const r = await deleteBuild(b.id);
-  if (r.ok) { builds.value = builds.value.filter((x) => x.id !== b.id); confirmDelete.value = null; } else buildsError.value = r.reason;
+  if (r.ok) { builds.value = builds.value.filter((x) => x.id !== b.id); } else buildsError.value = r.reason;
 }
 async function removeAccount() {
   deleteError.value = "";
@@ -183,15 +183,11 @@ const signIn = () => window.dispatchEvent(new Event("account-open"));
                 <small>{{ b.cls }} · Level {{ b.level ?? "unknown" }} · <span :class="b.published ? 'acct-pub' : 'acct-priv'">{{ b.published ? "Published" : "Private" }}</span></small>
               </template>
             </div>
-            <div v-if="confirmDelete === b.id" class="acct-row">
-              <span>Delete this build?</span>
-              <button type="button" class="btn" @click="remove(b)">Delete</button><button type="button" class="btn" @click="confirmDelete = null">Cancel</button>
-            </div>
-            <div v-else-if="editing !== b.id" class="acct-row">
+            <div v-if="editing !== b.id" class="acct-row">
               <a class="btn gold" :href="openHref(b)" @click="markOwnOpen(openHref(b))" @auxclick="markOwnOpen(openHref(b))">Open</a>
               <button type="button" class="btn" :disabled="!b.published && !displayName" :title="!b.published && !displayName ? 'Choose a display name first' : ''" @click="setPublished(b, !b.published)">{{ b.published ? "Unpublish" : "Publish" }}</button>
               <button type="button" class="btn" @click="editing = b.id; editName = b.name">Rename</button>
-              <button type="button" class="btn" @click="confirmDelete = b.id">Delete</button>
+              <ConfirmButton :question="b.published ? 'Delete this build, from the community list too?' : 'Delete this build?'" @confirm="remove(b)">Delete</ConfirmButton>
             </div>
           </li>
         </ul>
@@ -218,14 +214,10 @@ const signIn = () => window.dispatchEvent(new Event("account-open"));
                 <small>{{ (f.filter.rules || []).length }} rules · Last edited {{ new Date(f.updated_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) }}</small>
               </template>
             </div>
-            <div v-if="confirmFilterDelete === f.id" class="acct-row">
-              <span>Delete this filter from your account and this browser?</span>
-              <button type="button" class="btn" @click="removeFilter(f)">Delete</button><button type="button" class="btn" @click="confirmFilterDelete = null">Cancel</button>
-            </div>
-            <div v-else-if="editingFilter !== f.id" class="acct-row">
+            <div v-if="editingFilter !== f.id" class="acct-row">
               <a class="btn gold" href="#filters">Open Loot Filters</a>
               <button type="button" class="btn" @click="editingFilter = f.id; filterName = f.name">Rename</button>
-              <button type="button" class="btn" @click="confirmFilterDelete = f.id">Delete</button>
+              <ConfirmButton question="Delete this filter from your account and this browser?" @confirm="removeFilter(f)">Delete</ConfirmButton>
             </div>
           </li>
         </ul>

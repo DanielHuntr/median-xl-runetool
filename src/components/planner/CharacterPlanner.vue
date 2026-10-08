@@ -2,7 +2,6 @@
 import ClassPicker from "../ClassPicker.vue";
 import { ref, shallowRef, provide, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import Icon from "../AppIcon.vue";
-import ConfirmButton from "../ConfirmButton.vue";
 import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
 import EquipmentPanel from "./EquipmentPanel.vue";
@@ -56,6 +55,10 @@ const mercActs = computed(() => {
 // Esc, a click elsewhere or changing stage.
 const stagePop = ref(null);
 const toggleStagePop = (name) => (stagePop.value = stagePop.value === name ? null : name);
+// The top bar's More menu (Import character, Reset): Reset asks inside it before clearing.
+const resetAsking = ref(false);
+watch(stagePop, (v) => v !== "more" && (resetAsking.value = false));
+function moreMenu(fn) { stagePop.value = null; fn(); }
 // The click's path as it was dispatched: a menu item the click itself replaced (Delete stage
 // swapping to its confirmation) is no longer in the page, but the click was still inside.
 const closeStagePop = (e) => {
@@ -301,11 +304,23 @@ const questsOpen = ref(false);
             <Icon name="panel" />Stats
           </button>
           <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
-          <button class="btn" @click="importing = true"><Icon name="backup" />Import character</button>
           <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
             <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
           </button>
-          <ConfirmButton :question="`Clear your ${planner.state.cls}'s skills, stats and gear on every stage?`" confirm-label="Reset" @confirm="planner.reset()"><Icon name="close" />Reset</ConfirmButton>
+          <div class="stage-pop-wrap more-wrap">
+            <button type="button" class="btn" aria-haspopup="menu" aria-label="More planner actions" :aria-expanded="stagePop === 'more'" @click="toggleStagePop('more')">More<Icon name="chevron" class="more-chevron" /></button>
+            <div v-if="stagePop === 'more'" class="stage-pop stage-menu more-menu" role="menu" aria-label="More planner actions">
+              <template v-if="!resetAsking">
+                <button type="button" role="menuitem" @click="moreMenu(() => (importing = true))"><Icon name="backup" />Import character</button>
+                <hr />
+                <button type="button" role="menuitem" class="danger" @click="resetAsking = true"><Icon name="close" />Reset character…</button>
+              </template>
+              <div v-else class="stage-menu-confirm">
+                <p>Clear your {{ planner.state.cls }}'s skills, stats and gear on every stage?</p>
+                <div><button type="button" class="btn danger" @click="moreMenu(() => planner.reset())">Reset</button><button type="button" class="btn" @click="resetAsking = false">Cancel</button></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { isToggleSkill } from './skillEffects.js';
 import { spendRemaining, wearableBothSets, releaseUnusedRequirements, fundLoadout } from './attributeAllocation.js';
 import { computeCharacter, ATTRIBUTES, activeSlots } from "./character.js";
 import { SLOTS, bonusById, affixById, offhandFits } from "./items.js";
-import { cleanOrbs, orbById, orbFits } from './orbs.js';
+import { cleanOrbs, orbById, orbFits, orbGroup } from './orbs.js';
 import { DIFFICULTIES } from "./rules.js";
 import { skillDamage, BASIC_ATTACK } from "./damage.js";
 import { againstTarget, typicalTarget } from "./target.js";
@@ -997,6 +997,21 @@ export function createPlanner(engine, catalog, planner) {
     const next = cleanOrbs([...(st.orbs || []), id]);
     return next.length > (st.orbs || []).length && catalog.resolve({ ...st, orbs: next }, lvl).head.reqLevel <= lvl;
   }
+  // Why an orb can't go on the item now, in a few words (null when it can): the list says so
+  // beside it instead of only greying it out.
+  function orbBlock(slot, id) {
+    const st = gearItem(slot), o = orbById(id), lvl = itemLevel(slot);
+    const r = st && catalog.resolve(st, lvl);
+    if (!r || !o) return "Not available";
+    if (!orbFits(o, r.def, r.lines, st)) return "Doesn't fit this item";
+    if (o.minLevel > lvl) return `Needs level ${o.minLevel}`;
+    const same = (st.orbs || []).filter((x) => orbById(x) && orbGroup(orbById(x)) === orbGroup(o)).length;
+    if (same >= o.limit) return `Limit of ${o.limit} reached`;
+    const next = cleanOrbs([...(st.orbs || []), id]);
+    const req = catalog.resolve({ ...st, orbs: next }, lvl).head.reqLevel;
+    if (req > lvl) return `Item would need level ${req}`;
+    return null;
+  }
   function addOrb(slot, id) {
     if (canAddOrb(slot, id)) updateItem(slot, { orbs: [...(gearItem(slot).orbs || []), id] });
   }
@@ -1191,7 +1206,7 @@ export function createPlanner(engine, catalog, planner) {
 
   return {
     engine, catalog, planner, state, build, character, skillBuild, tabs, tab, spent, available, minLevel,
-    problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
+    problems, allocated, emptySockets, fillEmptySockets, fillSockets, enhance, canAddOrb, orbBlock, addOrb, clearSockets, openEditor, closeEditor, add, addMax, remove, toggleBuff, setLevel, setClass, setTab, toggleStats, togglePin, toggleQuest,
     resetQuests, addAttr, setSignets, setDifficulty, equip, unequip, clearEquipment, refreshGear, applyGearPreview, suggestionFingerprint, recommendLater, updateItem, addInventory,
     skillOrder, moveOrder, importArmory, equipSpare, removeSpare, removeInventory, swapWeapons, reset, shareUrl, buildCode, importFromHash, restoreKept, dropKept, setStage, stageFilled, copyStage, fillStages,
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,

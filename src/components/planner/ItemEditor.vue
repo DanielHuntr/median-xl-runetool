@@ -4,6 +4,7 @@ import { computed } from "vue";
 import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
 import Icon from "../AppIcon.vue";
+import SearchSelect from "../SearchSelect.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import ItemBonuses from "./ItemBonuses.vue";
 import ItemAffixes from "./ItemAffixes.vue";
@@ -13,7 +14,7 @@ import { pointsFor } from "../../planner/character.js";
 import { superiorVariants, superiorLabel, superiorNames } from "../../planner/superior.js";
 
 const props = defineProps({ slot: { type: String, required: true } });
-const { catalog, build, character, updateItem, unequip, state, openPicker, applyFix, emptySockets, fillEmptySockets, fillSockets, clearSockets, enhance, canAddOrb, addOrb, gearItem, itemLevel } =
+const { catalog, build, character, updateItem, unequip, state, openPicker, applyFix, emptySockets, fillEmptySockets, fillSockets, clearSockets, enhance, canAddOrb, addOrb, gearItem, itemLevel, orbBlock } =
   usePlanner();
 // "merc:<slot>": one of the mercenary's items (its level, strength and dexterity apply; the
 // suggestions, which score items for your build, don't).
@@ -33,12 +34,14 @@ function removeOrb(id) {
   orbs.splice(orbs.lastIndexOf(id), 1);
   updateItem(props.slot, { orbs });
 }
-// Choosing an orb in the list adds it; the list goes back to its prompt.
-function chooseOrb(e) {
-  const id = e.target.value;
-  if (id) addOrb(props.slot, id);
-  e.target.value = "";
-}
+// The orbs that fit, by kind (armor, weapon, any item…), each saying why it can't be added now.
+const ORB_GROUPS = ["Armor", "Weapon", "Item", "Ring/Amulet/Quiver"];
+const orbOptions = computed(() => availableOrbs.value
+  .map((o) => {
+    const reason = orbBlock(props.slot, o.id);
+    return { value: o.id, label: o.name, detail: `${o.lines.join(", ")} · +${o.reqLevel} required level`, group: `${o.group === "Item" ? "Any item" : o.group}${o.unique ? " · unique" : ""}`, disabled: !!reason, reason, order: ORB_GROUPS.indexOf(o.group) * 2 + (o.unique ? 1 : 0) };
+  })
+  .sort((a, b) => a.order - b.order));
 const r = computed(() => (!mercKey.value && character.value.equipped[props.slot]) || (item.value && catalog.resolve(item.value, itemLevel(props.slot))));
 const inactive = computed(() => !mercKey.value && item.value && !character.value.equipped[props.slot]);
 const slotLabel = computed(() => (mercKey.value ? `Mercenary's ${MERC_SLOTS.find((s) => s.id === mercKey.value)?.label.toLowerCase()}` : SLOTS.find((s) => s.id === props.slot)?.label));
@@ -186,6 +189,15 @@ function live(p) {
   else if (/^Required Dexterity: /.test(t) && h.reqDex) text = `Required Dexterity: ${h.reqDex}`;
   else if (h.damage && new RegExp(`^${h.damage.type} Damage: `).test(t)) text = `${h.damage.type} Damage: ${Math.floor(h.damage.min)} to ${Math.floor(h.damage.max)}`;
   else if (/^Defense: /.test(t) && h.defense != null) text = `Defense: ${Math.floor(h.defense)}`;
+  else {
+    // "Dexterity Damage Bonus: (0.13 per Dexterity)%": the bonus at the wearer's attribute now.
+    const m = /^(Strength|Dexterity) Damage Bonus: \(([\d.]+) per (Strength|Dexterity)\)%$/.exec(t);
+    if (m) {
+      const key = m[3].toLowerCase();
+      const value = mercKey.value ? character.value.merc?.[key] : character.value.attributes[key]?.total;
+      if (value != null) text = `${m[1]} Damage Bonus: +${Math.floor(Number(m[2]) * value)}% (${m[2]} per ${m[3]})`;
+    }
+  }
   return text && text !== t ? { ...p, text } : p;
 }
 const preview = computed(() => {
@@ -249,7 +261,7 @@ const cubeLink = computed(() => {
 
     <div class="editor-grid">
       <!-- The item as it is now: every change on the right shows here at once. -->
-      <aside class="editor-preview" aria-label="Item stats">
+      <aside class="editor-preview" aria-label="Item stats" tabindex="0">
         <h3>Stats</h3>
         <template v-for="g in preview" :key="g.title">
           <h4 v-if="g.title" class="preview-group">{{ g.title }}</h4>
@@ -397,10 +409,7 @@ const cubeLink = computed(() => {
                 </span>
               </li>
             </ul>
-            <select class="add-select" aria-label="Add a mystic orb" @change="chooseOrb">
-              <option value="">+ Add a mystic orb…</option>
-              <option v-for="o in availableOrbs" :key="o.id" :value="o.id" :disabled="!canAddOrb(slot, o.id)">{{ o.name }}: {{ o.lines.join(", ") }} (+{{ o.reqLevel }} levels)</option>
-            </select>
+            <SearchSelect :options="orbOptions" label="Add a mystic orb" placeholder="+ Add a mystic orb…" filter-placeholder="Filter orbs, e.g. life or resist" @choose="(id) => addOrb(slot, id)" />
           </template>
         </div>
 

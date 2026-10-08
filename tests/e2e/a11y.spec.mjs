@@ -1,6 +1,7 @@
 // Accessibility: axe-core on every page and the main dialogs. Serious and critical problems fail.
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openBuild } from "./fixtures/builds.mjs";
 
 const PAGES = ["runewords", "uniques", "sacred-uniques", "sets", "oskills", "socketables", "base-items", "upgrades", "cube", "planner", "builds", "filters"];
 const problems = async (page, include) => {
@@ -51,4 +52,20 @@ test("Esc closes the site search even with text typed", async ({ page }) => {
   await page.getByRole("combobox", { name: "Search the site" }).fill("eth");
   await page.keyboard.press("Escape");
   await expect(page.locator(".site-search")).not.toBeVisible();
+});
+
+test("planner: More menu, item editor and its searchable list", async ({ page }) => {
+  await openBuild(page, "Stormcall");
+  await page.waitForSelector(".planner-layout");
+  await page.getByRole("button", { name: "More planner actions" }).click();
+  expect(await problems(page, ".more-menu")).toEqual([]);
+  await page.keyboard.press("Escape");
+  await page.locator(".doll-slot:not([aria-label*='empty'])").first().click();
+  await page.waitForSelector(".item-editor");
+  expect(await problems(page, ".item-editor-modal")).toEqual([]);
+  const add = page.getByRole("button", { name: "Add a mystic orb" });
+  if (await add.count()) {
+    await add.click();
+    expect(await problems(page, ".search-select-pop")).toEqual([]);
+  }
 });

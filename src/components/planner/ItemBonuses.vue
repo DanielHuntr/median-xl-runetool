@@ -3,6 +3,7 @@
 // scroll of enchantment, shrines on a sacred rare, crafted or honorific item. Shown only when
 // one fits; emits the item's new list of bonus ids.
 import { computed } from "vue";
+import SearchSelect from "../SearchSelect.vue";
 import { BONUS_GROUPS, bonusById, bonusFits } from "../../planner/items.js";
 
 const props = defineProps({
@@ -36,8 +37,16 @@ function choose(g, id) {
 function add(g, e) {
   const id = e.target.value;
   e.target.value = "";
-  if (id && !g.full) emit("update", [...props.addons, id]);
+  addId(g, id);
 }
+const addId = (g, id) => id && !g.full && emit("update", [...props.addons, id]);
+// Lists longer than this get a filter (72 corruptions); shorter ones stay a plain select.
+const LONG = 12;
+const nameOf = (b) => (b.shrine ? `${b.shrine} Shrine` : b.group === "corruption" ? "" : b.name || "");
+const searchOptions = (g) => g.options.map((b) => {
+  const lines = b.lines.filter((l) => !/Required Level$/.test(l)).join(", ");
+  return nameOf(b) ? { value: b.id, label: nameOf(b), detail: lines } : { value: b.id, label: lines };
+});
 // How each is added in game, as a hint under its list.
 const NOTES = {
   trophy: "After its challenge, cubed with the charm.",
@@ -56,7 +65,17 @@ const NOTES = {
       <div v-for="g in groups" :key="g.group" class="bonus-row">
         <span class="bonus-label">{{ g.group === "scroll" ? "Scroll" : g.label }}</span>
         <div class="bonus-pick">
-          <select v-if="g.max === 1" :aria-label="g.label" :value="g.chosen[0]?.b.id || ''" @change="choose(g, $event.target.value)">
+          <SearchSelect
+            v-if="g.max === 1 && g.options.length > LONG"
+            :options="searchOptions(g)"
+            :value="g.chosen[0]?.b.id ?? null"
+            :label="g.label"
+            placeholder="None"
+            none-label="None"
+            :filter-placeholder="`Filter ${g.label.toLowerCase()}s, e.g. resist`"
+            @choose="(id) => choose(g, id)"
+          />
+          <select v-else-if="g.max === 1" :aria-label="g.label" :value="g.chosen[0]?.b.id || ''" @change="choose(g, $event.target.value)">
             <option value="">None</option>
             <option v-for="b in g.options" :key="b.id" :value="b.id" :title="label(b)">{{ short(b) }}</option>
           </select>
@@ -67,7 +86,15 @@ const NOTES = {
                 <button class="text-btn" :aria-label="`Remove ${label(x.b)}`" @click="remove(x.i)">Remove</button>
               </li>
             </ul>
-            <select v-if="!g.full" :aria-label="`Add ${g.label.toLowerCase()}`" @change="add(g, $event)">
+            <SearchSelect
+              v-if="!g.full && g.options.length > LONG"
+              :options="searchOptions(g)"
+              :label="`Add ${g.group === 'cycle' ? 'a cycle' : 'a shrine'}`"
+              :placeholder="`+ Add ${g.group === 'cycle' ? 'a cycle' : 'a shrine'}…`"
+              filter-placeholder="Filter, e.g. resist"
+              @choose="(id) => addId(g, id)"
+            />
+            <select v-else-if="!g.full" :aria-label="`Add ${g.label.toLowerCase()}`" @change="add(g, $event)">
               <option value="">+ Add {{ g.group === "cycle" ? "a cycle" : "a shrine" }}…</option>
               <option v-for="b in g.options" :key="b.id" :value="b.id" :title="label(b)">{{ short(b) }}</option>
             </select>

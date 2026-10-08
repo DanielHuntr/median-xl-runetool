@@ -271,10 +271,11 @@ test("the charm list shows its count, scrolls within the equipment column, and f
 test("a charm takes its trophy bonus, once", async ({ page }) => {
   await openBuild(page, "Hammer of Zerae");
   const lies = page.locator("#charm-list li", { hasText: "The Book of Lies" });
-  await lies.getByRole("combobox", { name: "Trophy" }).selectOption({ label: "Lord of Lies Trophy: Weapon Physical Damage +20%" });
-  await lies.getByRole("button", { name: "Add" }).click();
-  await expect(lies.getByRole("button", { name: /Remove Lord of Lies Trophy/ })).toBeVisible();
-  await expect(lies.getByRole("combobox", { name: "Trophy" })).toHaveCount(0);
+  // Choosing it applies it (one per charm: the list shows the one chosen, its lines under it).
+  const trophy = lies.getByRole("combobox", { name: "Trophy" });
+  await trophy.selectOption({ label: "Lord of Lies Trophy: Weapon Physical Damage +20%" });
+  await expect(trophy).toHaveValue(/^trophy:/);
+  await expect(lies.locator(".bonus-detail")).toContainText("Weapon Physical Damage +20%");
 });
 
 test("a rare item on a mastercrafted base takes affixes from the game's tables", async ({ page }) => {
@@ -285,10 +286,10 @@ test("a rare item on a mastercrafted base takes affixes from the game's tables",
   await page.getByRole("button", { name: /^Gloves: / }).first().click();
   const affixes = page.locator(".item-editor .item-affixes");
   await expect(affixes).toContainText("3 prefixes and 3 suffixes");
-  await affixes.getByLabel("Filter affixes").fill("Tantrum");
-  const suffix = affixes.getByRole("combobox", { name: /Suffixes/ });
-  await suffix.selectOption({ index: 1 });
-  await affixes.getByRole("button", { name: "Add" }).nth(1).click();
+  // The searchable list: open it, filter, choose with Enter.
+  await affixes.getByRole("button", { name: "Add a suffix" }).click();
+  await affixes.getByRole("combobox", { name: "Filter add a suffix" }).fill("Tantrum");
+  await page.keyboard.press("Enter");
   await expect(affixes.getByRole("button", { name: /Remove .*Tantrum/ })).toBeVisible();
   await expect(page.locator(".item-editor")).toContainText(/to Tantrum/);
 });
@@ -332,8 +333,9 @@ test("a saved build opened, then a shared build, goes back to the saved build by
   await dialog.getByLabel("Name").fill("My Hammer");
   await dialog.getByRole("button", { name: /^Save/ }).click();
   // Something else of the player's first (unsaved), so opening the saved build sets that aside.
-  page.once("dialog", (d) => d.accept());
-  await page.getByRole("button", { name: "Reset" }).click();
+  await page.getByRole("button", { name: "More planner actions" }).click();
+  await page.getByRole("menuitem", { name: "Reset character…" }).click();
+  await page.getByRole("menu", { name: "More planner actions" }).getByRole("button", { name: "Reset" }).click();
   await openBuild(page, "Spear: Fend");
   await expect(page.locator(".build-name")).toHaveText("Spear: Fend");
   await page.goto("/#builds");

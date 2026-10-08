@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
+import ConfirmButton from './ConfirmButton.vue';
 import { listPublished, myLikes, setLike, listMyBuilds, addBuilds, updateBuild, deleteBuild as deleteFromAccount } from '../planner/accountData.js';
 import { useAuth } from '../composables/useAuth.js';
 import { useSavedBuilds, MAX_NAME } from '../planner/savedBuilds.js';
@@ -9,7 +10,7 @@ import Icon from './AppIcon.vue';
 const { builds, rename, remove } = useSavedBuilds();
 const { user, displayName } = useAuth();
 const classes = ['Amazon', 'Assassin', 'Barbarian', 'Druid', 'Necromancer', 'Paladin', 'Sorceress'];
-const cls = ref(''), query = ref(''), editing = ref(null), name = ref(''), deleting = ref(null), error = ref('');
+const cls = ref(''), query = ref(''), editing = ref(null), name = ref(''), error = ref('');
 const matches = b => (!cls.value || b.cls === cls.value) && `${b.name} ${b.cls} ${(b.skills || []).join(' ')}`.toLowerCase().includes(query.value.trim().toLowerCase());
 // Your builds: the ones saved in this browser and, signed in, the ones in your account, as one
 // list (a build in both shows once).
@@ -87,7 +88,6 @@ async function commitRename(b) {
 async function deleteBuild(b) {
   if (b.localId && !remove(b.localId)) return (error.value = 'Your browser could not delete this build. Please try again.');
   if (b.accountId) { const r = await deleteFromAccount(b.accountId); if (!r.ok) return (error.value = r.reason); }
-  deleting.value = null;
   error.value = '';
   loadAccount();
   if (b.published) loadCommunity();
@@ -132,15 +132,12 @@ async function setPublished(b, published) {
           <label class="field">Build name<input v-model="name" :maxlength="MAX_NAME" required /></label>
           <button class="btn gold">Save name</button><button type="button" class="btn" @click="editing = null">Cancel</button>
         </form>
-        <div v-else-if="deleting === b.key" class="build-actions">
-          <p>{{ b.accountId ? (b.published ? 'Delete this build from your account and the community list?' : 'Delete this build from your account?') : 'Delete this saved build?' }}</p><button class="btn" @click="deleteBuild(b)">Delete</button><button class="btn" @click="deleting = null">Cancel</button>
-        </div>
         <div v-else class="build-actions">
           <a class="btn gold" :href="href(b)" @click="markOwnOpen(href(b))" @auxclick="markOwnOpen(href(b))">Open build</a>
           <button v-if="b.accountId" class="btn" @click="setPublished(b, !b.published)">{{ b.published ? 'Unpublish' : 'Publish' }}</button>
           <button v-else-if="user" class="btn" @click="toAccount(b)">Save to account</button>
           <button class="btn" @click="editing = b.key; name = b.name; error = ''">Rename</button>
-          <button class="btn" @click="deleting = b.key">Delete</button>
+          <ConfirmButton :question="b.accountId ? (b.published ? 'Delete it from your account and the community list?' : 'Delete it from your account?') : 'Delete this saved build?'" @confirm="deleteBuild(b)">Delete</ConfirmButton>
         </div>
       </article>
     </div>
