@@ -28,7 +28,9 @@ export default async function handler(req, res) {
     let hit = memo.get(key);
     if (!hit || Date.now() - hit.at > MEMORY_TTL) {
       const r = await fetch(`${CHAR_SITE}${encodeURIComponent(name)}`, { headers: { "user-agent": "median-xl-runetool (+https://github.com/DanielHuntr/median-xl-runetool)" } });
-      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ error: `No character called ${name} on median-xl.com. Check the spelling: single-player characters aren't there.` }) };
+      // median-xl.com answers 404 both for a name it doesn't know and for a character it has no
+      // public copy of yet: it makes one when someone signed in opens the character's page.
+      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ error: `median-xl.com has no public copy of ${name} yet. Open the character's page there while signed in, then try again, or import from your page. (Single-player characters aren't on the site.)` }) };
       else if (!r.ok) throw new Error(`median-xl.com answered ${r.status}`);
       else {
         const page = trimCharPage(await r.text());

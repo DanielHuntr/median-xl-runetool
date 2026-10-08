@@ -90,7 +90,7 @@ function run() {
             </span>
           </label>
           <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
-          <p class="muted armory-hint">Online characters only, from their public page on median-xl.com (its last saved copy). Quests are worked out from the points spent. For the exact ones, import from your page.</p>
+          <p class="muted armory-hint">Online characters only, from the copy median-xl.com shows signed-out visitors. It makes one when someone signed in opens the character there, so it can be behind. Quests are worked out from the points spent; for the exact ones, import from your page.</p>
         </form>
         <div v-else class="armory-pane">
           <ol class="armory-steps">
