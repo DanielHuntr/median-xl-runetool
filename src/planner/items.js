@@ -62,6 +62,9 @@ export function offhandFits(main, off) {
 const isTwoHanded = (lines) =>
   lines.some((l) => /^Two-Hand Damage:/.test(l)) && !lines.some((l) => /^One-Hand Damage:/.test(l));
 
+// A custom item without a base (a magic or rare ring, amulet or jewel) shows the game's art for its kind.
+const CUSTOM_ART = { ring: "game/invrin", amulet: "game/invamu", jewel: "game/invgswe" };
+
 // Bonuses the cube adds to a kept item (scripts/extract-item-bonuses.mjs, from the game's
 // recipes): a trophy on its challenge charm, one scroll of enchantment per item, up to two
 // shrines (crafting, then blessing) on a sacred rare, crafted or honorific item, and cycles
@@ -396,7 +399,9 @@ export function createCatalog(app, planner) {
     let def, lines, label = "", baseDef = null, affixes = null;
     if (state.ref === "custom") {
       const c = state.custom || {};
-      def = { key: "custom", kind: "custom", kindLabel: "Custom item", name: c.name || "Custom item", slotType: c.slotType || "weapon", icon: "" };
+      // Rings and amulets have no base item to take a picture from: the game's ring or amulet art.
+      const slotType = c.slotType || "weapon";
+      def = { key: "custom", kind: "custom", kindLabel: "Custom item", name: c.name || "Custom item", slotType, icon: CUSTOM_ART[slotType] || "" };
       lines = String(c.text || "").split("\n").map((l) => l.trim()).filter(Boolean);
       if (state.base) {
         baseDef = get(state.base);
