@@ -5,12 +5,24 @@
 // what each goes on in the game's own item type names (cube-main.json, loaded with the page).
 import { computed, ref, watch } from "vue";
 import Icon from "./AppIcon.vue";
+import CubeIcon from "./CubeIcon.vue";
 import AFFIXES from "../data/affixes.json";
 import ORBS from "../data/mystic-orbs.json";
 import BONUSES from "../data/item-bonuses.json";
 
 const typeNames = ref({});
-import("../data/cube-main.json").then((m) => (typeNames.value = m.default.types || {})).catch(() => {});
+// Each item's inventory graphic by its name (the cube data's items and art), for the oils,
+// trophies, cycles, scrolls, shrine vessels and the Corrupted Crystal.
+const artByName = ref({});
+import("../data/cube-main.json").then((m) => {
+  typeNames.value = m.default.types || {};
+  const art = {};
+  for (const [code, name] of m.default.items || []) if (!art[name] && m.default.art?.[code]) art[name] = m.default.art[code];
+  artByName.value = art;
+}).catch(() => {});
+const artOf = (name) => artByName.value[name] || null;
+// A mystic orb's graphic is its group's (as in the game: one per kind of item it goes on).
+const ORB_ART = { Armor: "orb_armo", Weapon: "orb_weap", Item: "orb_any", "Ring/Amulet/Quiver": "orb_misc" };
 const typeName = (t) => typeNames.value[t] || ({ amu: "Amulet", ssgl: "Sacred item", elex: "Elemental weapon", ct2w: "Sacred two-handed weapon", misl: "Quiver" })[t] || t;
 const fits = (types) => [...new Set((types || []).map(typeName))].join(", ");
 
@@ -33,16 +45,16 @@ const lists = computed(() => ({
     note: `On: ${fits(a.types)}${a.not?.length ? ` (not ${fits(a.not)})` : ""}`,
   })),
   orbs: ORBS.orbs.map((o) => ({
-    key: o.id, title: o.name, lines: o.lines,
+    key: o.id, title: o.name, lines: o.lines, art: ORB_ART[o.group],
     meta: [o.group, o.unique ? "Unique orb" : null, `Required level +${o.reqLevel}`, `up to ${o.limit} per item`].filter(Boolean).join(" · "),
   })),
-  oils: BONUSES.oils.map((o) => ({ key: o.id, title: o.name, lines: o.lines, meta: `On: ${o.on}`, note: "One oil per item." })),
-  corruptions: BONUSES.corruptions.map((c) => ({ key: c.id, title: "Corruption", lines: c.lines, meta: `On: ${c.type === "ssgl" ? "any sacred item" : c.on}` })),
-  shrines: BONUSES.shrines.map((s) => ({ key: s.id, title: `${s.shrine} Shrine`, lines: s.lines, meta: `On: ${s.category}` })),
-  scrolls: BONUSES.scrolls.map((s) => ({ key: s.id, title: s.name, lines: s.lines, meta: `On: ${s.slot ? s.slot.replace(/^body$/, "body armor") : s.cat}` })),
+  oils: BONUSES.oils.map((o) => ({ key: o.id, title: o.name, art: artOf(o.name.replace(/ or Greater Luck$/, "")), lines: o.lines, meta: `On: ${o.on}`, note: "One oil per item." })),
+  corruptions: BONUSES.corruptions.map((c) => ({ key: c.id, title: "Corruption", art: artOf("Corrupted Crystal"), lines: c.lines, meta: `On: ${c.type === "ssgl" ? "any sacred item" : c.on}` })),
+  shrines: BONUSES.shrines.map((s) => ({ key: s.id, title: `${s.shrine} Shrine`, art: artOf(`${s.shrine} Shrine Vessel`), lines: s.lines, meta: `On: ${s.category}` })),
+  scrolls: BONUSES.scrolls.map((s) => ({ key: s.id, title: s.name, art: artOf(s.name), lines: s.lines, meta: `On: ${s.slot ? s.slot.replace(/^body$/, "body armor") : s.cat}` })),
   charms: [
-    ...BONUSES.trophies.map((t) => ({ key: t.id, title: t.name, lines: t.lines, meta: t.title ? `Trophy · ${t.title}` : "Trophy" })),
-    ...BONUSES.cycles.map((c) => ({ key: c.id, title: c.name, lines: c.lines, meta: "Cycle · cubed into the Corrupted Wormhole" })),
+    ...BONUSES.trophies.map((t) => ({ key: t.id, title: t.name, art: artOf(t.name), lines: t.lines, meta: t.title ? `Trophy · ${t.title}` : "Trophy" })),
+    ...BONUSES.cycles.map((c) => ({ key: c.id, title: c.name, art: artOf(c.name), lines: c.lines, meta: "Cycle · cubed into the Corrupted Wormhole" })),
   ],
 }));
 const NOTES = {
@@ -81,7 +93,10 @@ watch([tab, q, kind], () => (limit.value = 60));
     <p class="result-count"><strong>{{ shown.length }}</strong> {{ shown.length === 1 ? "entry" : "entries" }}</p>
     <ul class="upgrade-list">
       <li v-for="e in shown.slice(0, limit)" :key="e.key" class="upgrade">
-        <p class="upgrade-title">{{ e.title }}<small v-if="e.meta">{{ e.meta }}</small></p>
+        <div class="upgrade-head">
+          <CubeIcon v-if="e.art" :art="e.art" :size="40" />
+          <p class="upgrade-title">{{ e.title }}<small v-if="e.meta">{{ e.meta }}</small></p>
+        </div>
         <ul class="stats"><li v-for="l in e.lines" :key="l">{{ l }}</li></ul>
         <p v-if="e.note" class="upgrade-fits">{{ e.note }}</p>
       </li>
@@ -100,7 +115,8 @@ watch([tab, q, kind], () => (limit.value = 60));
 .upgrade-controls .search { flex: 1; min-width: 220px; margin: 0; }
 .upgrade-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
 .upgrade { padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
-.upgrade-title { display: grid; gap: 2px; margin: 0 0 8px; color: var(--gold); font-weight: 600; }
+.upgrade-head { display: flex; align-items: center; gap: 12px; margin: 0 0 8px; }
+.upgrade-title { display: grid; gap: 2px; margin: 0; color: var(--gold); font-weight: 600; }
 .upgrade-title small { color: var(--muted); font-weight: 400; font-size: 0.75rem; }
 .upgrade .stats { margin: 0; }
 .upgrade-fits { margin: 8px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.45; }
