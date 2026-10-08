@@ -272,7 +272,12 @@ export function armoryBuild(page, { engine, catalog, planner }) {
     const st = itemState(it, id);
     if (st) mercGear[id] = st;
   }
-  if (page.merc.spec) b.merc = { spec: page.merc.spec, level: page.merc.level, difficulty: b.difficulty, gear: mercGear, off: [] };
+  if (page.merc.spec) {
+    b.merc = { spec: page.merc.spec, level: page.merc.level, difficulty: b.difficulty, gear: mercGear, off: [] };
+    // Its skills grow from the level it was hired at, which the page doesn't give: the planner
+    // assumes the earliest, the strongest (a Bloodmage hired at 90 has Firedance 4, +24%, not 14).
+    notes.push("The page doesn't say when your mercenary was hired, so its skills assume the earliest hire (their highest levels). If its buff shows lower in game, set Hired at in the Mercenary panel.");
+  }
 
   // Attributes: the page shows the character's own (no gear), so the points spent are those less
   // the class's starting values (the planner's, with nothing spent and nothing worn).
