@@ -5,6 +5,7 @@ export const CHANGELOG = [
     date: "2026-10-08",
     items: [
       "Import your character from its median-xl.com page: skills, quests, attributes, worn gear with its actual rolls (rares with their exact stats, jewels in sockets), charms and your mercenary. Your inventory and stash come in as spare items to try on, and your runes can go straight into My Runes. Read in your browser only.",
+      "Import any character by name: type it in and the planner fetches its public median-xl.com page. No saving or pasting needed.",
       "Equipment slots show the rune, gem or jewel in each socket.",
       "Skill order in the planner's skill summary: the order you spend skill points, the character level each comes at, and warnings if a point comes before its prerequisite. Move rows to plan your levelling.",
       "Item Upgrades page: every affix, mystic orb, oil, corruption, shrine, scroll of enchantment, trophy and cycle, searchable, with what each goes on.",

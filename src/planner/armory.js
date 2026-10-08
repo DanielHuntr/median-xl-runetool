@@ -12,6 +12,7 @@
 // less the class's starting values.
 import { encodeBuild } from "./buildCode.js";
 import { computeCharacter } from "./character.js";
+import { SIGNET_CAP } from "./rules.js";
 import { bonusFits, BONUS_GROUPS } from "./items.js";
 import { ORBS, orbFits } from "./orbs.js";
 import { superiorVariants } from "./superior.js";
@@ -47,15 +48,31 @@ export function parseArmoryPage(html) {
     const stat = (k) => { const m = new RegExp(`\\{\\{${k}\\}\\}=(\\d+)`).exec(String(exp.stats || "")); return m ? Number(m[1]) : null; };
     return { exp, items: [], exportOnly: true, attrs: { strength: stat("strength"), dexterity: stat("dexterity"), vitality: stat("vitality"), energy: stat("energy") }, signets: null, merc: { spec: "", level: null } };
   }
-  const exp = jsonBlock(text, "notarmory-export"), items = jsonBlock(text, "notarmory-items");
-  if (!exp || !Array.isArray(items)) return null;
+  let exp = jsonBlock(text, "notarmory-export");
+  const items = jsonBlock(text, "notarmory-items");
+  if (!Array.isArray(items)) return null;
+  // A page seen logged out (anyone's, fetched by name) has no "Export build" block: the
+  // character's name, level and class from its title, skill points from its skill list (not the
+  // item-granted ones), and quests worked out later from the points (armoryBuild).
+  let questsUnknown = false, freeSkills = 0;
+  if (!exp) {
+    const t = /NotArmory (\S+) \((\d+) (\w+)\)/.exec(text);
+    if (!t) return null;
+    const own = text.split(/<section class="na-skillcell na-oskills"/)[0];
+    const skillPoints = {};
+    for (const m of own.matchAll(/<div class="na-skill"><span>([^<]+)<\/span><span class="na-points">(\d+)<\/span><\/div>/g)) skillPoints[decode(m[1])] = Number(m[2]);
+    exp = { name: t[1], level: Number(t[2]), class: t[3], skillPoints, questsCompleted: {} };
+    freeSkills = Number(/Free skill points: <b>(\d+)<\/b>/.exec(text)?.[1]) || 0;
+    questsUnknown = true;
+  }
   const stat = (k) => { const m = new RegExp(`na-stat-${k}"><dt>[^<]*</dt><dd>([^<]*)</dd>`).exec(text); return m ? decode(m[1]).replace(/[^\d]/g, "") : null; };
   const doll = /data-na-doll[^>]*>/.exec(text)?.[0] || "";
   const attr = (k) => { const v = stat(k); return v == null || v === "" ? null : Number(v); };
   return {
-    exp, items,
+    exp, items, questsUnknown, freeSkills,
     attrs: { strength: attr("strength"), dexterity: attr("dexterity"), vitality: attr("vitality"), energy: attr("energy") },
     signets: attr("signets") ?? 0,
+    freeStats: attr("free-stats") ?? 0,
     merc: { spec: /data-merc-type="([^"]*)"/.exec(doll)?.[1] || "", level: Number(/data-merc-level="(\d+)"/.exec(doll)?.[1]) || null },
   };
 }
@@ -256,6 +273,27 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   // the class's starting values (the planner's, with nothing spent and nothing worn).
   const start = computeCharacter({ ...b, points: {}, buffs: [], gear: {}, inventory: [], merc: null, attrs: { strength: 0, dexterity: 0, vitality: 0, energy: 0 } }, { engine, catalog, planner }).charStats || {};
   for (const a of Object.keys(b.attrs)) if (page.attrs[a] != null) b.attrs[a] = Math.max(0, page.attrs[a] - (start[a] ?? 0));
+  // Quests a logged-out page doesn't list, worked out from the points: Lam Esen's Tome from the
+  // stat points spent beyond the levels and signets (10 per difficulty), the skill quests from the
+  // skill points beyond one a level (Den of Evil and Radament 1 each, Izual 2, Normal first). The
+  // Justicar Signet from signets beyond the usual cap. The Golden Bird (life) can't be told from
+  // them: it keeps the planner's default.
+  if (page.questsUnknown) {
+    const DIFFS = ["normal", "nightmare", "hell"];
+    const spent = Object.values(b.attrs).reduce((n, v) => n + v, 0) + (page.freeStats || 0);
+    const tomes = Math.max(0, Math.min(3, Math.round((spent - (level - 1) * 5 - b.signets) / 10)));
+    DIFFS.forEach((d, i) => (b.quests[`lam_esens_tome.${d}`] = i < tomes));
+    let extra = Object.values(b.points).reduce((n, v) => n + v, 0) + (page.freeSkills || 0) - (level - 1);
+    for (const d of DIFFS) for (const [q, pts] of [["den_of_evil", 1], ["radament", 1], ["izual", 2]]) {
+      const done = extra >= pts;
+      b.quests[`${q}.${d}`] = done;
+      if (done) extra -= pts;
+    }
+    b.quests["inquisitor_of_the_triune.hell"] = extra >= 2;
+    b.quests["justicar_signet.hell"] = b.signets > SIGNET_CAP;
+    b.difficulty = b.quests["den_of_evil.nightmare"] ? "Hell" : b.quests["den_of_evil.normal"] ? "Nightmare" : "Normal";
+    notes.push("Quests aren't on a public page: the ones that give skill and stat points were worked out from the points spent.");
+  }
   // Signets eaten, where the page doesn't say (the "Export build" JSON): the points spent beyond
   // what the levels and quests give.
   if (page.signets == null) {

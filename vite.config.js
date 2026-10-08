@@ -2,21 +2,24 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import catalog from "./api/catalog.js";
 import filters from "./api/filters.js";
+import char from "./api/char.js";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 
 const { version } = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
-// Serves /api/catalog and /api/filters locally with the same handler Vercel deploys.
+// Serves /api/catalog, /api/filters and /api/char locally with the same handler Vercel deploys.
 const catalogApi = {
   name: "catalog-api",
   configureServer(server) {
     server.middlewares.use("/api/catalog", catalog);
     server.middlewares.use("/api/filters", filters);
+    server.middlewares.use("/api/char", char);
   },
   configurePreviewServer(server) {
     server.middlewares.use("/api/catalog", catalog);
     server.middlewares.use("/api/filters", filters);
+    server.middlewares.use("/api/char", char);
   },
 };
 

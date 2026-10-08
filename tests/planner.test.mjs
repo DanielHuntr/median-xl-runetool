@@ -2262,3 +2262,31 @@ test("NotArmory's Export build text imports skills, quests and attributes, and w
   assert(r.notes.some((n) => /no items/.test(n)));
   assert.equal(parseArmoryPage("{\"hello\": 1}"), null);
 });
+
+test("a character's public page (imported by name) works out its quests from the points spent", async () => {
+  const { engine, catalog } = await env();
+  const { parseArmoryPage, armoryBuild } = await load("/src/planner/armory.js");
+  const { trimCharPage } = await import("../lib/char-page.mjs");
+  // The fixture is what api/char.js sends: the public page cut down, so it trims to itself.
+  const html = await readFile(new URL("./fixtures/armory-public.html", import.meta.url), "utf8");
+  assert.equal(trimCharPage(html), html);
+  assert.equal(trimCharPage("<title>NotArmory</title>"), null);
+  const r = armoryBuild(parseArmoryPage(html), { engine, catalog, planner });
+  const b = r.build;
+  assert.deepEqual([b.cls, b.level, r.name, Object.keys(b.points).length], ["Amazon", 96, "Sample", 15]);
+  assert.equal(b.points.nova_charge, undefined, "an item's oskill isn't a point spent");
+  assert.deepEqual(b.attrs, { strength: 70, dexterity: 408, vitality: 0, energy: 0 });
+  assert.equal(b.signets, 3);
+  assert.equal(Object.keys(b.gear).length, 12);
+  // The same character's Export build says: the skill quests done in Normal and Nightmare, not
+  // in Hell; Lam Esen's Tome in none.
+  for (const q of ["den_of_evil", "radament", "izual"]) {
+    assert.deepEqual(["normal", "nightmare", "hell"].map((d) => b.quests[`${q}.${d}`]), [true, true, false], q);
+  }
+  assert.deepEqual(["normal", "nightmare", "hell"].map((d) => b.quests[`lam_esens_tome.${d}`]), [false, false, false]);
+  assert.equal(b.quests["inquisitor_of_the_triune.hell"], false);
+  const { computeCharacter } = await load("/src/planner/character.js");
+  const sp = computeCharacter(b, { engine, catalog, planner }).statPoints;
+  assert.equal(sp.available, sp.spent);
+  assert(r.notes.some((n) => /worked out/.test(n)));
+});

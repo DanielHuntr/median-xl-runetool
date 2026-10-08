@@ -1,6 +1,7 @@
 <script setup>
-// Import a character from its median-xl.com page (planner/armory.js): the saved page or its
-// source, read in this browser only. Opens the character in the planner like a shared build
+// Import a character from its median-xl.com page (planner/armory.js): by name (our server fetches
+// the public page, api/char.js), or the saved page, its source or its "Export build" text, read in
+// this browser only. Opens the character in the planner like a shared build
 // (the player's own build for that class is kept to go back to), then says what couldn't come in.
 import { ref, onMounted } from "vue";
 import { usePlanner } from "../../planner/usePlanner.js";
@@ -15,7 +16,27 @@ function addRunes() {
   for (const [rune, n] of Object.entries(result.value.runes || {})) owned.value[rune] = Math.max(owned.value[rune] || 0, Math.min(2, n));
   runesAdded.value = true;
 }
-const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false);
+const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false), charName = ref("");
+const NAME = /^[A-Za-z0-9_-]{2,16}$/;
+async function fromName() {
+  error.value = "";
+  result.value = null;
+  const name = charName.value.trim();
+  if (!NAME.test(name)) return (error.value = "A character name is 2 to 16 letters, digits, - or _.");
+  busy.value = true;
+  try {
+    const res = await fetch(`/api/char?name=${encodeURIComponent(name)}`);
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || !body.page) return (error.value = body.error || "median-xl.com couldn't be reached. Try again, or save the page instead.");
+    const r = importArmory(body.page);
+    if (!r.ok) return (error.value = r.reason);
+    result.value = r;
+  } catch {
+    error.value = "median-xl.com couldn't be reached. Try again, or save the page instead.";
+  } finally {
+    busy.value = false;
+  }
+}
 onMounted(() => dialog.value?.showModal?.());
 function close() {
   dialog.value?.close();
@@ -48,6 +69,12 @@ function run() {
         <button type="button" class="icon-btn" aria-label="Close" @click="close">&times;</button>
       </div>
       <template v-if="!result">
+        <form class="armory-by-name" @submit.prevent="fromName">
+          <label class="field">Character name<input v-model="charName" type="text" autocomplete="off" spellcheck="false" maxlength="16" placeholder="As it's spelled in game" /></label>
+          <button type="submit" class="btn gold" :disabled="busy || !charName.trim()">{{ busy ? "Fetching…" : "Fetch" }}</button>
+        </form>
+        <p class="muted armory-private">Fetched from the character's public page on median-xl.com, which shows the copy it last saved, not one played since. Quests aren't on it: those that give points are worked out from the points spent.</p>
+        <p class="armory-or">Or from your own page, including its quests:</p>
         <ol class="armory-steps">
           <li>On median-xl.com, open your character's page (NotArmory → Your Characters → the character).</li>
           <li>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> to save the page, then choose the file here. Or press <kbd>Ctrl</kbd>+<kbd>U</kbd> to see its source, then <kbd>Ctrl</kbd>+<kbd>A</kbd> and <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy it, and paste it below.</li>
@@ -55,7 +82,7 @@ function run() {
         </ol>
         <label class="field">Saved page<input type="file" accept=".html,.htm,text/html" @change="fromFile" /></label>
         <label class="field">Or paste the page source, or the Export build text<textarea v-model="text" rows="5" spellcheck="false" placeholder="<!DOCTYPE html> …"></textarea></label>
-        <p class="muted armory-private">The page is read in your browser only: nothing is sent anywhere, and your account name and the page's session token aren't kept.</p>
+        <p class="muted armory-private">A saved or pasted page is read in your browser only: nothing is sent anywhere, and your account name and the page's session token aren't kept.</p>
         <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
         <div class="save-build-actions">
           <button type="button" class="btn" @click="close">Cancel</button>
@@ -88,6 +115,10 @@ function run() {
 .armory-import .field { margin: 0 0 12px; }
 .armory-import textarea { width: 100%; font: 0.75rem ui-monospace, monospace; resize: vertical; }
 .armory-private { font-size: 0.8125rem; }
+.armory-by-name { display: flex; gap: 12px; align-items: flex-end; }
+.armory-by-name .field { flex: 1; margin: 0; }
+.armory-by-name input { width: 100%; }
+.armory-or { margin: 16px 0 4px; font-weight: 600; font-size: 0.875rem; }
 .armory-done { font-size: 0.9375rem; }
 .armory-missing { margin: 6px 0 12px; padding-left: 20px; font-size: 0.8125rem; display: grid; gap: 3px; }
 .save-build-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
