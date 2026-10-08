@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     let hit = memo.get(key);
     if (!hit || Date.now() - hit.at > MEMORY_TTL) {
       const r = await fetch(`${CHAR_SITE}${encodeURIComponent(name)}`, { headers: { "user-agent": "median-xl-runetool (+https://github.com/DanielHuntr/median-xl-runetool)" } });
-      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ error: `median-xl.com has no page for ${name}: check the spelling.` }) };
+      if (r.status === 404) hit = { at: Date.now(), status: 404, body: JSON.stringify({ error: `No character called ${name} on median-xl.com. Check the spelling: single-player characters aren't there.` }) };
       else if (!r.ok) throw new Error(`median-xl.com answered ${r.status}`);
       else {
         const page = trimCharPage(await r.text());

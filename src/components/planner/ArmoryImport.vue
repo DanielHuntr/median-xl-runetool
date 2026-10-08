@@ -19,6 +19,12 @@ function addRunes() {
   for (const [rune, n] of Object.entries(result.value.runes || {})) owned.value[rune] = Math.max(owned.value[rune] || 0, Math.min(2, n));
   runesAdded.value = true;
 }
+// Two ways in, one shown at a time: by name (the public page), or from the player's own page.
+const how = ref("name");
+function setHow(v) {
+  how.value = v;
+  error.value = "";
+}
 const dialog = ref(null), text = ref(""), error = ref(""), result = ref(null), busy = ref(false), charName = ref("");
 const NAME = /^[A-Za-z0-9_-]{2,16}$/;
 async function fromName() {
@@ -72,24 +78,32 @@ function run() {
         <button type="button" class="icon-btn" aria-label="Close" @click="close">&times;</button>
       </div>
       <template v-if="!result">
-        <form class="armory-by-name" @submit.prevent="fromName">
-          <label class="field">Character name<input v-model="charName" type="text" autocomplete="off" spellcheck="false" maxlength="16" placeholder="As it's spelled in game" /></label>
-          <button type="submit" class="btn gold" :disabled="busy || !charName.trim()">{{ busy ? "Fetching…" : "Fetch" }}</button>
+        <div class="tabs armory-tabs" role="tablist" aria-label="Import from">
+          <button type="button" role="tab" :aria-selected="how === 'name'" @click="setHow('name')">By name</button>
+          <button type="button" role="tab" :aria-selected="how === 'page'" @click="setHow('page')">From your page</button>
+        </div>
+        <form v-if="how === 'name'" class="armory-pane" @submit.prevent="fromName">
+          <label class="field">Character name
+            <span class="armory-row">
+              <input v-model="charName" type="text" autocomplete="off" spellcheck="false" maxlength="16" placeholder="As it's spelled in game" :aria-invalid="!!error" />
+              <button type="submit" class="btn gold" :disabled="busy || !charName.trim()">{{ busy ? "Fetching…" : "Fetch" }}</button>
+            </span>
+          </label>
+          <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
+          <p class="muted armory-hint">Online characters only, from their public page on median-xl.com (its last saved copy). Quests are worked out from the points spent. For the exact ones, import from your page.</p>
         </form>
-        <p class="muted armory-private">Fetched from the character's public page on median-xl.com, which shows the copy it last saved, not one played since. Quests aren't on it: those that give points are worked out from the points spent.</p>
-        <p class="armory-or">Or from your own page, including its quests:</p>
-        <ol class="armory-steps">
-          <li>On median-xl.com, open your character's page (NotArmory → Your Characters → the character).</li>
-          <li>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> to save the page, then choose the file here. Or press <kbd>Ctrl</kbd>+<kbd>U</kbd> to see its source, then <kbd>Ctrl</kbd>+<kbd>A</kbd> and <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy it, and paste it below.</li>
-          <li>Skills only? The page's <b>Export build</b> button copies its skills, quests and attributes: paste that below (it has no items).</li>
-        </ol>
-        <label class="field">Saved page<input type="file" accept=".html,.htm,text/html" @change="fromFile" /></label>
-        <label class="field">Or paste the page source, or the Export build text<textarea v-model="text" rows="5" spellcheck="false" placeholder="<!DOCTYPE html> …"></textarea></label>
-        <p class="muted armory-private">A saved or pasted page is read in your browser only: nothing is sent anywhere, and your account name and the page's session token aren't kept.</p>
-        <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
-        <div class="save-build-actions">
-          <button type="button" class="btn" @click="close">Cancel</button>
-          <button type="button" class="btn gold" :disabled="busy || !text.trim()" @click="run">Import</button>
+        <div v-else class="armory-pane">
+          <ol class="armory-steps">
+            <li>On median-xl.com, open <b>NotArmory → Your Characters</b> and the character.</li>
+            <li>Save the page (<kbd>Ctrl</kbd>+<kbd>S</kbd>) and choose it below, or copy its source (<kbd>Ctrl</kbd>+<kbd>U</kbd>, then <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>C</kbd>) and paste it.</li>
+          </ol>
+          <label class="field">Saved page<input type="file" accept=".html,.htm,text/html" @change="fromFile" /></label>
+          <label class="field">Or paste the page source<textarea v-model="text" rows="4" spellcheck="false" placeholder="<!DOCTYPE html> …"></textarea></label>
+          <p v-if="error" class="save-build-error" role="alert">{{ error }}</p>
+          <p class="muted armory-hint">Read in your browser only. The page's <b>Export build</b> text works too (skills, quests and attributes, no items).</p>
+          <div class="save-build-actions">
+            <button type="button" class="btn gold" :disabled="busy || !text.trim()" @click="run">Import</button>
+          </div>
         </div>
       </template>
       <template v-else>
@@ -123,14 +137,19 @@ function run() {
 </template>
 <style scoped>
 .armory-import { width: min(560px, calc(100vw - 32px)); }
-.armory-steps { margin: 4px 0 14px; padding-left: 20px; display: grid; gap: 6px; font-size: 0.875rem; line-height: 1.5; }
-.armory-import .field { margin: 0 0 12px; }
+.armory-tabs { display: flex; gap: 8px; margin: 0 0 16px; }
+.armory-tabs button { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--muted); font-size: 0.8125rem; cursor: pointer; }
+.armory-tabs button[aria-selected="true"] { border-color: var(--gold); color: var(--gold); background: var(--gold-bg); }
+.armory-pane { display: grid; gap: 12px; }
+.armory-pane > * { margin: 0; }
+.armory-row { display: flex; gap: 10px; margin-top: 4px; }
+.armory-row input { flex: 1; min-width: 0; }
+.armory-hint { font-size: 0.8125rem; line-height: 1.45; }
+.armory-pane .save-build-error { font-size: 0.875rem; }
+.armory-pane .save-build-actions { margin-top: 0; }
+.armory-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 0.875rem; line-height: 1.5; }
+.armory-import .field { margin: 0; }
 .armory-import textarea { width: 100%; font: 0.75rem ui-monospace, monospace; resize: vertical; }
-.armory-private { font-size: 0.8125rem; line-height: 1.45; margin: 8px 0 0; }
-.armory-by-name { display: flex; gap: 12px; align-items: flex-end; }
-.armory-by-name .field { flex: 1; margin: 0; }
-.armory-by-name input { width: 100%; }
-.armory-or { margin: 16px 0 4px; font-weight: 600; font-size: 0.875rem; }
 .armory-result { display: grid; gap: 12px; font-size: 0.9375rem; line-height: 1.5; }
 .armory-result p { margin: 0; }
 .armory-runes { padding: 12px; border: 1px solid var(--border); border-radius: 6px; display: grid; gap: 10px; }
