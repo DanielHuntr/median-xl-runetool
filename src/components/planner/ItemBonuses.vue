@@ -23,6 +23,8 @@ const label = (b) => {
   const what = b.lines.filter((l) => !/Required Level$/.test(l)).join(", ");
   return b.group === "trophy" ? `${b.name}: ${what}` : b.group === "shrine" ? `${b.shrine} Shrine: ${what}` : b.group === "cycle" || b.group === "oil" ? `${b.name}: ${what}` : what;
 };
+// A list option kept short enough for the list to fit the window; the full lines show under it.
+const short = (b) => { const t = label(b); return t.length > 64 ? `${t.slice(0, 62).replace(/[ ,]+\S*$/, "")}…` : t; };
 const remove = (i) => emit("update", props.addons.filter((_, j) => j !== i));
 // One per item (an oil, a scroll, a corruption, a trophy): the list shows the one chosen, and
 // choosing another replaces it ("None" removes it).
@@ -56,7 +58,7 @@ const NOTES = {
         <div class="bonus-pick">
           <select v-if="g.max === 1" :aria-label="g.label" :value="g.chosen[0]?.b.id || ''" @change="choose(g, $event.target.value)">
             <option value="">None</option>
-            <option v-for="b in g.options" :key="b.id" :value="b.id">{{ label(b) }}</option>
+            <option v-for="b in g.options" :key="b.id" :value="b.id" :title="label(b)">{{ short(b) }}</option>
           </select>
           <template v-else>
             <ul v-if="g.chosen.length" class="bonus-chosen">
@@ -67,9 +69,10 @@ const NOTES = {
             </ul>
             <select v-if="!g.full" :aria-label="`Add ${g.label.toLowerCase()}`" @change="add(g, $event)">
               <option value="">+ Add {{ g.group === "cycle" ? "a cycle" : "a shrine" }}…</option>
-              <option v-for="b in g.options" :key="b.id" :value="b.id">{{ label(b) }}</option>
+              <option v-for="b in g.options" :key="b.id" :value="b.id" :title="label(b)">{{ short(b) }}</option>
             </select>
           </template>
+          <span v-if="g.max === 1 && g.chosen[0]" class="bonus-detail">{{ g.chosen[0].b.lines.filter((l) => !/Required Level$/.test(l)).join(" · ") }}</span>
           <small v-if="!compact" class="muted">{{ NOTES[g.group] }}</small>
         </div>
       </div>
@@ -84,6 +87,7 @@ const NOTES = {
 .bonus-pick { display: grid; gap: 4px; min-width: 0; }
 .bonus-pick select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
 .bonus-pick small { font-size: 0.75rem; }
+.bonus-detail { font-size: 0.8125rem; line-height: 1.45; color: var(--stats); }
 .bonus-chosen { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .bonus-chosen li { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; font-size: 0.8125rem; color: var(--stats); }
 .item-bonuses.compact .bonus-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }

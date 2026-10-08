@@ -3,6 +3,7 @@ import CubeLink from "../CubeLink.vue";
 import { computed } from "vue";
 import { ORBS, orbById, orbFits, orbMultiplier } from '../../planner/orbs.js';
 import ItemIcon from "./ItemIcon.vue";
+import Icon from "../AppIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import ItemBonuses from "./ItemBonuses.vue";
 import ItemAffixes from "./ItemAffixes.vue";
@@ -114,6 +115,8 @@ const canPickSockets = computed(() => ["base", "custom"].includes(r.value?.def.k
 const setSocketCount = (n) => updateItem(props.slot, { socketCount: Number(n) });
 // Empty sockets left on this item, for "Fill empty" on a filled socket.
 const empty = computed(() => (r.value?.def.kind === "runeword" ? [] : emptySockets(props.slot)));
+// The first socket holding a given filler (its "Fill N more" button shows there only).
+const firstOfKind = (i) => r.value.sockets.findIndex((x) => x?.def.key === r.value.sockets[i]?.def.key) === i;
 const anyFilled = computed(() => r.value?.def.kind !== "runeword" && (item.value?.sockets || []).some(Boolean));
 function clearSocket(i) {
   const sockets = [...(item.value.sockets || [])];
@@ -172,10 +175,23 @@ const grouped = (entries) => {
   }
   return [...out.values()].flatMap((g) => g.parsed.map((p) => ({ ...p, text: times(p.text, g.n), from: g.n > 1 ? `${g.name} ×${g.n}` : g.name })));
 };
+// A base line the editor's changes move, at its current value: orbs and socket fillers raise
+// the required level and attributes, the item's Enhanced Damage or Defense roll sets its
+// damage or defense ("Two-Hand Damage: 66 to 81" for "(52 - 55) to (66 - 70)").
+function live(p) {
+  const h = r.value.head, t = p.text;
+  let text = null;
+  if (/^Required Level: /.test(t) && h.reqLevel) text = `Required Level: ${h.reqLevel}`;
+  else if (/^Required Strength: /.test(t) && h.reqStr) text = `Required Strength: ${h.reqStr}`;
+  else if (/^Required Dexterity: /.test(t) && h.reqDex) text = `Required Dexterity: ${h.reqDex}`;
+  else if (h.damage && new RegExp(`^${h.damage.type} Damage: `).test(t)) text = `${h.damage.type} Damage: ${Math.floor(h.damage.min)} to ${Math.floor(h.damage.max)}`;
+  else if (/^Defense: /.test(t) && h.defense != null) text = `Defense: ${Math.floor(h.defense)}`;
+  return text && text !== t ? { ...p, text } : p;
+}
 const preview = computed(() => {
   const added = (r.value.addons || []).reduce((n, b) => n + b.lines.length, 0);
   const all = r.value.parsed;
-  const groups = [{ title: "", lines: all.slice(0, all.length - added) }];
+  const groups = [{ title: "", lines: all.slice(0, all.length - added).map(live) }];
   if (added) {
     const from = (r.value.addons || []).flatMap((b) => b.lines.map(() => (b.shrine ? `${b.shrine} Shrine` : b.name || "")));
     groups.push({ title: "Added bonuses", lines: all.slice(all.length - added).map((p, k) => ({ ...p, from: from[k] })) });
@@ -285,8 +301,10 @@ const cubeLink = computed(() => {
         <div v-if="r.ranges.length" class="editor-section rolls">
           <h3>
             Rolls
-            <button class="text-btn" @click="allRolls(1)">All max</button>
-            <button class="text-btn" @click="allRolls(0)">All min</button>
+            <span class="head-actions">
+              <button type="button" class="mini-btn" @click="allRolls(1)">All max</button>
+              <button type="button" class="mini-btn" @click="allRolls(0)">All min</button>
+            </span>
           </h3>
           <label v-for="(x, i) in r.ranges" :key="i" class="roll">
             <span class="roll-line"
@@ -312,15 +330,18 @@ const cubeLink = computed(() => {
         <div v-if="r.socketCount" class="editor-section sockets">
           <h3>
             Sockets
-            <button
-              v-if="empty.length && !mercKey"
-              class="text-btn"
-              title="Best gems, runes or jewels for your build: damage stats and resistances up to the cap"
-              @click="fillSockets(slot)"
-            >
-              Suggest
-            </button>
-            <button v-if="anyFilled" class="text-btn" @click="clearSockets(slot)">Empty all</button>
+            <span class="head-actions">
+              <button
+                v-if="empty.length && !mercKey"
+                type="button"
+                class="mini-btn"
+                data-tip="Fill the empty sockets with the best gems, runes or jewels for your build"
+                @click="fillSockets(slot)"
+              >
+                Suggest
+              </button>
+              <button v-if="anyFilled" type="button" class="mini-btn" @click="clearSockets(slot)">Empty all</button>
+            </span>
           </h3>
           <ul>
             <li v-for="(s, i) in r.def.kind === 'runeword' ? r.def.runes : r.sockets" :key="i">
@@ -329,18 +350,21 @@ const cubeLink = computed(() => {
               </template>
               <template v-else-if="s">
                 <ItemIcon :icon="s.def.icon" :src="s.def.img ? catalog.images[s.def.img] : ''" /><span
-                  >{{ s.def.name }}<small>{{ s.lines.join(" · ") }}</small></span
+                  >{{ s.def.name }}<small class="clamp-2" :title="s.lines.join(' · ')">{{ s.lines.join(" · ") }}</small></span
                 >
-                <button
-                  v-if="empty.length"
-                  class="text-btn"
-                  :title="`Put ${s.def.name} in the ${empty.length} empty socket${empty.length > 1 ? 's' : ''}`"
-                  @click="fillEmptySockets(slot, s.def.key)"
-                >
-                  Fill empty ({{ empty.length }})
-                </button>
-                <button class="text-btn" @click="openPicker({ mode: 'socket', slot, index: i })">Change</button>
-                <button class="text-btn" :aria-label="`Empty socket ${i + 1}`" @click="clearSocket(i)">Empty</button>
+                <span class="row-actions">
+                  <button
+                    v-if="empty.length && firstOfKind(i)"
+                    type="button"
+                    class="mini-btn"
+                    :data-tip="`Put ${s.def.name} in the ${empty.length} empty socket${empty.length > 1 ? 's' : ''} too`"
+                    @click="fillEmptySockets(slot, s.def.key)"
+                  >
+                    Fill {{ empty.length }} more
+                  </button>
+                  <button type="button" class="icon-btn row-icon" :aria-label="`Change ${s.def.name} in socket ${i + 1}`" data-tip="Change" @click="openPicker({ mode: 'socket', slot, index: i })"><Icon name="pencil" /></button>
+                  <button type="button" class="icon-btn row-icon" :aria-label="`Empty socket ${i + 1}`" data-tip="Empty" @click="clearSocket(i)"><Icon name="close" /></button>
+                </span>
               </template>
               <button v-else class="socket-empty" @click="openPicker({ mode: 'socket', slot, index: i })">+ Fill socket {{ i + 1 }}</button>
             </li>
@@ -348,7 +372,12 @@ const cubeLink = computed(() => {
         </div>
 
         <div class="editor-section sockets orb-editor">
-          <h3>Mystic orbs <button v-if="!mercKey && !ethereal" class="text-btn" @click="enhance(slot)">Suggest orbs and sockets</button></h3>
+          <h3>
+            Mystic orbs
+            <span v-if="!mercKey && !ethereal" class="head-actions"
+              ><button type="button" class="mini-btn" data-tip="Choose mystic orbs and socket fillers for your build" @click="enhance(slot)">Suggest</button></span
+            >
+          </h3>
           <p v-if="ethereal" class="muted">Ethereal items can't take mystic orbs. Their empty sockets can still be filled.</p>
           <template v-else>
             <p class="muted orb-meta">

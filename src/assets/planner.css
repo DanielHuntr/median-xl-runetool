@@ -2897,3 +2897,69 @@
     padding-top: 15px;
   }
 }
+
+/* Small outlined buttons for a section's own actions (Suggest, All max, Empty all), kept to the
+   right of its heading, and icon buttons on a row (change, empty). */
+.mini-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--field);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.mini-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.item-editor h3 .head-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: auto;
+}
+.item-editor .row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.item-editor .row-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.item-editor .row-icon:hover {
+  color: var(--text);
+  background: var(--field);
+}
+.item-editor .row-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.item-editor .sockets li {
+  align-items: center;
+}
+
+.item-editor .clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-editor .sockets li > .row-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
