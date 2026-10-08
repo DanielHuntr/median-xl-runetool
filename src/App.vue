@@ -18,6 +18,7 @@ const CharacterPlanner = defineAsyncComponent(() => import("./components/planner
 const BuildsBrowser = defineAsyncComponent(() => import("./components/BuildsBrowser.vue"));
 const LootFilters = defineAsyncComponent(() => import("./components/LootFilters.vue"));
 const CubeRecipes = defineAsyncComponent(() => import("./components/CubeRecipes.vue"));
+const ItemUpgrades = defineAsyncComponent(() => import("./components/ItemUpgrades.vue"));
 const AccountPage = defineAsyncComponent(() => import("./components/AccountPage.vue"));
 const PrivacyPage = defineAsyncComponent(() => import("./components/PrivacyPage.vue"));
 const state = createRunetool();
@@ -40,6 +41,7 @@ const { page } = state;
       <SocketablesList v-else-if="page === 'socketables'" />
       <BaseItems v-else-if="page === 'base-items'" />
       <CubeRecipes v-else-if="page === 'cube'" />
+      <ItemUpgrades v-else-if="page === 'upgrades'" />
       <BuildsBrowser v-else-if="page === 'builds'" />
       <LootFilters v-else-if="page === 'filters'" />
       <CharacterPlanner v-else />

@@ -51,6 +51,7 @@ export const PAGES = [
   ["oskills", "Oskills & Procs", "spark", "Find items that grant skills or cast them automatically.", "https://forum.median-xl.com/viewtopic.php?t=75830"],
   ["socketables", "Gems & Runes", "gem", "What every gem and rune adds to each slot.", DOCS + "socketables"],
   ["base-items", "Base Items", "shield", "Every base item, from Tier 1 to Sacred.", DOCS + "baseitems"],
+  ["upgrades", "Item Upgrades", "bag", "Affixes, mystic orbs, oils, corruptions, shrines and scrolls: what each adds, and what it goes on.", "https://docs.median-xl.com/doc/items/cube"],
   ["cube", "Cube Recipes", "cube", "Put items in the Horadric Cube and see what the game makes of them, from its own recipe table.", DOCS + "cube"],
   ["planner", "Character Planner", "tree", "Attributes, skills, equipment and stats in one build.", "https://github.com/azadix/medianxl-db"],
   ["builds", "Builds", "builds", "Your saved builds, to open, rename and share.", "https://github.com/azadix/medianxl-db"],

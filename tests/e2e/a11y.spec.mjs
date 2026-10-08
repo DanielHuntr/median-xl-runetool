@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const PAGES = ["runewords", "uniques", "sacred-uniques", "sets", "socketables", "base-items", "cube", "planner", "builds", "filters"];
+const PAGES = ["runewords", "uniques", "sacred-uniques", "sets", "oskills", "socketables", "base-items", "upgrades", "cube", "planner", "builds", "filters"];
 const problems = async (page, include) => {
   let axe = new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]);
   if (include) axe = axe.include(include);

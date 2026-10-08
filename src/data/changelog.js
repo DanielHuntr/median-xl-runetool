@@ -5,6 +5,7 @@ export const CHANGELOG = [
     date: "2026-10-08",
     items: [
       "Equipment slots show the rune, gem or jewel in each socket.",
+      "Item Upgrades page: every affix, mystic orb, oil, corruption, shrine, scroll of enchantment, trophy and cycle, searchable, with what each goes on.",
       "Oils and corruptions in the item editor, from the game's own cube recipes: the oil each item can take, and every corruption a sacred item can reveal with an Oil of Craft.",
     ],
   },
