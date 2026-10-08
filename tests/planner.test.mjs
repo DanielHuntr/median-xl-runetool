@@ -2254,6 +2254,7 @@ test("NotArmory's Export build text imports skills, quests and attributes, and w
   assert.deepEqual([b.cls, b.level, Object.keys(b.points).length], ["Amazon", 96, 15]);
   assert.deepEqual(b.attrs, { strength: 70, dexterity: 408, vitality: 0, energy: 0 });
   assert.equal(b.signets, 3, "478 points spent, 475 from levels: 3 signets");
+  assert.equal(r.stage, "Nightmare", "no title: the furthest difficulty with a quest done");
   // Quests not done are said so (the planner counts a quest done unless told): Lam Esen's Tome
   // isn't, so its stat points aren't counted, and the points add up exactly.
   assert.equal(b.quests["lam_esens_tome.normal"], false);
@@ -2291,4 +2292,18 @@ test("a character's public page (imported by name) works out its quests from the
   const sp = computeCharacter(b, { engine, catalog, planner }).statPoints;
   assert.equal(sp.available, sp.spent);
   assert(r.notes.some((n) => /worked out/.test(n)));
+  // The title says the stage: Slayer is Normal finished, so the character is in Nightmare, and
+  // the import goes into that stage (not Endgame).
+  assert.deepEqual([r.stage, b.difficulty, b.merc.difficulty], ["Nightmare", "Nightmare", "Nightmare"]);
+  const stageOf = (title) => armoryBuild(parseArmoryPage(html.replace('<span class="na-title">Slayer</span>', `<span class="na-title">${title}</span>`)), { engine, catalog, planner }).stage;
+  assert.deepEqual(["", "Champion", "Conqueror", "Matriarch", "Guardian"].map(stageOf), ["Normal", "Hell", "Hell", "Endgame", "Endgame"]);
+  const { createPlanner } = await load("/src/planner/usePlanner.js");
+  const scope = effectScope();
+  const p = scope.run(() => createPlanner(engine, catalog, planner));
+  const done = p.importArmory(html);
+  assert.equal(done.stage, "Nightmare");
+  assert.equal(p.state.stage.Amazon, "Nightmare");
+  assert.equal(p.build.value.level, 96);
+  assert.equal(p.state.stages.Amazon.Endgame, undefined, "Endgame left for the player to plan");
+  scope.stop();
 });

@@ -1069,7 +1069,7 @@ export function createPlanner(engine, catalog, planner) {
     const r = armoryBuild(page, { engine, catalog, planner });
     if (!r) return { ok: false, reason: `The page's class (${page.exp.class}) isn't one the planner knows.` };
     if (!importFromHash(armoryHash(r))) return { ok: false, reason: "The character couldn't be opened in the planner." };
-    return { ok: true, name: r.name, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, spare: r.build.spare?.length || 0, merc: !!r.build.merc, missing: r.missing, notes: r.notes, runes: r.runes };
+    return { ok: true, name: r.name, stage: r.stage, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, spare: r.build.spare?.length || 0, merc: !!r.build.merc, missing: r.missing, notes: r.notes, runes: r.runes };
   }
   function importFromHash(hash = window.location.hash) {
     // #planner?skill=<id> (site search): show that skill in its class's tree. Each class

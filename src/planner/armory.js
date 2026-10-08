@@ -32,6 +32,8 @@ const jsonBlock = (html, id) => {
   if (i < 0) return null;
   try { return JSON.parse(html.slice(i + open.length, html.indexOf("</script>", i))); } catch { return null; }
 };
+// Titles, softcore and hardcore (Patriarch or Matriarch by sex), by the stage they put a character at.
+const TITLE_STAGE = { "": "Normal", slayer: "Nightmare", destroyer: "Nightmare", champion: "Hell", conqueror: "Hell", patriarch: "Endgame", matriarch: "Endgame", guardian: "Endgame" };
 const decode = (s) => s.replace(/&(amp|lt|gt|quot|apos|#39);/g, (m, e) => ({ amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", "#39": "'" })[e]);
 const textLines = (it) => (it.description_lines || []).map((l) => l.map(([t]) => t).join("").trim());
 const statText = (it) => textLines(it).slice(1).filter((l) => l && l !== it.type && !NOT_STATS.test(l));
@@ -68,8 +70,10 @@ export function parseArmoryPage(html) {
   const stat = (k) => { const m = new RegExp(`na-stat-${k}"><dt>[^<]*</dt><dd>([^<]*)</dd>`).exec(text); return m ? decode(m[1]).replace(/[^\d]/g, "") : null; };
   const doll = /data-na-doll[^>]*>/.exec(text)?.[0] || "";
   const attr = (k) => { const v = stat(k); return v == null || v === "" ? null : Number(v); };
+  // The character's title (none, "Slayer" …), from the page's heading: null where it isn't shown.
+  const rank = /<span class="na-title">([^<]*)<\/span>/.exec(text);
   return {
-    exp, items, questsUnknown, freeSkills,
+    exp, items, questsUnknown, freeSkills, title: rank ? decode(rank[1]).trim() : null,
     attrs: { strength: attr("strength"), dexterity: attr("dexterity"), vitality: attr("vitality"), energy: attr("energy") },
     signets: attr("signets") ?? 0,
     freeStats: attr("free-stats") ?? 0,
@@ -100,8 +104,6 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   for (const [k, by] of Object.entries(exp.questsCompleted || {}))
     // Not done is said too: the planner counts a quest as done unless it's marked otherwise.
     for (const [d, done] of Object.entries(by || {})) b.quests[`${QUESTS[k] || k}.${d}`] = !!done;
-  const any = (d) => Object.entries(b.quests).some(([k, v]) => v && k.endsWith(`.${d}`));
-  b.difficulty = any("hell") || any("nightmare") ? "Hell" : any("normal") ? "Nightmare" : "Normal";
 
   const all = catalog.all();
   const byName = (name, kinds) => all.filter((d) => d.name === name && kinds.includes(d.kind));
@@ -291,7 +293,6 @@ export function armoryBuild(page, { engine, catalog, planner }) {
     }
     b.quests["inquisitor_of_the_triune.hell"] = extra >= 2;
     b.quests["justicar_signet.hell"] = b.signets > SIGNET_CAP;
-    b.difficulty = b.quests["den_of_evil.nightmare"] ? "Hell" : b.quests["den_of_evil.normal"] ? "Nightmare" : "Normal";
     notes.push("Quests aren't on a public page: the ones that give skill and stat points were worked out from the points spent.");
   }
   // Signets eaten, where the page doesn't say (the "Export build" JSON): the points spent beyond
@@ -302,8 +303,15 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   }
   if (spare.length) b.spare = spare.slice(0, 120);
   if (page.exportOnly) notes.push("The \"Export build\" text has no items: save the character's page itself to bring in its gear, charms and mercenary too.");
-  return { build: b, name: exp.name || cls, missing: [...new Set(missing)], notes: [...new Set(notes)], runes };
+  // The stage the character is at: its title is the game's for each difficulty finished (Baal
+  // killed there), softcore and hardcore; without one shown (the "Export build" JSON), the
+  // furthest difficulty with a quest done, which can't tell Hell from the endgame.
+  const any = (d) => Object.entries(b.quests).some(([k, v]) => v && k.endsWith(`.${d}`));
+  const stage = TITLE_STAGE[page.title?.toLowerCase()] ?? (any("hell") ? "Hell" : any("nightmare") ? "Nightmare" : "Normal");
+  b.difficulty = stage === "Endgame" ? "Hell" : stage;
+  if (b.merc) b.merc.difficulty = b.difficulty;
+  return { build: b, stage, name: exp.name || cls, missing: [...new Set(missing)], notes: [...new Set(notes)], runes };
 }
 
 /** The planner link that opens the imported build (importFromHash does the rest). */
-export const armoryHash = (r) => `#planner?b=${encodeBuild(r.build)}&name=${encodeURIComponent(r.name)}`;
+export const armoryHash = (r) => `#planner?b=${encodeBuild({ ...r.build, stage: r.stage })}&name=${encodeURIComponent(r.name)}`;
