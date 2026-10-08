@@ -2223,7 +2223,9 @@ test("a median-xl.com character page imports: skills, quests, attributes, worn g
   // Carried and stashed gear as spare items; runes for My Runes.
   assert(b.spare.length >= 5);
   assert(b.spare.every((x) => catalog.resolve(x, b.level)));
-  assert.deepEqual(r.runes, { Lo: 1, Ber: 1 });
+  // Loose runes, and rune containers counted by their quantity ("Eld Container (02)", 6 in it).
+  assert.equal(Object.keys(r.runes).length, 21);
+  assert.deepEqual([r.runes.Lo, r.runes.Ber, r.runes.Eld, r.runes.Ral], [1, 1, 6, 8]);
   // Spare items stay in the browser: a share link leaves them out.
   const { createPlanner } = await load("/src/planner/usePlanner.js");
   const { decodeBuild } = await load("/src/planner/buildCode.js");

@@ -234,13 +234,13 @@ export function armoryBuild(page, { engine, catalog, planner }) {
   }
 
   // Gear the character carries or stashes: kept as spare items to try on (not counted). Runes
-  // are counted for My Runes.
+  // are counted for My Runes, loose or in a rune container (one rune, its "quantity" how many).
   const spare = [], runes = {};
   const GEAR = new Set(["weapon", "shield", "helm", "body", "gloves", "belt", "boots", "ring", "amulet", "quiver"]);
   const QUALITIES = new Set(["Unique", "Set", "RW", "Magic", "Rare", "Crafted", "Honorific", "Normal", "High"]);
   for (const it of items) {
     if (it.area === "character" && it.location !== "Gear" && it.location !== "Belt" && !it.is_charm) {
-      const rune = /^(.+) Rune(?: \(\d+\))?$/.exec(it.item || "");
+      const rune = /^(.+) (?:Rune|Container)(?: \(\d+\))?$/.exec(it.item || "");
       if (rune && /Rune/.test(it.type || "")) { runes[rune[1]] = (runes[rune[1]] || 0) + (Number(it.quantity) || 1); continue; }
       if (!QUALITIES.has(it.quality) || /Jewel|Charm|Relic/.test(it.type || "")) continue;
       const before = missing.length;
