@@ -2,15 +2,28 @@
 // Add an entry for each release; its date marks it as new until a visitor has opened the list.
 export const CHANGELOG = [
   {
+    date: "2026-10-09",
+    items: [
+      "Importing a character fills every stage with its setup, inventory and stash included, to change from there. It opens on the stage the character is at.",
+      "A cleaner item editor: the item's stats stay in view on the left and update as you change it on the right, with orbs grouped, sockets and bonuses easier to set, and the live required level, damage and defense.",
+      "Long lists have a filter: mystic orbs (grouped by kind, saying why one can't be added), corruptions, shrines, cycles and affixes.",
+      "Messages appear as small notifications, and removing an item or emptying its sockets can be undone from them. Resetting a character or deleting a loot filter asks in place instead of a pop-up.",
+      "The planner's top bar keeps Save and Share up front, with Import character and Reset under More. Every delete now asks in place the same way.",
+      "On phones, the item editor slides up as a sheet from the bottom.",
+      "Imported magic and rare rings and amulets show a picture instead of an empty slot.",
+      "Delete and Reset are easier to read in every theme.",
+    ],
+  },
+  {
     date: "2026-10-08",
     items: [
       "Import your character from its median-xl.com page: skills, quests, attributes, worn gear with its actual rolls (rares with their exact stats, jewels in sockets), charms and your mercenary. Your inventory and stash come in as spare items to try on, and your runes can go straight into My Runes. Read in your browser only.",
       "Import any character by name: type it in and the planner fetches its public median-xl.com page. No saving or pasting needed. It goes into the stage the character is at (Normal, Nightmare, Hell or Endgame), from its title.",
-      "A cleaner item editor: the item's stats stay in view on the left and update as you change it on the right, with orbs grouped, sockets and bonuses easier to set, and the live required level, damage and defense.",
-      "Messages appear as small notifications, and removing an item or emptying its sockets can be undone from them. Resetting a character or deleting a loot filter asks in place instead of a pop-up.",
       "Equipment slots show the rune, gem or jewel in each socket.",
       "Skill order in the planner's skill summary: the order you spend skill points, the character level each comes at, and warnings if a point comes before its prerequisite. Move rows to plan your levelling.",
-      "Item Upgrades page: every affix, mystic orb, oil, corruption, shrine, scroll of enchantment, trophy and cycle, searchable, with what each goes on.",
+      "Item Upgrades page: every affix, mystic orb, oil, corruption, shrine, scroll of enchantment, trophy and cycle, searchable, with what each goes on and the game's pictures.",
+      "More accurate damage: elemental weapons (sacred bows and similar) count their innate damage once, spell damage raises weapon elemental damage as on your character screen, and skills use the game's exact share of weapon damage (Barrage 90.6%, Backstab 195%).",
+      "Fixes: Dragonlore, Thundermaiden, Howl of the Spirits and Alchemical Preparation no longer count their pierce twice; Veneration of Justice no longer doubles its Vitality and Energy; skills from items (+25 to Nova Charge) work as in game; \"+% to Spell Damage\" counts toward Physical/Magic too.",
       "Oils and corruptions in the item editor, from the game's own cube recipes: the oil each item can take, and every corruption a sacred item can reveal with an Oil of Craft.",
     ],
   },
