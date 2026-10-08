@@ -2,7 +2,7 @@
 // Bonuses the cube adds to a kept item (items.js BONUS_GROUPS): a charm's trophy and cycles, a
 // scroll of enchantment, shrines on a sacred rare, crafted or honorific item. Shown only when
 // one fits; emits the item's new list of bonus ids.
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { BONUS_GROUPS, bonusById, bonusFits } from "../../planner/items.js";
 
 const props = defineProps({
@@ -23,53 +23,73 @@ const label = (b) => {
   const what = b.lines.filter((l) => !/Required Level$/.test(l)).join(", ");
   return b.group === "trophy" ? `${b.name}: ${what}` : b.group === "shrine" ? `${b.shrine} Shrine: ${what}` : b.group === "cycle" || b.group === "oil" ? `${b.name}: ${what}` : what;
 };
-const picked = ref({});
-function add(g) {
-  const id = picked.value[g.group];
-  if (!id || g.full) return;
-  emit("update", [...props.addons, id]);
-  picked.value[g.group] = "";
-}
 const remove = (i) => emit("update", props.addons.filter((_, j) => j !== i));
-// The empty choice in each group's list.
-const PLACEHOLDER = { trophy: "No trophy", scroll: "Choose a scroll", shrine: "Choose a shrine", cycle: "Choose a cycle", oil: "Choose an oil", corruption: "Choose a corruption" };
+// One per item (an oil, a scroll, a corruption, a trophy): the list shows the one chosen, and
+// choosing another replaces it ("None" removes it).
+function choose(g, id) {
+  const others = props.addons.filter((a) => !g.chosen.some((x) => x.b.id === a));
+  emit("update", id ? [...others, id] : others);
+}
+// More than one (shrines, cycles): choosing one in the list adds it, and the list resets.
+function add(g, e) {
+  const id = e.target.value;
+  e.target.value = "";
+  if (id && !g.full) emit("update", [...props.addons, id]);
+}
+// How each is added in game, as a hint under its list.
 const NOTES = {
-  trophy: "Cube the charm with its trophy, once you've done the trophy's challenge.",
-  scroll: "One scroll per item.",
-  shrine: "Crafting with a shrine adds one set; blessing the crafted item adds a second.",
-  cycle: "Cycles from The Triune on Hell, each cubed into the Corrupted Wormhole.",
-  oil: "One oil per item, cubed with it.",
-  corruption: "Cube a sacred item with a Corrupted Crystal, then with an Oil of Craft to reveal one of these. One per item; it can't be undone.",
+  trophy: "After its challenge, cubed with the charm.",
+  scroll: "One per item.",
+  shrine: "Crafting adds one set; blessing adds a second.",
+  cycle: "From The Triune on Hell, cubed into the Corrupted Wormhole.",
+  oil: "One per item, cubed with it.",
+  corruption: "Corrupted Crystal, then an Oil of Craft reveals one. Can't be undone.",
 };
 </script>
 
 <template>
-  <div v-if="groups.length" class="sockets item-bonuses" :class="{ compact }">
+  <div v-if="groups.length" class="item-bonuses" :class="{ compact }">
     <h3 v-if="!compact">Added bonuses</h3>
-    <div v-for="g in groups" :key="g.group" class="bonus-group">
-      <p v-if="!compact" class="muted">{{ g.label }}: {{ NOTES[g.group] }}</p>
-      <ul v-if="g.chosen.length">
-        <li v-for="x in g.chosen" :key="x.i">
-          <span><b>{{ x.b.group === "scroll" || x.b.group === "oil" ? x.b.name : g.label }}</b><small>{{ label(x.b) }}</small></span>
-          <button class="text-btn" :aria-label="`Remove ${label(x.b)}`" @click="remove(x.i)">Remove</button>
-        </li>
-      </ul>
-      <div v-if="!g.full" class="orb-add-controls">
-        <label class="orb-select">{{ g.label }}
-          <select v-model="picked[g.group]">
-            <option value="">{{ PLACEHOLDER[g.group] }}</option>
+    <div class="bonus-rows">
+      <div v-for="g in groups" :key="g.group" class="bonus-row">
+        <span class="bonus-label">{{ g.label }}</span>
+        <div class="bonus-pick">
+          <select v-if="g.max === 1" :aria-label="g.label" :value="g.chosen[0]?.b.id || ''" @change="choose(g, $event.target.value)">
+            <option value="">None</option>
             <option v-for="b in g.options" :key="b.id" :value="b.id">{{ label(b) }}</option>
           </select>
-        </label>
-        <button class="btn" :disabled="!picked[g.group]" @click="add(g)">Add</button>
+          <template v-else>
+            <ul v-if="g.chosen.length" class="bonus-chosen">
+              <li v-for="x in g.chosen" :key="x.i">
+                <span>{{ label(x.b) }}</span>
+                <button class="text-btn" :aria-label="`Remove ${label(x.b)}`" @click="remove(x.i)">Remove</button>
+              </li>
+            </ul>
+            <select v-if="!g.full" :aria-label="`Add ${g.label.toLowerCase()}`" @change="add(g, $event)">
+              <option value="">+ Add {{ g.group === "cycle" ? "a cycle" : "a shrine" }}…</option>
+              <option v-for="b in g.options" :key="b.id" :value="b.id">{{ label(b) }}</option>
+            </select>
+          </template>
+          <small v-if="!compact" class="muted">{{ NOTES[g.group] }}</small>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.bonus-group + .bonus-group { margin-top: 10px; }
-.item-bonuses.compact { margin-top: 6px; }
-.item-bonuses.compact .orb-add-controls { margin-top: 4px; }
-.item-bonuses select { max-width: 100%; }
+.bonus-rows { display: grid; gap: 12px; }
+.bonus-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 12px; align-items: start; }
+.bonus-label { padding-top: 9px; font-size: 0.8125rem; color: var(--muted); }
+.bonus-pick { display: grid; gap: 6px; min-width: 0; }
+.bonus-pick select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+.bonus-pick small { font-size: 0.75rem; }
+.bonus-chosen { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.bonus-chosen li { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; font-size: 0.8125rem; color: var(--stats); }
+.item-bonuses.compact .bonus-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.item-bonuses.compact .bonus-label { padding-top: 0; }
+@media (max-width: 560px) {
+  .bonus-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .bonus-label { padding-top: 0; }
+}
 </style>

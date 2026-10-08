@@ -851,11 +851,183 @@
 }
 .roll {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 140px 48px;
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 12px;
   align-items: center;
   font-size: 0.8125rem;
   color: var(--stats);
+}
+.roll-line small {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: 0.6875rem;
+}
+.roll-value {
+  color: var(--text);
+  font-weight: 600;
+}
+/* The item editor: the item as it is (left, kept in view) beside what you change (right).
+   Two columns when the editor has the room (a container query, so it follows the dialog's
+   width, not the window's); one column, the stats first, when it doesn't. */
+.item-editor {
+  container-type: inline-size;
+}
+.item-editor-head {
+  align-items: flex-start;
+}
+.item-editor-title {
+  flex: 1;
+  min-width: 0;
+}
+.item-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.btn.btn-quiet {
+  background: none;
+  border-color: transparent;
+  color: var(--muted);
+}
+.btn.btn-quiet:hover {
+  color: var(--warn);
+  border-color: var(--border);
+}
+.item-editor-meta {
+  margin: 12px 0 0;
+}
+.editor-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 16px;
+}
+.editor-preview {
+  padding: 14px 16px;
+  border: 1px solid var(--soft-border);
+  border-radius: 8px;
+  background: var(--field, rgba(0, 0, 0, 0.25));
+}
+.editor-preview > h3:first-child {
+  margin-top: 0;
+}
+.editor-controls {
+  min-width: 0;
+}
+.editor-controls > .editor-section + .editor-section {
+  margin-top: 18px;
+  padding-top: 2px;
+  border-top: 1px solid var(--soft-border);
+}
+.editor-controls > .editor-section:first-child > h3:first-child {
+  margin-top: 0;
+}
+.editor-form {
+  display: grid;
+  gap: 10px;
+}
+.editor-form > label {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.editor-form select {
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+.editor-form .editor-check {
+  align-items: start;
+}
+.editor-form .switch-row {
+  align-items: flex-start;
+}
+.editor-form .switch-row small {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+@container (min-width: 760px) {
+  .editor-grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 28px;
+    align-items: start;
+  }
+  /* The stats stay in view while the controls scroll past. */
+  .editor-preview {
+    position: sticky;
+    top: 0;
+    max-height: calc(min(86dvh, 900px) - 60px);
+    overflow-y: auto;
+  }
+}
+@container (max-width: 520px) {
+  .item-editor-head {
+    flex-wrap: wrap;
+  }
+  .item-editor-actions {
+    width: 100%;
+  }
+  .editor-form > label {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+.orb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+}
+.orb-meta .switch {
+  font-size: 0.8125rem;
+}
+.orb-list {
+  margin-bottom: 10px !important;
+}
+.sockets li > .stepper {
+  flex: 0 0 auto;
+}
+.preview-group {
+  margin: 14px 0 4px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.stepper output {
+  min-width: 1.5em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.stepper .icon-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+  line-height: 1;
+}
+.stepper .icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.add-select {
+  width: 100%;
+  max-width: 100%;
+  text-overflow: ellipsis;
 }
 .roll input {
   accent-color: var(--gold);
@@ -1190,11 +1362,8 @@
     gap: 5px;
   }
   .roll {
-    grid-template-columns: 1fr 48px;
-  }
-  .roll input {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
   }
 
   .picker-content {
@@ -2110,6 +2279,9 @@
 }
 
 /* Item editor as a modal */
+.item-editor-modal {
+  width: min(1120px, calc(100% - 32px));
+}
 .item-editor-modal .picker-content {
   position: relative;
 }
