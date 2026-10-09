@@ -38,6 +38,8 @@ const item = computed(() => ({ ref: 'custom', ...(base.value ? { base: base.valu
   custom: { name: baseDef.value?.name || 'Custom item', slotType: baseDef.value?.slotType || SLOTS.find(s => s.id === props.slot)?.accepts[0] || 'weapon',
     text: [customStatText(selected.value), extra.value].filter(Boolean).join('\n') } }));
 const preview = computed(() => catalog.resolve(item.value, build.value.level));
+// Something to equip: a base, or at least one stat line (with neither it would be an empty item).
+const hasContent = computed(() => !!base.value || !!item.value.custom.text.trim());
 </script>
 <template>
   <div class="custom-builder">
@@ -88,6 +90,6 @@ const preview = computed(() => catalog.resolve(item.value, build.value.level));
     <p v-if="!choices.length" class="muted">No matching modifiers. You can add other stat lines under "Other stat lines".</p>
     </section>
     </div>
-    <button class="btn gold custom-equip" :disabled="!preview || !valid" @click="emit('pick', item)">Equip custom item</button>
+    <button class="btn gold custom-equip" :disabled="!preview || !valid || !hasContent" :title="hasContent ? null : 'Choose a base or add a modifier first'" @click="emit('pick', item)">Equip custom item</button>
   </div>
 </template>

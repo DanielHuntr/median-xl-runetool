@@ -244,3 +244,12 @@ test("every recipe shown, loaded into the cube, transmutes (upgrade steps, corru
   }
   assert.deepEqual(failing, []);
 });
+
+test("nothing happens, but says why when the items make a recipe the character can't use", () => {
+  // The Cow Level portal: Wirt's Leg alone, on Hell only.
+  const r = cube.transmute([item("Wirt's Leg")], { cls: 0, level: 97, difficulty: 1 });
+  assert.equal(r.matched, false);
+  assert.equal(r.reason, "conditions");
+  assert.ok(cube.describe(r.blocked).conditions.some((c) => /Hell/.test(c)), JSON.stringify(cube.describe(r.blocked).conditions));
+  assert.equal(cube.transmute([item("Nef Rune"), item("Wirt's Leg")], HELL).reason, "none");
+});

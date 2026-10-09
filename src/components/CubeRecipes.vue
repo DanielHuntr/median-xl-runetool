@@ -124,7 +124,7 @@ function transmute() {
     result.value = { matched: true, text: cube.value.describe(r.recipe), effects: r.effects, notes: r.notes || [], random: r.random, unchecked: r.unchecked };
   } else {
     const near = cube.value.suggest(contents.value, ctx, { max: 2, limit: 3 });
-    result.value = { matched: false, near };
+    result.value = { matched: false, near, blocked: r.blocked ? cube.value.describe(r.blocked) : null };
   }
 }
 function undo() {
@@ -386,7 +386,8 @@ function findInGame(recipe) {
             </template>
             <template v-else>
               <b>Nothing happens</b>
-              <p>No recipe takes exactly these items{{ contents.length ? "" : "" }}. The cube needs every ingredient and nothing extra.</p>
+              <p v-if="result.blocked">These items make {{ result.blocked.outputs.map((o) => o.name).join(" + ") }}, but not for this character: it needs {{ result.blocked.conditions.join(", ") }}. Change Class, Level or Difficulty above to match.</p>
+              <p v-else>No recipe takes exactly these items. The cube needs every ingredient and nothing extra.</p>
               <p v-for="n in result.near" :key="n.recipe.row" class="cube-note">
                 <template v-if="n.missingCount">Add {{ n.missingText.join(", ") }} to make {{ n.text.outputs.map((o) => o.name).join(" + ") }}.</template>
                 <template v-else>{{ n.text.outputs.map((o) => o.name).join(" + ") }} needs: {{ n.text.conditions.join(", ") }}.</template>

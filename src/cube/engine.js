@@ -222,15 +222,21 @@ export function createCube(data) {
     // Copies, so rolls made now stay on the items this transmute returns.
     const items = contents.map((it) => ({ ...it, stats: { ...it.stats } }));
     const total = items.length, picked = {};
+    // A recipe these exact items make but whose class, difficulty, level or item condition
+    // isn't met, so "Nothing happens" can say what it needs: one this class and difficulty
+    // allow first (a class item's own row, short only of the level), else the first.
+    let blocked = null, other = null;
     for (const recipe of recipes) {
       if (recipe.inputs.reduce((n, i) => n + i.qty, 0) !== total) continue;
       const a = assign(recipe, items);
-      if (!a || !allowed(recipe, ctx)) continue;
+      if (!a) continue;
+      if (!allowed(recipe, ctx)) { other ??= recipe; continue; }
       const met = condition(recipe, a.first, ctx, random, picked);
-      if (met === false) continue;
+      if (met === false) { if (!recipe.unrolled && !describe(recipe).blocked) blocked ??= recipe; continue; }
       return { matched: true, recipe, ...produce(recipe, a.first, random), unchecked: met === "unknown", random: recipe.chance !== undefined };
     }
-    return { matched: false, contents, reason: "none" };
+    blocked ??= other;
+    return { matched: false, contents, reason: blocked ? "conditions" : "none", blocked };
   }
 
   // The recipe's outputs, made from its first ingredient where the recipe says so.
