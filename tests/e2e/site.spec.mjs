@@ -425,16 +425,15 @@ test("a runeword picked at a low level goes on a base tier the character can wea
   await expect(level).toHaveValue("10");
 });
 
-test("Add all puts every stat point left into one attribute, and Ctrl-click takes them back", async ({ page }) => {
+test("Ctrl-click on + puts every stat point left into one attribute, and on − takes them back", async ({ page }) => {
   await page.goto("/#planner");
   const level = page.locator(".planner-toolbar").getByLabel("Character level");
   await level.fill("20");
   await level.press("Enter");
   const orb = page.locator(".stat-orb b");
   await expect(orb).toHaveText("95");
-  await page.getByRole("button", { name: "Add all 95 remaining points to Dexterity" }).click();
+  await page.getByRole("button", { name: /^Add a point to Dexterity/ }).click({ modifiers: ["Control"] });
   await expect(orb).toHaveText("0");
-  await expect(page.locator(".attr-all")).toHaveCount(0);
   await page.getByRole("button", { name: /^Remove a point from Dexterity/ }).click({ modifiers: ["Control"] });
   await expect(orb).toHaveText("95");
 });

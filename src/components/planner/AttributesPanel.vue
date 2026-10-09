@@ -53,10 +53,7 @@ const resists = computed(() => [
             +
           </button>
         </span>
-        <span class="attr-spent"
-          ><small>{{ build.attrs[a] }} spent</small
-          ><button v-if="free > 0" type="button" class="attr-all" :aria-label="`Add all ${free} remaining points to ${title(a)}`" @click="addAttr(a, free)">Add all</button></span
-        >
+        <small class="attr-spent">{{ build.attrs[a] }} spent</small>
       </div>
       <div class="stat-orb" :class="{ over: free < 0 }" aria-live="polite">
         <b>{{ free }}</b><small>stat points</small>

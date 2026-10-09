@@ -295,34 +295,8 @@
 }
 .attr-spent {
   grid-area: spent;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2px 8px;
   font-size: 0.6875rem;
   color: var(--muted);
-}
-.attr-spent small {
-  font-size: inherit;
-}
-/* "Add all": the stat points left, into this attribute in one go. */
-/* A quiet ghost button, so four of them don't compete with the attribute names; the accent
-   colour only on hover or focus. */
-.attr-all {
-  padding: 1px 6px;
-  border: 1px solid var(--soft-border, var(--border));
-  border-radius: 4px;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  line-height: 1.4;
-  cursor: pointer;
-  transition: color var(--dur, 0.15s), border-color var(--dur, 0.15s);
-}
-.attr-all:hover,
-.attr-all:focus-visible {
-  color: var(--gold);
-  border-color: var(--gold);
 }
 .attr-buttons {
   grid-area: buttons;

@@ -12,7 +12,7 @@ export const CHANGELOG = [
       "On phones, the item editor slides up as a sheet from the bottom.",
       "Imported magic and rare rings and amulets show a picture instead of an empty slot.",
       "Delete and Reset are easier to read in every theme.",
-      "Add all: put every stat point you have left into one attribute in one click (or Ctrl-click + or −).",
+      "Ctrl-click (⌘ on a Mac) an attribute's + to put every stat point you have left into it, or its − to take all of its points back.",
       "Picking an item in the planner starts it on a tier your character can wear, and the list says which tier and level that is. A low-level runeword no longer lands on a Sacred base it can't use.",
       "Where to level no longer suggests the Moo Moo Farm before Hell: Wirt's Leg only opens it on Hell.",
       "When the items in the cube make a recipe your character can't use, the cube says what it needs (a difficulty, level or class) instead of just \"Nothing happens\".",
