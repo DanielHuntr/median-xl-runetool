@@ -16,6 +16,8 @@ import SkillChooser from "./SkillChooser.vue";
 import SaveBuildDialog from "./SaveBuildDialog.vue";
 import ArmoryImport from "./ArmoryImport.vue";
 import MercPanel from "./MercPanel.vue";
+import GuideView from "./GuideView.vue";
+import GuideEditor from "./GuideEditor.vue";
 import { MERC_ACTS, mercSpecs } from "../../planner/mercs.js";
 import { tabKeys, menuKeys, focusMenu } from "../../tabKeys.js";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
@@ -32,7 +34,7 @@ const props = defineProps({ data: { type: Object, default: null } });
 const planner = shallowRef(null);
 const error = ref("");
 const copied = ref(false);
-const saving = ref(false), importing = ref(false);
+const saving = ref(false), importing = ref(false), guideEditing = ref(false);
 const proxy = {};
 provide(PlannerKey, proxy);
 
@@ -300,14 +302,14 @@ const questsOpen = ref(false);
       </div>
       <!-- Phones: the settings and stages fold into one line, open when tapped. -->
       <button type="button" class="planner-head-summary" :aria-expanded="headOpen" aria-controls="planner-head" @click="headOpen = !headOpen">
-        <span>{{ planner.state.view === "merc" ? `Mercenary${planner.build.value.merc ? `: ${planner.build.value.merc.spec}` : ""}` : `${planner.state.cls} · Level ${planner.build.value.level} · ${planner.build.value.difficulty}` }} · {{ stageName }}</span>
+        <span>{{ planner.state.view === "guide" ? `Guide: ${planner.state.cls} · Level ${planner.build.value.level}` : planner.state.view === "merc" ? `Mercenary${planner.build.value.merc ? `: ${planner.build.value.merc.spec}` : ""}` : `${planner.state.cls} · Level ${planner.build.value.level} · ${planner.build.value.difficulty}` }} · {{ stageName }}</span>
         <Icon name="chevron" />
       </button>
       <div id="planner-head" class="planner-head" :class="{ folded: !headOpen }">
       <div class="planner-head-settings">
       <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
         <button
-          v-for="[v, label] in [['character', 'Character'], ['merc', 'Mercenary']]"
+          v-for="[v, label] in [['guide', 'Guide'], ['character', 'Character'], ['merc', 'Mercenary']]"
           :key="v"
           type="button"
           role="tab"
@@ -359,7 +361,7 @@ const questsOpen = ref(false);
         </template>
         <p v-if="mercHint" class="merc-hint">{{ mercHint }}</p>
       </div>
-      <div v-else class="toolbar planner-toolbar">
+      <div v-else-if="planner.state.view === 'character'" class="toolbar planner-toolbar">
         <ClassPicker :model-value="planner.state.cls" :classes="planner.engine.classNames" label="Class" @update:model-value="planner.setClass" /><label class="level"
           >Level
           <input
@@ -456,13 +458,14 @@ const questsOpen = ref(false);
         <!-- Quests, at the row's other end (QuestsDialog). -->
         <button type="button" class="btn stage-quests" aria-haspopup="dialog" @click="questsOpen = true">Quests</button>
         <QuestsDialog v-if="questsOpen" @close="questsOpen = false" />
+        <GuideEditor v-if="guideEditing" @close="guideEditing = false" />
       </div>
       </div>
 
       <div class="planner-layout" :class="{ docked: planner.state.statsOpen && planner.state.statsPinned }">
         <div class="planner-content">
           <div
-            v-if="planner.problems.value.length || planner.character.value.warnings.length"
+            v-if="planner.state.view !== 'guide' && (planner.problems.value.length || planner.character.value.warnings.length)"
             class="upgrade-note planner-problems"
           >
             <Icon name="info" />
@@ -493,7 +496,8 @@ const questsOpen = ref(false);
             </div>
           </div>
 
-          <MercPanel v-if="planner.state.view === 'merc'" />
+          <GuideView v-if="planner.state.view === 'guide'" @edit="guideEditing = true" />
+          <MercPanel v-else-if="planner.state.view === 'merc'" />
           <template v-else>
           <div class="planner-columns" :data-section="planner.state.section">
             <AttributesPanel />

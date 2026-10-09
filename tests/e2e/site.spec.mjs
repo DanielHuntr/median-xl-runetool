@@ -283,6 +283,7 @@ test("a rare item on a mastercrafted base takes affixes from the game's tables",
   const build = { v: 2, cls: "Sorceress", level: 120, gear: { gloves: { ref: "custom", custom: { name: "My gloves", slotType: "gloves", text: "" }, base: "base:9005", baseVariant: 0 } } };
   const code = Buffer.from(JSON.stringify(build)).toString("base64url");
   await page.goto(`/#planner?b=${code}&name=Affixes`);
+  await page.getByRole("tab", { name: "Character" }).click();
   await page.getByRole("button", { name: /^Gloves: / }).first().click();
   const affixes = page.locator(".item-editor .item-affixes");
   await expect(affixes).toContainText("3 prefixes and 3 suffixes");
@@ -447,4 +448,32 @@ test("catalogue results switch between cards and a compact list, remembered acro
   await expect(page.getByRole("button", { name: "List", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Cards", exact: true }).click();
   await expect(page.locator(".unique-grid")).not.toHaveClass(/\blist\b/);
+});
+
+test("a build's guide: its author writes it, and a shared link opens on it", async ({ page, browser }) => {
+  await page.goto("/#planner");
+  await page.getByRole("tab", { name: "Guide" }).click();
+  await page.getByRole("button", { name: "Write a guide" }).click();
+  const editor = page.getByRole("dialog", { name: "Build guide" });
+  await editor.getByLabel(/Summary/).fill("Fast and safe.");
+  await editor.getByLabel(/Strengths/).fill("Very fast\nSafe at range");
+  await editor.getByLabel(/Weaknesses/).fill("x".repeat(150));
+  await expect(editor.getByRole("button", { name: "Save guide" })).toBeDisabled();
+  await editor.getByLabel(/Weaknesses/).fill("Weak bossing");
+  await editor.getByRole("button", { name: "Save guide" }).click();
+  await expect(page.locator(".guide-summary")).toHaveText("Fast and safe.");
+  await expect(page.locator(".guide-list.pros li")).toHaveCount(2);
+  // The share link carries it; someone else opening it lands on the guide, read-only.
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.getByRole("button", { name: /^Share/ }).first().click();
+  const url = await page.evaluate(() => navigator.clipboard.readText());
+  const visitor = await browser.newContext({ baseURL: "http://localhost:4173" });
+  const other = await visitor.newPage();
+  await other.goto(new URL(url).hash ? "/" + new URL(url).hash : url);
+  await expect(other.getByRole("tab", { name: "Guide" })).toHaveAttribute("aria-selected", "true");
+  await expect(other.locator(".guide-summary")).toHaveText("Fast and safe.");
+  await expect(other.locator(".guide-list.cons")).toContainText("Weak bossing");
+  await expect(other.getByRole("button", { name: /Edit guide|Write a guide/ })).toHaveCount(0);
+  await expect(other.getByRole("button", { name: "Open in planner" })).toBeVisible();
+  await visitor.close();
 });

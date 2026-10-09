@@ -146,16 +146,16 @@
 }
 /* The build's tiers, set by its author: shown as the starter builds' badge (overall) and chips
    (bossing, clearing, survival); a pop-out of S to F buttons sets them. One colour per tier. */
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-S { --tier: #ffb454; }
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-A { --tier: var(--gold); }
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-B { --tier: #7ec27e; }
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-C { --tier: #7fa8d8; }
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-D { --tier: #b59ad6; }
-:is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-F { --tier: var(--muted); }
-:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-S { --tier: #a35300; }
-:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-B { --tier: #2f7a2f; }
-:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-C { --tier: #2d5f9a; }
-:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice).tier-D { --tier: #6b479a; }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-S { --tier: #ffb454; }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-A { --tier: var(--gold); }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-B { --tier: #7ec27e; }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-C { --tier: #7fa8d8; }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-D { --tier: #b59ad6; }
+:is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-F { --tier: var(--muted); }
+:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-S { --tier: #a35300; }
+:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-B { --tier: #2f7a2f; }
+:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-C { --tier: #2d5f9a; }
+:root[data-theme="light"] :is(.build-tier-badge, .build-tier-chip, .tier-choice, .guide-bar i, .guide-rating b).tier-D { --tier: #6b479a; }
 /* The build's name and its tiers, above the planner's tabs. */
 .build-title-row {
   display: flex;
@@ -3332,4 +3332,286 @@
   .planner-head.folded {
     display: none;
   }
+}
+
+/* The build guide (GuideView.vue): a page to read, the author's overview first, then the
+   build's gear, skills and numbers in cards. */
+.guide {
+  display: grid;
+  gap: 18px;
+}
+.guide-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+.guide-portrait {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--soft-border);
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--field);
+}
+.guide-title {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+.guide-eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.guide-title h2 {
+  margin: 2px 0 0;
+  font: 500 1.9rem/1.2 var(--serif);
+  color: var(--gold);
+  overflow-wrap: anywhere;
+}
+.guide-meta {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.guide-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  gap: 18px;
+  padding: 20px 22px;
+  border: 1px solid var(--soft-border);
+  border-radius: 10px;
+  background: var(--panel);
+}
+.guide-overview:not(:has(.guide-ratings)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.guide-summary {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.guide-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.guide-pc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px 24px;
+  margin-top: 18px;
+}
+.guide h3 {
+  margin: 0 0 10px;
+  font: 500 1rem/1.3 var(--serif);
+  color: var(--gold);
+}
+.guide h4 {
+  margin: 16px 0 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.guide-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+}
+.guide-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.guide-list svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+.guide-list.pros svg { color: var(--good); }
+.guide-list.cons svg { color: var(--warn); }
+/* Ratings: a bar per criterion, S full. */
+.guide-ratings {
+  padding-left: 18px;
+  border-left: 1px solid var(--soft-border);
+}
+.guide-rating {
+  display: grid;
+  grid-template-columns: 72px 1fr 22px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.8125rem;
+}
+.guide-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--field);
+  overflow: hidden;
+}
+.guide-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--tier, var(--gold));
+}
+.guide-rating b {
+  color: var(--tier, var(--gold));
+  text-align: right;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.guide-card {
+  padding: 18px 20px;
+  border: 1px solid var(--soft-border);
+  border-radius: 10px;
+  background: var(--panel);
+  min-width: 0;
+}
+.guide-items,
+.guide-skills {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.guide-items li,
+.guide-skills li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: default;
+}
+.guide-items li:is(:hover, :focus-visible),
+.guide-skills li:is(:hover, :focus-visible) {
+  background: var(--raised);
+}
+.guide-items :is(.item-icon, img),
+.guide-skills .skill-icon {
+  flex: none;
+}
+.guide-items li > span,
+.guide-skills li > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.guide-items b,
+.guide-skills b {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.guide-items small,
+.guide-skills small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.guide-items.compact li {
+  padding-block: 3px;
+}
+.guide-skills em {
+  margin-left: auto;
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 600;
+}
+.guide-numbers {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+.guide-numbers > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--soft-border) 60%, transparent);
+  font-size: 0.875rem;
+}
+.guide-numbers dt {
+  color: var(--muted);
+}
+.guide-numbers dd {
+  margin: 0;
+  font-weight: 500;
+}
+.guide-numbers dd small {
+  color: var(--muted);
+  font-weight: 400;
+}
+.guide-numbers dd.bad {
+  color: var(--bad);
+}
+.guide-resists {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+.guide-merc-name {
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+.guide .est {
+  margin-left: 4px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+@media (max-width: 760px) {
+  .guide-overview {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+  .guide-ratings {
+    padding: 14px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--soft-border);
+  }
+  .guide-title h2 {
+    font-size: 1.5rem;
+  }
+}
+/* Writing the guide (GuideEditor.vue). */
+.guide-editor .picker-content {
+  display: grid;
+  gap: 14px;
+}
+.guide-editor textarea {
+  width: 100%;
+  resize: vertical;
+}
+.guide-field-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.guide-field-head small {
+  color: var(--muted);
+  font-weight: 400;
+}
+.guide-editor-lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
 }

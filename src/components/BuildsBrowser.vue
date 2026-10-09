@@ -37,6 +37,8 @@ const authorTiersOf = (b) => {
   const t = decodeBuild(b.code)?.authorTiers || {};
   return Object.fromEntries(['tier', 'bossTier', 'clearTier', 'surviveTier'].filter((k) => /^[SABCDF]$/.test(t[k] || '')).map((k) => [k, t[k]]));
 };
+// The start of its guide's summary (inside the build, GuideView), shown as text.
+const summaryOf = (b) => { const t = decodeBuild(b.code)?.guide?.summary; return typeof t === 'string' ? t.slice(0, 280) : ''; };
 const CRITERIA = [['bossTier', 'Bossing'], ['clearTier', 'Clearing'], ['surviveTier', 'Survival']];
 // Each class's card art (public/builds/<class>.webp).
 const art = (cls) => `${import.meta.env.BASE_URL}builds/${cls.toLowerCase()}.webp`;
@@ -126,6 +128,7 @@ async function setPublished(b, published) {
         <p v-if="CRITERIA.some(([k]) => authorTiersOf(b)[k])" class="tier-criteria mine-tiers">
           <template v-for="[k, label] in CRITERIA" :key="k"><span v-if="authorTiersOf(b)[k]" :class="`tier-chip tier-${authorTiersOf(b)[k]}`">{{ label }} {{ authorTiersOf(b)[k] }}</span></template>
         </p>
+        <p v-if="summaryOf(b)" class="build-summary">{{ summaryOf(b) }}</p>
         <p v-if="b.skills.length" class="muted">{{ b.skills.join(' · ') }}</p>
         <p v-if="b.savedAt" class="mine-edited">Last edited {{ new Date(b.savedAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) }}</p>
         <form v-if="editing === b.key" class="build-actions" @submit.prevent="commitRename(b)">
@@ -162,6 +165,7 @@ async function setPublished(b, published) {
           <p v-if="CRITERIA.some(([k]) => authorTiersOf(b)[k])" class="tier-criteria">
             <template v-for="[k, label] in CRITERIA" :key="k"><span v-if="authorTiersOf(b)[k]" :class="`tier-chip tier-${authorTiersOf(b)[k]}`">{{ label }} {{ authorTiersOf(b)[k] }}</span></template>
           </p>
+          <p v-if="summaryOf(b)" class="build-summary">{{ summaryOf(b) }}</p>
           <p v-if="b.skills?.length" class="muted">{{ b.skills.join(' · ') }}</p>
           <div class="build-actions">
             <a class="btn gold" :href="sharedHref(b)">Open build</a>
@@ -195,6 +199,7 @@ async function setPublished(b, published) {
 .mine-title { display:flex; align-items:center; gap:10px; margin:0 0 6px; color:var(--gold); }
 .mine-count { padding:1px 9px; border-radius:10px; background:var(--gold-bg); border:1px solid var(--gold); font-size:.8125rem; font-family:inherit; }
 .mine-empty { margin:16px 0 20px; padding:16px; border:1px dashed var(--border); border-radius:8px; color:var(--muted); text-align:center; }
+.build-summary { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:6px 0 0; font-size:0.875rem; line-height:1.45; white-space:normal; position:relative; }
 .community-section { margin:24px 0 0; padding:20px 22px 4px; border:1px solid var(--border); border-radius:10px; }
 .build-card { position:relative; padding:24px calc(40% + 8px) 24px 24px; border:1px solid var(--border); border-radius:8px; background:var(--panel); overflow:visible; }
 .build-card.mine { border-color:color-mix(in srgb, var(--gold) 45%, var(--border)); transition:border-color .15s, box-shadow .15s; }

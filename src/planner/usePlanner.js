@@ -165,6 +165,17 @@ function cleanBuild(raw, cls, engine, catalog, planner = null) {
   return b;
 }
 export const AUTHOR_TIERS = ["S", "A", "B", "C", "D", "F"];
+// A build's guide, written by its author for whoever opens it (GuideView.vue): a summary and its
+// strengths and weaknesses. One per build, not per stage; carried in its code (saves, share
+// links, published builds). Plain text: control and direction-override characters are dropped.
+export const GUIDE_LIMITS = { summary: 800, item: 140, items: 6 };
+const plainText = (v, n) => String(v).replace(/[\u0000-\u0008\u000B-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2066-\u2069]/g, "").trim().slice(0, n);
+export function cleanGuide(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const list = (v) => (Array.isArray(v) ? v : []).filter((x) => typeof x === "string").map((x) => plainText(x.replace(/\s+/g, " "), GUIDE_LIMITS.item)).filter(Boolean).slice(0, GUIDE_LIMITS.items);
+  const g = { summary: typeof raw.summary === "string" ? plainText(raw.summary.replace(/\r/g, "").replace(/\n{3,}/g, "\n\n"), GUIDE_LIMITS.summary) : "", pros: list(raw.pros), cons: list(raw.cons) };
+  return g.summary || g.pros.length || g.cons.length ? g : null;
+}
 // Overall, then the three criteria a build's author rates it on (bossing, clearing, survival).
 export const AUTHOR_TIER_KEYS = ["tier", "bossTier", "clearTier", "surviveTier"];
 
@@ -231,8 +242,13 @@ export function createPlanner(engine, catalog, planner) {
     // Per class: the saved build it is ({ id } in this browser, { accountId } in the account),
     // so saving again updates that build, whatever its name, instead of adding another.
     savedAs: {},
-    // The planner's tab: your character or your mercenary.
-    view: saved.view === "merc" ? "merc" : "character",
+    // The planner's tab: the build's guide (read-only), your character or your mercenary.
+    view: ["merc", "guide"].includes(saved.view) ? saved.view : "character",
+    // Per class: the build's guide (cleanGuide), or none.
+    guides: {},
+    // Per class: true while the build is one opened from someone else's link or the community
+    // list (its guide is theirs); going back, keeping it, resetting or saving it ends that.
+    opened: {},
     // Per class: the stage being edited, and the other stages' builds.
     stage: {},
     stages: {},
@@ -251,11 +267,14 @@ export function createPlanner(engine, catalog, planner) {
     if (typeof saved.openedName?.[cls] === "string") state.openedName[cls] = saved.openedName[cls].slice(0, 80);
     if (saved.mine?.[cls] === true) state.mine[cls] = true;
     state.savedAs[cls] = cleanSavedAs(saved.savedAs?.[cls]);
+    const guide = cleanGuide(saved.guides?.[cls]);
+    if (guide) state.guides[cls] = guide;
+    if (saved.opened?.[cls] === true) state.opened[cls] = true;
     const k = saved.kept?.[cls];
     if (k && typeof k === "object" && k.build) {
       const stageOrder = cleanOrder(k.stageOrder);
       const stage = stageOrder.includes(k.stage) ? k.stage : stageOrder.at(-1);
-      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", mine: k.mine === true, savedAs: cleanSavedAs(k.savedAs), stage, stageOrder,
+      state.kept[cls] = { name: typeof k.name === "string" ? k.name.slice(0, 80) : "", mine: k.mine === true, savedAs: cleanSavedAs(k.savedAs), stage, stageOrder, guide: cleanGuide(k.guide), opened: k.opened === true,
         build: cleanBuild(k.build, cls, engine, catalog, planner), stages: cleanStages(k.stages, cls, stage, stageOrder) };
     }
   }
@@ -384,6 +403,12 @@ export function createPlanner(engine, catalog, planner) {
   const profileSummary = computed(() => describeProfile(profile.value));
   // The tiers the build's author gives it (overall, bossing, clearing, survival: S to F), as the
   // starter builds have them; carried in saves and share links. An empty choice clears one.
+  // The author's guide for this build (the whole build: every stage); empty clears it.
+  const setGuide = (g) => {
+    const guide = cleanGuide(g);
+    if (guide) state.guides[state.cls] = guide;
+    else delete state.guides[state.cls];
+  };
   const setAuthorTier = (key, t) => {
     if (!AUTHOR_TIER_KEYS.includes(key)) return;
     const tiers = { ...(build.value.authorTiers || {}) };
@@ -1055,6 +1080,7 @@ export function createPlanner(engine, catalog, planner) {
     state.stageOrder[state.cls] = [...STAGES];
     state.openedName[state.cls] = "";
     delete state.mine[state.cls];
+    delete state.opened[state.cls];
     state.savedAs[state.cls] = cleanSavedAs();
     delete state.kept[state.cls];
     state.selected = null;
@@ -1074,6 +1100,10 @@ export function createPlanner(engine, catalog, planner) {
     state.openedName[cls] = k.name;
     state.mine[cls] = !!k.mine;
     state.savedAs[cls] = cleanSavedAs(k.savedAs);
+    if (k.guide) state.guides[cls] = k.guide;
+    else delete state.guides[cls];
+    if (k.opened) state.opened[cls] = true;
+    else delete state.opened[cls];
     delete state.kept[cls];
     state.selected = state.slot = state.editing = null;
     say(`Back to your own ${cls} build.`, "info");
@@ -1081,6 +1111,7 @@ export function createPlanner(engine, catalog, planner) {
   /** Keep the opened build as the player's own; the one set aside is let go. */
   function dropKept() {
     delete state.kept[state.cls];
+    delete state.opened[state.cls];
     say(`This is now your ${state.cls} build.`, "info");
   }
 
@@ -1093,14 +1124,17 @@ export function createPlanner(engine, catalog, planner) {
     // Spare items stay in this browser: a link carries the build, not the player's stash.
     const bare = ({ spare, ...b }) => b;
     const stages = Object.fromEntries(Object.entries(others).map(([n, b]) => [n, b && bare(b)]));
-    return encodeBuild(Object.keys(others).length || stage !== "Endgame" || custom ? { ...bare(build.value), stage, stages, ...(custom ? { stageOrder: order } : {}) } : bare(build.value));
+    const guide = state.guides[state.cls] ? { guide: state.guides[state.cls] } : {};
+    return encodeBuild(Object.keys(others).length || stage !== "Endgame" || custom ? { ...bare(build.value), ...guide, stage, stages, ...(custom ? { stageOrder: order } : {}) } : { ...bare(build.value), ...guide });
   };
   // "&stage=Normal" is also written out, readable in the link, and works on its own (a
   // starter build's link to one of its stages).
   function shareUrl() {
     const url = new URL(window.location.href);
     const stage = state.stage[state.cls];
-    url.hash = plannerHash(buildCode()) + (stage !== "Endgame" ? `&stage=${stage}` : "");
+    // Its name goes too, for the guide's title.
+    const name = state.openedName[state.cls];
+    url.hash = plannerHash(buildCode()) + (stage !== "Endgame" ? `&stage=${stage}` : "") + (name ? `&name=${encodeURIComponent(name)}` : "");
     return url.toString();
   }
   // A character from its median-xl.com page (armory.js), opened like a shared build.
@@ -1145,7 +1179,7 @@ export function createPlanner(engine, catalog, planner) {
       // The planner keeps the build it opened, so a refresh needn't read the link again (its
       // mark is used up, and the build would stop counting as the player's own).
       if (mine && typeof history !== "undefined") history.replaceState(history.state, "", "#planner");
-      const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], savedAs: state.savedAs[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls], stageOrder: stagesOf(b.cls) };
+      const own = { name: state.openedName[b.cls] || "", mine: !!state.mine[b.cls], savedAs: state.savedAs[b.cls], build: state.builds[b.cls], stage: state.stage[b.cls], stages: state.stages[b.cls], stageOrder: stagesOf(b.cls), guide: state.guides[b.cls] || null, opened: !!state.opened[b.cls] };
       const made = (x) => x && (!emptyStage(x) || Object.values(x.attrs || {}).some((v) => v > 0) || x.inventory?.length || x.merc);
       const blank = !own.stageOrder.some((n) => made(n === own.stage ? own.build : own.stages[n]));
       if ((!state.kept[b.cls] || own.mine) && !blank && JSON.stringify(own.build) !== JSON.stringify(b)) state.kept[b.cls] = own;
@@ -1154,6 +1188,14 @@ export function createPlanner(engine, catalog, planner) {
       const param = (k) => new RegExp(`[?&]${k}=([A-Za-z0-9-]{1,40})(?:&|$)`).exec(hash)?.[1];
       state.savedAs[b.cls] = cleanSavedAs(mine ? { id: param("id"), accountId: param("aid") } : null);
       state.builds[b.cls] = b;
+      const guide = cleanGuide(raw.guide);
+      if (guide) state.guides[b.cls] = guide;
+      else delete state.guides[b.cls];
+      // Someone else's build is for reading first: its guide. The player's own saved builds open
+      // where they were editing.
+      if (!mine) state.view = "guide";
+      if (mine) delete state.opened[b.cls];
+      else state.opened[b.cls] = true;
       state.stageOrder[b.cls] = cleanOrder(raw.stageOrder);
       state.stage[b.cls] = state.stageOrder[b.cls].includes(raw.stage) ? raw.stage : state.stageOrder[b.cls].at(-1);
       state.stages[b.cls] = cleanStages(raw.stages, b.cls, state.stage[b.cls]);
@@ -1196,6 +1238,8 @@ export function createPlanner(engine, catalog, planner) {
       mine: state.mine,
       savedAs: state.savedAs,
       view: state.view,
+      guides: state.guides,
+      opened: state.opened,
     });
   watch(
     persisted,
@@ -1215,7 +1259,7 @@ export function createPlanner(engine, catalog, planner) {
     stagesOf, addStage, duplicateStage, renameStage, moveStage, placeStage, removeStage,
     gearItem, itemLevel, mercSlotCats, setMerc, setMercLevel, setMercHiredAt, suggestMerc, setMercDifficulty, removeMercItem, toggleMercBuff, say, openPicker, closePicker, pick,
     profile, profileSummary, lineUse, setAuthorTier, recommend, applyFix, showTip, hideTip, tipOn, monsters, target, targetDifficulty,
-    damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill,
+    damageOf, skillsInUse, setSkillSlot, addToBar, removeFromBar, chooseSkill, setGuide,
   };
 }
 

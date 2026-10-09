@@ -12,6 +12,7 @@ export const CHANGELOG = [
       "On phones, the item editor slides up as a sheet from the bottom.",
       "Imported magic and rare rings and amulets show a picture instead of an empty slot.",
       "Delete and Reset are easier to read in every theme.",
+      "Build guides: write a summary, strengths and weaknesses for your build, and it travels with every save, share link and published build. Anyone opening a shared or community build lands on its guide first (gear, skills, stats, ratings, mercenary), with Open in planner to edit a copy.",
       "A cleaner look across the site: fewer boxes and borders, easier-to-read small text, plain labels on buttons and tabs, and warnings in their own colour.",
       "The planner's controls are gathered into one panel, with Save, Share and More in a bar that stays in view as you scroll. A Character or Mercenary switch replaces the tabs.",
       "Empty equipment slots show an outline of what goes there.",
