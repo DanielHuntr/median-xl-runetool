@@ -52,6 +52,9 @@ const socketsOf = (lines) => {
 export const weaponCat = (r) => r?.baseDef?.cat || r?.def?.cat || "";
 export const quiverFor = (r) => (/Crossbows$/.test(weaponCat(r)) ? "Crossbow Quivers" : /Bows$/.test(weaponCat(r)) ? "Arrow Quivers" : null);
 /** Whether the main hand leaves room for this off-hand item (or, off omitted, for any). */
+// The outline icon (AppIcon) an empty slot shows.
+export const slotIcon = (id) => ({ offhand: "shield", offhand2: "shield", weapon2: "slot-weapon", ring1: "slot-ring", ring2: "slot-ring" })[id] || `slot-${id}`;
+
 export function offhandFits(main, off) {
   if (!main?.twoHanded) return true;
   const q = quiverFor(main);

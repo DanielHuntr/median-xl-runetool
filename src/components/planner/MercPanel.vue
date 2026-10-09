@@ -8,6 +8,7 @@ import ItemIcon from "./ItemIcon.vue";
 import SkillIcon from "./SkillIcon.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { MERC_ACTS, MERC_SLOTS, MERC_CLASS_ITEMS, mercCats } from "../../planner/mercs.js";
+import { slotIcon } from "../../planner/items.js";
 
 const { planner, catalog, build, character, openPicker, openEditor, removeMercItem, toggleMercBuff, tipOn, suggestMerc } = usePlanner();
 // A filled slot opens the item editor (tier, sockets, orbs); an empty one the picker.
@@ -51,7 +52,7 @@ const RES = [["fire", "Fire"], ["cold", "Cold"], ["lightning", "Lightning"], ["p
                   <ItemIcon :icon="itemOf(s.id).def.icon" />
                   <span class="doll-name" :class="'q-' + itemOf(s.id).def.kind">{{ itemOf(s.id).def.name }}</span>
                 </template>
-                <span v-else class="doll-empty">{{ s.label }}</span>
+                <span v-else class="doll-empty"><Icon :name="slotIcon(s.id)" class="doll-glyph" />{{ s.label }}</span>
               </button>
               <button v-if="itemOf(s.id)" class="doll-remove" :aria-label="`Remove ${itemOf(s.id).def.name}`" title="Remove" @click="removeMercItem(s.id)"><Icon name="close" /></button>
             </div>

@@ -5,7 +5,7 @@ import ItemIcon from "./ItemIcon.vue";
 import SuggestGear from "./SuggestGear.vue";
 import ItemBonuses from "./ItemBonuses.vue";
 import { usePlanner } from "../../planner/usePlanner.js";
-import { SLOTS } from "../../planner/items.js";
+import { SLOTS, slotIcon } from "../../planner/items.js";
 import { superiorNames } from "../../planner/superior.js";
 
 const { catalog, state, build, character, swapWeapons, removeInventory, openPicker, openEditor, unequip, clearEquipment, say, tipOn, equipSpare, removeSpare } = usePlanner();
@@ -112,7 +112,7 @@ const charmSummary = computed(() => {
                 ><ItemIcon v-if="socketArt(resolved(d.slot), n - 1)" :icon="socketArt(resolved(d.slot), n - 1).icon || ''" :src="socketArt(resolved(d.slot), n - 1).src" /></i
             ></span>
           </template>
-          <span v-else class="doll-empty">{{ label(d.slot) }}</span>
+          <span v-else class="doll-empty"><Icon :name="slotIcon(d.slot)" class="doll-glyph" />{{ label(d.slot) }}</span>
         </button>
         <button
           v-if="build.gear[d.slot]"

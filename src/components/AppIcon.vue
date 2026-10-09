@@ -38,6 +38,15 @@ const paths = {
   expand: "M4 4h16v16H4Z M9 4v16 M13 9l3 3-3 3",
   backup: "M12 4v11 M8 11l4 4 4-4 M4 15v5h16v-5",
   tree:"M12 3v5 M12 8H6v4 M12 8h6v4 M6 12v4 M18 12v4 M4 16h4v4H4Z M16 16h4v4h-4Z M10 3h4",
+  // Empty equipment slots (EquipmentPanel, MercPanel); the off-hand uses "shield".
+  "slot-weapon": "M19 3h2v2L10 16l-2-2Z M6 12l6 6 M7 17l-3 3",
+  "slot-helm": "M5 15a7 7 0 0 1 14 0v5h-4v-4H9v4H5Z M12 8v3",
+  "slot-amulet": "M7 3c0 4.5 2 7.5 5 9 3-1.5 5-4.5 5-9 M12 12v1 M15 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0",
+  "slot-body": "M8 3h8l4 4-2 3v11H6V10L4 7Z M8 3c0 2 1.8 3 4 3s4-1 4-3 M6 14h12",
+  "slot-gloves": "M8 21v-4l-2-4V7a1 1 0 0 1 2 0v4V5a1 1 0 0 1 2 0v6V4a1 1 0 0 1 2 0v7V6a1 1 0 0 1 2 0v7l1.6-1.6a1.2 1.2 0 0 1 1.8 1.6L15 17v4Z",
+  "slot-ring": "M18 15a6 6 0 1 1-12 0 6 6 0 0 1 12 0 M9.5 9.5 8 7l4-3 4 3-1.5 2.5",
+  "slot-belt": "M3 9h18v6H3Z M10 8h4v8h-4Z M14 12h-2",
+  "slot-boots": "M7 3h6v9l6 3a2 2 0 0 1 1 2v3H5v-6Z M5 17h15 M7 8h6",
 };
 </script>
 <template>
