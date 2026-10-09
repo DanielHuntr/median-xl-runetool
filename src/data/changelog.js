@@ -12,6 +12,12 @@ export const CHANGELOG = [
       "On phones, the item editor slides up as a sheet from the bottom.",
       "Imported magic and rare rings and amulets show a picture instead of an empty slot.",
       "Delete and Reset are easier to read in every theme.",
+      "Picking an item in the planner starts it on a tier your character can wear, and the list says which tier and level that is. A low-level runeword no longer lands on a Sacred base it can't use.",
+      "Where to level no longer suggests the Moo Moo Farm before Hell: Wirt's Leg only opens it on Hell.",
+      "When the items in the cube make a recipe your character can't use, the cube says what it needs (a difficulty, level or class) instead of just \"Nothing happens\".",
+      "On phones the page header takes less room, so the page starts higher.",
+      "Keyboard: closing a panel takes you back where you were, and the More and stage menus work with the arrow keys.",
+      "Smaller fixes: number boxes show the value in use after an out-of-range entry, counts say \"1 rule\" rather than \"1 rules\", no empty set bonus heading, Suggest gear points you to your skills when you have none, and its list no longer jumps while it loads.",
     ],
   },
   {
