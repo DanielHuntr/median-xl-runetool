@@ -683,10 +683,29 @@
   opacity: 0.9;
   color: var(--gold);
 }
-/* Small slots (rings, amulet, belt) keep just the outline. */
+/* Small slots (rings, amulet, belt): a smaller outline and name, to fit. */
+:is(.ring1, .ring2, .amulet, .belt) > .doll-slot:not(.filled) {
+  padding: 2px;
+}
 :is(.ring1, .ring2, .amulet, .belt) > .doll-slot .doll-empty {
-  font-size: 0;
-  gap: 0;
+  gap: 1px;
+  font-size: 0.6875rem;
+  line-height: 1.1;
+}
+:is(.ring1, .ring2, .amulet, .belt) > .doll-slot .doll-glyph {
+  width: 16px;
+  height: 16px;
+}
+/* An empty slot: a dashed outline on the plain field, so what's still to fill stands apart
+   from the worn items' solid frames. */
+.doll-slot:not(.filled) {
+  border-style: dashed;
+  border-color: var(--border);
+  background: var(--field);
+}
+.doll-slot:not(.filled):is(:hover, :focus-visible) {
+  border-color: var(--gold);
+  background: var(--gold-bg);
 }
 .doll-sockets {
   position: absolute;
