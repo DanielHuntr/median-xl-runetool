@@ -185,7 +185,7 @@ onUnmounted(() => window.removeEventListener("hashchange", applyLink));
     </div>
     <div class="results-bar">
       <div class="result-count oskill-count" aria-live="polite">
-        <strong>{{ grouped.length }}</strong> skills · <strong>{{ totalSources }}</strong> sources
+        <strong>{{ grouped.length }}</strong> {{ grouped.length === 1 ? "skill" : "skills" }} · <strong>{{ totalSources }}</strong> {{ totalSources === 1 ? "source" : "sources" }}
       </div>
     </div>
     <div class="oskill-list">

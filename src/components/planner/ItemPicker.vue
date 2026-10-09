@@ -245,7 +245,7 @@ onMounted(async () => {
           <p v-else-if="!recList.length" class="muted">Nothing suits this build here yet. Try "All".</p>
         </template>
         <template v-else>
-        <p class="muted" aria-live="polite">{{ list.length }} items<template v-if="mode === 'inventory' && (carried.size || relicsFull)"> · the ones you carry are left out<template v-if="relicsFull">, and relics: you carry 3, the most allowed</template></template></p>
+        <p class="muted" aria-live="polite">{{ list.length }} {{ list.length === 1 ? "item" : "items" }}<template v-if="mode === 'inventory' && (carried.size || relicsFull)"> · the ones you carry are left out<template v-if="relicsFull">, and relics: you carry 3, the most allowed</template></template></p>
         <ul class="picker-list">
           <li v-for="d in list.slice(0, limit)" :key="d.key">
             <button v-on="d.variants ? tipOn({ kind: 'item', item: { ref: d.key, variant: bestVariant(d) } }) : {}" @click="choose(d)">

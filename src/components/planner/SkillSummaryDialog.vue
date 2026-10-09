@@ -31,7 +31,7 @@ const max = (id) => engine.maxLevel?.(build.value, id) ?? engine.skill(id)?.max 
   <dialog ref="dialog" class="item-picker skill-summary-dialog" aria-labelledby="skill-summary-title" @close="emit('close')" @click="(e) => e.target === dialog && close()">
     <div class="picker-content">
       <div class="drawer-header">
-        <h2 id="skill-summary-title">Skill summary <small class="muted">{{ allocated.length }} skills</small></h2>
+        <h2 id="skill-summary-title">Skill summary <small class="muted">{{ allocated.length }} {{ allocated.length === 1 ? "skill" : "skills" }}</small></h2>
         <button type="button" class="icon-btn" aria-label="Close" @click="close">&times;</button>
       </div>
       <p v-if="!allocated.length" class="muted">No skill points spent yet.</p>

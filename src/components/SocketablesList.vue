@@ -50,7 +50,7 @@ const grouped = computed(() =>
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
-        <strong>{{ socketables.length }}</strong> gems and runes
+        <strong>{{ socketables.length }}</strong> {{ socketables.length === 1 ? "gem or rune" : "gems and runes" }}
         <span v-if="socketables.length !== SOCKD.length"
           >/ {{ SOCKD.length }}</span
         >

@@ -18,7 +18,7 @@ const starterCount = RW.filter((r) => r.starter).length;
     <div class="finder-results">
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
-        <strong>{{ results.length }}</strong> runewords
+        <strong>{{ results.length }}</strong> {{ results.length === 1 ? "runeword" : "runewords" }}
         <span v-if="results.length !== RW.length">/ {{ RW.length }}</span>
       </div>
       <div class="result-actions">

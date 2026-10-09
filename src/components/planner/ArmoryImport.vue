@@ -4,6 +4,7 @@
 // this browser only. Opens the character in the planner like a shared build
 // (the player's own build for that class is kept to go back to), then says what couldn't come in.
 import { ref, onMounted } from "vue";
+import { tabKeys } from "../../tabKeys.js";
 import { usePlanner } from "../../planner/usePlanner.js";
 import { useRunetool } from "../../composables/useRunetool.js";
 import { RIMG, STD } from "../../data/index.js";
@@ -60,6 +61,8 @@ function close() {
 }
 async function fromFile(e) {
   const f = e.target.files?.[0];
+  // Cleared, so choosing the same file again (saved anew) reads it again.
+  e.target.value = "";
   if (!f) return;
   if (f.size > 5_000_000) return (error.value = "That file is too large to be a character page.");
   text.value = await f.text();
@@ -85,9 +88,9 @@ function run() {
         <button type="button" class="icon-btn" aria-label="Close" @click="close">&times;</button>
       </div>
       <template v-if="!result">
-        <div class="tabs armory-tabs" role="tablist" aria-label="Import from">
-          <button type="button" role="tab" :aria-selected="how === 'name'" @click="setHow('name')">By name</button>
-          <button type="button" role="tab" :aria-selected="how === 'page'" @click="setHow('page')">From your page</button>
+        <div class="tabs armory-tabs" role="tablist" aria-label="Import from" @keydown="tabKeys">
+          <button type="button" role="tab" :aria-selected="how === 'name'" :tabindex="how === 'name' ? 0 : -1" @click="setHow('name')">By name</button>
+          <button type="button" role="tab" :aria-selected="how === 'page'" :tabindex="how === 'page' ? 0 : -1" @click="setHow('page')">From your page</button>
         </div>
         <form v-if="how === 'name'" class="armory-pane" @submit.prevent="fromName">
           <label class="field">Character name

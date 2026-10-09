@@ -204,7 +204,7 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
       <div v-else class="lf-grid">
         <article v-for="f in shown" :key="f.id" class="lf-card">
           <h3>{{ f.name }}</h3>
-          <p class="lf-tags"><span class="lf-tag">{{ f.cls }}</span><span class="lf-tag">{{ f.rules }} rules</span><span class="lf-tag">{{ f.uses.toLocaleString() }} uses</span></p>
+          <p class="lf-tags"><span class="lf-tag">{{ f.cls }}</span><span class="lf-tag">{{ f.rules }} {{ f.rules === 1 ? "rule" : "rules" }}</span><span class="lf-tag">{{ f.uses.toLocaleString() }} {{ f.uses === 1 ? "use" : "uses" }}</span></p>
           <p class="lf-byline">by {{ f.author }} · updated {{ f.updated }}</p>
           <p class="lf-desc">{{ f.description.join(" ") }}</p>
           <div class="lf-actions">
@@ -222,7 +222,7 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
         <header class="lf-dialog-head">
           <div>
             <h2 id="lf-dialog-title">{{ opened.meta.name }}</h2>
-            <p class="lf-tags"><span class="lf-tag">{{ opened.meta.cls }}</span><span class="lf-tag">{{ opened.meta.rules }} rules</span><span class="lf-tag">{{ opened.meta.uses.toLocaleString() }} uses</span></p>
+            <p class="lf-tags"><span class="lf-tag">{{ opened.meta.cls }}</span><span class="lf-tag">{{ opened.meta.rules }} {{ opened.meta.rules === 1 ? "rule" : "rules" }}</span><span class="lf-tag">{{ opened.meta.uses.toLocaleString() }} {{ opened.meta.uses === 1 ? "use" : "uses" }}</span></p>
             <p class="lf-byline">by {{ opened.meta.author }} · updated {{ opened.meta.updated }}</p>
           </div>
           <button class="icon-btn" aria-label="Close" @click="closeRules">&times;</button>
@@ -261,7 +261,7 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
         </div>
         <ul v-if="filters.length">
           <li v-for="f in filters" :key="f.id">
-            <button :aria-current="f.id === selectedId" @click="selectedId = f.id"><b>{{ f.filter.name }}</b><small>{{ f.filter.rules.length }} rules<span v-if="f.accountId" class="lf-in-account"> · In your account</span></small></button>
+            <button :aria-current="f.id === selectedId" @click="selectedId = f.id"><b>{{ f.filter.name }}</b><small>{{ f.filter.rules.length }} {{ f.filter.rules.length === 1 ? "rule" : "rules" }}<span v-if="f.accountId" class="lf-in-account"> · In your account</span></small></button>
           </li>
         </ul>
         <p v-else class="muted lf-empty">No filters yet. Start a new one, import one, or edit a copy of a community filter.</p>

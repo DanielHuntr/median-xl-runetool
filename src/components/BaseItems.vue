@@ -62,7 +62,7 @@ const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
-        <strong>{{ bases.length }}</strong> base items
+        <strong>{{ bases.length }}</strong> {{ bases.length === 1 ? "base item" : "base items" }}
         <span v-if="bases.length !== BASED.length">/ {{ BASED.length }}</span>
       </div>
     </div>

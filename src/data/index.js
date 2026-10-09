@@ -289,7 +289,8 @@ const setsOf = (SETS) => SETS.map(([name, sub, cls, bonus, items], i) => {
     name,
     sub,
     cls,
-    bonuses,
+    // A tier the docs list with no lines (Vasily's Following's "4 or more", its complete set) is left out.
+    bonuses: bonuses.filter((b) => b.lines.length),
     items: it,
     minReq: reqs.length ? Math.min(...reqs) : null,
     maxReq: reqs.length ? Math.max(...reqs) : null,

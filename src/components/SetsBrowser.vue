@@ -46,7 +46,7 @@ const sections = [{ key: "tags", title: "Stats", note: "Must have all chosen (it
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
-        <strong>{{ sets.length }}</strong> sets
+        <strong>{{ sets.length }}</strong> {{ sets.length === 1 ? "set" : "sets" }}
         <span v-if="sets.length !== SETD.length">/ {{ SETD.length }}</span>
       </div>
     </div>

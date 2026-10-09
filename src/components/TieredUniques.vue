@@ -62,7 +62,7 @@ const sections = [
     </div>
     <div class="results-bar">
       <div class="result-count">
-        <strong>{{ uniques.length }}</strong> uniques
+        <strong>{{ uniques.length }}</strong> {{ uniques.length === 1 ? "unique" : "uniques" }}
       </div>
       <label class="switch"
         ><input type="checkbox" v-model="compare" />Compare with next

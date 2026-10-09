@@ -53,7 +53,7 @@ const sections = computed(() => [
     </div>
     <div class="results-bar">
       <div class="result-count" aria-live="polite">
-        <strong>{{ sacredUniques.length }}</strong> sacred uniques
+        <strong>{{ sacredUniques.length }}</strong> {{ sacredUniques.length === 1 ? "sacred unique" : "sacred uniques" }}
         <span v-if="sacredUniques.length !== SUD.length"
           >/ {{ SUD.length }}</span
         >

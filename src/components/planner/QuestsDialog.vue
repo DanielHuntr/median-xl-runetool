@@ -60,7 +60,7 @@ function close() {
           </tr>
         </tbody>
       </table>
-      <button class="text-btn" @click="resetQuests()">Go back to level-based quests</button>
+      <button v-if="Object.keys(build.quests || {}).length" class="text-btn" @click="resetQuests()">Go back to level-based quests</button>
     </div>
   </dialog>
 </template>
