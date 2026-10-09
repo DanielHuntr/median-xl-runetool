@@ -71,7 +71,7 @@ const merc = computed(() => {
     <header class="guide-head">
       <img v-if="portrait(state.cls)" class="guide-portrait" :src="portrait(state.cls)" alt="" />
       <div class="guide-title">
-        <p class="guide-eyebrow">{{ state.cls }} · Level {{ build.level }} · {{ build.difficulty }} · {{ state.stage[state.cls] }}</p>
+        <p class="guide-eyebrow">{{ state.cls }} · Level {{ build.level }} · {{ build.difficulty }}<template v-if="state.stage[state.cls] !== build.difficulty"> · {{ state.stage[state.cls] }} stage</template></p>
         <h2 id="guide-title">{{ name }}</h2>
         <p class="guide-meta">{{ own ? "Your build. This is how others see it when you share it." : state.kept[state.cls] ? "A shared build. Your own is kept aside." : "A shared build." }}<template v-if="game?.patch"> Median XL {{ game.patch }}.</template></p>
       </div>

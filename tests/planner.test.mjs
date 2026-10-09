@@ -2235,6 +2235,9 @@ test("a median-xl.com character page imports: skills, quests, attributes, worn g
   const scope = effectScope();
   const p = scope.run(() => createPlanner(engine, catalog, planner));
   assert.equal(p.importArmory(html).ok, true);
+  // An imported character is the player's own: it opens in the editor, theirs to write a guide for.
+  assert.equal(p.state.view, "character");
+  assert.equal(!!p.state.opened[p.state.cls], false);
   assert(p.build.value.spare.length >= 5, "the planner keeps the spare items");
   assert.equal(decodeBuild(p.buildCode()).spare, undefined, "a share link doesn't carry them");
   // Equipping a spare swaps it with what was in the slot.

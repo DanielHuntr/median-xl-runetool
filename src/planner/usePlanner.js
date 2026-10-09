@@ -1144,6 +1144,9 @@ export function createPlanner(engine, catalog, planner) {
     const r = armoryBuild(page, { engine, catalog, planner });
     if (!r) return { ok: false, reason: `The page's class (${page.exp.class}) isn't one the planner knows.` };
     if (!importFromHash(armoryHash(r))) return { ok: false, reason: "The character couldn't be opened in the planner." };
+    // The player's own character: theirs to edit (and write a guide for), not a build to read.
+    delete state.opened[r.build.cls];
+    state.view = "character";
     return { ok: true, name: r.name, stage: r.stage, cls: r.build.cls, level: r.build.level, items: Object.keys(r.build.gear).length + r.build.inventory.length, spare: r.build.spare?.length || 0, merc: !!r.build.merc, missing: r.missing, notes: r.notes, runes: r.runes };
   }
   function importFromHash(hash = window.location.hash) {
