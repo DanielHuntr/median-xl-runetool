@@ -1,6 +1,7 @@
 <script setup>
-import { computed, ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
 import Icon from "./AppIcon.vue";
+import { menuKeys, focusMenu } from "../tabKeys.js";
 import BackupDialog from "./BackupDialog.vue";
 import AccountDialog from "./AccountDialog.vue";
 import { useAuth } from "../composables/useAuth.js";
@@ -32,10 +33,15 @@ function toggleMoreLinks() {
   const r = moreBtn.value.getBoundingClientRect();
   morePos.value = { left: `${r.right + 8}px`, bottom: `${Math.max(8, window.innerHeight - r.bottom)}px` };
   moreOpen.value = true;
+  nextTick(() => focusMenu(document.querySelector(".more-pop")));
 }
 const closeMoreLinks = (e) => {
   if (!moreOpen.value) return;
-  if (e.type === "keydown" ? e.key === "Escape" : !e.target.closest?.(".more-pop, .side-more")) moreOpen.value = false;
+  if (e.type === "keydown" ? e.key !== "Escape" : e.target.closest?.(".more-pop, .side-more")) return;
+  // Esc from inside the menu goes back to its button.
+  const inside = e.type === "keydown" && document.activeElement?.closest(".more-pop");
+  moreOpen.value = false;
+  if (inside) moreBtn.value?.focus();
 };
 onMounted(() => { document.addEventListener("click", closeMoreLinks); document.addEventListener("keydown", closeMoreLinks); window.addEventListener("account-open", openAccount); });
 onBeforeUnmount(() => { document.removeEventListener("click", closeMoreLinks); document.removeEventListener("keydown", closeMoreLinks); window.removeEventListener("account-open", openAccount); });
@@ -45,9 +51,15 @@ const openSearch = () => {
   window.dispatchEvent(new Event("site-search"));
 };
 const searchKey = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform || "") ? "⌘K" : "Ctrl K";
+// Leaving the menu by one of its items: focus goes back to its button, not the top of the page
+// (a dialog it opens, Back up & restore, then returns focus there too).
+function leaveMore() {
+  if (moreOpen.value) moreBtn.value?.focus();
+  moreOpen.value = false;
+}
 function openBackup() {
   closeMore();
-  moreOpen.value = false;
+  leaveMore();
   backup.value?.open();
 }
 const openMore = () => { sheet.value?.showModal(); menuOpen.value = true; };
@@ -111,12 +123,12 @@ function reportHref() {
       </button>
     </div>
   </aside>
-  <div v-if="moreOpen" class="more-pop" role="menu" aria-label="More" :style="morePos">
-    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = reportHref(); moreOpen = false; }"><Icon name="bug" />Report a bug or issue</a>
-    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = suggestHref(); moreOpen = false; }"><Icon name="idea" />Suggest an idea</a>
+  <div v-if="moreOpen" class="more-pop" role="menu" aria-label="More" :style="morePos" @keydown="menuKeys">
+    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = reportHref(); leaveMore(); }"><Icon name="bug" />Report a bug or issue</a>
+    <a role="menuitem" :href="`${ISSUES_REPO}/issues/new/choose`" target="_blank" rel="noopener" @click="(e) => { e.currentTarget.href = suggestHref(); leaveMore(); }"><Icon name="idea" />Suggest an idea</a>
     <button role="menuitem" type="button" @click="openBackup"><Icon name="backup" />Back up &amp; restore</button>
-    <a role="menuitem" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" @click="moreOpen = false"><Icon name="docs" />{{ docsLabel }}</a>
-    <a role="menuitem" href="#privacy" @click.prevent="moreOpen = false; nav('privacy')"><Icon name="docs" />Privacy</a>
+    <a role="menuitem" :href="PAGES.find((p) => p[0] === page)[4]" target="_blank" rel="noopener" @click="leaveMore"><Icon name="docs" />{{ docsLabel }}</a>
+    <a role="menuitem" href="#privacy" @click.prevent="leaveMore(); nav('privacy')"><Icon name="docs" />Privacy</a>
   </div>
   <header class="mobile-top">
     <button type="button" class="icon-btn mobile-menu" aria-label="Menu" aria-haspopup="dialog" :aria-expanded="menuOpen" @click="openMore">

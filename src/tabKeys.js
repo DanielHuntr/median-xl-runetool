@@ -16,3 +16,21 @@ export function tabKeys(e) {
   tabs[to].focus();
   tabs[to].click();
 }
+
+// Keyboard for role="menu" (the WAI-ARIA menu pattern): the up and down arrows, Home and End
+// move between its enabled items. Put @keydown="menuKeys" on the menu, and focusMenu(menu) on
+// opening so its first item takes focus.
+const ITEMS = '[role="menuitem"]:not([disabled])';
+export function menuKeys(e) {
+  const items = [...e.currentTarget.querySelectorAll(ITEMS)];
+  const i = items.indexOf(document.activeElement);
+  let to;
+  if (e.key === "ArrowDown") to = (i + 1) % items.length;
+  else if (e.key === "ArrowUp") to = (i - 1 + items.length) % items.length;
+  else if (e.key === "Home") to = 0;
+  else if (e.key === "End") to = items.length - 1;
+  else return;
+  e.preventDefault();
+  items[to]?.focus();
+}
+export const focusMenu = (menu) => menu?.querySelector(ITEMS)?.focus();

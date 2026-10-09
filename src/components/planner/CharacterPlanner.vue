@@ -1,6 +1,6 @@
 <script setup>
 import ClassPicker from "../ClassPicker.vue";
-import { ref, shallowRef, provide, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, shallowRef, provide, computed, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
 import Icon from "../AppIcon.vue";
 import SkillIcon from "./SkillIcon.vue";
 import AttributesPanel from "./AttributesPanel.vue";
@@ -17,7 +17,7 @@ import SaveBuildDialog from "./SaveBuildDialog.vue";
 import ArmoryImport from "./ArmoryImport.vue";
 import MercPanel from "./MercPanel.vue";
 import { MERC_ACTS, mercSpecs } from "../../planner/mercs.js";
-import { tabKeys } from "../../tabKeys.js";
+import { tabKeys, menuKeys, focusMenu } from "../../tabKeys.js";
 import { createEngine, SKILL_QUESTS, DIFFICULTIES as QUEST_DIFFS, MAX_LEVEL } from "../../planner/engine.js";
 import { createCatalog } from "../../planner/items.js";
 import { createPlanner, PlannerKey, STAGE_START, MAX_STAGES } from "../../planner/usePlanner.js";
@@ -51,6 +51,26 @@ const mercActs = computed(() => {
   const specs = planner.value ? mercSpecs(planner.value.planner) : [];
   return Object.entries(MERC_ACTS).map(([act, a]) => ({ act: +act, name: a.name, specs: specs.filter((x) => x.act === +act) })).filter((a) => a.specs.length);
 });
+// Closing a planner panel (the item picker, Suggest gear, the item editor, the skill chooser or
+// summary, the Stats panel) puts keyboard focus back where it was when the panel opened, not at
+// the top of the page.
+const PANELS = ["picker", "suggesting", "editing", "skillChooser", "skillSummary", "statsOpen"];
+let returnFocus = null;
+watch(
+  () => !!planner.value && PANELS.some((k) => planner.value.state[k]),
+  (open, was) => {
+    if (open && !was) returnFocus = document.activeElement;
+    if (open || !was) return;
+    const el = returnFocus;
+    returnFocus = null;
+    nextTick(() => {
+      // Lost, or still inside the panel on its way out (the Stats panel leaves after its animation).
+      const at = document.activeElement;
+      const lost = !at || at === document.body || !!at.closest("dialog, .stats-panel");
+      if (lost && el?.isConnected) el.focus({ preventScroll: true });
+    });
+  },
+);
 // The stage's "Where to level" and "New runewords" popovers; one open at a time, closed by
 // Esc, a click elsewhere or changing stage.
 const stagePop = ref(null);
@@ -58,13 +78,24 @@ const toggleStagePop = (name) => (stagePop.value = stagePop.value === name ? nul
 // The top bar's More menu (Import character, Reset): Reset asks inside it before clearing.
 const resetAsking = ref(false);
 watch(stagePop, (v) => v !== "more" && (resetAsking.value = false));
-function moreMenu(fn) { stagePop.value = null; fn(); }
+// Keyboard focus in the menus (the More menu, a stage's options): the first item when one opens,
+// Cancel when an item asks to confirm, and back on the menu's button when an item has run, so
+// focus never falls to the top of the page.
+const menuButton = (which) => document.querySelector(which === "more" ? '[aria-label="More planner actions"]' : ".stage-menu-btn");
+watch(stagePop, (v) => (v === "more" || v === "menu") && nextTick(() => focusMenu(document.querySelector(".stage-menu[role=menu]"))));
+const focusConfirm = (on) => nextTick(() => (on ? document.querySelector(".stage-menu-confirm .btn:not(.danger)")?.focus() : focusMenu(document.querySelector(".stage-menu[role=menu]"))));
+watch(resetAsking, focusConfirm);
+function moreMenu(fn) { stagePop.value = null; menuButton("more")?.focus(); fn(); }
 // The click's path as it was dispatched: a menu item the click itself replaced (Delete stage
 // swapping to its confirmation) is no longer in the page, but the click was still inside.
 const closeStagePop = (e) => {
   if (!stagePop.value) return;
   const inside = e.composedPath?.().some((el) => el.classList?.contains("stage-pop-wrap"));
-  if (e.type === "keydown" ? e.key === "Escape" : !inside) stagePop.value = null;
+  if (e.type === "keydown" ? e.key !== "Escape" : inside) return;
+  // Esc from inside a menu or popover goes back to the button that opened it.
+  const wrap = e.type === "keydown" && document.activeElement?.closest(".stage-pop-wrap");
+  stagePop.value = null;
+  wrap?.querySelector("[aria-haspopup], [aria-expanded]")?.focus();
 };
 watch(() => planner.value && [planner.value.state.cls, stageName.value], () => (stagePop.value = null));
 // Why the mercenary's level can't go higher: it's never above the character's, and a
@@ -103,6 +134,7 @@ const stageTip = (name) => {
 // stage or a new name is typed into a chip in place; chips can be dragged into order.
 const stageList = computed(() => planner.value?.stagesOf() ?? []);
 const stageEdit = ref(null), stageText = ref(""), stageErr = ref(""), stageDeleting = ref(false);
+watch(stageDeleting, focusConfirm);
 const vFocus = { mounted: (el) => { el.focus(); el.select(); } };
 function editStage(mode) {
   stagePop.value = null;
@@ -119,7 +151,7 @@ function commitStage() {
   if (!r.ok) return (stageErr.value = r.reason);
   cancelStageEdit();
 }
-function stageMenu(fn) { stagePop.value = null; fn(); }
+function stageMenu(fn) { stagePop.value = null; fn(); nextTick(() => menuButton("menu")?.focus()); }
 function deleteStage() {
   stagePop.value = null;
   stageDeleting.value = false;
@@ -309,7 +341,7 @@ const questsOpen = ref(false);
           </button>
           <div class="stage-pop-wrap more-wrap">
             <button type="button" class="btn" aria-haspopup="menu" aria-label="More planner actions" :aria-expanded="stagePop === 'more'" @click="toggleStagePop('more')">More<Icon name="chevron" class="more-chevron" /></button>
-            <div v-if="stagePop === 'more'" class="stage-pop stage-menu more-menu" role="menu" aria-label="More planner actions">
+            <div v-if="stagePop === 'more'" class="stage-pop stage-menu more-menu" role="menu" aria-label="More planner actions" @keydown="menuKeys">
               <template v-if="!resetAsking">
                 <button type="button" role="menuitem" @click="moreMenu(() => (importing = true))"><Icon name="backup" />Import character</button>
                 <hr />
@@ -343,7 +375,7 @@ const questsOpen = ref(false);
               <button type="button" class="stage-btn" :aria-pressed="stageName === n" :data-tip="stageTip(n)" @click="planner.setStage(n)" @dblclick="stageName === n && editStage('rename')">{{ n }}</button>
               <div v-if="stageName === n" class="stage-pop-wrap">
                 <button type="button" class="stage-menu-btn" aria-haspopup="menu" :aria-expanded="stagePop === 'menu'" :aria-label="`${n} stage options`" @click="toggleStagePop('menu')"><Icon name="chevron" /></button>
-                <div v-if="stagePop === 'menu'" class="stage-pop stage-menu" role="menu" :aria-label="`${n} stage`">
+                <div v-if="stagePop === 'menu'" class="stage-pop stage-menu" role="menu" :aria-label="`${n} stage`" @keydown="menuKeys">
                   <template v-if="!stageDeleting">
                     <button type="button" role="menuitem" :disabled="i === 0" @click="stageMenu(() => planner.moveStage(n, -1))">Move earlier</button>
                     <button type="button" role="menuitem" :disabled="i === stageList.length - 1" @click="stageMenu(() => planner.moveStage(n, 1))">Move later</button>

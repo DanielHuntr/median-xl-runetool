@@ -69,3 +69,28 @@ test("planner: More menu, item editor and its searchable list", async ({ page })
     expect(await problems(page, ".search-select-pop")).toEqual([]);
   }
 });
+
+test("closing a planner panel puts focus back on the button that opened it", async ({ page }) => {
+  await page.goto("/#planner");
+  for (const name of [/^Weapon/, /Suggest gear/, /^Stats$/]) {
+    const opener = page.getByRole("button", { name }).first();
+    await opener.focus();
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("Escape");
+    await expect(opener).toBeFocused();
+  }
+});
+
+test("the planner's More menu works from the keyboard", async ({ page }) => {
+  await page.goto("/#planner");
+  const more = page.getByRole("button", { name: "More planner actions" });
+  await more.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("menuitem", { name: "Import character" })).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(page.getByRole("menuitem", { name: /Reset character/ })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".stage-menu-confirm").getByRole("button", { name: "Cancel" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(more).toBeFocused();
+});
