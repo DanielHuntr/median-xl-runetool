@@ -38,6 +38,7 @@ const paths = {
   expand: "M4 4h16v16H4Z M9 4v16 M13 9l3 3-3 3",
   backup: "M12 4v11 M8 11l4 4 4-4 M4 15v5h16v-5",
   tree:"M12 3v5 M12 8H6v4 M12 8h6v4 M6 12v4 M18 12v4 M4 16h4v4H4Z M16 16h4v4h-4Z M10 3h4",
+  list: "M9 6h12 M9 12h12 M9 18h12 M4 6h.01 M4 12h.01 M4 18h.01",
   // Empty equipment slots (EquipmentPanel, MercPanel); the off-hand uses "shield".
   "slot-weapon": "M19 3h2v2L10 16l-2-2Z M6 12l6 6 M7 17l-3 3",
   "slot-helm": "M5 15a7 7 0 0 1 14 0v5h-4v-4H9v4H5Z M12 8v3",

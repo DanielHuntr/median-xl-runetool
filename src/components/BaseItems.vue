@@ -16,10 +16,12 @@ const {
   clampLevel,
   BASED,
   catGroups,
+  layout,
 } = useRunetool();
 import { computed } from "vue";
 import CatalogFilters from "./CatalogFilters.vue";
 import FilterPills from "./FilterPills.vue";
+import LayoutToggle from "./LayoutToggle.vue";
 const f = browse.bases;
 const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value) }]);
 </script>
@@ -65,43 +67,46 @@ const sections = computed(() => [{ key: "cats", groups: catGroups(baseCats.value
         <strong>{{ bases.length }}</strong> {{ bases.length === 1 ? "base item" : "base items" }}
         <span v-if="bases.length !== BASED.length">/ {{ BASED.length }}</span>
       </div>
+      <LayoutToggle />
     </div>
-    <div class="card-grid">
+    <div class="card-grid" :class="{ list: layout === 'list' }">
       <article v-for="b in bases" :key="b.key" class="unique-card">
-        <div class="card-head">
-          <ItemArt kind="base" :name="b.name" :tier="tier(b).label" />
-          <div>
-            <div class="item-kind">{{ b.cat }}</div>
-            <h2>{{ b.name }}</h2>
+        <div class="card-main">
+          <div class="card-head">
+            <ItemArt kind="base" :name="b.name" :tier="tier(b).label" />
+            <div>
+              <div class="item-kind">{{ b.cat }}</div>
+              <h2>{{ b.name }}</h2>
+            </div>
           </div>
+          <div v-if="b.t.length > 1" class="tier-tabs" role="group" :aria-label="b.name + ' tier'">
+            <button
+              v-for="(t, i) in b.t"
+              :class="{ selected: tierIndex(b) === i, over: t.req > st.lvl }"
+              :aria-pressed="tierIndex(b) === i"
+              :data-tip="t.label + (t.req ? ' · required level ' + t.req : '')"
+              :aria-label="t.label"
+              @click="tiers[b.key] = i"
+            >
+              {{ { "Tier 1": "I", "Tier 2": "II", "Tier 3": "III", "Tier 4": "IV", Sacred: "S" }[t.label] || t.label }}
+            </button>
+          </div>
+          <div class="unique-meta">
+            <span
+              >{{ tier(b).label }} · Level <b>{{ tier(b).req ?? 1 }}</b></span
+            ><span v-if="tier(b).str"
+              >Str <b>{{ tier(b).str }}</b></span
+            ><span v-if="tier(b).dex"
+              >Dex <b>{{ tier(b).dex }}</b></span
+            ><span v-if="tier(b).sock">{{ tier(b).sock }} sockets max</span
+            ><span v-if="tier(b).cls" class="class-only"
+              >{{ tier(b).cls }} only</span
+            >
+          </div>
+          <p v-if="tier(b).req > st.lvl" class="warning">
+            Above your maximum level
+          </p>
         </div>
-        <div v-if="b.t.length > 1" class="tier-tabs" role="group" :aria-label="b.name + ' tier'">
-          <button
-            v-for="(t, i) in b.t"
-            :class="{ selected: tierIndex(b) === i, over: t.req > st.lvl }"
-            :aria-pressed="tierIndex(b) === i"
-            :data-tip="t.label + (t.req ? ' · required level ' + t.req : '')"
-            :aria-label="t.label"
-            @click="tiers[b.key] = i"
-          >
-            {{ { "Tier 1": "I", "Tier 2": "II", "Tier 3": "III", "Tier 4": "IV", Sacred: "S" }[t.label] || t.label }}
-          </button>
-        </div>
-        <div class="unique-meta">
-          <span
-            >{{ tier(b).label }} · Level <b>{{ tier(b).req ?? 1 }}</b></span
-          ><span v-if="tier(b).str"
-            >Str <b>{{ tier(b).str }}</b></span
-          ><span v-if="tier(b).dex"
-            >Dex <b>{{ tier(b).dex }}</b></span
-          ><span v-if="tier(b).sock">{{ tier(b).sock }} sockets max</span
-          ><span v-if="tier(b).cls" class="class-only"
-            >{{ tier(b).cls }} only</span
-          >
-        </div>
-        <p v-if="tier(b).req > st.lvl" class="warning">
-          Above your maximum level
-        </p>
         <ul class="stats">
           <li v-for="l in tier(b).lines">{{ l }}</li>
         </ul>

@@ -137,6 +137,8 @@ export function createRunetool() {
   const st = reactive({ ...defaults(), ...saved });
   const owned = ref(get("owned", {})),
     stars = ref(get("stars", [])),
+    // Catalogue pages as cards or a compact list (LayoutToggle.vue), one choice for all.
+    layout = ref(get("layout", "cards") === "list" ? "list" : "cards"),
     theme = ref(knownTheme(get("theme", "dark")));
   const page = ref(pageFromHash()),
     // The filters slide out like My Runes; on wide screens they can instead be docked beside
@@ -498,6 +500,7 @@ export function createRunetool() {
   );
   watch(owned, () => put("owned", owned.value), { deep: true });
   watch(stars, () => put("stars", stars.value), { deep: true });
+  watch(layout, () => put("layout", layout.value));
   wideQuery?.addEventListener?.("change", (e) => (wide.value = e.matches));
   watch(panel, (open) => filtersDocked.value && put("filtersOpen", open));
   watch(dockFilters, (v) => put("dockFilters", v));
@@ -553,6 +556,7 @@ export function createRunetool() {
     st,
     owned,
     stars,
+    layout,
     theme,
     page,
     panel,

@@ -437,3 +437,14 @@ test("Ctrl-click on + puts every stat point left into one attribute, and on − 
   await page.getByRole("button", { name: /^Remove a point from Dexterity/ }).click({ modifiers: ["Control"] });
   await expect(orb).toHaveText("95");
 });
+
+test("catalogue results switch between cards and a compact list, remembered across pages", async ({ page }) => {
+  await page.goto("/#runewords");
+  await page.getByRole("button", { name: "List", exact: true }).click();
+  await expect(page.locator(".card-grid")).toHaveClass(/\blist\b/);
+  await page.goto("/#uniques");
+  await expect(page.locator(".unique-grid")).toHaveClass(/\blist\b/);
+  await expect(page.getByRole("button", { name: "List", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Cards", exact: true }).click();
+  await expect(page.locator(".unique-grid")).not.toHaveClass(/\blist\b/);
+});

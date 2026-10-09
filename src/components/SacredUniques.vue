@@ -9,7 +9,8 @@ import { useRunetool, MAX_ITEM_LEVEL } from "../composables/useRunetool.js";
 import { computed } from "vue";
 import CatalogFilters from "./CatalogFilters.vue";
 import FilterPills from "./FilterPills.vue";
-const { st, browse, sacredCats, sacredUniques, clampLevel, SUD, catGroups, TAGS, ELEMS } =
+import LayoutToggle from "./LayoutToggle.vue";
+const { st, browse, sacredCats, sacredUniques, clampLevel, SUD, catGroups, TAGS, ELEMS, layout } =
   useRunetool();
 const f = browse.sacred;
 const sections = computed(() => [
@@ -58,27 +59,30 @@ const sections = computed(() => [
           >/ {{ SUD.length }}</span
         >
       </div>
+      <LayoutToggle />
     </div>
-    <div class="unique-grid">
+    <div class="unique-grid" :class="{ list: layout === 'list' }">
       <article v-for="u in sacredUniques" :key="u.id" class="unique-card">
-        <div class="card-head">
-          <ItemArt kind="unique" :name="u.name" :base="u.base" />
-          <div>
-            <div class="item-kind">{{ u.cat }}</div>
-            <h2>{{ u.name }}</h2>
-            <p class="base">{{ u.base }}</p>
+        <div class="card-main">
+          <div class="card-head">
+            <ItemArt kind="unique" :name="u.name" :base="u.base" />
+            <div>
+              <div class="item-kind">{{ u.cat }}</div>
+              <h2>{{ u.name }}</h2>
+              <p class="base">{{ u.base }}</p>
+            </div>
+            <div class="card-head-side"><CubeLink kind="unique" :name="u.name" compact /><CopyLink :hash="`sacred-uniques?name=${encodeURIComponent(u.name)}`" :label="u.name" /></div>
           </div>
-          <div class="card-head-side"><CubeLink kind="unique" :name="u.name" compact /><CopyLink :hash="`sacred-uniques?name=${encodeURIComponent(u.name)}`" :label="u.name" /></div>
-        </div>
-        <div class="unique-meta spaced">
-          <span v-if="u.req !== null"
-            >Level <b>{{ u.req }}</b></span
-          ><span v-if="u.str"
-            >Str <b>{{ u.str }}</b></span
-          ><span v-if="u.dex"
-            >Dex <b>{{ u.dex }}</b></span
-          ><span v-if="u.sock">{{ u.sock }} sockets</span
-          ><span v-if="u.cls" class="class-only">{{ u.cls }} only</span>
+          <div class="unique-meta spaced">
+            <span v-if="u.req !== null"
+              >Level <b>{{ u.req }}</b></span
+            ><span v-if="u.str"
+              >Str <b>{{ u.str }}</b></span
+            ><span v-if="u.dex"
+              >Dex <b>{{ u.dex }}</b></span
+            ><span v-if="u.sock">{{ u.sock }} sockets</span
+            ><span v-if="u.cls" class="class-only">{{ u.cls }} only</span>
+          </div>
         </div>
         <ul class="stats">
           <li v-for="m in u.lines"><StatLine :text="m" /></li>

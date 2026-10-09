@@ -16,10 +16,12 @@ const {
   tier,
   clampLevel,
   label,
+  layout,
 } = useRunetool();
 import UniqueCard from "./UniqueCard.vue";
 import CatalogFilters from "./CatalogFilters.vue";
 import FilterPills from "./FilterPills.vue";
+import LayoutToggle from "./LayoutToggle.vue";
 const f = browse.tiered;
 const sections = [
   { key: "cats", groups: catGroups(cats) },
@@ -67,12 +69,12 @@ const sections = [
       <label class="switch"
         ><input type="checkbox" v-model="compare" />Compare with next
         tier</label
-      >
+      ><LayoutToggle />
     </div>
     <p class="tier-hint">
       Each item opens at the highest tier you can equip at level {{ st.lvl }}.
     </p>
-    <div class="unique-grid">
+    <div class="unique-grid" :class="{ list: layout === 'list' }">
       <UniqueCard v-for="u in uniques" :key="u.id" :u="u" />
     </div>
     <div v-if="!uniques.length" class="empty">

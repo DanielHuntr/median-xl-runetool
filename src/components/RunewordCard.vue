@@ -34,58 +34,61 @@ const alsoFits = computed(() =>
 </script>
 <template>
   <article class="rune-card">
-    <div class="card-top">
-      <span class="item-kind"
-        >{{ r.slot === "armor" ? "ARMOR" : "WEAPON" }} · {{ r.runes.length }}
-        {{ r.runes.length === 1 ? "RUNE" : "RUNES" }}</span
-      ><span class="card-actions"><CopyLink :hash="`runewords?name=${encodeURIComponent(r.name)}`" :label="r.name" /><button
-        class="star"
-        :class="{ saved: stars.includes(r.name) }"
-        :aria-pressed="stars.includes(r.name)"
-        :aria-label="(stars.includes(r.name) ? 'Unstar ' : 'Star ') + r.name"
-        @click="star(r.name)"
-      >
-        <Icon name="star" />
-      </button></span>
-    </div>
-    <h2>{{ r.name }}</h2>
-    <p v-if="r.subtitle" class="rw-subtitle">{{ r.subtitle }}</p>
-    <p class="base">{{ r.bases.join(", ") }}</p>
-    <p v-if="r.except" class="except">Not {{ r.except }}</p>
-    <!-- Class items the game also accepts (inherited item types; runeword-bases.json). -->
-    <p v-if="alsoFits.length" class="also-fits">Also fits: {{ alsoFits.join(", ") }}</p>
-    <div class="card-meta">
-      <span
-        >LEVEL <b>{{ r.lvl }}</b></span
-      ><span v-if="r.cls" class="class-only">{{ r.cls }} only</span
-      ><span v-if="sortVal(r)?.v !== null && sortVal(r)" class="ranking"
-        >{{ SHORT[st.sort] }}: {{ sortVal(r).v }}</span
-      >
-    </div>
-    <div class="rune-sequence">
-      <div v-for="(rune, i) in r.runes" class="rune-unit">
-        <component
-          :is="runeRecipe(rune) ? 'a' : 'span'"
-          class="socket"
-          :class="{ owned: isOwned(r, i), 'has-recipe': !!runeRecipe(rune) }"
-          :href="runeRecipe(rune) || undefined"
-          :tabindex="runeRecipe(rune) ? undefined : 0"
-          :data-tip="runeRecipe(rune) ? `${runeName(rune)}: show its cube recipe` : runeName(rune)"
-          :aria-label="runeName(rune) + (isOwned(r, i) ? ', owned' : '') + (runeRecipe(rune) ? ', show its cube recipe' : '')"
-          ><img :src="RIMG[rune]" :alt="runeName(rune)" /></component
-        ><span>{{ label(rune) }}</span>
+    <!-- The item's name and details: a column of their own in the list view (display: contents on cards). -->
+    <div class="card-main">
+      <div class="card-top">
+        <span class="item-kind"
+          >{{ r.slot === "armor" ? "ARMOR" : "WEAPON" }} · {{ r.runes.length }}
+          {{ r.runes.length === 1 ? "RUNE" : "RUNES" }}</span
+        ><span class="card-actions"><CopyLink :hash="`runewords?name=${encodeURIComponent(r.name)}`" :label="r.name" /><button
+          class="star"
+          :class="{ saved: stars.includes(r.name) }"
+          :aria-pressed="stars.includes(r.name)"
+          :aria-label="(stars.includes(r.name) ? 'Unstar ' : 'Star ') + r.name"
+          @click="star(r.name)"
+        >
+          <Icon name="star" />
+        </button></span>
       </div>
-    </div>
-    <div
-      v-if="totalOwned"
-      class="inventory-status"
-      :class="{ craftable: missing(r) === 0 }"
-    >
-      <Icon :name="missing(r) === 0 ? 'check' : 'info'" />{{
-        missing(r) === 0
-          ? "You can make this"
-          : "Missing " + missing(r) + " rune" + (missing(r) > 1 ? "s" : "")
-      }}
+      <h2>{{ r.name }}</h2>
+      <p v-if="r.subtitle" class="rw-subtitle">{{ r.subtitle }}</p>
+      <p class="base">{{ r.bases.join(", ") }}</p>
+      <p v-if="r.except" class="except">Not {{ r.except }}</p>
+      <!-- Class items the game also accepts (inherited item types; runeword-bases.json). -->
+      <p v-if="alsoFits.length" class="also-fits">Also fits: {{ alsoFits.join(", ") }}</p>
+      <div class="card-meta">
+        <span
+          >LEVEL <b>{{ r.lvl }}</b></span
+        ><span v-if="r.cls" class="class-only">{{ r.cls }} only</span
+        ><span v-if="sortVal(r)?.v !== null && sortVal(r)" class="ranking"
+          >{{ SHORT[st.sort] }}: {{ sortVal(r).v }}</span
+        >
+      </div>
+      <div class="rune-sequence">
+        <div v-for="(rune, i) in r.runes" class="rune-unit">
+          <component
+            :is="runeRecipe(rune) ? 'a' : 'span'"
+            class="socket"
+            :class="{ owned: isOwned(r, i), 'has-recipe': !!runeRecipe(rune) }"
+            :href="runeRecipe(rune) || undefined"
+            :tabindex="runeRecipe(rune) ? undefined : 0"
+            :data-tip="runeRecipe(rune) ? `${runeName(rune)}: show its cube recipe` : runeName(rune)"
+            :aria-label="runeName(rune) + (isOwned(r, i) ? ', owned' : '') + (runeRecipe(rune) ? ', show its cube recipe' : '')"
+            ><img :src="RIMG[rune]" :alt="runeName(rune)" /></component
+          ><span>{{ label(rune) }}</span>
+        </div>
+      </div>
+      <div
+        v-if="totalOwned"
+        class="inventory-status"
+        :class="{ craftable: missing(r) === 0 }"
+      >
+        <Icon :name="missing(r) === 0 ? 'check' : 'info'" />{{
+          missing(r) === 0
+            ? "You can make this"
+            : "Missing " + missing(r) + " rune" + (missing(r) > 1 ? "s" : "")
+        }}
+      </div>
     </div>
     <ul class="stats">
       <li v-for="s in stats(r)" :class="{ hit: hit(r, s.i) }"><StatLine :text="s.text" /></li>

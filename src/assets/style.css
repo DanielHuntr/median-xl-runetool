@@ -3607,3 +3607,168 @@ main article.found {
     flex-wrap: wrap;
   }
 }
+
+/* Cards or a compact list (LayoutToggle.vue) on the catalogue pages. */
+.layout-toggle {
+  display: inline-flex;
+  flex: none;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--soft-border);
+  border-radius: 8px;
+  background: var(--field);
+}
+.layout-toggle button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+}
+.layout-toggle button:hover {
+  color: var(--text);
+}
+.layout-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+.layout-toggle button[aria-pressed="true"] {
+  background: var(--gold-bg);
+  color: var(--gold);
+}
+.results-bar {
+  gap: 10px 16px;
+}
+/* The list: one row per item, its name and details (.card-main) on the left and its stats
+   on the right, so a screen shows many more. On cards .card-main is display: contents. */
+.card-main {
+  display: contents;
+}
+.card-grid.list,
+.unique-grid.list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+.list > :is(.rune-card, .unique-card) {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  /* Up to three things on the right (stats, Show all, the upgrade); the last row takes what the
+     details column needs beyond them. */
+  grid-template-rows: auto auto minmax(0, 1fr);
+  column-gap: 32px;
+  align-items: start;
+  padding: 14px 20px;
+}
+.list > :is(.rune-card, .unique-card) > .card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  grid-column: 1;
+  grid-row: 1 / -1;
+  min-width: 0;
+}
+.list > :is(.rune-card, .unique-card) > :not(.card-main) {
+  grid-column: 2;
+  margin: 0;
+}
+.list :is(.rune-card, .unique-card) h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.list .card-main > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Runewords: the base, level and runes (small sockets, named in their tooltips) on one line
+   under the name. */
+.list > .rune-card > .card-main {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+.list .rune-card .card-main > :is(.card-top, h2, .rw-subtitle, .except, .also-fits, .inventory-status) {
+  flex-basis: 100%;
+}
+.list .rune-card .card-meta {
+  margin: 0;
+}
+.list .rune-card .rune-sequence {
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.list .rune-card .rune-unit > span {
+  display: none;
+}
+.list .rune-card .rune-unit .socket {
+  width: 28px;
+  height: 28px;
+  box-shadow: none;
+}
+.list .rune-card .rune-unit .socket img {
+  width: 22px;
+  height: 22px;
+}
+.list > .rune-card > .stats {
+  columns: 2 260px;
+  column-gap: 28px;
+  padding: 0;
+  min-height: 0;
+}
+.list > .rune-card > .stats li {
+  break-inside: avoid;
+}
+.list > .rune-card > .show-more {
+  width: auto;
+  margin: 6px 0 0;
+  padding: 2px 0;
+  border-top: 0;
+  justify-content: flex-start;
+  gap: 6px;
+}
+/* Uniques: the tier buttons under the name, not squeezing it. */
+.list .unique-card .card-head {
+  flex-wrap: wrap;
+}
+.list .unique-card .card-head > .card-head-side {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 0;
+}
+.list .unique-card .card-head-side .tier-tabs {
+  justify-content: flex-start;
+}
+.list .unique-card .card-head:has(> .card-head-side) + .unique-meta {
+  margin-top: 8px;
+}
+.list > .unique-card > .stats.superior-lines,
+.list > .unique-card > .upgrade-cost {
+  margin-top: 10px;
+}
+@media (max-width: 760px) {
+  .list > :is(.rune-card, .unique-card) {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px 16px;
+  }
+  .list > :is(.rune-card, .unique-card) > :is(.card-main, :not(.card-main)) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .list > :is(.rune-card, .unique-card) > :not(.card-main) {
+    margin-top: 10px;
+  }
+}
+/* Phones show one column either way: no Cards or List switch there. */
+@media (max-width: 600px) {
+  .layout-toggle {
+    display: none;
+  }
+}

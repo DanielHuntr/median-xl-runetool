@@ -1,11 +1,12 @@
 <script setup>
 import Icon from "./AppIcon.vue";
 import { useRunetool } from "../composables/useRunetool.js";
-const { st, results, reset, stats, RW, label, SORTS, panel, filtersDocked } = useRunetool();
+const { st, results, reset, stats, RW, label, SORTS, panel, filtersDocked, layout } = useRunetool();
 import FilterPanel from "./FilterPanel.vue";
 import FiltersToolbar from "./FiltersToolbar.vue";
 import RunewordCard from "./RunewordCard.vue";
 import { STARTER_MAX_RUNE } from "../data/index.js";
+import LayoutToggle from "./LayoutToggle.vue";
 const starterCount = RW.filter((r) => r.starter).length;
 </script>
 <template>
@@ -26,14 +27,14 @@ const starterCount = RW.filter((r) => r.starter).length;
           ><input type="checkbox" v-model="st.full" />Show full stats</label
         ><select v-model="st.sort" aria-label="Sort runewords">
           <option v-for="[key, text] in SORTS" :value="key">{{ text }}</option>
-        </select>
+        </select><LayoutToggle />
       </div>
     </div>
     <p v-if="st.starter" class="starter-note">
       New to Median XL? These {{ starterCount }} runewords take only the standard runes you'll find while levelling (El to {{ STARTER_MAX_RUNE }}), lowest required level first.
       Tick the runes you have under My Runes to see which you can make now; a rune's icon shows the cube recipe that makes it.
     </p>
-    <div class="card-grid">
+    <div class="card-grid" :class="{ list: layout === 'list' }">
       <RunewordCard v-for="r in results" :key="r.id" :r="r" />
     </div>
     <div v-if="!results.length" class="empty">
