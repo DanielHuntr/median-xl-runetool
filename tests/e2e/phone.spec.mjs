@@ -30,3 +30,18 @@ test("the drawer has no Help confirm values link", async ({ page }) => {
   await page.locator(".mobile-top").getByRole("button", { name: "Menu" }).click();
   await expect(page.getByRole("dialog", { name: "Median XL Runetool" })).not.toContainText("Help confirm values");
 });
+
+test("the planner on a phone: one section at a time from the bottom bar, the settings folded into a line", async ({ page }) => {
+  await page.goto("/#planner");
+  const bar = page.getByRole("group", { name: "Planner sections" });
+  await expect(page.locator(".attr-panel")).toBeVisible();
+  await expect(page.locator(".doll-panel")).toBeHidden();
+  await bar.getByRole("button", { name: "Gear" }).click();
+  await expect(page.locator(".doll-panel")).toBeVisible();
+  await expect(page.locator(".attr-panel")).toBeHidden();
+  const summary = page.locator(".planner-head-summary");
+  await expect(summary).toContainText("Level");
+  await expect(page.getByLabel("Character level", { exact: true })).toBeHidden();
+  await summary.click();
+  await expect(page.getByLabel("Character level", { exact: true })).toBeVisible();
+});

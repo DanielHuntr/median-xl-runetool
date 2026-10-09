@@ -186,6 +186,9 @@ export function createPlanner(engine, catalog, planner) {
     tipPinned: false,
     // The skill summary dialog (SkillsPanel.vue): open or not; not saved.
     skillSummary: false,
+    // On phones the planner shows one section at a time (its bottom bar): "attributes",
+    // "gear" or "skills". Not saved.
+    section: "attributes",
     suggesting: false,
     suggestAttributes: saved.suggestAttributes ?? false,
     allowAttributeRespec: false,

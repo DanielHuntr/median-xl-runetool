@@ -28,6 +28,7 @@ onMounted(() => dialog.value?.showModal?.());
 // Below the sticky bars (the phone top bar, the planner head's top bar); focus once the dialog is gone.
 function toSkills() {
   emit("close");
+  state.section = "skills";
   const tree = document.querySelector(".skills-panel");
   if (!tree) return;
   const bars = [...document.querySelectorAll(".mobile-top, .planner-head-top")].reduce((h, el) => h + (getComputedStyle(el).position === "sticky" ? el.offsetHeight : 0), 0);

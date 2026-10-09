@@ -3205,3 +3205,112 @@
     top: 12px;
   }
 }
+
+/* Phones: a bottom bar that shows one planner section at a time (attributes, gear or skills)
+   and opens the stats; notifications sit above it. */
+.planner-sections {
+  display: none;
+}
+@media (max-width: 600px) {
+  .planner-sections {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 35;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--soft-border);
+    background: var(--nav);
+    box-shadow: 0 -10px 24px -18px var(--shade);
+  }
+  .planner-sections button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-height: 48px;
+    padding: 6px 4px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .planner-sections svg {
+    width: 20px;
+    height: 20px;
+  }
+  .planner-sections button[aria-pressed="true"] {
+    background: var(--gold-bg);
+    color: var(--gold);
+  }
+  .planner-columns[data-section="attributes"] > :not(.attr-panel),
+  .planner-columns[data-section="gear"] > :not(.doll-panel),
+  .planner-columns[data-section="skills"] > :not(.skills-panel) {
+    display: none;
+  }
+  :root:has(.planner-sections) main {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  :root:has(.planner-sections) .toast-host {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Phones (CharacterPlanner.vue): the head's actions in one row with short labels, and its
+   settings and stages folded into a summary line until it's opened. */
+.planner-head-summary {
+  display: none;
+}
+@media (max-width: 600px) {
+  .wide-only {
+    display: none;
+  }
+  /* Stats is on the bottom bar here. */
+  .planner-head-top .stats-toggle {
+    display: none;
+  }
+  .planner-head-top .planner-actions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .planner-head-top .planner-actions .btn {
+    padding-inline: 6px;
+  }
+  .planner-head-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--soft-border);
+    border-top: 0;
+    border-radius: 0 0 10px 10px;
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: left;
+  }
+  .planner-head-summary svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--muted);
+    transform: rotate(90deg);
+    transition: transform var(--dur, 0.15s);
+  }
+  .planner-head-summary[aria-expanded="true"] {
+    border-radius: 0;
+  }
+  .planner-head-summary[aria-expanded="true"] svg {
+    transform: rotate(-90deg);
+  }
+  .planner-head.folded {
+    display: none;
+  }
+}

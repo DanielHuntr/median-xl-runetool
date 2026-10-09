@@ -51,6 +51,18 @@ const mercActs = computed(() => {
   const specs = planner.value ? mercSpecs(planner.value.planner) : [];
   return Object.entries(MERC_ACTS).map(([act, a]) => ({ act: +act, name: a.name, specs: specs.filter((x) => x.act === +act) })).filter((a) => a.specs.length);
 });
+// Phones: the bottom bar's sections, one shown at a time, opened at their top.
+// Phones: the head's settings and stages folded into a summary line until opened.
+const headOpen = ref(false);
+const SECTIONS = [["attributes", "Attributes", "user"], ["gear", "Gear", "shield"], ["skills", "Skills", "tree"]];
+function showSection(id) {
+  planner.value.state.section = id;
+  nextTick(() => {
+    const cols = document.querySelector(".planner-columns");
+    const bar = document.querySelector(".mobile-top")?.offsetHeight || 0;
+    if (cols && cols.getBoundingClientRect().top < bar) window.scrollTo({ top: cols.getBoundingClientRect().top + window.scrollY - bar - 8 });
+  });
+}
 // Closing a planner panel (the item picker, Suggest gear, the item editor, the skill chooser or
 // summary, the Stats panel) puts keyboard focus back where it was when the panel opened, not at
 // the top of the page.
@@ -258,7 +270,7 @@ const questsOpen = ref(false);
         <BuildTitle />
           <div class="planner-actions">
             <button
-              class="btn"
+              class="btn stats-toggle"
               :class="{ active: planner.state.statsOpen }"
               :aria-pressed="planner.state.statsOpen"
               :aria-controls="planner.state.statsOpen ? 'stats-panel' : null"
@@ -266,9 +278,9 @@ const questsOpen = ref(false);
             >
               <Icon name="panel" />Stats
             </button>
-            <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
+            <button class="btn" @click="saving = true"><Icon name="save" />Save<span class="wide-only"> build</span></button>
             <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
-              <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
+              <Icon :name="copied ? 'check' : 'link'" /><template v-if="copied">Link copied</template><template v-else>Share<span class="wide-only"> build</span></template>
             </button>
             <div class="stage-pop-wrap more-wrap">
               <button type="button" class="btn" aria-haspopup="menu" aria-label="More planner actions" :aria-expanded="stagePop === 'more'" @click="toggleStagePop('more')">More<Icon name="chevron" class="more-chevron" /></button>
@@ -286,7 +298,12 @@ const questsOpen = ref(false);
             </div>
           </div>
       </div>
-      <div class="planner-head">
+      <!-- Phones: the settings and stages fold into one line, open when tapped. -->
+      <button type="button" class="planner-head-summary" :aria-expanded="headOpen" aria-controls="planner-head" @click="headOpen = !headOpen">
+        <span>{{ planner.state.view === "merc" ? `Mercenary${planner.build.value.merc ? `: ${planner.build.value.merc.spec}` : ""}` : `${planner.state.cls} · Level ${planner.build.value.level} · ${planner.build.value.difficulty}` }} · {{ stageName }}</span>
+        <Icon name="chevron" />
+      </button>
+      <div id="planner-head" class="planner-head" :class="{ folded: !headOpen }">
       <div class="planner-head-settings">
       <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
         <button
@@ -478,10 +495,14 @@ const questsOpen = ref(false);
 
           <MercPanel v-if="planner.state.view === 'merc'" />
           <template v-else>
-          <div class="planner-columns">
+          <div class="planner-columns" :data-section="planner.state.section">
             <AttributesPanel />
             <EquipmentPanel />
             <SkillsPanel />
+          </div>
+          <div class="planner-sections" role="group" aria-label="Planner sections">
+            <button v-for="[id, label, icon] in SECTIONS" :key="id" type="button" :aria-pressed="planner.state.section === id" @click="showSection(id)"><Icon :name="icon" /><span>{{ label }}</span></button>
+            <button type="button" :aria-pressed="planner.state.statsOpen" @click="planner.toggleStats()"><Icon name="panel" /><span>Stats</span></button>
           </div>
 
           </template>
