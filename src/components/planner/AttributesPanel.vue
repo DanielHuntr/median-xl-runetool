@@ -9,8 +9,10 @@ const c = character;
 const free = computed(() => c.value.statPoints.available - c.value.statPoints.spent);
 const title = (a) => a[0].toUpperCase() + a.slice(1);
 const fmt = (n) => Math.round(n).toLocaleString();
+// Shift: 10 points. Ctrl or ⌘: every point left (+), or all of this attribute's (−).
 function bump(a, e, sign) {
-  addAttr(a, sign * (e.shiftKey ? 10 : 1));
+  const all = e.ctrlKey || e.metaKey;
+  addAttr(a, all ? (sign > 0 ? free.value : -build.value.attrs[a]) : sign * (e.shiftKey ? 10 : 1));
 }
 const resists = computed(() => [
   ["Fire", c.value.resist.fire, "fire"],
@@ -51,7 +53,10 @@ const resists = computed(() => [
             +
           </button>
         </span>
-        <small class="attr-spent">{{ build.attrs[a] }} spent</small>
+        <span class="attr-spent"
+          ><small>{{ build.attrs[a] }} spent</small
+          ><button v-if="free > 0" type="button" class="attr-all" :aria-label="`Add all ${free} remaining points to ${title(a)}`" @click="addAttr(a, free)">Add all</button></span
+        >
       </div>
       <div class="stat-orb" :class="{ over: free < 0 }" aria-live="polite">
         <b>{{ free }}</b><small>stat points</small>
@@ -67,7 +72,7 @@ const resists = computed(() => [
         @change="setSignets($event.target.value); $event.target.value = build.signets"
       /><small>/ {{ c.statPoints.signetCap }}</small></label
     >
-    <p class="muted attr-hint">Hold Shift to add or remove 10 points.</p>
+    <p class="muted attr-hint">Hold Shift to add or remove 10 points, or Ctrl (⌘ on a Mac) for all of them.</p>
 
     <SkillSlots />
     <!-- Defences fold into one line, so the three planner columns can match in height. -->

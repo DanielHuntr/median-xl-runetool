@@ -295,8 +295,29 @@
 }
 .attr-spent {
   grid-area: spent;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
   font-size: 0.6875rem;
   color: var(--muted);
+}
+.attr-spent small {
+  font-size: inherit;
+}
+/* "Add all": the stat points left, into this attribute in one go. */
+.attr-all {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.attr-all:hover {
+  color: var(--text);
 }
 .attr-buttons {
   grid-area: buttons;
