@@ -113,14 +113,14 @@ const RES = [["fire", "Fire"], ["cold", "Cold"], ["lightning", "Lightning"], ["p
 .merc-skill-row li { display: grid; justify-items: center; gap: 2px; width: 76px; text-align: center; }
 .merc-skill-mark { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--border); border-radius: 4px; background: var(--field); color: var(--gold); font-family: var(--serif); font-size: 1.4rem; }
 .merc-skill-row b { font-size: 0.9375rem; color: var(--good); }
-.merc-skill-row small { color: var(--muted); font-size: 0.6875rem; line-height: 1.2; }
+.merc-skill-row small { color: var(--muted); font-size: 0.75rem; line-height: 1.2; }
 .merc-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 22px; }
 .merc-stats dl { margin: 0; display: grid; gap: 4px; align-content: start; }
 .merc-stats div { display: flex; justify-content: space-between; gap: 10px; padding: 5px 10px; border: 1px solid var(--soft-border); border-radius: 4px; background: var(--field); font-size: 0.8125rem; }
 .merc-stats dt { color: var(--muted); }
 .merc-stats dd { margin: 0; font-weight: 500; }
 .merc-buffs { display: grid; gap: 8px; }
-.merc-buffs h3 { margin: 0; color: var(--muted); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+.merc-buffs h3 { margin: 0; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
 .merc-buff .switch { font-size: 0.875rem; }
 .merc-effects { margin: 4px 0 0; color: var(--good); font-size: 0.8125rem; line-height: 1.45; }
 .merc-note { margin: 0; font-size: 0.75rem; line-height: 1.5; }

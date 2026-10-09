@@ -22,6 +22,6 @@ defineProps({ art: { type: String, default: null }, qty: { type: Number, default
 .cube-icon-art { max-width: 80%; max-height: 86%; width: auto; height: auto; image-rendering: pixelated; }
 .cube-icon-none { width: 45%; color: var(--muted); }
 .cube-icon-portal { width: 60%; height: 80%; border-radius: 50% / 45%; background: radial-gradient(ellipse at center, #9fd6ff 0%, #3a78c9 45%, #1b2c6b 75%, transparent 76%); box-shadow: 0 0 10px #4b8fe066; }
-.cube-icon-qty { position: absolute; right: 2px; bottom: 1px; padding: 0 3px; border-radius: 3px; background: #000a; color: #fff; font-size: 0.6875rem; line-height: 1.3; }
-.cube-icon-any { position: absolute; left: 2px; top: 1px; color: var(--muted); font-size: 0.5625rem; font-style: normal; text-transform: uppercase; letter-spacing: 0.04em; }
+.cube-icon-qty { position: absolute; right: 2px; bottom: 1px; padding: 0 3px; border-radius: 3px; background: #000a; color: #fff; font-size: 0.75rem; line-height: 1.3; }
+.cube-icon-any { position: absolute; left: 2px; top: 1px; color: var(--muted); font-size: 0.6875rem; font-style: normal; text-transform: uppercase; letter-spacing: 0.04em; }
 </style>

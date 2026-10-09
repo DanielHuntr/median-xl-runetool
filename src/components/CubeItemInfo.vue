@@ -33,7 +33,7 @@ const added = computed(() => props.cube.itemLines(it.value).filter((l) => !info.
 .cube-tip .cube-tip-set { color: #3cff3c; }
 .cube-tip .cube-tip-plain { color: #dcdcdc; }
 .cube-tip .cube-tip-line { color: #8f8fff; }
-.cube-tip small { margin-top: 4px; color: #6f6a5d; font-size: 0.6875rem; }
+.cube-tip small { margin-top: 4px; color: #6f6a5d; font-size: 0.75rem; }
 .cube-tip b.q-magic { color: #8f8fff; } .cube-tip b.q-set { color: #3cff3c; } .cube-tip b.q-rare { color: #ffff6e; }
 .cube-tip b.q-unique { color: #d8bf7a; } .cube-tip b.q-crafted { color: #ffa800; } .cube-tip b.q-honorific { color: #c080ff; }
 </style>

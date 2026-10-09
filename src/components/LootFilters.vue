@@ -424,7 +424,7 @@ const level = (v) => Math.max(0, Math.min(150, Math.floor(Number(v) || 0)));
 .lf-rule-switch { min-height: 0; flex: none; }
 .lf-rule-summary { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 8px; border: 1px solid transparent; border-radius: 6px; background: none; color: var(--text); text-align: left; font-size: 0.875rem; cursor: pointer; }
 .lf-rule-summary:hover, .lf-rule-summary:focus-visible { border-color: var(--border); background: var(--raised); }
-.lf-show, .lf-hide { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
+.lf-show, .lf-hide { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
 .lf-show { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
 .lf-hide { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
 .lf-target { font-weight: 600; overflow-wrap: anywhere; }

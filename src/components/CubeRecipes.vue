@@ -551,7 +551,7 @@ function findInGame(recipe) {
 .cube-states li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid var(--soft-border); }
 .cube-state-text { display: grid; gap: 2px; min-width: 0; }
 .cube-state-text b { color: var(--text); font-size: 0.8125rem; font-weight: 500; }
-.cube-state-text small { color: var(--muted); font-size: 0.6875rem; line-height: 1.35; }
+.cube-state-text small { color: var(--muted); font-size: 0.75rem; line-height: 1.35; }
 .cube-states input[type="number"] { width: 72px; }
 .cube-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .cube-go { min-height: 44px; padding-inline: 20px; font-size: 0.9375rem; }
@@ -579,7 +579,7 @@ function findInGame(recipe) {
 .cube-tiles button:active { cursor: grabbing; }
 .cube-tiles button.dim { opacity: 0.4; }
 .cube-tiles b { font-weight: 500; font-size: 0.75rem; line-height: 1.25; text-align: center; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.cube-tiles small { color: var(--gold); opacity: 0.85; font-size: 0.6875rem; line-height: 1.2; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cube-tiles small { color: var(--gold); opacity: 0.85; font-size: 0.75rem; line-height: 1.2; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .cube-sections { display: grid; gap: 6px; max-height: min(620px, 66vh); overflow: hidden auto; padding-right: 2px; }
 .cube-sections > * { min-width: 0; }
 .cube-sections .cube-tiles { max-height: none; overflow: visible; }

@@ -558,8 +558,8 @@ h2 {
 .brand small {
   font-family: Inter, sans-serif;
   display: block;
-  font-size: 0.625rem;
-  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
   color: var(--muted);
   margin-top: 10px;
 }
@@ -574,8 +574,8 @@ h2 {
   height: 44px;
 }
 .nav-label {
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
   color: var(--muted);
   padding: 0 13px;
   margin-bottom: 13px;
@@ -625,7 +625,7 @@ nav button.selected {
 }
 .version small {
   display: block;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-top: 7px;
 }
@@ -662,9 +662,9 @@ main {
   justify-content: flex-end;
 }
 .eyebrow {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.06em;
   color: var(--muted);
   margin-bottom: 9px;
 }
@@ -777,7 +777,7 @@ input::placeholder {
   color: var(--gold);
 }
 .badge {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   min-width: 19px;
   padding: 2px 5px;
   background: var(--raised);
@@ -820,7 +820,7 @@ input::placeholder {
 .rune-group h3 {
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   color: var(--muted);
   font-weight: 500;
   margin: 0 0 13px;
@@ -920,7 +920,7 @@ input::placeholder {
 }
 .rune-card {
   position: relative;
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   background: var(--panel);
   border-radius: 6px;
   padding: 17px 20px 0;
@@ -938,8 +938,8 @@ input::placeholder {
 .card-actions { display: flex; align-items: center; gap: 2px; margin: -5px -7px 0 0; }
 .card-actions .star { margin: 0; }
 .item-kind {
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
   color: var(--muted);
   font-weight: 500;
   line-height: 1.7;
@@ -1001,7 +1001,7 @@ input::placeholder {
   align-items: center;
   flex-wrap: wrap;
   margin-top: 13px;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
   color: var(--muted);
 }
@@ -1034,7 +1034,7 @@ input::placeholder {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .socket {
@@ -1083,7 +1083,7 @@ a.socket.has-recipe:focus-visible {
   border: 1px solid var(--soft-border);
   border-radius: 4px;
   color: var(--muted);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   vertical-align: 1px;
   cursor: help;
@@ -1185,7 +1185,7 @@ footer > div {
   display: flex;
   gap: 20px;
   justify-content: space-between;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 footer a {
   display: inline-flex;
@@ -1201,7 +1201,7 @@ footer a svg {
   display: flex;
   align-items: flex-start;
   gap: 13px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   background: var(--gold-bg);
   padding: 17px 20px;
   border-radius: 5px;
@@ -1239,7 +1239,7 @@ footer a svg {
 }
 .unique-card {
   padding: 18px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   border-radius: 6px;
   background: var(--panel);
   min-width: 0;
@@ -1329,8 +1329,8 @@ p.warning {
 .comparison h3 span {
   display: block;
   margin-top: 5px;
-  font-size: 0.5625rem;
-  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
   color: var(--muted);
 }
 .comparison .stats {
@@ -1454,7 +1454,7 @@ p.warning {
   padding: 8px 3px;
   position: relative;
   color: var(--muted);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 .rune-grid img {
   width: 30px;
@@ -1474,7 +1474,7 @@ p.warning {
   background: var(--gold);
   color: var(--nav);
   border-radius: 3px;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   padding: 2px;
   width: 18px;
   height: 15px;
@@ -1621,7 +1621,7 @@ p.warning {
     font-size: 0.8125rem;
   }
   .eyebrow {
-    font-size: 0.5625rem;
+    font-size: 0.6875rem;
   }
   .theme-picker {
     margin-left: auto;
@@ -1994,7 +1994,7 @@ dialog[open]::backdrop {
     padding: 2px 3px;
   }
   .eyebrow {
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
   }
   .brand > span:last-child {
     display: none;
@@ -2036,9 +2036,9 @@ select optgroup {
 }
 .set-bonus h3,
 .group-title {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--gold);
   margin: 0 0 6px;
@@ -2243,7 +2243,7 @@ select optgroup {
   align-items: start;
 }
 .planner-tree-wrap {
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   border-radius: 6px;
   background: var(--panel);
   padding: 18px 12px;
@@ -2322,7 +2322,7 @@ select optgroup {
   bottom: -8px;
   min-width: 26px;
   padding: 1px 5px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   border-radius: 10px;
   background: var(--panel);
   font-size: 0.75rem;
@@ -2347,7 +2347,7 @@ select optgroup {
 .skill-detail {
   position: sticky;
   top: 16px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   border-radius: 6px;
   background: var(--panel);
   padding: 20px 22px;
@@ -2364,9 +2364,9 @@ select optgroup {
   margin: 2px 0 0;
 }
 .skill-detail h3 {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--gold);
   margin: 18px 0 6px;
@@ -2447,7 +2447,7 @@ select optgroup {
 }
 .planner-summary,
 .planner-quests {
-  border: 1px solid var(--border);
+  border: 1px solid var(--soft-border);
   border-radius: 6px;
   background: var(--panel);
   padding: 16px 18px;
@@ -2523,7 +2523,7 @@ select optgroup {
 }
 .quest-check small {
   color: var(--muted);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 @media (max-width: 1200px) {
   .planner-body,
@@ -3280,7 +3280,7 @@ a.btn { border: 1px solid var(--border); border-radius: 5px; text-decoration: no
   border: 1px solid var(--soft-border);
   border-radius: 4px;
   font: inherit;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   line-height: 1.6;
 }
 @media (min-width: 901px) {
@@ -3483,7 +3483,7 @@ main article.found {
   padding: 8px 8px 4px;
   background: var(--panel);
   color: var(--muted);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;

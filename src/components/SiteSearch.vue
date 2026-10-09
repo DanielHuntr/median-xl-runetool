@@ -140,7 +140,7 @@ kbd { padding: 1px 6px; border: 1px solid var(--soft-border); border-radius: 4px
 .ss-hits { list-style: none; margin: 0; padding: 6px; max-height: min(60vh, 520px); overflow-y: auto; }
 .ss-hits li { display: grid; grid-template-columns: 104px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
 .ss-hits li.active { background: var(--gold-bg); }
-.ss-kind { color: var(--muted); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.ss-kind { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .ss-kind.k-sacred, .ss-kind.k-unique { color: var(--gold); }
 .ss-kind.k-set, .ss-kind.k-set-item { color: var(--set, #4caf50); }
 .ss-name { display: grid; min-width: 0; }

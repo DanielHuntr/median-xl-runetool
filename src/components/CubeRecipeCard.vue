@@ -73,7 +73,7 @@ const pct = (x) => (x === undefined ? "" : x >= 0.1 ? `${Math.round(x * 100)}%` 
 .cube-recipe-link { margin-left: auto; }
 .cube-recipe-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; }
 .cube-recipe-item { display: grid; justify-items: center; gap: 4px; width: 84px; margin: 0; }
-.cube-recipe-item figcaption { font-size: 0.6875rem; line-height: 1.25; text-align: center; color: var(--text); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.cube-recipe-item figcaption { font-size: 0.75rem; line-height: 1.25; text-align: center; color: var(--text); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .cube-recipe-item.out figcaption { color: var(--gold); font-weight: 600; }
 .cube-recipe-item.missing figcaption { color: var(--muted); font-style: italic; }
 .cube-recipe-op { align-self: center; margin-top: -18px; color: var(--muted); font-size: 1rem; }

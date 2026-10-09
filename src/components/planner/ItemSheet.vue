@@ -107,5 +107,5 @@ const fromSuperior = computed(() => superiorLineTexts(r.value));
 
 <style scoped>
 /* What the item is (Tiered unique, Set · name, Sacred unique…), above its name. */
-.sheet-kind { margin: 0 0 2px; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+.sheet-kind { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
 </style>
