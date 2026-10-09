@@ -253,7 +253,7 @@ const questsOpen = ref(false);
               :max="planner.build.value.level"
               :value="planner.character.value.merc?.level"
               aria-label="Mercenary level (at most yours)"
-              @change="planner.setMercLevel($event.target.value)"
+              @change="planner.setMercLevel($event.target.value); $event.target.value = planner.character.value.merc?.level ?? ''"
           /></label>
           <label class="level"
             >Hired at
@@ -264,7 +264,7 @@ const questsOpen = ref(false);
               :value="planner.character.value.merc?.hiredAt"
               aria-label="Level the mercenary was hired at (its skills grow from here)"
               title="Its skills grow from the level it was hired at; the earliest possible by default"
-              @change="planner.setMercHiredAt($event.target.value)"
+              @change="planner.setMercHiredAt($event.target.value); $event.target.value = planner.character.value.merc?.hiredAt ?? ''"
           /></label>
           <label class="field-inline"
             >Hired in
@@ -283,7 +283,7 @@ const questsOpen = ref(false);
             min="1"
             :max="MAX_LEVEL"
             :value="planner.build.value.level"
-            @change="planner.setLevel($event.target.value)"
+            @change="planner.setLevel($event.target.value); $event.target.value = planner.build.value.level"
             aria-label="Character level"
         /></label>
         <label class="field-inline"

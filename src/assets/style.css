@@ -1902,6 +1902,11 @@ dialog[open]::backdrop {
   font-size: 0.8125rem;
   color: var(--text);
 }
+/* The answer buttons stay side by side when the question wraps. */
+.confirm-actions {
+  display: inline-flex;
+  gap: 8px;
+}
 .confirm-ask .btn.danger {
   border-color: var(--red, #c0584f);
   color: var(--red, #c0584f);
@@ -3545,3 +3550,6 @@ main article.found {
   display: block;
   padding: 8px 8px 4px;
 }
+/* Suggested gear fills in slot by slot (weapons last): a pending slot keeps about three rows'
+   room, so the rows below don't move under the pointer when it arrives. */
+.item-picker.suggest .suggest-pending { min-height: 15rem; margin: 0; padding-top: 8px; }

@@ -16,7 +16,7 @@ const props = defineProps({
   slotType: { type: String, default: "" },
 });
 const emit = defineEmits(["pick", "close"]);
-const { catalog, engine, state, build, profileSummary, recommendLater, tipOn, emptySockets, mercSlotCats } = usePlanner();
+const { catalog, engine, state, build, character, profileSummary, recommendLater, tipOn, emptySockets, mercSlotCats } = usePlanner();
 const merc = props.mode === "merc";
 const mercCatsFor = computed(() => (merc ? mercSlotCats(props.slot) || [] : []));
 const RIMG = catalog.images;
@@ -53,11 +53,13 @@ const KINDS = computed(() =>
 );
 const carried = computed(() => new Set((build.value.inventory || []).map((x) => x.ref)));
 const relicsFull = computed(() => (build.value.inventory || []).filter((x) => catalog.get(x.ref)?.kind === "relic").length >= 3);
-const reqOf = (d) => {
-  const lines = d.variants ? d.variants[0].lines : [];
-  const l = lines.find((x) => /^Required Level: /.test(x));
-  return d.kind === "runeword" ? d.lvl : d.kind === "socketable" ? d.lvl : l ? parseInt(l.split(": ")[1], 10) || 0 : 0;
+// A tier's requirement ("Level", "Strength", "Dexterity"), 0 when it has none.
+const reqLine = (lines, name) => {
+  const l = lines.find((x) => x.startsWith(`Required ${name}: `));
+  return l ? parseInt(l.split(": ")[1], 10) || 0 : 0;
 };
+// The level of the tier a click picks (bestVariant), so the row matches what's equipped.
+const reqOf = (d) => (d.kind === "runeword" || d.kind === "socketable" ? d.lvl : d.variants ? reqLine(d.variants[bestVariant(d)].lines, "Level") : 0);
 const pool = computed(() => {
   if (props.mode === "socket") return [...catalog.socketables(), ...catalog.jewels()];
   // Charms and relics not carried yet (one of each), and relics only while fewer than 3 are
@@ -85,14 +87,22 @@ const bases = computed(() =>
     : [],
 );
 
-// Best variant (tier) the character can use at their level.
+// The tier a pick starts on: the highest the character can wear, its level now and the
+// Strength and Dexterity it needs within reach of the unspent stat points (a Sacred base at
+// level 40 needs more Strength than the character can have). If none is, the highest its
+// level allows. The mercenary's tiers go by level only.
 function bestVariant(d) {
-  let best = 0;
+  const c = character.value;
+  const free = Math.max(0, c.statPoints.available - c.statPoints.spent);
+  const short = (lines) =>
+    Math.max(0, reqLine(lines, "Strength") - c.attributes.strength.total) + Math.max(0, reqLine(lines, "Dexterity") - c.attributes.dexterity.total);
+  let byLevel = 0, wearable = -1;
   (d.variants || []).forEach((v, i) => {
-    const l = v.lines.find((x) => /^Required Level: /.test(x));
-    if (!l || parseInt(l.split(": ")[1], 10) <= build.value.level) best = i;
+    if (reqLine(v.lines, "Level") > build.value.level) return;
+    byLevel = i;
+    if (merc || short(v.lines) <= free) wearable = i;
   });
-  return best;
+  return wearable >= 0 ? wearable : byLevel;
 }
 // Scored suggestions for this slot (only when that filter is on). They are worked out in
 // the background, so the picker opens at once; null until ready.
@@ -120,12 +130,18 @@ function choose(d) {
   if (props.mode === "socket") return emit("pick", { ref: d.key, fillAll: fillAll.value && otherEmpty.value > 0 });
   emit("pick", { ref: d.key, variant: bestVariant(d) });
 }
-function chooseBase(b) {
-  // The highest tier with enough sockets for the runes.
+// A runeword base's tier: the one a pick starts on (bestVariant) if it has sockets for the
+// runes, else the nearest lower tier that does, else the lowest higher one.
+function baseTier(b) {
   const need = runeword.value.runes.length;
-  let v = b.variants.length - 1;
-  while (v > 0 && !(b.variants[v].lines.some((l) => new RegExp(`^Socketed \\(([${need}-9])\\)`).test(l)))) v--;
-  emit("pick", { ref: runeword.value.key, base: b.key, baseVariant: bestVariant(b) >= v ? bestVariant(b) : v });
+  const fits = (i) => b.variants[i].lines.some((l) => (Number(/^Socketed \((\d+)\)/.exec(l)?.[1]) || 0) >= need);
+  const best = bestVariant(b);
+  for (let i = best; i >= 0; i--) if (fits(i)) return i;
+  for (let i = best + 1; i < b.variants.length; i++) if (fits(i)) return i;
+  return best;
+}
+function chooseBase(b) {
+  emit("pick", { ref: runeword.value.key, base: b.key, baseVariant: baseTier(b) });
 }
 function close() {
   emit("close");
@@ -164,7 +180,8 @@ onMounted(async () => {
           <li v-for="b in bases" :key="b.key">
             <button @click="chooseBase(b)">
               <ItemIcon :icon="b.icon" /><span
-                ><b>{{ b.name }}</b><small>{{ b.cat }}</small></span
+                ><b>{{ b.name }}</b><small>{{ b.cat }}<template v-if="b.variants.length > 1"> · {{ b.variants[baseTier(b)].label }}</template
+                  ><template v-if="reqLine(b.variants[baseTier(b)].lines, 'Level')"> · lvl {{ reqLine(b.variants[baseTier(b)].lines, "Level") }}</template></small></span
               >
             </button>
           </li>
@@ -235,6 +252,7 @@ onMounted(async () => {
               <ItemIcon :icon="d.icon" :src="d.img ? RIMG[d.img] : ''" /><span
                 ><b :class="'q-' + d.kind">{{ d.name }}</b
                 ><small>{{ d.kindLabel }}<template v-if="d.base && d.base !== d.name"> · {{ d.base }}</template
+                  ><template v-if="d.variants?.length > 1 && d.variants[bestVariant(d)].label"> · {{ d.variants[bestVariant(d)].label }}</template
                   ><template v-if="reqOf(d)"> · lvl {{ reqOf(d) }}</template></small
                 ></span
               >

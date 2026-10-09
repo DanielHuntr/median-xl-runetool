@@ -512,7 +512,8 @@ export function createRunetool() {
     runeTrigger.value?.focus();
   }
   function clampLevel() {
-    st.lvl = Math.min(MAX_ITEM_LEVEL, Math.max(1, parseInt(st.lvl) || MAX_ITEM_LEVEL));
+    const n = parseInt(st.lvl, 10);
+    st.lvl = Number.isNaN(n) ? MAX_ITEM_LEVEL : Math.min(MAX_ITEM_LEVEL, Math.max(1, n));
     Object.keys(tiers).forEach((k) => delete tiers[k]);
   }
   // A link to one card (CopyLink.vue): #uniques?name=Grim%20Fang&tier=3 opens the page

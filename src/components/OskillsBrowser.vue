@@ -11,7 +11,7 @@ import SOULBINDER from "../data/soulbinder.json";
 import BONUSES from "../data/item-bonuses.json";
 import { FIX, fixList } from "../data/fixes.js";
 
-const { RW, TUD, SUD, SETD, st } = useRunetool();
+const { RW, TUD, SUD, SETD, st, clampLevel } = useRunetool();
 
 // Filters as on the other catalogue pages (CatalogFilters.vue): a list per key, by label.
 const state = reactive({ q: "", kinds: [], sources: [], triggers: [] });
@@ -179,7 +179,7 @@ onUnmounted(() => window.removeEventListener("hashchange", applyLink));
       <div class="unique-controls oskill-controls">
         <label class="search"><Icon name="search" /><input v-model="state.q" type="search" placeholder="Search skill, item or line" aria-label="Search oskills and procs" /></label>
         <CatalogFilters :model="state" :sections="sections" :count="`${grouped.length} skill${grouped.length === 1 ? '' : 's'}`" />
-        <label class="level">Max lvl <input v-model="st.lvl" type="number" min="1" max="150" aria-label="Maximum character level" /></label>
+        <label class="level">Max lvl <input v-model="st.lvl" type="number" min="1" max="150" aria-label="Maximum character level" @change="clampLevel" /></label>
       </div>
       <FilterPills :model="state" :keys="['kinds', 'sources', 'triggers']" />
     </div>

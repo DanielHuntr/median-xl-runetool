@@ -398,3 +398,29 @@ test("a link claiming to be one of your saved builds can't aim Save at it; the B
   await expect(page.getByRole("dialog", { name: "Save build" }).getByText(/Updates your saved build "My Hammer"/)).toBeVisible();
 });
 
+
+test("the level box shows the level in use after an out-of-range entry", async ({ page }) => {
+  await page.goto("/#planner");
+  const level = page.locator(".planner-toolbar").getByLabel("Character level");
+  for (const [typed, shown] of [["0", "1"], ["-5", "1"], ["999", "150"], ["999", "150"]]) {
+    await level.fill(typed);
+    await level.press("Enter");
+    await expect(level).toHaveValue(shown);
+  }
+});
+
+test("a runeword picked at a low level goes on a base tier the character can wear", async ({ page }) => {
+  await page.goto("/#planner");
+  const level = page.locator(".planner-toolbar").getByLabel("Character level");
+  await level.fill("10");
+  await level.press("Enter");
+  await page.getByRole("button", { name: /^Weapon/ }).first().click();
+  const picker = page.getByRole("dialog");
+  await picker.locator("input").first().fill("cheetah");
+  await picker.getByRole("button", { name: /Cheetah/ }).first().click();
+  const base = picker.locator(".picker-list button", { hasText: "Throwing Axe" }).first();
+  await expect(base).toContainText("Tier 1");
+  await base.click();
+  await expect(page.locator(".planner-problems, [class*=problem]").filter({ hasText: "Cheetah needs" })).toHaveCount(0);
+  await expect(level).toHaveValue("10");
+});

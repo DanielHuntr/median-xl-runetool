@@ -101,7 +101,7 @@ watch([tab, q, kind], () => (limit.value = 60));
         <p v-if="e.note" class="upgrade-fits">{{ e.note }}</p>
       </li>
     </ul>
-    <button v-if="shown.length > limit" type="button" class="btn show-more" @click="limit += 120">Show more ({{ shown.length - limit }} left)</button>
+    <button v-if="shown.length > limit" type="button" class="btn more-entries" @click="limit += 120">Show more ({{ shown.length - limit }} left)</button>
     <div v-if="!shown.length" class="empty"><h2>Nothing matches.</h2></div>
   </section>
 </template>
@@ -120,5 +120,5 @@ watch([tab, q, kind], () => (limit.value = 60));
 .upgrade-title small { color: var(--muted); font-weight: 400; font-size: 0.75rem; }
 .upgrade .stats { margin: 0; }
 .upgrade-fits { margin: 8px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.45; }
-.show-more { margin: 16px auto 0; display: flex; }
+.more-entries { margin: 16px auto 0; display: flex; }
 </style>

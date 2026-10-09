@@ -2,7 +2,7 @@
 // A custom item's magic, rare or crafted affixes, from the game's affix tables (items.js
 // chosenAffixes): the ones that fit its base and item level, within the quality's limits, one
 // per group. Emits the item's new { affixes, magic, crafted, ilvl }.
-import { computed } from "vue";
+import { computed, nextTick } from "vue";
 import SearchSelect from "../SearchSelect.vue";
 import { AFFIX_LIMIT, affixesFor } from "../../planner/items.js";
 
@@ -37,9 +37,12 @@ function add(kind, id) {
 const affixOptions = (kind) => options(kind).map((a) => ({ value: a.id, label: a.lines.join(", "), detail: a.req ? `Required level ${a.req}` : "" }));
 const remove = (id) => send({ affixes: picked.value.map((a) => a.id).filter((x) => x !== id) });
 const setQuality = (q) => send({ magic: q === "magic", crafted: q === "crafted" });
-function setIlvl(v) {
-  const n = Math.round(Number(v));
+// Out of range clears it (the item then takes the character's level); the box shows the level
+// in use once the item has updated.
+function setIlvl(e) {
+  const n = Math.round(Number(e.target.value));
   send({ ilvl: n >= 1 && n <= 150 ? n : undefined });
+  nextTick(() => (e.target.value = ilvl.value ?? ""));
 }
 const QUALITIES = [["rare", "Rare"], ["crafted", "Crafted"], ["magic", "Magic"]];
 const KINDS = [["p", "Prefixes", "a prefix"], ["s", "Suffixes", "a suffix"]];
@@ -58,7 +61,7 @@ const summary = computed(() => {
         <button v-for="[q, name] in QUALITIES" :key="q" type="button" :aria-pressed="quality === q" @click="setQuality(q)">{{ name }}</button>
       </div>
       <label class="field-inline affix-ilvl" title="An item's level is the level of the monster or area that dropped it. Affixes need at least their own level, and some stop rolling above a maximum."
-        >Item level <input type="number" min="1" max="150" :value="ilvl" @change="setIlvl($event.target.value)" aria-label="Item level"
+        >Item level <input type="number" min="1" max="150" :value="ilvl" @change="setIlvl($event)" aria-label="Item level"
       /></label>
     </div>
     <p class="muted">

@@ -40,8 +40,10 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", outside, true)
     <button v-if="!asking" type="button" :class="btnClass" v-bind="$attrs" @click="ask"><slot /></button>
     <span v-else class="confirm-ask" role="group" :aria-label="question">
       <span class="confirm-question">{{ question }}</span>
-      <button type="button" class="btn danger confirm-yes" @click="confirm">{{ props.confirmLabel }}</button>
-      <button type="button" class="btn confirm-cancel" @click="cancel">Cancel</button>
+      <span class="confirm-actions">
+        <button type="button" class="btn danger confirm-yes" @click="confirm">{{ props.confirmLabel }}</button>
+        <button type="button" class="btn confirm-cancel" @click="cancel">Cancel</button>
+      </span>
     </span>
   </span>
 </template>

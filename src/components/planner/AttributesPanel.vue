@@ -64,7 +64,7 @@ const resists = computed(() => [
         min="0"
         :max="c.statPoints.signetCap"
         :value="build.signets"
-        @change="setSignets($event.target.value)"
+        @change="setSignets($event.target.value); $event.target.value = build.signets"
       /><small>/ {{ c.statPoints.signetCap }}</small></label
     >
     <p class="muted attr-hint">Hold Shift to add or remove 10 points.</p>

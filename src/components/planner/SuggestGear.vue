@@ -1,5 +1,5 @@
 <script setup>
-import { ref, shallowRef, computed, onMounted, watch } from "vue";
+import { ref, shallowRef, computed, onMounted, watch, nextTick } from "vue";
 import Icon from "../AppIcon.vue";
 import ItemIcon from "./ItemIcon.vue";
 import HoverCard from "./HoverCard.vue";
@@ -24,6 +24,16 @@ const busy = ref(false);
 const attributes = ['strength', 'dexterity', 'vitality', 'energy'];
 watch(suggestionFingerprint, () => { preview.value = null; });
 onMounted(() => dialog.value?.showModal?.());
+// With no skills yet: close, and bring the skill trees into view with their tab focused.
+// Below the sticky bars (the phone top bar, the planner toolbar); focus once the dialog is gone.
+function toSkills() {
+  emit("close");
+  const tree = document.querySelector(".skills-panel");
+  if (!tree) return;
+  const bars = [...document.querySelectorAll(".mobile-top, .planner-toolbar")].reduce((h, el) => h + (getComputedStyle(el).position === "sticky" ? el.offsetHeight : 0), 0);
+  window.scrollTo({ top: tree.getBoundingClientRect().top + window.scrollY - bars - 12, behavior: "smooth" });
+  nextTick(() => tree.querySelector('[role="tab"][tabindex="0"]')?.focus({ preventScroll: true }));
+}
 
 // Top picks for each slot the character is using now (the active weapon set). They are
 // worked out in the background, so the dialog opens at once; recs is null until ready.
@@ -77,9 +87,10 @@ function take(slot, rec) {
         <button class="icon-btn" aria-label="Close" @click="emit('close')"><Icon name="close" /></button>
       </div>
 
-      <p v-if="profileSummary.empty" class="muted">
-        Spend some skill points first. Suggestions are based on the skills you choose.
-      </p>
+      <template v-if="profileSummary.empty">
+        <p class="muted">Spend some skill points first. Suggestions are based on the skills you choose.</p>
+        <button type="button" class="btn gold" @click="toSkills">Go to skills</button>
+      </template>
       <template v-else>
         <div class="profile-summary">
           <span v-for="r in profileSummary.roles" class="profile-chip">{{ r.name }} {{ r.pct }}%</span>

@@ -64,6 +64,9 @@ function applyLink() {
 // The character the recipes are checked for (some are class-, level- or difficulty-bound).
 const saved = (() => { try { return JSON.parse(localStorage.getItem("mxlrw2:cube-ctx")) || {}; } catch { return {}; } })();
 const ctx = reactive({ cls: 0, level: 120, difficulty: 2, ...saved });
+// Level 1-150; empty or not a number goes back to 120.
+const clampCtxLevel = () => { const n = Math.floor(Number(ctx.level)); ctx.level = ctx.level === "" || !Number.isFinite(n) ? 120 : Math.max(1, Math.min(150, n)); };
+clampCtxLevel();
 watch(ctx, () => { try { localStorage.setItem("mxlrw2:cube-ctx", JSON.stringify(ctx)); } catch {} });
 
 const contents = ref([]);
@@ -311,7 +314,7 @@ function findInGame(recipe) {
             </div>
             <div class="cube-char" role="group" aria-label="Your character" aria-describedby="cube-char-note">
               <label>Class<select v-model.number="ctx.cls"><option v-for="(c, i) in CLASSES" :key="c" :value="i">{{ c }}</option></select></label>
-              <label>Level<input v-model.number="ctx.level" type="number" min="1" max="150" inputmode="numeric" /></label>
+              <label>Level<input v-model.number="ctx.level" type="number" min="1" max="150" inputmode="numeric" @change="clampCtxLevel" /></label>
               <label>Difficulty<select v-model.number="ctx.difficulty"><option v-for="(d, i) in DIFFICULTIES" :key="d" :value="i">{{ d }}</option></select></label>
             </div>
             <p id="cube-char-note" class="cube-char-note">Most recipes work for anyone. These matter for a few: class items and challenge items (413 recipes), Hell-only portals like the Cow Level (19), and level brackets such as the Sunstone of the Twin Seas (36).</p>
