@@ -29,6 +29,12 @@ test("where to level: full-experience areas in that difficulty, highest monster 
   assert.ok(areasNear(areas, 25, "Normal").every((a) => a.mlvl <= 50), "Normal areas only");
 });
 
+test("where to level: a cube-portal area only from the portal's difficulty (Moo Moo Farm: Wirt's Leg, Hell)", () => {
+  assert.equal(areas.find((a) => a.name === "Moo Moo Farm").from, 2);
+  assert.ok(!areasNear(areas, 97, "Nightmare", 10).some((a) => a.name === "Moo Moo Farm"));
+  assert.ok(areasNear(areas, 110, "Hell", 50).some((a) => a.name === "Moo Moo Farm"));
+});
+
 test("gear categories: uniques, sets by base, runewords by their base", () => {
   const c = {
     TUD: [{ id: 3, cat: "Bows" }], SUD: [{ id: 1, cat: "Helms" }],

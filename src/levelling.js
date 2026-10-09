@@ -1,6 +1,6 @@
 // What a levelling guide adds at each stage, for starter builds and your own saved builds:
 // where to level (areas whose monsters give full experience, highest monster level first, from
-// levels.bin) and the
+// levels.bin; a cube-portal area only from the portal's difficulty) and the
 // runewords that become usable since the last stage for the item types the build wears.
 export const DIFFICULTY = { Normal: 0, Nightmare: 1, Hell: 2 };
 // The stages of every guide; a saved build's has no endgame stage of its own.
@@ -26,7 +26,7 @@ export function areasNear(areas, level, difficulty, n = 5) {
   const k = DIFFICULTY[difficulty] ?? 2;
   const seen = new Set();
   return areas
-    .filter((a) => a.mlvl[k] > 0)
+    .filter((a) => a.mlvl[k] > 0 && k >= (a.from ?? 0))
     .map((a) => ({ name: a.name, act: a.act, mlvl: a.mlvl[k], off: Math.abs(a.mlvl[k] - level), xp: experienceShare(level, a.mlvl[k]) }))
     .sort((a, b) => b.xp - a.xp || b.mlvl - a.mlvl || a.act - b.act)
     .filter((a) => !seen.has(a.name) && seen.add(a.name))
