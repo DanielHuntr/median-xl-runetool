@@ -3075,3 +3075,113 @@
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
+
+/* The planner's head (CharacterPlanner.vue): a bar with the build and its actions, which stays
+   in view while scrolling, joined to a panel below it with the character or mercenary settings
+   and the levelling stages. */
+.planner-head-top {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--soft-border);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: var(--panel);
+  /* Its bottom edge: a hairline, and a soft shadow over the page when it stays in view. */
+  box-shadow: 0 1px 0 var(--soft-border), 0 12px 18px -16px var(--shade);
+}
+.planner-head-top .build-title-row {
+  flex: 1 1 260px;
+  justify-content: flex-start;
+  min-width: 0;
+  margin: 0;
+}
+.planner-head-top .planner-actions {
+  margin-left: auto;
+}
+.planner-head {
+  margin: 0 0 18px;
+  padding: 12px 16px 14px;
+  border: 1px solid var(--soft-border);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: var(--panel);
+}
+.planner-head-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+.planner-head .toolbar {
+  position: static;
+  flex: 1 1 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+/* Character or mercenary: a segmented switch. */
+.planner-head .planner-tabs {
+  display: inline-flex;
+  gap: 2px;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid var(--soft-border);
+  border-radius: 8px;
+  background: var(--field);
+}
+.planner-head .planner-tabs button {
+  margin: 0;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+.planner-head .planner-tabs button[aria-selected="true"] {
+  border: 0;
+  background: var(--gold-bg);
+  color: var(--gold);
+}
+.planner-head .planner-stages {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--soft-border);
+}
+@media (max-width: 600px) {
+  .planner-head-top {
+    position: static;
+    padding: 12px;
+  }
+  .planner-head {
+    padding: 12px;
+  }
+  .planner-head .planner-tabs {
+    display: flex;
+    width: 100%;
+  }
+  .planner-head .planner-tabs button {
+    flex: 1;
+    justify-content: center;
+  }
+  /* The four actions in two even columns. */
+  .planner-head-top .planner-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    margin: 0;
+  }
+  .planner-head-top .planner-actions > .btn,
+  .planner-head-top .planner-actions > .more-wrap > .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Quests beside the Stage label, below the row's divider. */
+  .planner-head .stage-quests {
+    top: 12px;
+  }
+}

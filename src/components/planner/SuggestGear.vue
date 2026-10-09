@@ -25,12 +25,12 @@ const attributes = ['strength', 'dexterity', 'vitality', 'energy'];
 watch(suggestionFingerprint, () => { preview.value = null; });
 onMounted(() => dialog.value?.showModal?.());
 // With no skills yet: close, and bring the skill trees into view with their tab focused.
-// Below the sticky bars (the phone top bar, the planner toolbar); focus once the dialog is gone.
+// Below the sticky bars (the phone top bar, the planner head's top bar); focus once the dialog is gone.
 function toSkills() {
   emit("close");
   const tree = document.querySelector(".skills-panel");
   if (!tree) return;
-  const bars = [...document.querySelectorAll(".mobile-top, .planner-toolbar")].reduce((h, el) => h + (getComputedStyle(el).position === "sticky" ? el.offsetHeight : 0), 0);
+  const bars = [...document.querySelectorAll(".mobile-top, .planner-head-top")].reduce((h, el) => h + (getComputedStyle(el).position === "sticky" ? el.offsetHeight : 0), 0);
   window.scrollTo({ top: tree.getBoundingClientRect().top + window.scrollY - bars - 12, behavior: "smooth" });
   nextTick(() => tree.querySelector('[role="tab"][tabindex="0"]')?.focus({ preventScroll: true }));
 }

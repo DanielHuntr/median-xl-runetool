@@ -252,10 +252,45 @@ const questsOpen = ref(false);
         <button type="button" class="btn" @click="planner.restoreKept()">Back to my build</button>
         <button type="button" class="text-btn" @click="planner.dropKept()">Keep this one instead</button>
       </div>
-      <BuildTitle />
+      <!-- The planner's head: the build and its actions (a bar that stays in view while scrolling),
+           then one panel with the character or mercenary settings and the levelling stages. -->
+      <div class="planner-head-top">
+        <BuildTitle />
+          <div class="planner-actions">
+            <button
+              class="btn"
+              :class="{ active: planner.state.statsOpen }"
+              :aria-pressed="planner.state.statsOpen"
+              :aria-controls="planner.state.statsOpen ? 'stats-panel' : null"
+              @click="planner.toggleStats()"
+            >
+              <Icon name="panel" />Stats
+            </button>
+            <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
+            <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
+              <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
+            </button>
+            <div class="stage-pop-wrap more-wrap">
+              <button type="button" class="btn" aria-haspopup="menu" aria-label="More planner actions" :aria-expanded="stagePop === 'more'" @click="toggleStagePop('more')">More<Icon name="chevron" class="more-chevron" /></button>
+              <div v-if="stagePop === 'more'" class="stage-pop stage-menu more-menu" role="menu" aria-label="More planner actions" @keydown="menuKeys">
+                <template v-if="!resetAsking">
+                  <button type="button" role="menuitem" @click="moreMenu(() => (importing = true))"><Icon name="backup" />Import character</button>
+                  <hr />
+                  <button type="button" role="menuitem" class="danger" @click="resetAsking = true"><Icon name="close" />Reset character…</button>
+                </template>
+                <div v-else class="stage-menu-confirm">
+                  <p>Clear your {{ planner.state.cls }}'s skills, stats and gear on every stage?</p>
+                  <div><button type="button" class="btn danger" @click="moreMenu(() => planner.reset())">Reset</button><button type="button" class="btn" @click="resetAsking = false">Cancel</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="planner-head">
+      <div class="planner-head-settings">
       <div class="planner-tabs" role="tablist" aria-label="Planner" @keydown="tabKeys">
         <button
-          v-for="[v, label] in [['character', planner.state.cls], ['merc', 'Mercenary']]"
+          v-for="[v, label] in [['character', 'Character'], ['merc', 'Mercenary']]"
           :key="v"
           type="button"
           role="tab"
@@ -325,35 +360,7 @@ const questsOpen = ref(false);
           </select></label
         >
         <label class="switch"><input type="checkbox" v-model="planner.state.autoLevel" />Raise level automatically</label>
-        <div class="planner-actions">
-          <button
-            class="btn"
-            :class="{ active: planner.state.statsOpen }"
-            :aria-pressed="planner.state.statsOpen"
-            :aria-controls="planner.state.statsOpen ? 'stats-panel' : null"
-            @click="planner.toggleStats()"
-          >
-            <Icon name="panel" />Stats
-          </button>
-          <button class="btn" @click="saving = true"><Icon name="save" />Save build</button>
-          <button class="btn" :data-tip="stageName === 'Endgame' ? 'Copies a link to this build' : `Copies a link to this build that opens on its ${stageName} stage`" @click="share">
-            <Icon :name="copied ? 'check' : 'link'" />{{ copied ? "Link copied" : "Share build" }}
-          </button>
-          <div class="stage-pop-wrap more-wrap">
-            <button type="button" class="btn" aria-haspopup="menu" aria-label="More planner actions" :aria-expanded="stagePop === 'more'" @click="toggleStagePop('more')">More<Icon name="chevron" class="more-chevron" /></button>
-            <div v-if="stagePop === 'more'" class="stage-pop stage-menu more-menu" role="menu" aria-label="More planner actions" @keydown="menuKeys">
-              <template v-if="!resetAsking">
-                <button type="button" role="menuitem" @click="moreMenu(() => (importing = true))"><Icon name="backup" />Import character</button>
-                <hr />
-                <button type="button" role="menuitem" class="danger" @click="resetAsking = true"><Icon name="close" />Reset character…</button>
-              </template>
-              <div v-else class="stage-menu-confirm">
-                <p>Clear your {{ planner.state.cls }}'s skills, stats and gear on every stage?</p>
-                <div><button type="button" class="btn danger" @click="moreMenu(() => planner.reset())">Reset</button><button type="button" class="btn" @click="resetAsking = false">Cancel</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
       </div>
 
       <div class="planner-stages">
@@ -432,6 +439,7 @@ const questsOpen = ref(false);
         <!-- Quests, at the row's other end (QuestsDialog). -->
         <button type="button" class="btn stage-quests" aria-haspopup="dialog" @click="questsOpen = true">Quests</button>
         <QuestsDialog v-if="questsOpen" @close="questsOpen = false" />
+      </div>
       </div>
 
       <div class="planner-layout" :class="{ docked: planner.state.statsOpen && planner.state.statsPinned }">

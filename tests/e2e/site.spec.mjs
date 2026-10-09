@@ -189,7 +189,7 @@ test("the Mercenary tab: hire one, see its stats and its buff", async ({ page })
   await expect(view).toContainText("Firedance");
   await expect(view.getByRole("button", { name: /Mercenary's body armor/ })).toBeVisible();
   await expect(view.getByRole("button", { name: /Mercenary's amulet/ })).toBeVisible();
-  await page.getByRole("tab", { name: /Amazon|Assassin|Barbarian|Druid|Necromancer|Paladin|Sorceress/ }).click();
+  await page.getByRole("tab", { name: "Character" }).click();
   await expect(page.getByRole("button", { name: /Suggest gear/ })).toBeVisible();
 });
 
