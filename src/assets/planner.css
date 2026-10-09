@@ -2683,7 +2683,10 @@
   .stage-switch { flex-wrap: wrap; }
   .stage-chip { flex: 1 1 auto; }
   .stage-btn { flex: 1; padding: 0 8px; }
-  .stage-label { flex-basis: 100%; }
+  /* The label has its own line: Quests sits at its right end instead of a line of its own. */
+  .planner-stages { position: relative; }
+  .stage-label { flex-basis: 100%; display: flex; align-items: center; min-height: 36px; }
+  .stage-quests { position: absolute; top: 0; right: 0; min-height: 36px; }
 }
 
 /* A build opened to look at, with the player's own set aside (usePlanner.js importFromHash). */

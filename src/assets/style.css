@@ -3553,3 +3553,57 @@ main article.found {
 /* Suggested gear fills in slot by slot (weapons last): a pending slot keeps about three rows'
    room, so the rows below don't move under the pointer when it arrives. */
 .item-picker.suggest .suggest-pending { min-height: 15rem; margin: 0; padding-top: 8px; }
+/* Phones: the top bar already names the site and the page, so the page header keeps only its
+   line of description beside What's new and the theme (its swatch; the name is still read out).
+   The title stays for screen readers. */
+@media (max-width: 600px) {
+  .page-header {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-header > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .page-header .eyebrow {
+    display: none;
+  }
+  .page-header h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .page-header p {
+    margin-top: 0;
+  }
+  .page-header > .page-header-tools {
+    flex: none;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .page-header-tools .theme-picker {
+    margin: 0;
+  }
+  .page-header-tools .theme-trigger {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+  .page-header-tools .theme-trigger-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+/* The narrowest phones: the description gets the full width, What's new and the theme below. */
+@media (max-width: 359px) {
+  .page-header {
+    flex-wrap: wrap;
+  }
+}
